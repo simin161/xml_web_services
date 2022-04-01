@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import java.io.File;
 import java.security.Key;
 
+import static spark.Spark.*;
 import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
@@ -27,6 +28,13 @@ public class SparkAppMain {
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
+
+		get("/getMessage", (req, res)->{
+
+			res.type("application/json");
+			return "Dunje Vrbaski";
+
+		});
 
 	}
 }
