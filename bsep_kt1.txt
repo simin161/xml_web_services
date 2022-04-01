@@ -16,5 +16,4 @@ etc.)
 
 **Polja:
 Korisnik: Ime, prezime, username, password, tip korisnika
-
 Sertifikat: ko je potipisao, ko je trazio, datum, vreme isteka, kljucevi, tip sertifikata

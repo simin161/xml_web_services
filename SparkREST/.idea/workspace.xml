@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/beans/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/beans/enums/UserType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bsep_kt1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../bsep_kt1.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,6 +16,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
