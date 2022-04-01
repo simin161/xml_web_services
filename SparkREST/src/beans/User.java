@@ -10,4 +10,5 @@ public class User {
     private String countryId;
     private String email;
     private UserType userType;
+
 }
