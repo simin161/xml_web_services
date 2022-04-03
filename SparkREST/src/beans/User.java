@@ -10,5 +10,17 @@ public class User {
     private String countryId;
     private String email;
     private UserType userType;
+    private String password;
 
+    public String getEmail(){
+        return this.email;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setUserType(UserType userType){
+        this.userType = userType;
+    }
 }
