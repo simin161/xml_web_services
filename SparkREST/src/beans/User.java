@@ -16,6 +16,26 @@ public class User {
         return this.email;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public String getOrganizationUnit() {
+        return organizationUnit;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
     public String getPassword(){
         return this.password;
     }
