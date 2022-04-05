@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beans/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

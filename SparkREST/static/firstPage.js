@@ -1,21 +1,21 @@
 Vue.component('firstpage', {
 	data: function(){
     		return{
-    			showPage: 0,
-    			user: {
-    			    firstName: "",
-                    lastName: "",
-                    organizationName: "",
-                    organizationUnit: "",
-                    countryId: "",
-                    email: ""
-    			},
-    			logUser: {
-    			    email: "",
-    			    password: "",
-    			},
+    			user: null,
+    			users : [],
     			showCreate: 0,
-    			showAllCerts: 0
+    			showAllCerts: 0,
+    			certificate: {
+    			    type: "",
+    			    receiver: "",
+    			    validFrom: "",
+    			    validTo: "",
+    			    purpose: "",
+    			    path: "",
+    			    key: "",
+    			    signature: "",
+    			    keyUsage: ""
+    			}
     		}
     	},
     template: `
@@ -35,53 +35,92 @@ Vue.component('firstpage', {
                 			   		<br/>
                 					<tr >
                 						<td>Certificate issued by: </td>
-                						<td> <input type="text"  placeholder="Ovde treba ime i prezime ko ga izdaje?"> </input> </td>
+                						<td> <input type="text" disabled="true"  v-model="user.email"> </input> </td>
                 					</tr>
                 					<br/>
                 					<tr>
                 						<td>Certificate issued to:</td>
-                						<td><input type="text"  placeholder="Za koga izdajemo?"></input></td>
+                						<td>
+                						    <select v-model="certificate.receiver" style="width:100%;">
+                						        <option v-for="us in users" :value="us.email">
+                						            {{us.email}}
+                						        </option>
+                						    </select>
+                						</td>
                 					</tr>
                 					<br/>
                 					<tr>
                 						<td>Valid from:</td>
-                						<td><input type="text"  placeholder="neki tekst"></input></td>
+                						<td><input style="width:97%;" v-model="certificate.validFrom" type="date"></input></td>
                 					</tr>
                 					<br/>
                 					<tr>
                 						<td>Valid to:</td>
-                						<td><input type="text"  placeholder="neki tekst"></input></td>
+                						<td><input style="width:97%;" v-model="certificate.validTo" type="date"></input></td>
                 					</tr>
                 					<br/>
                 					<tr>
                 						<td>Certificate purpose: </td>
-                						<td><input type="text"  placeholder="neki tekst"></input></td>
+                						<td><input type="text" v-model="certificate.purpose" placeholder="neki tekst"></input></td>
                 					</tr>
                 					<br/>
                 					<tr>
                                         <td>Certificate status: </td>
-                                        <td><input type="text"  placeholder="neki tekst"></input></td>
+                                        <td><input type="text" disabled="true"  value="OK"></input></td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                         <td>Certificate type: </td>
+                                         <td>
+                                           <select v-model="certificate.type" style="width:100%">
+                                                <option style="display:none;">-----</option>
+                                                <option value="ROOT">Root</option>
+                                                <option value="INTERMEDIATE">Intermediate</option>
+                                                <option value="END">End entity</option>
+                                           </select>
+                                         </td>
+                                    </tr>
+                                    <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
+                                        <td>Certification path: </td>
+                                        <td>
+                                            <select v-model="certificate.path"/>
+                                        </td>
                                     </tr>
                                     <br/>
                                     <tr>
                                         <td>Public key: </td>
-                                        <td><input type="text"  placeholder="neki tekst"></input></td>
+                                        <td><input type="text" v-model="certificate.key" ></input></td>
                                     </tr>
                                     <br/>
                                     <tr>
                                         <td>Revocation status: </td>
-                                        <td><input type="text"  placeholder="neki tekst"></input></td>
+                                        <td><input type="text" disabled="true"  value="OK"></input></td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>Key usage:</td>
+                                        <td>
+                                            <select v-model="certificate.keyUsage">
+                                                <option value="CRL_SIGN">CRL_SIGN</option>
+                                                <option value="DATA_ENCIPHERMENT">DATA_ENCIPHERMENT</option>
+                                                <option value="DECIPHER_ONLY">DECIPHER_ONLY</option>
+                                                <option value="DIGITAL_SIGNATURE">DIGITAL_SIGNATURE</option>
+                                                <option value="ENCIPHER_ONLY">ENCIPHER_ONLY</option>
+                                                <option value="KEY_AGREEMENT">KEY_AGREEMENT</option>
+                                                <option value="KEY_CERT_SIGN">KEY_CERT_SIGN</option>
+                                                <option value="NON_REPUDIATION">NON_REPUDIATION</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <br/>
                                     <tr>
                                         <td>Signature: </td>
-                                        <td><input type="text"  placeholder="neki tekst"></input></td>
+                                        <td><input type="text"  v-model="certificate.signature" placeholder="neki tekst"></input></td>
                                     </tr>
                                     <br/>
                 					<tr>
                 						<td colSpan="2" text-align="center"><input type="button" @click="createCertificate" value="neki tekst"></input></td>
                 					</tr>
-
                 </table>
               </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showAllCerts != 0">
@@ -107,6 +146,9 @@ Vue.component('firstpage', {
             this.showCreate = 1;
             this.showAllCerts = 0;
 
+            axios.get("/getUsers")
+                 .then(response => {this.users = response.data})
+
         },
 
         showAllCertsFun : function(){
@@ -117,14 +159,13 @@ Vue.component('firstpage', {
         },
 
         createCertificate : function(){
-
-
-
+            axios.post("/createCertificate", this.certificate)
+                 .then(response=>(console.log(response.data)))
         }
     },
 
     mounted(){
-
-
+            axios.get("/getLoggedUser")
+                 .then(response => {this.user = response.data});
     }
 });

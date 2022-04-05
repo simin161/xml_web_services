@@ -4,6 +4,8 @@ import beans.User;
 import beans.enums.UserType;
 import dao.UserDao;
 
+import java.util.List;
+
 public class UserService {
 
     public boolean register(User newUser){
@@ -25,6 +27,10 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public List<User> getAllUsers(){
+        return UserDao.getInstance().getAllUsers();
     }
 
     public boolean checkExistanceOfEmail(String email) {

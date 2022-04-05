@@ -93,8 +93,17 @@ public class SparkAppMain {
 
 				return "EHE?! TE NANDAYO?!";
 			}
+		});
 
+		get("/getUsers", (req, res) -> {
+			res.type("application/json");
+			return gson.toJson(userService.getAllUsers());
+		});
 
+		post("/createCertificate", (req,res)->{
+			res.type("application/json");
+
+			return true;
 		});
 	}
 }
