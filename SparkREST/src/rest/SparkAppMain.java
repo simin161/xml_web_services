@@ -1,10 +1,12 @@
 package rest;
 
+import beans.Certificate;
 import beans.User;
 import beans.enums.UserType;
 import com.google.gson.Gson;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import service.CertificateService;
 import service.UserService;
 import spark.Session;
 
@@ -26,6 +28,7 @@ public class SparkAppMain {
 	 */
 	static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	private static UserService userService = new UserService();
+	private static CertificateService certificateService = new CertificateService();
 	public static void main(String[] args) throws Exception {
 		port(8080);
 
@@ -65,6 +68,11 @@ public class SparkAppMain {
 			return returnValue;
 		});
 
+		post("/createCertificate", (req,res)->{
+			res.type("application/json");
+			return certificateService.createCertificate((Certificate) gson.fromJson(req.body(), Certificate.class));
+		});
+
 		get("/signOut", (req, res) -> {
 
 			Session session = req.session(true);
@@ -100,10 +108,6 @@ public class SparkAppMain {
 			return gson.toJson(userService.getAllUsers());
 		});
 
-		post("/createCertificate", (req,res)->{
-			res.type("application/json");
 
-			return true;
-		});
 	}
 }
