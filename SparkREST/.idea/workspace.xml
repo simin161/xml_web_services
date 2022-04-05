@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dao/UserDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/beans/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/blank.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/blank.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +40,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Treca/WEB_PROJEKAT_NIJE_ZEZNUTO/web_projekat/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />

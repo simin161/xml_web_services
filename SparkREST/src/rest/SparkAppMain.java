@@ -1,6 +1,7 @@
 package rest;
 
 import beans.User;
+import beans.enums.UserType;
 import com.google.gson.Gson;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,7 @@ import spark.Session;
 
 import java.io.File;
 import java.security.Key;
+import java.util.ArrayList;
 
 import static spark.Spark.*;
 import static spark.Spark.port;
@@ -72,6 +74,27 @@ public class SparkAppMain {
 				session.invalidate();
 			}
 			return true;
+		});
+
+		get("/getLoggedUser", (req, res) -> {
+
+			res.type("application/json");
+			Session session = req.session(true);
+			User user = session.attribute("loggedUser");
+
+			if (user!=null) {
+
+				User userLogged = session.attribute("loggedUser");
+				ArrayList<User> users = new ArrayList<User>();
+				users.add(userLogged);
+				return gson.toJson(userLogged);
+
+			} else {
+
+				return "EHE?! TE NANDAYO?!";
+			}
+
+
 		});
 	}
 }

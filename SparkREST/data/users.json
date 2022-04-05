@@ -28,5 +28,25 @@
     "email": "bbb",
     "userType": "REGULAR_USER",
     "password": "bbb"
+  },
+  {
+    "firstName": "david",
+    "lastName": "jandric",
+    "organizationName": "jandrixTV",
+    "organizationUnit": "sta vas briga",
+    "countryId": "2",
+    "email": "david.jandric@gmail.com",
+    "userType": "REGULAR_USER",
+    "password": "jasmo"
+  },
+  {
+    "firstName": "d",
+    "lastName": "d",
+    "organizationName": "d",
+    "organizationUnit": "d",
+    "countryId": "1",
+    "email": "d@d.com",
+    "userType": "ADMIN",
+    "password": "d"
   }
 ]
