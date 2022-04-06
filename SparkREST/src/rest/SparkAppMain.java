@@ -117,5 +117,11 @@ public class SparkAppMain {
 			}
 			return true;
 		});
+
+		get("/getAllCerts", (req, res) -> {
+			res.type("application/json");
+			String password = gson.fromJson(req.body(), String.class);
+			return gson.toJson(certificateService.getAllCerts(password));
+		});
 	}
 }
