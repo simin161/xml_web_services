@@ -15,7 +15,9 @@ Vue.component('firstpage', {
     			    key: "",
     			    signature: "",
     			    keyUsage: ""
-    			}
+    			},
+    			password: "",
+    			certificates: []
     		}
     	},
     template: `
@@ -125,7 +127,13 @@ Vue.component('firstpage', {
                 </table>
               </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showAllCerts != 0">
-                <p>SVI CERTS</p>
+                <table>
+                    <tr>
+                        <td>Insert password to access certificates: </td>
+                        <td><input type="text"  v-model="password" placeholder="Your password"></input></td>
+                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCerts" value="Confirm"></input></td>
+                    </tr>
+                </table>
               </div>
          </div>
         `
@@ -166,11 +174,18 @@ Vue.component('firstpage', {
         createSSCert :function(){
             axios.post("/createSSCertificate")
                  .then(response=>(console.log(response.data)))
+        },
+
+        showAllCerts : function(){
+
+            axios.get("/getAllCerts")
+            .then(response=>(this.certificates = response.data))
+
         }
     },
 
     mounted(){
-            axios.get("/getLoggedUser")
+            axios.get("/getLoggedUser", this.password)
                  .then(response => {this.user = response.data});
     }
 });

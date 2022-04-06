@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SparkREST.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SparkREST.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SparkREST/beans/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/beans/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SparkREST/beans/enums/UserType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/beans/enums/UserType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SparkREST/dao/UserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/dao/UserDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/rest/SparkAppMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SparkREST/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SparkREST/service/UserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beans/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
@@ -48,10 +43,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Instaleri/jar_files (1)/bcprov-debug-jdk15on-1.61.jar" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gant" />
   </component>
   <component name="RunManager">
     <configuration name="SparkAppMain" type="Application" factoryName="Application" nameIsGenerated="true">
