@@ -178,7 +178,7 @@ Vue.component('firstpage', {
 
         showAllCerts : function(){
 
-            axios.get("/getAllCerts")
+            axios.get("/getAllCerts", this.password)
             .then(response=>(this.certificates = response.data))
 
         }

@@ -1,7 +1,5 @@
 package service;
 
-import sun.security.x509.X500Name;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,8 +14,9 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-
-
+import beans.IssuerData;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 public class KeyStoreReader {
 	//KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
@@ -46,7 +45,7 @@ public class KeyStoreReader {
 	 * @param keyPass - lozinka koja je neophodna da se izvuce privatni kljuc
 	 * @return - podatke o izdavaocu i odgovarajuci privatni kljuc
 	 */
-	/*public IssuerData readIssuerFromStore(String keyStoreFile, String alias, char[] password, char[] keyPass) {
+	public IssuerData readIssuerFromStore(String keyStoreFile, String alias, char[] password, char[] keyPass) {
 		try {
 			//Datoteka se ucitava
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
@@ -72,7 +71,7 @@ public class KeyStoreReader {
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 	
 	/**
 	 * Ucitava sertifikat is KS fajla

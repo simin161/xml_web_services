@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
-    </list>
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +75,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648848560821</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="test">
+      <created>1649354554103</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1649354554104</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -98,5 +99,21 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
     <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/rest/SparkAppMain.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="spark.http.matching.RequestWrapper" memberName="body" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>
