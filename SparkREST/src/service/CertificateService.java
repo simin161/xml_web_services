@@ -3,13 +3,11 @@ package service;
 import beans.Certificate;
 import beans.User;
 import dao.CertificateDAO;
+import dao.KeyStoreNameDAO;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +15,7 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class CertificateService {
@@ -55,7 +54,7 @@ public class CertificateService {
 
             System.out.println("Certificate before storing : "+chain[0].toString());
 
-            KeyStoreWriter storeWriter = new KeyStoreWriter();
+           /* KeyStoreWriter storeWriter = new KeyStoreWriter();
             String pass = "password";
             char []password = new char[pass.length()];
             for(int i=0; i < pass.length(); i++)
@@ -68,18 +67,44 @@ public class CertificateService {
             KeyStoreReader storeReader = new KeyStoreReader();
 
             System.out.println("Certificate after storing: "+storeReader.readCertificate("proba", pass, user.getEmail()).toString());
-
+*/
 
         }catch(Exception ex){
             ex.printStackTrace();
         }
     }
 
-    public List<String> getAllCerts(String password) throws KeyStoreException, NoSuchProviderException, IOException, CertificateException, NoSuchAlgorithmException {
+    public List<X509Certificate> getAllCerts(String password) {
 
-        List<String> certificates = new ArrayList<String>();
 
-        KeyStoreReader reader = new KeyStoreReader();
+        List<KeyStore> keystores = new ArrayList<KeyStore>();
+        List<String> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
+        try {
+            for (String name : keystoreNames) {
+                if (new File(name).exists()) {
+                    KeyStore store;
+                    store = KeyStore.getInstance("JKS");
+                    store.load(new FileInputStream(name), password.toCharArray());
+                    keystores.add(store);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        List<X509Certificate> allCertificates = new ArrayList<X509Certificate>();
+        try{
+            for(KeyStore store : keystores){
+                getCertsFromKeystore(allCertificates, store);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return allCertificates;
+
+        /*List<String> certificates = new ArrayList<String>();
+
+       // KeyStoreReader reader = new KeyStoreReader();
         //while(reader.readCertificate("vaultSupreme", password, ) != null){
 
         //}
@@ -91,9 +116,27 @@ public class CertificateService {
 
         System.out.println(ks.aliases().toString());
 
-        return null;
+        return null;*/
 
     }
+
+    //cita sertifikate iz navedenog keystore-a
+    private void getCertsFromKeystore(List<X509Certificate> allCerts, KeyStore keyStore){
+
+        try {
+            Enumeration<String> certificateAliases = keyStore.aliases();
+            while(certificateAliases.hasMoreElements()){
+                String alias = certificateAliases.nextElement();
+                if(keyStore.isKeyEntry(alias)){
+                    allCerts.add((X509Certificate) keyStore.getCertificate(alias));
+                    System.out.println("VAS SERTIFIKAT HOPEFULLY " + ((X509Certificate) keyStore.getCertificate(alias)).toString());
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     // List keystore
    /* public static void list(){
         String command = " -list "+
