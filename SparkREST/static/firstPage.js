@@ -131,7 +131,7 @@ Vue.component('firstpage', {
                     <tr>
                         <td>Insert password to access certificates: </td>
                         <td><input type="text"  v-model="password" placeholder="Your password"></input></td>
-                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCerts" value="Confirm"></input></td>
+                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCertsFunction" value="Confirm"></input></td>
                     </tr>
                 </table>
               </div>
@@ -176,9 +176,9 @@ Vue.component('firstpage', {
                  .then(response=>(console.log(response.data)))
         },
 
-        showAllCerts : function(){
+        showAllCertsFunction : function(){
 
-            axios.get("/getAllCerts", this.password)
+            axios.post("/getAllCerts", this.password)
             .then(response=>(this.certificates = response.data))
 
         }

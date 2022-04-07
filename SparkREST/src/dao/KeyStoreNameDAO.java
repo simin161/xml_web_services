@@ -1,6 +1,7 @@
 package dao;
 
 import beans.Certificate;
+import beans.Names;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class KeyStoreNameDAO {
 
-    private List<String> allNames;
+    private List<Names> allNames;
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").setPrettyPrinting().create();
 
     private static KeyStoreNameDAO instance;
@@ -30,18 +31,19 @@ public class KeyStoreNameDAO {
         load();
     }
 
-    public List<String> getAllNames(){
+    public List<Names> getAllNames(){
         return allNames;
     }
 
     private void load(){
         try {
             Reader reader = Files.newBufferedReader(Paths.get("data/keystoreNames.json"));
-            allNames = new ArrayList<String>(Arrays.asList(gson.fromJson(reader, String[].class)));
+            allNames = new ArrayList<Names>(Arrays.asList(gson.fromJson(reader, Names.class)));
             reader.close();
 
         }catch(Exception e) {
-            allNames = new ArrayList<String>();
+            allNames = new ArrayList<Names>();
+            e.printStackTrace();
         }
     }
 
@@ -57,7 +59,7 @@ public class KeyStoreNameDAO {
     }
 
     //dodaje novo ime i cuva ga u fajl
-    public void addName(String name){
+    public void addName(Names name){
         allNames.add(name);
         save();
     }

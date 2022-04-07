@@ -1,6 +1,7 @@
 package service;
 
 import beans.Certificate;
+import beans.Names;
 import beans.User;
 import dao.CertificateDAO;
 import dao.KeyStoreNameDAO;
@@ -54,7 +55,7 @@ public class CertificateService {
 
             System.out.println("Certificate before storing : "+chain[0].toString());
 
-           /* KeyStoreWriter storeWriter = new KeyStoreWriter();
+           KeyStoreWriter storeWriter = new KeyStoreWriter();
             String pass = "password";
             char []password = new char[pass.length()];
             for(int i=0; i < pass.length(); i++)
@@ -67,7 +68,6 @@ public class CertificateService {
             KeyStoreReader storeReader = new KeyStoreReader();
 
             System.out.println("Certificate after storing: "+storeReader.readCertificate("proba", pass, user.getEmail()).toString());
-*/
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -78,13 +78,13 @@ public class CertificateService {
 
 
         List<KeyStore> keystores = new ArrayList<KeyStore>();
-        List<String> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
+        List<Names> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
         try {
-            for (String name : keystoreNames) {
-                if (new File(name).exists()) {
+            for (Names name : keystoreNames) {
+                if (new File(name.name).exists()) {
                     KeyStore store;
                     store = KeyStore.getInstance("JKS");
-                    store.load(new FileInputStream(name), password.toCharArray());
+                    store.load(new FileInputStream(name.name), password.toCharArray());
                     keystores.add(store);
                 }
             }
