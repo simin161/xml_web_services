@@ -3,12 +3,15 @@ package service;
 import beans.Certificate;
 import beans.Names;
 import beans.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dao.CertificateDAO;
 import dao.KeyStoreNameDAO;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -18,17 +21,28 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 
 public class CertificateService {
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").setPrettyPrinting().create();
 
     public boolean createCertificate(Certificate certificate){
 
         boolean returnValue = false;
 
         try{
+            /*
+            * Prvo -> pronaci keyStore za ubaciti sertifikat -> izvuci pomocu ser broja (ali samo ako je root, inace jbg) --- ODRADJENO
+            * Drugo -> Kreiranje sertifikata/popunjavanje podacima (vrv manji problem)
+            * Trece (vrv veci problem) -> Ubacivanje u chain
+            * Cetvrto -> upis u keyStore
+            */
             certificate.setRevocationStatus("OK");
             certificate.setCertificateStatus("OK");
             CertificateDAO.getInstance().addCertificate(certificate);
+            String keyStoreName = findKeyStoreNameForCert(certificate.getPath());
+
+            //X509Certificate topLevelCert = gson.fromJson((X509Certificate) gson.fromJson(certificate.getPath(), X509Certificate.class));
             returnValue = true;
 
         }catch(Exception e){
@@ -52,10 +66,9 @@ public class CertificateService {
                                                               + ", C=" + user.getCountryId()), (long)365*24*3600);
 
 
-
+            System.out.println("Potpis: " + chain[0].getSignature());
             System.out.println("Certificate before storing : "+chain[0].toString());
-
-           KeyStoreWriter storeWriter = new KeyStoreWriter();
+            KeyStoreWriter storeWriter = new KeyStoreWriter();
             String pass = "password";
             char []password = new char[pass.length()];
             for(int i=0; i < pass.length(); i++)
@@ -63,15 +76,54 @@ public class CertificateService {
 
             storeWriter.loadKeyStore(null, password);
             storeWriter.write(user.getEmail(), keyGen.getPrivateKey(), password, chain[0]);
-            storeWriter.saveKeyStore("proba", password);
-
+            storeWriter.saveKeyStore(chain[0].getSerialNumber().toString(), password);
+            Names name = new Names();
+            name.name = chain[0].getSerialNumber().toString();
+            KeyStoreNameDAO.getInstance().getAllNames().add(name);
+            KeyStoreNameDAO.getInstance().save();
             KeyStoreReader storeReader = new KeyStoreReader();
 
-            System.out.println("Certificate after storing: "+storeReader.readCertificate("proba", pass, user.getEmail()).toString());
+            System.out.println("Certificate after storing: "+storeReader.readCertificate(chain[0].getSerialNumber().toString(), pass, user.getEmail()).toString());
 
         }catch(Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public X509Certificate findCertBySerNum(BigInteger a){
+        for(X509Certificate c : getAllCerts("aaa")){
+            if(c.getSerialNumber() == a){
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public String findKeyStoreNameForCert(BigInteger a){
+        List<KeyStore> keystores = new ArrayList<KeyStore>();
+        List<Names> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
+        String password = "password";
+        try {
+            for (Names name : keystoreNames) {
+                if (new File(name.name).exists()) {
+                    KeyStore store;
+                    store = KeyStore.getInstance("JKS");
+                    store.load(new FileInputStream(name.name), password.toCharArray());
+                    Enumeration<String> certificateAliases = store.aliases();
+                    while (certificateAliases.hasMoreElements()) {
+                        String alias = certificateAliases.nextElement();
+                        if (store.isKeyEntry(alias)) {
+                            if(Objects.equals(((X509Certificate) store.getCertificate(alias)).getSerialNumber(), a)){
+                                return name.name;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<X509Certificate> getAllCerts(String password) {
@@ -79,6 +131,7 @@ public class CertificateService {
 
         List<KeyStore> keystores = new ArrayList<KeyStore>();
         List<Names> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
+        password = "password";
         try {
             for (Names name : keystoreNames) {
                 if (new File(name.name).exists()) {
@@ -129,12 +182,24 @@ public class CertificateService {
                 String alias = certificateAliases.nextElement();
                 if(keyStore.isKeyEntry(alias)){
                     allCerts.add((X509Certificate) keyStore.getCertificate(alias));
+                    System.out.println("-------------------POTPIS: " + ((X509Certificate) keyStore.getCertificate(alias)).getSignature() + " ----------------" );
                     System.out.println("VAS SERTIFIKAT HOPEFULLY " + ((X509Certificate) keyStore.getCertificate(alias)).toString());
+
                 }
             }
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public List<String> getAllCertsSerNums() {
+        List<String> retVal = new ArrayList<String>();
+
+        for(X509Certificate cert : getAllCerts("password")){
+            retVal.add(cert.getSerialNumber().toString());
+        }
+
+        return retVal;
     }
 
     // List keystore

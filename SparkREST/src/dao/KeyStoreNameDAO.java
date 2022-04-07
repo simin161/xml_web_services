@@ -38,7 +38,7 @@ public class KeyStoreNameDAO {
     private void load(){
         try {
             Reader reader = Files.newBufferedReader(Paths.get("data/keystoreNames.json"));
-            allNames = new ArrayList<Names>(Arrays.asList(gson.fromJson(reader, Names.class)));
+            allNames = new ArrayList<Names>(Arrays.asList(gson.fromJson(reader, Names[].class)));
             reader.close();
 
         }catch(Exception e) {

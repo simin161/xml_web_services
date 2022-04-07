@@ -1,16 +1,17 @@
 package beans;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 public class Certificate {
 
     String type;
-    User receiver;
-    User issuer;
-    Date validFrom;
-    Date validTo;
+    String receiver;
+    String issuer;
+    String validFrom;
+    String validTo;
     String purpose;
-    Certificate path;
+    BigInteger path;
     String keyUsage;
     String key;
     String signature;
@@ -41,35 +42,35 @@ public class Certificate {
         this.type = type;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
-    public User getIssuer() {
+    public String getIssuer() {
         return issuer;
     }
 
-    public void setIssuer(User issuer) {
+    public void setIssuer(String issuer) {
         this.issuer = issuer;
     }
 
-    public Date getValidFrom() {
+    public String getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Date validFrom) {
+    public void setValidFrom(String validFrom) {
         this.validFrom = validFrom;
     }
 
-    public Date getValidTo() {
+    public String getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(Date validTo) {
+    public void setValidTo(String validTo) {
         this.validTo = validTo;
     }
 
@@ -81,11 +82,11 @@ public class Certificate {
         this.purpose = purpose;
     }
 
-    public Certificate getPath() {
+    public BigInteger getPath() {
         return path;
     }
 
-    public void setPath(Certificate path) {
+    public void setPath(BigInteger path) {
         this.path = path;
     }
 
@@ -113,8 +114,8 @@ public class Certificate {
         this.signature = signature;
     }
 
-    public Certificate(String type, User receiver, User issuer, Date validFrom,
-                       Date validTo, String purpose, Certificate path, String keyUsage,
+    public Certificate(String type, String receiver, String issuer, String validFrom,
+                       String validTo, String purpose, BigInteger path, String keyUsage,
                        String key, String signature) {
         this.type = type;
         this.receiver = receiver;

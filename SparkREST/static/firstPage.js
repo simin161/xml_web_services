@@ -13,7 +13,6 @@ Vue.component('firstpage', {
     			    purpose: "",
     			    path: "",
     			    key: "",
-    			    signature: "",
     			    keyUsage: ""
     			},
     			password: "",
@@ -86,13 +85,10 @@ Vue.component('firstpage', {
                                     <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
                                         <td>Certification path: </td>
                                         <td>
-                                            <select v-model="certificate.path"/>
+                                            <select v-model="certificate.path">
+                                                <option v-for="c in certificates" :value="c">{{c}}</option>
+                                            </select>
                                         </td>
-                                    </tr>
-                                    <br/>
-                                    <tr>
-                                        <td>Public key: </td>
-                                        <td><input type="text" v-model="certificate.key" ></input></td>
                                     </tr>
                                     <br/>
                                     <tr>
@@ -116,11 +112,6 @@ Vue.component('firstpage', {
                                         </td>
                                     </tr>
                                     <br/>
-                                    <tr>
-                                        <td>Signature: </td>
-                                        <td><input type="text"  v-model="certificate.signature" placeholder="neki tekst"></input></td>
-                                    </tr>
-                                    <br/>
                 					<tr>
                 						<td colSpan="2" text-align="center"><input type="button" @click="createCertificate" value="neki tekst"></input></td>
                 					</tr>
@@ -129,11 +120,14 @@ Vue.component('firstpage', {
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showAllCerts != 0">
                 <table>
                     <tr>
-                        <td>Insert password to access certificates: </td>
-                        <td><input type="text"  v-model="password" placeholder="Your password"></input></td>
-                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCertsFunction" value="Confirm"></input></td>
+                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCertsFunction" value="Load certs"></input></td>
                     </tr>
                 </table>
+                <div v-for="c in certificates">
+                    <div style="border: 1px solid black; padding-bottom: 25px;">
+                        <p>{{c}}</p>
+                    </div>
+                </div>
               </div>
          </div>
         `
@@ -157,6 +151,9 @@ Vue.component('firstpage', {
 
             axios.get("/getUsers")
                  .then(response => {this.users = response.data})
+
+            axios.get("/getAllCertsSerNums", this.password)
+                 .then(response=>(this.certificates = response.data))
 
         },
 
