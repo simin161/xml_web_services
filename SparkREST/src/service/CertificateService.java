@@ -11,6 +11,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
+import javax.security.auth.x500.X500Principal;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
@@ -68,21 +69,29 @@ public class CertificateService {
                 IssuerData issuerData;
 
                 //KeyStoreReader ksr = new KeyStoreReader();
-
-                issuerData = getIssuerBySerialNum(certificate.getPath().toString(), certificate.getIssuerAlias());
-
+                X509Certificate issuerCert = findCertBySerNum(certificate.getPath());
+                KeyStore store;
+                store = KeyStore.getInstance("JKS");
+                String fileName = findKeyStoreNameForCert(issuerCert.getSerialNumber());
+                store.load(new FileInputStream(fileName), "password".toCharArray());
+                issuerData = getIssuerBySerialNum(certificate.getPath().toString(), store.getCertificateAlias(issuerCert));
                 //fali provera za validnost certifikata issuera ukoliko nije root certifikat a mozda bi mogle i ekstemzije ovde da se srede
                 x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData);
+
                 System.out.println("NOVI ???? : " + x509Certificate.toString());
-                //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
-                if(certificate.getType().equals("ROOT")){
-                    //TODO: nesto zasebno? msm kreiranje novog keystore-a etc etc (al tu je i drugaciji postupak za generisanje sertifikata tkd BICE IZMENA
-                }
-                else{
-                    //ako preko issuer-a dodjem do njegovog sertifikata tehnicki ja mogu da pronadjem iz toga kom keystoreu pripada?
-                    KeyStore store = findStoreByIssuer(certificate);
-                   // store.setKeyEntry(certificate.getAlias(), keyGen.getPrivateKey(), "password".toCharArray(), x509Certificate);
-                }
+                KeyStoreWriter storeWriter = new KeyStoreWriter();
+                String pass = "password";
+                char []password = new char[pass.length()];
+                for(int i=0; i < pass.length(); i++)
+                    password[i] = pass.charAt(i);
+
+                storeWriter.loadKeyStore(fileName, password);
+                storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, x509Certificate);
+                storeWriter.saveKeyStore(fileName, password);                //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
+
+                //ako preko issuer-a dodjem do njegovog sertifikata tehnicki ja mogu da pronadjem iz toga kom keystoreu pripada?
+                //KeyStore store = findStoreByIssuer(certificate);
+                // store.setKeyEntry(certificate.getAlias(), keyGen.getPrivateKey(), "password".toCharArray(), x509Certificate);
 
             }
 
@@ -272,8 +281,11 @@ public class CertificateService {
 
         List<X509Certificate> allCertificates = new ArrayList<X509Certificate>();
         try{
+            int i = 0;
             for(KeyStore store : keystores){
+                System.out.println("KEY STORE [" + i + "]");
                 getCertsFromKeystore(allCertificates, store);
+                ++i;
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -302,16 +314,17 @@ public class CertificateService {
     private void getCertsFromKeystore(List<X509Certificate> allCerts, KeyStore keyStore){
 
         try {
+            System.out.println("\tCERTIFICATES IN KEYSTORE: ");
             Enumeration<String> certificateAliases = keyStore.aliases();
             while(certificateAliases.hasMoreElements()){
                 String alias = certificateAliases.nextElement();
                 if(keyStore.isKeyEntry(alias)){
                     allCerts.add((X509Certificate) keyStore.getCertificate(alias));
-                   // System.out.println("-------------------POTPIS: " + ((X509Certificate) keyStore.getCertificate(alias)).getSignature() + " ----------------" );
-                   // System.out.println("VAS SERTIFIKAT HOPEFULLY " + ((X509Certificate) keyStore.getCertificate(alias)).toString());
+                    System.out.println(((X509Certificate) keyStore.getCertificate(alias)).toString());
 
                 }
             }
+            System.out.println("-----------------------------------------------------------------------------------");
         }catch(Exception e){
             e.printStackTrace();
         }
