@@ -75,7 +75,14 @@ public class CertificateService {
                 x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData);
 
                 //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
-                
+                if(certificate.getType().equals("ROOT")){
+                    //TODO: nesto zasebno? msm kreiranje novog keystore-a etc etc (al tu je i drugaciji postupak za generisanje sertifikata tkd BICE IZMENA
+                }
+                else{
+                    //ako preko issuer-a dodjem do njegovog sertifikata tehnicki ja mogu da pronadjem iz toga kom keystoreu pripada?
+                    KeyStore store = findStoreByIssuer(certificate);
+                   // store.setKeyEntry(certificate.getAlias(), keyGen.getPrivateKey(), "password".toCharArray(), x509Certificate);
+                }
 
             }
 
@@ -90,6 +97,28 @@ public class CertificateService {
 
     }
 
+    //ja se najiskrenije nadam da je ovo dobro jtzm
+    public KeyStore findStoreByIssuer(Certificate cert) {
+
+        try {
+            KeyStore store;
+            for (KeyStore s : getAllKeyStores()) {
+                Enumeration<String> certificateAliases = s.aliases();
+                while (certificateAliases.hasMoreElements()) {
+                    String alias = certificateAliases.nextElement();
+                    if (s.isKeyEntry(alias)) {
+                        if(Objects.equals(((X509Certificate) s.getCertificate(alias)).getSerialNumber(), new BigInteger(cert.getIssuerSerialNum()))){
+                            return s;
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     public IssuerData getIssuerBySerialNum(String issuerSerialNum, String issuerAlias) {
 
         //KeyStoreReader ksr = new KeyStoreReader();
