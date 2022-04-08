@@ -13,7 +13,8 @@ Vue.component('firstpage', {
     			    purpose: "",
     			    path: "",
     			    key: "",
-    			    keyUsage: ""
+    			    keyUsage: "",
+    			    issuer: ""
     			},
     			password: "",
     			certificates: []
@@ -165,6 +166,7 @@ Vue.component('firstpage', {
         },
 
         createCertificate : function(){
+            this.certificate.issuer = user.email;
             axios.post("/createCertificate", this.certificate)
                  .then(response=>(console.log(response.data)))
         },

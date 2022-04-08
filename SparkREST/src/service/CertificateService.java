@@ -1,30 +1,28 @@
 package service;
 
+import beans.*;
 import beans.Certificate;
-import beans.Names;
-import beans.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.CertificateDAO;
 import dao.KeyStoreNameDAO;
+import org.bouncycastle.asn1.x500.X500NameBuilder;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.cert.CertificateException;
+import java.security.*;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class CertificateService {
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").setPrettyPrinting().create();
+    private UserService userService = new UserService();
 
     public boolean createCertificate(Certificate certificate){
 
@@ -39,8 +37,47 @@ public class CertificateService {
             */
             certificate.setRevocationStatus("OK");
             certificate.setCertificateStatus("OK");
-            CertificateDAO.getInstance().addCertificate(certificate);
-            String keyStoreName = findKeyStoreNameForCert(certificate.getPath());
+            //CertificateDAO.getInstance().addCertificate(certificate);
+            //String keyStoreName = findKeyStoreNameForCert(certificate.getPath());
+
+            if(userService.checkExistanceOfEmail(certificate.getIssuerEmail())){
+                CertAndKeyGen keyGen = new CertAndKeyGen("RSA", "SHA1WithRSA", certificate.getIssuerEmail());
+                keyGen.generate(1024);
+
+                X500NameBuilder nameBuilder = new X500NameBuilder(BCStyle.INSTANCE);
+                nameBuilder.addRDN(BCStyle.UID, UUID.randomUUID().toString());
+                nameBuilder.addRDN(BCStyle.CN, certificate.getCommonName());
+                nameBuilder.addRDN(BCStyle.GIVENNAME, certificate.getGivenName());
+                nameBuilder.addRDN(BCStyle.SURNAME, certificate.getSurname());
+                nameBuilder.addRDN(BCStyle.O, certificate.getOrganization());
+                nameBuilder.addRDN(BCStyle.OU, certificate.getOrganizationalUnitName());
+                nameBuilder.addRDN(BCStyle.E, certificate.getOrganizationEmail());
+                nameBuilder.addRDN(BCStyle.C, certificate.getCountry());
+                nameBuilder.addRDN(BCStyle.PSEUDONYM, certificate.getAlias());
+
+                String serialNumber = String.valueOf(LocalDateTime.now().hashCode());
+                if(serialNumber.contains("-"))
+                    serialNumber = serialNumber.replace("-","0");
+
+                LocalDate date = LocalDate.parse(certificate.getValidTo(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                SubjectData subjectData = new SubjectData(keyGen.getPublicKey(), nameBuilder.build(), serialNumber, LocalDate.now(), date );
+                subjectData.setUserEmail(certificate.getIssuerEmail());
+
+                X509Certificate x509Certificate;
+                IssuerData issuerData;
+
+                //KeyStoreReader ksr = new KeyStoreReader();
+
+                issuerData = getIssuerBySerialNum(certificate.getIssuerSerialNum(), certificate.getIssuerAlias());
+
+                //fali provera za validnost certifikata issuera ukoliko nije root certifikat a mozda bi mogle i ekstemzije ovde da se srede
+                x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData);
+
+                //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
+                
+
+            }
 
             //X509Certificate topLevelCert = gson.fromJson((X509Certificate) gson.fromJson(certificate.getPath(), X509Certificate.class));
             returnValue = true;
@@ -51,6 +88,45 @@ public class CertificateService {
 
         return returnValue;
 
+    }
+
+    public IssuerData getIssuerBySerialNum(String issuerSerialNum, String issuerAlias) {
+
+        //KeyStoreReader ksr = new KeyStoreReader();
+        BigInteger serialNum= new BigInteger(issuerSerialNum);
+        X509Certificate x509Certificate = findCertBySerNum(serialNum);
+        if(x509Certificate != null){
+            return new IssuerData(getPrivateKey(issuerAlias), getX500Name(x509Certificate));
+        }else{
+            return null;
+        }
+
+    }
+
+    public org.bouncycastle.asn1.x500.X500Name getX500Name(X509Certificate cert){
+        org.bouncycastle.asn1.x500.X500Name name;
+        try{
+            name = new JcaX509CertificateHolder(cert).getSubject();
+            return name;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public PrivateKey getPrivateKey(String alias){
+        try{
+                List<KeyStore> stores = getAllKeyStores();
+                for(KeyStore store : stores){
+                    PrivateKey pk = (PrivateKey) store.getKey(alias, "password".toCharArray());
+                    if(pk != null){
+                        return pk;
+                    }
+                }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void createSSCertificate(User user){
@@ -97,6 +173,26 @@ public class CertificateService {
             }
         }
         return null;
+    }
+
+    public List<KeyStore> getAllKeyStores(){
+        List<KeyStore> keystores = new ArrayList<KeyStore>();
+        List<Names> names = KeyStoreNameDAO.getInstance().getAllNames();
+        String password = "password";
+        try{
+            for(Names n : names){
+                if (new File(n.name).exists()){
+                    KeyStore store;
+                    store = KeyStore.getInstance("JKS");
+                    store.load(new FileInputStream(n.name), password.toCharArray());
+                    keystores.add(store);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return keystores;
     }
 
     public String findKeyStoreNameForCert(BigInteger a){
@@ -195,6 +291,7 @@ public class CertificateService {
     public List<String> getAllCertsSerNums() {
         List<String> retVal = new ArrayList<String>();
 
+        //mozda da ne povlacimo serijske brojeve za front nego imena/aliase sertifikata?
         for(X509Certificate cert : getAllCerts("password")){
             retVal.add(cert.getSerialNumber().toString());
         }

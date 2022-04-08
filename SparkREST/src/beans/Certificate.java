@@ -5,9 +5,19 @@ import java.util.Date;
 
 public class Certificate {
 
+    String commonName;
+    String givenName;
+    String surname;
+    String organization;
+    String organizationalUnitName;
+    String organizationEmail;
+    String country;
+    String alias;
     String type;
     String receiver;
-    String issuer;
+    String issuerEmail;
+    String issuerSerialNumber;
+    String issuerAlias;
     String validFrom;
     String validTo;
     String purpose;
@@ -17,6 +27,54 @@ public class Certificate {
     String signature;
     String certificateStatus;
     String revocationStatus;
+
+    public String getIssuerAlias(){
+        return issuerAlias;
+    }
+
+    public void setIssuerAlias(String alias){
+        this.issuerAlias = alias;
+    }
+
+    public String getIssuerSerialNum(){
+        return issuerSerialNumber;
+    }
+
+    public void setIssuerSerialNumber(String num){
+        this.issuerSerialNumber = num;
+    }
+
+    public String getAlias(){
+        return alias;
+    }
+
+    public String getCountry(){
+        return country;
+    }
+
+    public String getOrganizationEmail(){
+        return organizationEmail;
+    }
+
+    public String getOrganization(){
+        return organization;
+    }
+
+    public String getOrganizationalUnitName(){
+        return organizationalUnitName;
+    }
+
+    public String getCommonName(){
+        return commonName;
+    }
+
+    public String getSurname(){
+        return surname;
+    }
+
+    public String getGivenName(){
+        return givenName;
+    }
 
     public String getCertificateStatus(){
         return certificateStatus;
@@ -50,12 +108,12 @@ public class Certificate {
         this.receiver = receiver;
     }
 
-    public String getIssuer() {
-        return issuer;
+    public String getIssuerEmail() {
+        return issuerEmail;
     }
 
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
+    public void setIssuerEmail(String issuer) {
+        this.issuerEmail = issuer;
     }
 
     public String getValidFrom() {
@@ -119,7 +177,7 @@ public class Certificate {
                        String key, String signature) {
         this.type = type;
         this.receiver = receiver;
-        this.issuer = issuer;
+        this.issuerEmail = issuer;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.purpose = purpose;

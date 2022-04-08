@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="getAllCerts fixed">
-      <change afterPath="$PROJECT_DIR$/src/service/DateDeserializer.java" afterDir="false" />
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/keystoreNames.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/keystoreNames.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/beans/Certificate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/Certificate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beans/Names.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/Names.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao/KeyStoreNameDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/KeyStoreNameDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/beans/SubjectData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/SubjectData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
     </list>
@@ -46,11 +43,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Instaleri/jar_files (1)/bcprov-debug-jdk15on-1.61.jar" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/beans" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gant" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\FTN\xml i besp\xml_web_services\SparkREST\src\beans" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="SparkAppMain" type="Application" factoryName="Application" nameIsGenerated="true">
@@ -125,16 +127,6 @@
           <url>file://$PROJECT_DIR$/src/rest/SparkAppMain.java</url>
           <line>121</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/service/CertificateService.java</url>
-          <line>131</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/service/CertificateService.java</url>
-          <line>102</line>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/dao/KeyStoreNameDAO.java</url>
