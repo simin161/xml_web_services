@@ -14,7 +14,14 @@ Vue.component('firstpage', {
     			    path: "",
     			    key: "",
     			    keyUsage: "",
-    			    issuer: ""
+    			    issuerEmail: "",
+    			    commonName: "",
+    			    givenName: "",
+    			    surname: "",
+    			    organizationalUnitName: "",
+    			    organizationEmail: "",
+    			    country: "",
+    			    alias: ""
     			},
     			password: "",
     			certificates: []
@@ -44,12 +51,27 @@ Vue.component('firstpage', {
                 					<tr>
                 						<td>Certificate issued to:</td>
                 						<td>
-                						    <select v-model="certificate.receiver" style="width:100%;">
-                						        <option v-for="us in users" :value="us.email">
+                						    <select v-model="certificate.receiver" style="width:100%;" @change="fillInputFields">
+                						        <option v-for="us in users" :value="us">
                 						            {{us.email}}
                 						        </option>
                 						    </select>
                 						</td>
+                					</tr>
+                					<br/>
+                					<tr>
+                					    <td> Given name: </td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.givenName"/></td>
+                					    <td>Surname: </td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.surname"/></td>
+                					    <td>Organization: </td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.organization"/></td>
+                					    <td>Organizational unit name: </td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.organizationUnitName"/></td>
+                					    <td>Organization email: </td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.organizationEmail"/></td>
+                					    <td>Country:</td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.country"/></td>
                 					</tr>
                 					<br/>
                 					<tr>
@@ -90,6 +112,16 @@ Vue.component('firstpage', {
                                                 <option v-for="c in certificates" :value="c">{{c}}</option>
                                             </select>
                                         </td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>Alias: </td>
+                                        <td><input type="text" v-model="certificate.alias"/></td>
+                                    </tr>
+                                    <br/>
+                                    <tr>
+                                        <td>Common name: </td>
+                                        <td><input type="text" v-model="certificate.commonName"/></td>
                                     </tr>
                                     <br/>
                                     <tr>
@@ -157,7 +189,14 @@ Vue.component('firstpage', {
                  .then(response=>(this.certificates = response.data))
 
         },
-
+        fillInputFields : function(){
+            this.certificate.givenName = this.certificate.receiver.firstName;
+            this.certificate.surname = this.certificate.receiver.lastName;
+            this.certificate.organization = this.certificate.receiver.organizationName;
+            this.certificate.organizationUnitName = this.certificate.receiver.organizationUnit;
+            this.certificate.country = this.certificate.receiver.countryId;
+            this.certificate.organizationEmail = this.certificate.receiver.email
+        },
         showAllCertsFun : function(){
 
             this.showAllCerts = 1;
@@ -166,7 +205,8 @@ Vue.component('firstpage', {
         },
 
         createCertificate : function(){
-            this.certificate.issuer = user.email;
+            this.certificate.issuerEmail = this.user.email;
+            this.certificate.receiver = this.certificate.receiver.email;
             axios.post("/createCertificate", this.certificate)
                  .then(response=>(console.log(response.data)))
         },

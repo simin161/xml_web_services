@@ -69,11 +69,11 @@ public class CertificateService {
 
                 //KeyStoreReader ksr = new KeyStoreReader();
 
-                issuerData = getIssuerBySerialNum(certificate.getIssuerSerialNum(), certificate.getIssuerAlias());
+                issuerData = getIssuerBySerialNum(certificate.getPath().toString(), certificate.getIssuerAlias());
 
                 //fali provera za validnost certifikata issuera ukoliko nije root certifikat a mozda bi mogle i ekstemzije ovde da se srede
                 x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData);
-
+                System.out.println("NOVI ???? : " + x509Certificate.toString());
                 //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
                 if(certificate.getType().equals("ROOT")){
                     //TODO: nesto zasebno? msm kreiranje novog keystore-a etc etc (al tu je i drugaciji postupak za generisanje sertifikata tkd BICE IZMENA
@@ -188,7 +188,7 @@ public class CertificateService {
             KeyStoreNameDAO.getInstance().save();
             KeyStoreReader storeReader = new KeyStoreReader();
 
-            System.out.println("Certificate after storing: "+storeReader.readCertificate(chain[0].getSerialNumber().toString(), pass, user.getEmail()).toString());
+            //System.out.println("Certificate after storing: "+storeReader.readCertificate(chain[0].getSerialNumber().toString(), pass, user.getEmail()).toString());
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -197,7 +197,7 @@ public class CertificateService {
 
     public X509Certificate findCertBySerNum(BigInteger a){
         for(X509Certificate c : getAllCerts("aaa")){
-            if(c.getSerialNumber() == a){
+            if(Objects.equals(c.getSerialNumber(), a)){
                 return c;
             }
         }
@@ -307,8 +307,8 @@ public class CertificateService {
                 String alias = certificateAliases.nextElement();
                 if(keyStore.isKeyEntry(alias)){
                     allCerts.add((X509Certificate) keyStore.getCertificate(alias));
-                    System.out.println("-------------------POTPIS: " + ((X509Certificate) keyStore.getCertificate(alias)).getSignature() + " ----------------" );
-                    System.out.println("VAS SERTIFIKAT HOPEFULLY " + ((X509Certificate) keyStore.getCertificate(alias)).toString());
+                   // System.out.println("-------------------POTPIS: " + ((X509Certificate) keyStore.getCertificate(alias)).getSignature() + " ----------------" );
+                   // System.out.println("VAS SERTIFIKAT HOPEFULLY " + ((X509Certificate) keyStore.getCertificate(alias)).toString());
 
                 }
             }
@@ -327,33 +327,4 @@ public class CertificateService {
 
         return retVal;
     }
-
-    // List keystore
-   /* public static void list(){
-        String command = " -list "+
-                " -v "+
-                " -keystore proba.jks "+
-                " -storepass password";
-        execute(command);
-    }
-    public static void execute(String command){
-        try{
-            printCommand(command);
-            sun.security.tools.keytool.Main.main(parse(command));
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    // Parse command
-    private static String[] parse(String command){
-        String[] options = command.trim().split(" ");
-        return options;
-    }
-
-    // Print the command
-    private static void printCommand(String command){
-        System.out.println(command);
-    }
-*/
-
 }
