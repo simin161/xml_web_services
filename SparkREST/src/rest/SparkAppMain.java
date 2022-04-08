@@ -108,16 +108,6 @@ public class SparkAppMain {
 			return gson.toJson(userService.getAllUsers());
 		});
 
-		post("/createSSCertificate", (req, res)->{
-			res.type("application/json");
-			Session session = req.session(true);
-			User user = session.attribute("loggedUser");
-			if (user!=null) {
-				certificateService.createSSCertificate(user);
-			}
-			return true;
-		});
-
 		post("/getAllCerts", (req, res) -> {
 			res.type("application/json");
 			String password = gson.fromJson(req.body(), String.class);

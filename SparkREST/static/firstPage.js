@@ -32,7 +32,6 @@ Vue.component('firstpage', {
     	      <div style="margin-left: auto; margin-right:auto; width:30%;">
     	        <input type="button" value="Sign out" @click="signOut"/>
     	        <input type="button" value="Create certificate" @click="showCreateFun"/>
-    	        <input type="button" value="Create self-signed certificate" @click="createSSCert"/>
     	        <input type="button" value="Show all certificates" @click="showAllCertsFun"/>
     	      </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0">
@@ -136,7 +135,7 @@ Vue.component('firstpage', {
                                                 <option value="CRL_SIGN">CRL_SIGN</option>
                                                 <option value="DATA_ENCIPHERMENT">DATA_ENCIPHERMENT</option>
                                                 <option value="DECIPHER_ONLY">DECIPHER_ONLY</option>
-                                                <option value="DIGITAL_SIGNATURE">DIGITAL_SIGNATURE</option>
+                                               <!-- <option value="DIGITAL_SIGNATURE">DIGITAL_SIGNATURE</option>-->
                                                 <option value="ENCIPHER_ONLY">ENCIPHER_ONLY</option>
                                                 <option value="KEY_AGREEMENT">KEY_AGREEMENT</option>
                                                 <option value="KEY_CERT_SIGN">KEY_CERT_SIGN</option>
@@ -207,14 +206,12 @@ Vue.component('firstpage', {
         createCertificate : function(){
             this.certificate.issuerEmail = this.user.email;
             this.certificate.receiver = this.certificate.receiver.email;
+            if(this.certificate.type === 'ROOT'){
+                this.certificate.path = 0;
+            }
             axios.post("/createCertificate", this.certificate)
                  .then(response=>(console.log(response.data)))
         },
-        createSSCert :function(){
-            axios.post("/createSSCertificate")
-                 .then(response=>(console.log(response.data)))
-        },
-
         showAllCertsFunction : function(){
 
             axios.post("/getAllCerts", this.password)

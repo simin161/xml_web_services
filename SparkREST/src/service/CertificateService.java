@@ -11,6 +11,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
+import javax.lang.model.element.Name;
 import javax.security.auth.x500.X500Principal;
 import java.io.*;
 import java.math.BigInteger;
@@ -32,9 +33,9 @@ public class CertificateService {
         try{
             /*
             * Prvo -> pronaci keyStore za ubaciti sertifikat -> izvuci pomocu ser broja (ali samo ako je root, inace jbg) --- ODRADJENO
-            * Drugo -> Kreiranje sertifikata/popunjavanje podacima (vrv manji problem)
-            * Trece (vrv veci problem) -> Ubacivanje u chain
-            * Cetvrto -> upis u keyStore
+            * Drugo -> Kreiranje sertifikata/popunjavanje podacima (vrv manji problem) --- ODRADJENO
+            * Trece (vrv veci problem) -> Ubacivanje u chain --- ODRADJENO --- ZAPRAVO NIJE ODRADJENO< ALI NIJE NUZNO
+            * Cetvrto -> upis u keyStore --- ODRADJENO
             */
             certificate.setRevocationStatus("OK");
             certificate.setCertificateStatus("OK");
@@ -44,7 +45,7 @@ public class CertificateService {
             if(userService.checkExistanceOfEmail(certificate.getIssuerEmail())){
                 CertAndKeyGen keyGen = new CertAndKeyGen("RSA", "SHA1WithRSA", certificate.getIssuerEmail());
                 keyGen.generate(1024);
-
+                String fileName;
                 X500NameBuilder nameBuilder = new X500NameBuilder(BCStyle.INSTANCE);
                 nameBuilder.addRDN(BCStyle.UID, UUID.randomUUID().toString());
                 nameBuilder.addRDN(BCStyle.CN, certificate.getCommonName());
@@ -68,15 +69,21 @@ public class CertificateService {
                 X509Certificate x509Certificate;
                 IssuerData issuerData;
 
-                //KeyStoreReader ksr = new KeyStoreReader();
-                X509Certificate issuerCert = findCertBySerNum(certificate.getPath());
-                KeyStore store;
-                store = KeyStore.getInstance("JKS");
-                String fileName = findKeyStoreNameForCert(issuerCert.getSerialNumber());
-                store.load(new FileInputStream(fileName), "password".toCharArray());
-                issuerData = getIssuerBySerialNum(certificate.getPath().toString(), store.getCertificateAlias(issuerCert));
+                if(!certificate.getType().equals("ROOT")) {
+                    //KeyStoreReader ksr = new KeyStoreReader();
+                    X509Certificate issuerCert = findCertBySerNum(certificate.getPath());
+                    KeyStore store;
+                    store = KeyStore.getInstance("JKS");
+                    fileName = findKeyStoreNameForCert(issuerCert.getSerialNumber());
+                    store.load(new FileInputStream(fileName), "password".toCharArray());
+                    issuerData = getIssuerBySerialNum(certificate.getPath().toString(), store.getCertificateAlias(issuerCert));
+                }else{
+                    fileName = serialNumber;
+                    issuerData = new IssuerData(keyGen.getPrivateKey(), nameBuilder.build());
+                }
                 //fali provera za validnost certifikata issuera ukoliko nije root certifikat a mozda bi mogle i ekstemzije ovde da se srede
-                x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData);
+                x509Certificate = new CertificateGenerator().generateCertificate(subjectData, issuerData, certificate.getType().equals("ROOT") || certificate.getType().equals("INTERMEDIATE")
+                , certificate.getKeyUsage());
 
                 System.out.println("NOVI ???? : " + x509Certificate.toString());
                 KeyStoreWriter storeWriter = new KeyStoreWriter();
@@ -84,18 +91,22 @@ public class CertificateService {
                 char []password = new char[pass.length()];
                 for(int i=0; i < pass.length(); i++)
                     password[i] = pass.charAt(i);
-
-                storeWriter.loadKeyStore(fileName, password);
-                storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, x509Certificate);
-                storeWriter.saveKeyStore(fileName, password);                //sad smisliti kako da se storuje novokreirani (hopefully) sertifikat u korespodentni keystore
-
-                //ako preko issuer-a dodjem do njegovog sertifikata tehnicki ja mogu da pronadjem iz toga kom keystoreu pripada?
-                //KeyStore store = findStoreByIssuer(certificate);
-                // store.setKeyEntry(certificate.getAlias(), keyGen.getPrivateKey(), "password".toCharArray(), x509Certificate);
-
+                if(!certificate.getType().equals("ROOT")) {
+                    storeWriter.loadKeyStore(fileName, password);
+                    storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, x509Certificate);
+                    storeWriter.saveKeyStore(fileName, password);
+                }else{
+                    X509Certificate[] chain=new X509Certificate[1];
+                    chain[0]= x509Certificate;
+                    storeWriter.loadKeyStore(null, password);
+                    storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, chain[0]);
+                    storeWriter.saveKeyStore(fileName, password);
+                    Names name = new Names();
+                    name.name = fileName;
+                    KeyStoreNameDAO.getInstance().getAllNames().add(name);
+                    KeyStoreNameDAO.getInstance().save();
+                }
             }
-
-            //X509Certificate topLevelCert = gson.fromJson((X509Certificate) gson.fromJson(certificate.getPath(), X509Certificate.class));
             returnValue = true;
 
         }catch(Exception e){
@@ -165,43 +176,6 @@ public class CertificateService {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void createSSCertificate(User user){
-        try{
-            CertAndKeyGen keyGen=new CertAndKeyGen("RSA","SHA1WithRSA",user.getEmail());
-            keyGen.generate(1024);
-
-            //Generate self signed certificate
-            X509Certificate[] chain=new X509Certificate[1];
-            chain[0]=keyGen.getSelfCertificate(new X500Name( "CN=" + user.getEmail()
-                                                              + ", OU=" + user.getOrganizationUnit()
-                                                              + ", O=" + user.getOrganizationName()
-                                                              + ", C=" + user.getCountryId()), (long)365*24*3600);
-
-
-            System.out.println("Potpis: " + chain[0].getSignature());
-            System.out.println("Certificate before storing : "+chain[0].toString());
-            KeyStoreWriter storeWriter = new KeyStoreWriter();
-            String pass = "password";
-            char []password = new char[pass.length()];
-            for(int i=0; i < pass.length(); i++)
-                password[i] = pass.charAt(i);
-
-            storeWriter.loadKeyStore(null, password);
-            storeWriter.write(user.getEmail(), keyGen.getPrivateKey(), password, chain[0]);
-            storeWriter.saveKeyStore(chain[0].getSerialNumber().toString(), password);
-            Names name = new Names();
-            name.name = chain[0].getSerialNumber().toString();
-            KeyStoreNameDAO.getInstance().getAllNames().add(name);
-            KeyStoreNameDAO.getInstance().save();
-            KeyStoreReader storeReader = new KeyStoreReader();
-
-            //System.out.println("Certificate after storing: "+storeReader.readCertificate(chain[0].getSerialNumber().toString(), pass, user.getEmail()).toString());
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
     }
 
     public X509Certificate findCertBySerNum(BigInteger a){
@@ -291,23 +265,16 @@ public class CertificateService {
             e.printStackTrace();
         }
         return allCertificates;
+    }
 
-        /*List<String> certificates = new ArrayList<String>();
-
-       // KeyStoreReader reader = new KeyStoreReader();
-        //while(reader.readCertificate("vaultSupreme", password, ) != null){
-
-        //}
-        KeyStore ks = KeyStore.getInstance("JKS", "SUN");
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream("proba"));
-        ks.load(in, password.toCharArray());
-
-        String []keystoreNames = new String[ks.size()];
-
-        System.out.println(ks.aliases().toString());
-
-        return null;*/
-
+    public List<X509Certificate> getAllNonEE(){
+        List<X509Certificate> retVal = new ArrayList<>();
+        for(X509Certificate c : getAllCerts("")){
+            if(c.getBasicConstraints() != -1){
+                retVal.add(c);
+            }
+        }
+        return retVal;
     }
 
     //cita sertifikate iz navedenog keystore-a
@@ -321,6 +288,7 @@ public class CertificateService {
                 if(keyStore.isKeyEntry(alias)){
                     allCerts.add((X509Certificate) keyStore.getCertificate(alias));
                     System.out.println(((X509Certificate) keyStore.getCertificate(alias)).toString());
+                    System.out.println("BASIC CONST: " + ((X509Certificate) keyStore.getCertificate(alias)).getBasicConstraints());
 
                 }
             }
@@ -333,8 +301,8 @@ public class CertificateService {
     public List<String> getAllCertsSerNums() {
         List<String> retVal = new ArrayList<String>();
 
-        //mozda da ne povlacimo serijske brojeve za front nego imena/aliase sertifikata?
-        for(X509Certificate cert : getAllCerts("password")){
+        //mozda da ne povlacimo serijske brojeve za front nego imena/aliase sertifikata? Dobro pitanje
+        for(X509Certificate cert : getAllNonEE()){
             retVal.add(cert.getSerialNumber().toString());
         }
 
