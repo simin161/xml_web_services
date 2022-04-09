@@ -19,6 +19,7 @@ import java.security.*;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -41,6 +42,7 @@ public class CertificateService {
             certificate.setCertificateStatus("OK");
             //CertificateDAO.getInstance().addCertificate(certificate);
             //String keyStoreName = findKeyStoreNameForCert(certificate.getPath());
+            X509Certificate choosenCertificate = findCertBySerNum(certificate.getPath());
 
             if(userService.checkExistanceOfEmail(certificate.getIssuerEmail())){
                 CertAndKeyGen keyGen = new CertAndKeyGen("RSA", "SHA1WithRSA", certificate.getIssuerEmail());
@@ -62,7 +64,8 @@ public class CertificateService {
                     serialNumber = serialNumber.replace("-","0");
 
                 LocalDate date = LocalDate.parse(certificate.getValidTo(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
+                if(choosenCertificate.getNotAfter().before(Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())))
+                    return false;
                 SubjectData subjectData = new SubjectData(keyGen.getPublicKey(), nameBuilder.build(), serialNumber, LocalDate.now(), date );
                 subjectData.setUserEmail(certificate.getIssuerEmail());
 
@@ -407,5 +410,11 @@ public class CertificateService {
                 return true;
         }
         return false;
+    }
+
+    public CertificateView getCertBySerNumView(String fromJson) {
+        X509Certificate cert = findCertBySerNum(new BigInteger(fromJson));
+       return new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber()));
     }
 }

@@ -98,7 +98,7 @@ Vue.component('firstpage', {
                                     <tr>
                                          <td>Certificate type: </td>
                                          <td>
-                                           <select v-model="certificate.type" style="width:100%">
+                                           <select v-model="certificate.type" style="width:100%" >
                                                 <option style="display:none;">-----</option>
                                                 <option v-if="user.userType === 'ADMIN'" value="ROOT">Root</option>
                                                 <option value="INTERMEDIATE">Intermediate</option>
@@ -229,7 +229,6 @@ Vue.component('firstpage', {
              axios.post("/getAllCerts", this.password)
                         .then(response=>(this.certificates = response.data))
         },
-
         createCertificate : function(){
             this.certificate.issuerEmail = this.user.email;
             this.certificate.receiver = this.certificate.receiver.email;
@@ -237,7 +236,7 @@ Vue.component('firstpage', {
                 this.certificate.path = 0;
             }
             axios.post("/createCertificate", this.certificate)
-                 .then(response=>(console.log(response.data)))
+                  .then(response=>(console.log(response.data)))
         },
         enter: function(el, done) {
 
