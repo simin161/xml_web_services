@@ -167,6 +167,8 @@ Vue.component('firstpage', {
                         <p>Public key: {{c.publicKey}}</p>
                         <p>Signature Algorithm: {{c.signatureAlg}}</p>
                         <p>Signature: {{c.signature}}</p>
+                        <input type="button" value="Invalidate"/>
+                        <input type="button" value="Show details" @click="showDetails(c)"/>
                     </div>
                 </div>
               </div>
@@ -185,6 +187,11 @@ Vue.component('firstpage', {
                     }
                  })
         },
+        showDetails : function(c){
+            axios.post("/saveChoosenCert", c)
+                 .then(response => (router.push("/detailsScreen")))
+        }
+        ,
         showCreateFun : function(){
 
             this.showCreate = 1;

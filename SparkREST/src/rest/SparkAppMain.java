@@ -1,6 +1,7 @@
 package rest;
 
 import beans.Certificate;
+import beans.CertificateView;
 import beans.User;
 import beans.enums.UserType;
 import com.google.gson.Gson;
@@ -126,6 +127,20 @@ public class SparkAppMain {
 			User user = session.attribute("loggedUser");
 			String password = gson.fromJson(req.body(), String.class);
 			return gson.toJson(certificateService.getAllCertsForSubjectWithoutEE(user.getEmail()));
+		});
+
+		post("/saveChoosenCert", (req, res) -> {
+			res.type("application/json");
+			Session session = req.session(true);
+			session.attribute("certificate", gson.fromJson(req.body(), CertificateView.class));
+			return true;
+		});
+
+		get("/getChoosenCert", (req, res) ->{
+			res.type("application/json");
+			Session session = req.session(true);
+			CertificateView cert = session.attribute("certificate");
+			return gson.toJson(cert);
 		});
 	}
 }
