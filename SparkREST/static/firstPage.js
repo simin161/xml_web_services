@@ -108,7 +108,7 @@ Vue.component('firstpage', {
                                         <td>Certification path: </td>
                                         <td>
                                             <select v-model="certificate.path">
-                                                <option v-for="c in certificates" :value="c">{{c}}</option>
+                                                <option v-for="c in certificates" :value="c.serialNumber">{{c.alias}} {{c.serialNumber}}</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -157,7 +157,16 @@ Vue.component('firstpage', {
                 </table>
                 <div v-for="c in certificates">
                     <div style="border: 1px solid black; padding-bottom: 25px;">
-                        <p>{{c}}</p>
+                        <p>Version: {{c.version}}</p>
+                        <p>Alias: {{c.alias}}</p>
+                        <p>IssuerDN: {{c.issuerDN}}</p>
+                        <p>SubjectDN: {{c.subjectDN}}</p>
+                        <p>Serial Number: {{c.serialNumber}}</p>
+                        <p>Not valid before: {{c.dateFrom}}</p>
+                        <p>Not valid after: {{c.dateTo}}</p>
+                        <p>Public key: {{c.publicKey}}</p>
+                        <p>Signature Algorithm: {{c.signatureAlg}}</p>
+                        <p>Signature: {{c.signature}}</p>
                     </div>
                 </div>
               </div>
@@ -184,7 +193,7 @@ Vue.component('firstpage', {
             axios.get("/getUsers")
                  .then(response => {this.users = response.data})
 
-            axios.get("/getAllCertsSerNums", this.password)
+            axios.get("/getAllCertsForDropDown")
                  .then(response=>(this.certificates = response.data))
 
         },

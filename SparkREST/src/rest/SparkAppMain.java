@@ -111,13 +111,21 @@ public class SparkAppMain {
 		post("/getAllCerts", (req, res) -> {
 			res.type("application/json");
 			String password = gson.fromJson(req.body(), String.class);
-			return gson.toJson(certificateService.getAllCerts(password));
+			Session session = req.session(true);
+			User user = session.attribute("loggedUser");
+			if(user.getUserType() == UserType.ADMIN)
+				return gson.toJson(certificateService.getAllCerts(password));
+			else{
+				return gson.toJson(certificateService.getAllCertsForUser(user.getEmail()));
+			}
 		});
 
-		get("/getAllCertsSerNums", (req, res) -> {
+		get("/getAllCertsForDropDown", (req, res) -> {
 			res.type("application/json");
+			Session session = req.session(true);
+			User user = session.attribute("loggedUser");
 			String password = gson.fromJson(req.body(), String.class);
-			return gson.toJson(certificateService.getAllCertsSerNums());
+			return gson.toJson(certificateService.getAllCertsForSubjectWithoutEE(user.getEmail()));
 		});
 	}
 }

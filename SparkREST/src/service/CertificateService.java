@@ -298,14 +298,57 @@ public class CertificateService {
         }
     }
 
-    public List<String> getAllCertsSerNums() {
-        List<String> retVal = new ArrayList<String>();
+    public List<CertificateView> getAllCertsForSubjectWithoutEE(String email) {
+        List<CertificateView> retVal = new ArrayList<>();
 
         //mozda da ne povlacimo serijske brojeve za front nego imena/aliase sertifikata? Dobro pitanje
         for(X509Certificate cert : getAllNonEE()){
-            retVal.add(cert.getSerialNumber().toString());
-        }
+            String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
+            if(emailToCheck.equals(email))
+                retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                        cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));        }
 
         return retVal;
+    }
+
+    public List<CertificateView> getAllCertsForUser(String email) {
+        List<CertificateView> retVal = new ArrayList<>();
+        for(X509Certificate cert : getAllCerts("password")){
+            String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
+            String emailToCheckIssuer = cert.getIssuerDN().getName().split(",")[2].split("=")[1];
+//String issuerDN, String subjectDN, String isValid, String serialNumber, String signatureAlg, String version, String publicKey, String dateFrom, String dateTo, String signature) {
+
+                if(emailToCheck.equals(email) || emailToCheckIssuer.equals(email))
+                retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
+        }
+        return retVal;
+    }
+
+    public  String getAliasForCert(BigInteger serialNum){
+        List<KeyStore> keystores = new ArrayList<KeyStore>();
+        List<Names> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
+        String password = "password";
+        try {
+            for (Names name : keystoreNames) {
+                if (new File(name.name).exists()) {
+                    KeyStore store;
+                    store = KeyStore.getInstance("JKS");
+                    store.load(new FileInputStream(name.name), password.toCharArray());
+                    Enumeration<String> certificateAliases = store.aliases();
+                    while (certificateAliases.hasMoreElements()) {
+                        String alias = certificateAliases.nextElement();
+                        if (store.isKeyEntry(alias)) {
+                            if(Objects.equals(((X509Certificate) store.getCertificate(alias)).getSerialNumber(), serialNum)){
+                                return alias;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
