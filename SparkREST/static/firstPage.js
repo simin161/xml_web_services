@@ -36,7 +36,7 @@ Vue.component('firstpage', {
     	        <input type="button" value="Create certificate" @click="showCreateFun"/>
     	        <input type="button" value="Show all certificates" @click="showAllCertsFun"/>
     	      </div>
-              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0 && hasCA">
+              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0 && hasCA || user.userType==='ADMIN'">
                 <p>KREIRAJ</p>
                 <table>
                 					</br>
@@ -107,6 +107,7 @@ Vue.component('firstpage', {
                                          </td>
                                     </tr>
                                     <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
+                                    <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
                                         <td>Certification path: </td>
                                         <td>
                                             <select v-model="certificate.path">
@@ -152,7 +153,7 @@ Vue.component('firstpage', {
                 </table>
               </div>
               <transition name="fade" @enter="enter">
-              <div v-if="showCreate != 0 && !hasCA" style="margin-left: auto; margin-right:auto; width: 41%; margin-top: 20px" class="animated fadeIn">
+              <div v-if="showCreate != 0 && !hasCA && user.userType!=='ADMIN'" style="margin-left: auto; margin-right:auto; width: 41%; margin-top: 20px" class="animated fadeIn">
                 <img src="One-Does-Not-Simply.jpg"/>
               </div>
               </transition>
@@ -170,7 +171,7 @@ Vue.component('firstpage', {
                         <p>Public key: {{c.publicKey}}</p>
                         <p>Signature Algorithm: {{c.signatureAlg}}</p>
                         <p>Signature: {{c.signature}}</p>
-                        <input type="button" value="Invalidate"/>
+                        <input type="button" value="Invalidate" @click="invalidate(c)"/>
                         <input type="button" value="Show details" @click="showDetails(c)"/>
                     </div>
                 </div>
@@ -242,7 +243,13 @@ Vue.component('firstpage', {
         enter: function(el, done) {
 
         		      var that = this;
-        		    }
+        },
+        invalidate : function(c) {
+
+            axios.post("/invalidateCertificate", c)
+            .then(response=>(console.log(response.data)))
+
+        }
     },
 
     mounted(){

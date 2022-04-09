@@ -47,7 +47,7 @@ public class SparkAppMain {
 		get("/getMessage", (req, res)->{
 			res.type("application/json");
 
-			return "Dunje Vrbaski";
+			return "Zorica Markovic";
 		});
 
 		post("/signIn", (req, res)->{
@@ -234,6 +234,15 @@ public class SparkAppMain {
 //closes the document
 			pdfdoc.close();
 			return true;
+		});
+
+		post("/invalidateCertificate", (req, res)->{
+
+			res.type("application/json");
+			CertificateView cert = gson.fromJson(req.body(), CertificateView.class);
+
+			return certificateService.invalidateCertificate(cert);
+
 		});
 	}
 }
