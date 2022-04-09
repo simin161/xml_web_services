@@ -17,6 +17,47 @@ public class CertificateView {
     }
 
     private String issuerDN;
+
+    public String getIssuerDN() {
+        return issuerDN;
+    }
+
+    public String getSubjectDN() {
+        return subjectDN;
+    }
+
+    public String getIsValid() {
+        return isValid;
+    }
+
+    public String getSignatureAlg() {
+        return signatureAlg;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public String getDateFrom() {
+        return dateFrom;
+    }
+
+    public String getDateTo() {
+        return dateTo;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
     private String subjectDN;
 
     public String getSerialNumber() {

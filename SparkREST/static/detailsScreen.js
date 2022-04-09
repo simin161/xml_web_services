@@ -3,12 +3,14 @@ Vue.component('details-screen', {
     		return{
     			c:null,
     			certsAbove: [],
+    			pdf: null
     		}
     	},
     template: `
             <div>
                 <div>
-                    <input type="button" value="Show as pdf"/>
+                    <input type="button" value="Create pdf" @click="createPdf"/>
+                    <a :href="pdf">Show pdf</a>
                     <input type="button" value="See certs above" @click="getCertsAbove"/>
                 </div>
                 <br/>
@@ -38,10 +40,19 @@ Vue.component('details-screen', {
         getCertsAbove : function(){
             axios.get("/getCertsAbove", this.c.serialNumber)
                  .then(response=>(this.certsAbove = response.data))
+        },
+        createPdf : function(){
+            axios.post("/getPdf")
+                 .then(response => (response = response.data));
         }
     },
     mounted(){
             axios.get("/getChoosenCert")
-                 .then(response => {this.c = response.data});
+                 .then(response => {
+                    this.c = response.data;
+                    this.pdf = this.c.serialNumber + ".pdf";
+                    console.log(this.pdf);
+
+                  });
     }
 });

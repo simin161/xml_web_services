@@ -7,13 +7,19 @@ import beans.enums.UserType;
 import com.google.gson.Gson;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import service.CertificateService;
 import service.UserService;
 import spark.Session;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.List;
 
 import static spark.Spark.*;
 import static spark.Spark.port;
@@ -148,6 +154,80 @@ public class SparkAppMain {
 			Session session = req.session(true);
 			CertificateView cert = session.attribute("certificate");
 			return gson.toJson(certificateService.getCertsAbove(cert.getSerialNumber()));
+		});
+
+		post("/getPdf", (req, res) ->{
+			PDDocument pdfdoc= new PDDocument();
+			pdfdoc.addPage(new PDPage());
+			pdfdoc.addPage(new PDPage());
+			Session session = req.session(true);
+			CertificateView cert = session.attribute("certificate");
+			PDPage page = pdfdoc.getPage(0);
+			PDPageContentStream contentStream = new PDPageContentStream(pdfdoc, page);
+			contentStream.beginText();
+			PDFont font = PDType1Font.TIMES_ROMAN;
+			contentStream.newLineAtOffset(25, 700);
+			contentStream.setLeading(14.5f);
+			contentStream.setFont(font, 12);
+			contentStream.showText("Version: " + cert.getVersion());
+			contentStream.newLine();
+			contentStream.showText("Alias: " + cert.getAlias());
+			contentStream.newLine();
+			contentStream.showText("IssuerDN: ");
+			String[] iArr = cert.getIssuerDN().split(",");
+			for(int i = 0; i < iArr.length; ++i){
+				contentStream.newLine();
+				contentStream.showText(iArr[i]);
+			}
+			contentStream.newLine();
+			contentStream.showText("SubjectDN: " + cert.getSubjectDN());
+			String[] sArr = cert.getSubjectDN().split(",");
+			for(int i = 0; i < sArr.length; ++i){
+				contentStream.newLine();
+				contentStream.showText(sArr[i]);
+			}
+			contentStream.newLine();
+			contentStream.showText("Serial Number: " + cert.getSerialNumber());
+			contentStream.newLine();
+			contentStream.showText("Not valid before: " + cert.getDateFrom());
+			contentStream.newLine();
+			contentStream.showText("Not valid after: " + cert.getDateTo());
+			contentStream.newLine();
+			contentStream.showText("Public key: ");
+			char[] array = cert.getPublicKey().replace("\n", "").replace("\r","").toCharArray();
+			for(int i = 0; i < array.length; ++i){
+				if(i % 80 == 0){
+					contentStream.newLine();
+				}
+				contentStream.showText(String.valueOf(array[i]));
+			}
+			contentStream.newLine();
+			contentStream.showText("Signature Algorith: " + cert.getSignatureAlg());
+			contentStream.newLine();
+			contentStream.showText("Signature: " + cert.getSignature());
+			contentStream.endText();
+			contentStream.close();
+
+			contentStream = new PDPageContentStream(pdfdoc,  pdfdoc.getPage(1));
+			List<CertificateView> certs = certificateService.getCertsAbove(cert.getSerialNumber());
+			contentStream.beginText();
+			contentStream.newLineAtOffset(25, 700);
+			contentStream.setLeading(14.5f);
+			contentStream.setFont(font, 12);
+			contentStream.showText("Hierarchy: ");
+			contentStream.newLine();
+			for(CertificateView c : certs){
+				contentStream.newLine();;
+				contentStream.showText(" " + c.getAlias() + " " + c.getSerialNumber());
+			}
+			contentStream.endText();
+			contentStream.close();
+			pdfdoc.save("static/" + cert.getSerialNumber() + ".pdf");
+//prints the message if the PDF is created successfully
+			System.out.println("PDF created");
+//closes the document
+			pdfdoc.close();
+			return true;
 		});
 	}
 }

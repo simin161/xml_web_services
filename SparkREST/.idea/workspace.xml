@@ -4,22 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="&quot;valid&quot; keystores">
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="hierachy of certificates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/01651689177" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1042813471" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/109693251" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1450694780" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1762530638" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1793098316" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/1819989093" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/2111750485" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/480699208" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/keystoreNames.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/keystoreNames.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proba" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SparkREST.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SparkREST.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/beans/CertificateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/CertificateView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/detailsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/detailsScreen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,8 +42,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/beans" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Instaleri/xmpbox-2.0.25.jar" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="advanced.settings" />
@@ -160,7 +149,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649504277865</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="hierachy of certificates">
+      <created>1649530122193</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1649530122193</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -185,7 +181,8 @@
     <MESSAGE value="initial front for details screen" />
     <MESSAGE value="almost finished details screen (i am not sure but i think)" />
     <MESSAGE value="&quot;valid&quot; keystores" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;valid&quot; keystores" />
+    <MESSAGE value="hierachy of certificates" />
+    <option name="LAST_COMMIT_MESSAGE" value="hierachy of certificates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
