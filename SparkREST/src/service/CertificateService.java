@@ -397,4 +397,15 @@ public class CertificateService {
         return retVal;
 
     }
+
+    public boolean checkIfUserHasCA(String email) {
+        List<CertificateView> retVal = new ArrayList<>();
+        for(X509Certificate cert : getAllCerts("password")){
+            String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
+
+            if(emailToCheck.equals(email) && cert.getBasicConstraints() != -1)
+                return true;
+        }
+        return false;
+    }
 }

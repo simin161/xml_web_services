@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="hierachy of certificates">
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="pdf - files">
+      <change afterPath="$PROJECT_DIR$/static/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SparkREST.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SparkREST.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beans/CertificateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/CertificateView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/detailsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/detailsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +157,21 @@
       <option name="project" value="LOCAL" />
       <updated>1649530122193</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="pdfs">
+      <created>1649537937253</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1649537937253</updated>
+    </task>
+    <task id="LOCAL-00013" summary="pdf - files">
+      <created>1649537958647</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1649537958647</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -182,7 +197,9 @@
     <MESSAGE value="almost finished details screen (i am not sure but i think)" />
     <MESSAGE value="&quot;valid&quot; keystores" />
     <MESSAGE value="hierachy of certificates" />
-    <option name="LAST_COMMIT_MESSAGE" value="hierachy of certificates" />
+    <MESSAGE value="pdfs" />
+    <MESSAGE value="pdf - files" />
+    <option name="LAST_COMMIT_MESSAGE" value="pdf - files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

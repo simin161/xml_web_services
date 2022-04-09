@@ -156,6 +156,12 @@ public class SparkAppMain {
 			return gson.toJson(certificateService.getCertsAbove(cert.getSerialNumber()));
 		});
 
+		get("/checkCA", (req, res) -> {
+			Session session = req.session(true);
+			User user = session.attribute("loggedUser");
+			return certificateService.checkIfUserHasCA(user.getEmail());
+		});
+
 		post("/getPdf", (req, res) ->{
 			PDDocument pdfdoc= new PDDocument();
 			pdfdoc.addPage(new PDPage());

@@ -24,7 +24,8 @@ Vue.component('firstpage', {
     			    alias: ""
     			},
     			password: "",
-    			certificates: []
+    			certificates: [],
+    			hasCA : null
     		}
     	},
     template: `
@@ -34,7 +35,7 @@ Vue.component('firstpage', {
     	        <input type="button" value="Create certificate" @click="showCreateFun"/>
     	        <input type="button" value="Show all certificates" @click="showAllCertsFun"/>
     	      </div>
-              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0">
+              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0 && hasCA">
                 <p>KREIRAJ</p>
                 <table>
                 					</br>
@@ -51,7 +52,7 @@ Vue.component('firstpage', {
                 						<td>Certificate issued to:</td>
                 						<td>
                 						    <select v-model="certificate.receiver" style="width:100%;" @change="fillInputFields">
-                						        <option v-for="us in users" :value="us">
+                						        <option v-for="us in users" :value="us" v-if="us.userType !== 'ADMIN' && us.email !== user.email">
                 						            {{us.email}}
                 						        </option>
                 						    </select>
@@ -149,6 +150,10 @@ Vue.component('firstpage', {
                 					</tr>
                 </table>
               </div>
+              <transition name="fade" @enter="enter">
+              <div v-if="showCreate != 0 && !hasCA" style="margin-left: auto; margin-right:auto; width: 41%; margin-top: 20px" class="animated fadeIn">
+                <img src="One-Does-Not-Simply.jpg"/>
+              </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showAllCerts != 0">
                 <table>
                     <tr>
@@ -203,6 +208,9 @@ Vue.component('firstpage', {
             axios.get("/getAllCertsForDropDown")
                  .then(response=>(this.certificates = response.data))
 
+            axios.get("/checkCA")
+                 .then(response => (this.hasCA = response.data))
+
         },
         fillInputFields : function(){
             this.certificate.givenName = this.certificate.receiver.firstName;
@@ -233,7 +241,11 @@ Vue.component('firstpage', {
             axios.post("/getAllCerts", this.password)
             .then(response=>(this.certificates = response.data))
 
-        }
+        },
+        enter: function(el, done) {
+
+        		      var that = this;
+        		    }
     },
 
     mounted(){
