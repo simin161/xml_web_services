@@ -2,8 +2,10 @@ package service;
 
 import beans.*;
 import beans.Certificate;
+import beans.enums.StatusType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.CertificateStatusDAO;
 import dao.KeyStoreNameDAO;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -98,6 +100,8 @@ public class CertificateService {
                     storeWriter.loadKeyStore(fileName, password);
                     storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, x509Certificate);
                     storeWriter.saveKeyStore(fileName, password);
+                    CertificateStatusDAO.getInstance().addStatus(new CertificateStatus(x509Certificate.getSerialNumber(), StatusType.VALID));
+                    CertificateStatusDAO.getInstance().save();
                 }else{
                     X509Certificate[] chain=new X509Certificate[1];
                     chain[0]= x509Certificate;
@@ -108,6 +112,8 @@ public class CertificateService {
                     name.name = fileName;
                     KeyStoreNameDAO.getInstance().getAllNames().add(name);
                     KeyStoreNameDAO.getInstance().save();
+                    CertificateStatusDAO.getInstance().addStatus(new CertificateStatus(chain[0].getSerialNumber(), StatusType.VALID));
+                    CertificateStatusDAO.getInstance().save();
                 }
             }
             returnValue = true;
@@ -289,16 +295,26 @@ public class CertificateService {
             while(certificateAliases.hasMoreElements()){
                 String alias = certificateAliases.nextElement();
                 if(keyStore.isKeyEntry(alias)){
-                    allCerts.add((X509Certificate) keyStore.getCertificate(alias));
-                    System.out.println(((X509Certificate) keyStore.getCertificate(alias)).toString());
-                    System.out.println("BASIC CONST: " + ((X509Certificate) keyStore.getCertificate(alias)).getBasicConstraints());
 
+                    if(checkCertificateStatus(((X509Certificate)keyStore.getCertificate(alias)).getSerialNumber())){
+                        allCerts.add((X509Certificate) keyStore.getCertificate(alias));
+                        System.out.println(((X509Certificate) keyStore.getCertificate(alias)).toString());
+                        System.out.println("BASIC CONST: " + ((X509Certificate) keyStore.getCertificate(alias)).getBasicConstraints());
+                    }else{
+                        System.out.println("SERT NIJE VALIDAN");
+                    }
                 }
             }
             System.out.println("-----------------------------------------------------------------------------------");
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    private boolean checkCertificateStatus(BigInteger serialNumber){
+
+        return CertificateStatusDAO.getInstance().checkCertificateStatus(serialNumber);
+
     }
 
     public List<CertificateView> getAllCertsForSubjectWithoutEE(String email) {
@@ -410,6 +426,12 @@ public class CertificateService {
                 return true;
         }
         return false;
+    }
+
+    public boolean invalidateCertificate(CertificateView certificateView){
+
+        return CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
+
     }
 
     public CertificateView getCertBySerNumView(String fromJson) {
