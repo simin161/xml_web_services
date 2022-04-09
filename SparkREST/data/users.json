@@ -1,13 +1,13 @@
 [
   {
-    "firstName": "a",
-    "lastName": "aaa",
-    "organizationName": "aaa",
-    "organizationUnit": "aaa",
-    "countryId": "aa",
-    "email": "aa",
-    "userType": "REGULAR_USER",
-    "password": "a"
+    "firstName": "admin",
+    "lastName": "admin",
+    "organizationName": "a",
+    "organizationUnit": "a",
+    "countryId": "AZ",
+    "email": "admin",
+    "userType": "ADMIN",
+    "password": "admin"
   },
   {
     "firstName": "aaa",

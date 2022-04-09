@@ -98,7 +98,7 @@ Vue.component('firstpage', {
                                          <td>
                                            <select v-model="certificate.type" style="width:100%">
                                                 <option style="display:none;">-----</option>
-                                                <option value="ROOT">Root</option>
+                                                <option v-if="user.userType === 'ADMIN'" value="ROOT">Root</option>
                                                 <option value="INTERMEDIATE">Intermediate</option>
                                                 <option value="END">End entity</option>
                                            </select>

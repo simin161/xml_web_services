@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="">
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="root/intermediate/EE certs, storing + keyUsages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/1042813471" beforeDir="false" afterPath="$PROJECT_DIR$/1042813471" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/keystoreNames.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/keystoreNames.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beans/CertificateGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/beans/CertificateGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/SparkAppMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/SparkAppMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/firstPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/firstPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649451697613</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="root/intermediate/EE certs, storing + keyUsages">
+      <created>1649457863048</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649457863048</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -135,7 +138,8 @@
     <MESSAGE value="getAllCerts fixed" />
     <MESSAGE value="mini fix" />
     <MESSAGE value="storing intermediate/endEntity certificate" />
-    <option name="LAST_COMMIT_MESSAGE" value="storing intermediate/endEntity certificate" />
+    <MESSAGE value="root/intermediate/EE certs, storing + keyUsages" />
+    <option name="LAST_COMMIT_MESSAGE" value="root/intermediate/EE certs, storing + keyUsages" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
