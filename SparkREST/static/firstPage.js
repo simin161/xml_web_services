@@ -25,7 +25,8 @@ Vue.component('firstpage', {
     			},
     			password: "",
     			certificates: [],
-    			hasCA : null
+    			hasCA : null,
+    			flag: null
     		}
     	},
     template: `
@@ -154,13 +155,10 @@ Vue.component('firstpage', {
               <div v-if="showCreate != 0 && !hasCA" style="margin-left: auto; margin-right:auto; width: 41%; margin-top: 20px" class="animated fadeIn">
                 <img src="One-Does-Not-Simply.jpg"/>
               </div>
+              </transition>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showAllCerts != 0">
-                <table>
-                    <tr>
-                        <td colSpan="2" text-align="center"><input type="button" @click="showAllCertsFunction" value="Load certs"></input></td>
-                    </tr>
-                </table>
-                <div v-for="c in certificates">
+                <div v-if="showAllCerts != 0">
+                <div v-for="c in certificates" >
                     <div style="border: 1px solid black; padding-bottom: 25px;">
                         <p>Version: {{c.version}}</p>
                         <p>Alias: {{c.alias}}</p>
@@ -175,6 +173,10 @@ Vue.component('firstpage', {
                         <input type="button" value="Invalidate"/>
                         <input type="button" value="Show details" @click="showDetails(c)"/>
                     </div>
+                </div>
+                <div v-if="!certificates.length" style="margin-left: auto; margin-right:auto; width: 41%; margin-top: 20px">
+                     <img src="john.gif"/>
+                </div>
                 </div>
               </div>
          </div>
@@ -224,7 +226,8 @@ Vue.component('firstpage', {
 
             this.showAllCerts = 1;
             this.showCreate = 0;
-
+             axios.post("/getAllCerts", this.password)
+                        .then(response=>(this.certificates = response.data))
         },
 
         createCertificate : function(){
@@ -235,12 +238,6 @@ Vue.component('firstpage', {
             }
             axios.post("/createCertificate", this.certificate)
                  .then(response=>(console.log(response.data)))
-        },
-        showAllCertsFunction : function(){
-
-            axios.post("/getAllCerts", this.password)
-            .then(response=>(this.certificates = response.data))
-
         },
         enter: function(el, done) {
 
