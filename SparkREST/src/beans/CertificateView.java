@@ -18,6 +18,11 @@ public class CertificateView {
 
     private String issuerDN;
     private String subjectDN;
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
     private String isValid;
     private String serialNumber;
     private String signatureAlg;

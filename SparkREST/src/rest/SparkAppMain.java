@@ -115,7 +115,7 @@ public class SparkAppMain {
 			Session session = req.session(true);
 			User user = session.attribute("loggedUser");
 			if(user.getUserType() == UserType.ADMIN)
-				return gson.toJson(certificateService.getAllCerts(password));
+				return gson.toJson(certificateService.getAllCertsForAdmin());
 			else{
 				return gson.toJson(certificateService.getAllCertsForUser(user.getEmail()));
 			}
@@ -141,6 +141,13 @@ public class SparkAppMain {
 			Session session = req.session(true);
 			CertificateView cert = session.attribute("certificate");
 			return gson.toJson(cert);
+		});
+
+		get("/getCertsAbove", (req, res) -> {
+			res.type("application/json");
+			Session session = req.session(true);
+			CertificateView cert = session.attribute("certificate");
+			return gson.toJson(certificateService.getCertsAbove(cert.getSerialNumber()));
 		});
 	}
 }

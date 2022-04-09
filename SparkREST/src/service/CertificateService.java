@@ -351,4 +351,50 @@ public class CertificateService {
         }
         return null;
     }
+
+    public List<CertificateView> getCertsAbove(String cCert) {
+        List<CertificateView> retVal = new ArrayList<>();
+        BigInteger serialNumber = new BigInteger(cCert);
+        X509Certificate certificateBellow = findCertBySerNum(serialNumber);
+        List<X509Certificate> certs = getAllCerts("a");
+       if(certificateBellow.getSubjectDN().equals(certificateBellow.getIssuerDN())) {
+             retVal.add(new CertificateView(certificateBellow.getIssuerDN().toString(), certificateBellow.getSubjectDN().toString(), certificateBellow.getSerialNumber().toString(), certificateBellow.getSigAlgName(), String.valueOf(certificateBellow.getVersion()), certificateBellow.getPublicKey().toString(),
+                     certificateBellow.getNotBefore().toString(), certificateBellow.getNotAfter().toString(), certificateBellow.getSignature().toString(), getAliasForCert( certificateBellow.getSerialNumber())));
+           return retVal;
+       }
+        boolean refresh = false;
+        for(int i = 0; i < certs.size(); ++i){
+            if(refresh)
+                i = 0;
+            X509Certificate cert = certs.get(i);
+            if(cert.getSubjectDN().equals(certificateBellow.getIssuerDN())){
+                retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                        cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
+                certificateBellow = cert;
+                if(certificateBellow.getSubjectDN().equals(certificateBellow.getIssuerDN())){
+                    break;
+                }
+                refresh = true;
+                i = 0;
+            }
+        }
+        List<CertificateView> reverseRetVal = new ArrayList<>();
+        for(int i = retVal.size() - 1; i >= 0; --i){
+            reverseRetVal.add(retVal.get(i));
+        }
+        X509Certificate cert = findCertBySerNum(serialNumber);
+        reverseRetVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
+        return reverseRetVal;
+    }
+
+    public List<CertificateView> getAllCertsForAdmin() {
+        List<CertificateView> retVal = new ArrayList<>();
+        for(X509Certificate cert : getAllCerts("password")){
+            retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
+                    cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
+        }
+        return retVal;
+
+    }
 }
