@@ -5,6 +5,7 @@ import beans.CertificateView;
 import beans.User;
 import beans.enums.UserType;
 import com.google.gson.Gson;
+import dao.CertificateStatusDAO;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -18,8 +19,12 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
+import java.security.cert.X509Certificate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static spark.Spark.*;
 import static spark.Spark.port;
@@ -33,6 +38,23 @@ public class SparkAppMain {
 	 * Ključ za potpisivanje JWT tokena.
 	 * Biblioteka: https://github.com/jwtk/jjwt
 	 */
+	private static class MyTimeTask extends TimerTask
+	{
+		public void run()
+		{
+			for(X509Certificate c : certificateService.getAllCerts("aa")){
+				System.out.println("KASMDOKAMSDLAKNSDALKNDSALKNSD");
+				try {
+					c.checkValidity();
+				} catch (CertificateExpiredException e) {
+					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+				} catch (CertificateNotYetValidException e) {
+					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+				}
+			}
+		}
+	}
+
 	static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	private static UserService userService = new UserService();
 	private static CertificateService certificateService = new CertificateService();
@@ -42,7 +64,15 @@ public class SparkAppMain {
 		//webSocket("/ws", WsHandler.class);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
+		Date today = new Date();
+		DateFormat dateFormatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date date = dateFormatter .parse(today.toString());
 
+		//Now create the time and schedule it
+		Timer timer = new Timer();
+
+		//Use this if you want to execute it once
+		timer.schedule(new MyTimeTask(), date);
 
 		get("/getMessage", (req, res)->{
 			res.type("application/json");
