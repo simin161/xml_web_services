@@ -433,9 +433,34 @@ public class CertificateService {
 
     public boolean invalidateCertificate(CertificateView certificateView){
 
-        return CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
+        boolean retVal = CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
+        if(retVal){
+            return invalidateBelow(certificateView.getSerialNumber());
+        }
+
+        return false;
 
     }
+
+    private boolean invalidateBelow(String serialNumber) {
+
+        X509Certificate certificate = findCertBySerNum(new BigInteger(serialNumber));
+        List<X509Certificate> allCertificates = getAllCerts("a");
+        for(X509Certificate c : allCertificates){
+            if(certificate.getSubjectDN().equals(c.getIssuerDN())){
+
+                    if(!CertificateStatusDAO.getInstance().isInvalid(c.getSerialNumber())){
+                        CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+                        invalidateBelow(c.getSerialNumber().toString());
+                    }
+
+            }
+        }
+
+        return true;
+
+    }
+
 
     public CertificateView getCertBySerNumView(String fromJson) {
         X509Certificate cert = findCertBySerNum(new BigInteger(fromJson));

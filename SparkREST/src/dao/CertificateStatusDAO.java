@@ -85,4 +85,16 @@ public class CertificateStatusDAO {
         }
         return false;
     }
+
+    public boolean isInvalid(BigInteger serialNumber) {
+
+        for(CertificateStatus c : allStatuses){
+            if(Objects.equals(c.getCertificateSerialNumber(), serialNumber)){
+                if(c.getStatus() == StatusType.INVALID){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
