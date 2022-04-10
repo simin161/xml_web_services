@@ -10,6 +10,7 @@ import dao.KeyStoreNameDAO;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+import org.eclipse.jetty.util.ssl.X509;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
@@ -433,12 +434,12 @@ public class CertificateService {
 
     public boolean invalidateCertificate(CertificateView certificateView){
 
-        boolean retVal = CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
-        if(retVal){
+       // boolean retVal = CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
+       // if(retVal){
             return invalidateBelow(certificateView.getSerialNumber());
-        }
+       // }
 
-        return false;
+      //  return false;
 
     }
 
@@ -446,17 +447,22 @@ public class CertificateService {
 
         X509Certificate certificate = findCertBySerNum(new BigInteger(serialNumber));
         List<X509Certificate> allCertificates = getAllCerts("a");
-        for(X509Certificate c : allCertificates){
-            if(certificate.getSubjectDN().equals(c.getIssuerDN())){
-
-                    if(!CertificateStatusDAO.getInstance().isInvalid(c.getSerialNumber())){
-                        CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
-                        invalidateBelow(c.getSerialNumber().toString());
-                    }
+        boolean refresh = false;
+        for(int i = 0; i < allCertificates.size(); ++i){
+            if(refresh) {
+                i = 0;
+                refresh = false;
+            }
+            X509Certificate c = allCertificates.get(i);
+            if(certificate.getSubjectDN().equals(c.getIssuerDN()) && !CertificateStatusDAO.getInstance().isInvalid(c.getSerialNumber())){
+                CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+                certificate = c;
+                refresh = true;
+                i = 0;
 
             }
         }
-
+        CertificateStatusDAO.getInstance().invalidateCertificate(serialNumber); //to invalidate the passed one
         return true;
 
     }

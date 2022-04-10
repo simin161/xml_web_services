@@ -1,30 +1,26 @@
 [
   {
-    "certificateSerialNumber": 263696971,
+    "certificateSerialNumber": 9995042,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 989951256,
+    "certificateSerialNumber": 359789207,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 1087761594,
+    "certificateSerialNumber": 780435141,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 161618960,
-    "status": "INVALID"
-  },
-  {
-    "certificateSerialNumber": 1053648511,
-    "status": "INVALID"
-  },
-  {
-    "certificateSerialNumber": 1888370723,
+    "certificateSerialNumber": 131324155,
     "status": "VALID"
   },
   {
-    "certificateSerialNumber": 432851051,
-    "status": "INVALID"
+    "certificateSerialNumber": 1575152231,
+    "status": "VALID"
+  },
+  {
+    "certificateSerialNumber": 1522231789,
+    "status": "VALID"
   }
 ]

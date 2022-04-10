@@ -4,12 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="validation -&gt; certificate creation, select users">
+    <list default="true" id="236f4dc2-bb03-44b5-bbe0-b4e82e1f827e" name="Changes" comment="fixessssss">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/01053648511" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/0263696971" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/0704077671" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/989951256" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data/certificateStatuses.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/certificateStatuses.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/keystoreNames.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/keystoreNames.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao/CertificateStatusDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/CertificateStatusDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CertificateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/1875806872.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/2089098924.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/704077671.pdf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649540431063</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fixessssss">
+      <created>1649550386484</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1649550386484</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -206,15 +219,16 @@
     <MESSAGE value="pdfs" />
     <MESSAGE value="pdf - files" />
     <MESSAGE value="validation -&gt; certificate creation, select users" />
-    <option name="LAST_COMMIT_MESSAGE" value="validation -&gt; certificate creation, select users" />
+    <MESSAGE value="fixessssss" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixessssss" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/CertificateService.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="50" />
+          <line>447</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
