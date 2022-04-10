@@ -159,6 +159,8 @@ public class SparkAppMain {
 		get("/checkCA", (req, res) -> {
 			Session session = req.session(true);
 			User user = session.attribute("loggedUser");
+			if(user.getUserType() == UserType.ADMIN)
+				return true;
 			return certificateService.checkIfUserHasCA(user.getEmail());
 		});
 

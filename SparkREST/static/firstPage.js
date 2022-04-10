@@ -98,7 +98,7 @@ Vue.component('firstpage', {
                                     <tr>
                                          <td>Certificate type: </td>
                                          <td>
-                                           <select v-model="certificate.type" style="width:100%" >
+                                           <select v-model="certificate.type" style="width:100%" @change="changeUserIfRoot" >
                                                 <option style="display:none;">-----</option>
                                                 <option v-if="user.userType === 'ADMIN'" value="ROOT">Root</option>
                                                 <option value="INTERMEDIATE">Intermediate</option>
@@ -106,7 +106,6 @@ Vue.component('firstpage', {
                                            </select>
                                          </td>
                                     </tr>
-                                    <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
                                     <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
                                         <td>Certification path: </td>
                                         <td>
@@ -198,6 +197,17 @@ Vue.component('firstpage', {
         showDetails : function(c){
             axios.post("/saveChoosenCert", c)
                  .then(response => (router.push("/detailsScreen")))
+        },
+        changeUserIfRoot : function(){
+            if(this.certificate.type === 'ROOT'){
+                this.certificate.receiver = this.user;
+                 this.certificate.givenName = this.certificate.receiver.firstName;
+                 this.certificate.surname = this.certificate.receiver.lastName;
+                 this.certificate.organization = this.certificate.receiver.organizationName;
+                 this.certificate.organizationUnitName = this.certificate.receiver.organizationUnit;
+                 this.certificate.country = this.certificate.receiver.countryId;
+                 this.certificate.organizationEmail = this.certificate.receiver.email
+            }
         }
         ,
         showCreateFun : function(){

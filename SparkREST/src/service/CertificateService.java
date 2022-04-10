@@ -44,7 +44,6 @@ public class CertificateService {
             certificate.setCertificateStatus("OK");
             //CertificateDAO.getInstance().addCertificate(certificate);
             //String keyStoreName = findKeyStoreNameForCert(certificate.getPath());
-            X509Certificate choosenCertificate = findCertBySerNum(certificate.getPath());
 
             if(userService.checkExistanceOfEmail(certificate.getIssuerEmail())){
                 CertAndKeyGen keyGen = new CertAndKeyGen("RSA", "SHA1WithRSA", certificate.getIssuerEmail());
@@ -66,8 +65,11 @@ public class CertificateService {
                     serialNumber = serialNumber.replace("-","0");
 
                 LocalDate date = LocalDate.parse(certificate.getValidTo(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                if(choosenCertificate.getNotAfter().before(Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())))
-                    return false;
+                if(!certificate.getType().equals("ROOT")) {
+                    X509Certificate choosenCertificate = findCertBySerNum(certificate.getPath());
+                    if (choosenCertificate.getNotAfter().before(Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())))
+                        return false;
+                }
                 SubjectData subjectData = new SubjectData(keyGen.getPublicKey(), nameBuilder.build(), serialNumber, LocalDate.now(), date );
                 subjectData.setUserEmail(certificate.getIssuerEmail());
 
@@ -325,7 +327,8 @@ public class CertificateService {
             String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
             if(emailToCheck.equals(email))
                 retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
-                        cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));        }
+                        cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
+        }
 
         return retVal;
     }
@@ -337,7 +340,7 @@ public class CertificateService {
             String emailToCheckIssuer = cert.getIssuerDN().getName().split(",")[2].split("=")[1];
 //String issuerDN, String subjectDN, String isValid, String serialNumber, String signatureAlg, String version, String publicKey, String dateFrom, String dateTo, String signature) {
 
-                if(emailToCheck.equals(email) || emailToCheckIssuer.equals(email))
+            if(emailToCheck.equals(email) || emailToCheckIssuer.equals(email))
                 retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
                 cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
         }
