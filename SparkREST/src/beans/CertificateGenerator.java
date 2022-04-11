@@ -42,7 +42,7 @@ public class CertificateGenerator {
 			X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(issuerData.getX500name(),
 					new BigInteger(subjectData.getSerialNumber().trim()), Date.valueOf(subjectData.getStartDate()), Date.valueOf(subjectData.getEndDate()),
 					subjectData.getX500name(), subjectData.getPublicKey());
-			if(canSign) {
+			if(canSign) { //canSign -> ne ako moze da se potpise, nego ako moze DA potpisuje
 				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
 				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(canSign));
 			}

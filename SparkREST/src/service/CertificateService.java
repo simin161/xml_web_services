@@ -387,8 +387,10 @@ public class CertificateService {
        }
         boolean refresh = false;
         for(int i = 0; i < certs.size(); ++i){
-            if(refresh)
+            if(refresh) {
                 i = 0;
+                refresh = false;
+            }
             X509Certificate cert = certs.get(i);
             if(cert.getSubjectDN().equals(certificateBellow.getIssuerDN())){
                 retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),

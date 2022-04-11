@@ -68,7 +68,7 @@ Vue.component('firstpage', {
                 					    <td>Organization: </td>
                 					    <td><input type="text" disabled="disable" v-model="certificate.organization"/></td>
                 					    <td>Organizational unit name: </td>
-                					    <td><input type="text" disabled="disable" v-model="certificate.organizationUnitName"/></td>
+                					    <td><input type="text" disabled="disable" v-model="certificate.organizationalUnitName"/></td>
                 					    <td>Organization email: </td>
                 					    <td><input type="text" disabled="disable" v-model="certificate.organizationEmail"/></td>
                 					    <td>Country:</td>
@@ -204,7 +204,7 @@ Vue.component('firstpage', {
                  this.certificate.givenName = this.certificate.receiver.firstName;
                  this.certificate.surname = this.certificate.receiver.lastName;
                  this.certificate.organization = this.certificate.receiver.organizationName;
-                 this.certificate.organizationUnitName = this.certificate.receiver.organizationUnit;
+                 this.certificate.organizationalUnitName = this.certificate.receiver.organizationUnit;
                  this.certificate.country = this.certificate.receiver.countryId;
                  this.certificate.organizationEmail = this.certificate.receiver.email
             }

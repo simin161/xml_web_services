@@ -18,7 +18,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
-import java.security.Key;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
@@ -49,6 +51,26 @@ public class SparkAppMain {
 				} catch (CertificateExpiredException e) {
 					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
 				} catch (CertificateNotYetValidException e) {
+					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+				}
+
+				try{
+					List<CertificateView> above = certificateService.getCertsAbove(c.getSerialNumber().toString());
+					if(above.size() == 1){
+						System.out.println("root");
+						c.verify(c.getPublicKey());
+					}
+					else if(above.size() == 2){
+						System.out.println("prvi ispod root-a");
+						c.verify(certificateService.findCertBySerNum(new BigInteger(above.get(0).getSerialNumber())).getPublicKey());
+					}
+					else{
+						System.out.println("2 >");
+						c.verify(certificateService.findCertBySerNum(new BigInteger(above.get(above.size()-2).getSerialNumber())).getPublicKey());
+					}
+				}catch(CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException e){
+					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
+				} catch (SignatureException e) {
 					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
 				}
 			}

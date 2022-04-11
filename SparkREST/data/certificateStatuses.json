@@ -1,26 +1,50 @@
 [
   {
-    "certificateSerialNumber": 9995042,
+    "certificateSerialNumber": 1399286011,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 359789207,
+    "certificateSerialNumber": 1179053870,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 780435141,
+    "certificateSerialNumber": 26913653,
     "status": "INVALID"
   },
   {
-    "certificateSerialNumber": 131324155,
+    "certificateSerialNumber": 561756646,
     "status": "VALID"
   },
   {
-    "certificateSerialNumber": 1575152231,
+    "certificateSerialNumber": 1872505567,
     "status": "VALID"
   },
   {
-    "certificateSerialNumber": 1522231789,
+    "certificateSerialNumber": 1723482716,
+    "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 1763368146,
+    "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 1350661910,
+    "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 372923988,
+    "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 554629023,
     "status": "VALID"
+  },
+  {
+    "certificateSerialNumber": 20533062,
+    "status": "VALID"
+  },
+  {
+    "certificateSerialNumber": 775654280,
+    "status": "INVALID"
   }
 ]
