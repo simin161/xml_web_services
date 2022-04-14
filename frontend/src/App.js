@@ -5,7 +5,6 @@ import Main from './Main.js'
 function App() {
   return (
     <div className="App">
-      <Navbar />
       <Main />
     </div>
   );

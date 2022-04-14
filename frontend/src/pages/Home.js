@@ -1,5 +1,5 @@
 import React from 'react';
-  
+import Navbar from '../components/Navbar';
 const Home = () => {
   return (
     <div
@@ -10,7 +10,8 @@ const Home = () => {
         height: '100vh'
       }}
     >
-      <h1>Home</h1>
+      <Navbar></Navbar>
+
     </div>
   );
 };

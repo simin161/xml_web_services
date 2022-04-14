@@ -17,17 +17,11 @@ class Navbar extends React.Component {
         <Bars />
   
         <NavMenu>
-          <NavLink to='/sign-in' activeStyle>
-            Sign In
-          </NavLink>
-          <NavLink to='/sign-up' activeStyle>
-            Sign Up
-          </NavLink>
           {/* Second Nav */}
           {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
         </NavMenu>
         <NavBtn>
-          <NavBtnLink to='/signin'>Sign In</NavBtnLink>
+          <NavBtnLink style={{marginLeft: "750px"}} to='/signin'>Sign In/Sign Up</NavBtnLink>
         </NavBtn>
       </Nav>
     </>

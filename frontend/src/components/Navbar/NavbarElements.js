@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import ReactBootstrap, {Jumbotron, Button, Col, Grid, Panel, FormGroup} from 'react-bootstrap'
   
 export const Nav = styled.nav`
-  background: #63D471;
-  height: 85px;
+  background: #6f5b89;
+  height: 41px;
   display: flex;
+  width: 100%;
   justify-content: space-between;
   padding: 0.2rem calc((100vw - 1000px) / 2);
   z-index: 12;
@@ -15,7 +16,7 @@ export const Nav = styled.nav`
 `;
   
 export const NavLink = styled(Link)`
-  color: #808080;
+  color: white;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -29,7 +30,7 @@ export const NavLink = styled(Link)`
   
 export const Bars = styled(FaBars)`
   display: none;
-  color: #808080;
+  color: white;
   @media screen and (max-width: 768px) {
     display: block;
     position: absolute;
@@ -50,15 +51,12 @@ export const NavMenu = styled.div`
   /* Third Nav */
   /* width: 100vw;
   white-space: nowrap; */
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
   
 export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
-  margin-right: 24px;
+  margin-right: -20%;
   /* Third Nav */
   /* justify-content: flex-end;
   width: 100vw; */
@@ -69,7 +67,7 @@ export const NavBtn = styled.nav`
   
 export const NavBtnLink = styled(Link)`
   border-radius: 4px;
-  background: #808080;
+  background: white;
   padding: 10px 22px;
   color: #000000;
   outline: none;
@@ -78,7 +76,7 @@ export const NavBtnLink = styled(Link)`
   transition: all 0.2s ease-in-out;
   text-decoration: none;
   /* Second Nav */
-  margin-left: 24px;
+  margin-left: 40px;
   &:hover {
     transition: all 0.2s ease-in-out;
     background: #fff;
