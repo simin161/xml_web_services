@@ -7,9 +7,9 @@ import Home from './pages/Home';
 const Main = () => {
   return (
         <Routes> {/* The Switch decides which component to show based on the current URL.*/}
-            <Route exact path='/' component={Home}></Route>
-            <Route exact path='/signup' component={SignUp}></Route>
-            <Route exact path='/signin' component={SignIn}></Route>
+            <Route exact path='/' element={<Home/>}></Route>
+            <Route exact path='/signup' element={<SignUp/>}></Route>
+            <Route exact path='/signin' element={<SignIn/>}></Route>
         </Routes>
   );
 }
