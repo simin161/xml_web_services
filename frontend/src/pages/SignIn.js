@@ -1,6 +1,18 @@
 import React from 'react';
-  
+import axios from 'axios';
 const SignIn = () => {
+  
+  function register(){
+    console.log("ikad???");
+    axios.get('/api/register')
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   return (
     <div class = "main-div-login"
       style={{
@@ -30,7 +42,7 @@ const SignIn = () => {
               <input style={{marginTop: "-10px"}} type="text" name="txt" placeholder="Username" required=""/>
               <input style={{marginTop: "-10px"}} type="password" name="pswd" placeholder="Password" required=""/>
               <input style={{marginTop: "-10px"}} type="password" name="pswd" placeholder="Confirm Password" required=""/>
-              <button>Sign Up</button>
+              <button onClick={register}>Sign Up</button>
             </form>
           </div>
 
