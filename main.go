@@ -2,35 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-	//"github.com/gin-gonic/contrib/static"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Set the router as the default one shipped with Gin
-	router := gin.Default()
+	http.HandleFunc("/api/register", handler)
 
-	// Serve frontend static files
-	//router.Use(static.Serve("/", static.LocalFile("./views", true)))
-
-	// Setup route group for the API
-	api := router.Group("/api")
-	{
-		api.GET("/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "pong",
-			})
-		})
-
-		api.GET("/register", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "pong",
-			})
-			fmt.Println("aaaaa")
-		})
+	fmt.Printf("Starting server at port 8080\n")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
 	}
+}
 
-	// Start and run the server
-	router.Run(":8080")
+func handler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()                // Parses the request body
+	x := r.Form.Get("firstName") // x will be "" if parameter is not set
+	fmt.Println(r.GetBody())
+	fmt.Println(x)
 }
