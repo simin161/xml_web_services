@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="connected with database (probably ????)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="successfully inserted user (registration &quot;done&quot;)">
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +106,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="connected with database (probably ????)" />
-    <option name="LAST_COMMIT_MESSAGE" value="connected with database (probably ????)" />
+    <MESSAGE value="successfully inserted user (registration &quot;done&quot;)" />
+    <option name="LAST_COMMIT_MESSAGE" value="successfully inserted user (registration &quot;done&quot;)" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

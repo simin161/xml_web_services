@@ -89,7 +89,7 @@ return result, err
 
 func main() {
 
-	client, ctx, cancel, err := connect("mongodb://localhost:27017")
+	client, ctx, cancel, err := connect("mongodb://localhost:27017") //default port
 	if err != nil {
 		panic(err)
 	}
