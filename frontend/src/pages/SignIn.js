@@ -11,7 +11,7 @@ const SignIn = () => {
     var password = document.getElementById("password").value;
     var confirmPassword = document.getElementById("confirmPassword").value;
     if(confirmPassword === password){
-      axios.post('/api/register', {
+      axios.post('api/register', {
                                     'firstName' : firstName,
                                     'lastName' : lastName,
                                     'email' : email,
