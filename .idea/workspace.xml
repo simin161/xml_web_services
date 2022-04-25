@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="successfully inserted user (registration &quot;done&quot;)">
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="added comment for mongo port (ps all ports are default)">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proba.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_2022_11_37_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_10_2022_11_37_AM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_6_2022_11_53_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_6_2022_11_53_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_7_2022_8_02_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SparkREST/.idea/shelf/Uncommitted_changes_before_Update_at_4_7_2022_8_02_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +60,8 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Go" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
@@ -107,7 +114,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="connected with database (probably ????)" />
     <MESSAGE value="successfully inserted user (registration &quot;done&quot;)" />
-    <option name="LAST_COMMIT_MESSAGE" value="successfully inserted user (registration &quot;done&quot;)" />
+    <MESSAGE value="added comment for mongo port (ps all ports are default)" />
+    <option name="LAST_COMMIT_MESSAGE" value="added comment for mongo port (ps all ports are default)" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
