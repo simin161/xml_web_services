@@ -3,6 +3,8 @@ package startup
 import (
 	"context"
 	"fmt"
+	catalogueGw "github.com/simin161/common/proto/user_service"
+	cfg "github.com/simin161/api_gateway/startup/config"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -36,7 +38,7 @@ func (server *Server) initHandlers() {
 }
 
 func (server *Server) initCustomHandlers() {
-	userEndpoint := fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort)
+	//userEndpoint := fmt.Sprintf("%s:%s", server.config.UserServiceHost, server.config.UserServicePort)
 }
 
 func (server *Server) Start() {
