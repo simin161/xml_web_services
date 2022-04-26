@@ -4,22 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="grpc started">
-      <change afterPath="$PROJECT_DIR$/user_service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/infrastructure/api/order_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/infrastructure/api/order_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/infrastructure/services/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/infrastructure/services/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/main.go" afterDir="false" />
+    <list default="true" id="9d9ae81b-9bc3-4900-900f-f0bfa0d5986a" name="Changes" comment="missed file">
+      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +114,9 @@
     <MESSAGE value="successfully inserted user (registration &quot;done&quot;)" />
     <MESSAGE value="added comment for mongo port (ps all ports are default)" />
     <MESSAGE value="grpc started" />
-    <option name="LAST_COMMIT_MESSAGE" value="grpc started" />
+    <MESSAGE value="fixed client, server" />
+    <MESSAGE value="missed file" />
+    <option name="LAST_COMMIT_MESSAGE" value="missed file" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
