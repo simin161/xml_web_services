@@ -18,6 +18,7 @@ type Server struct {
 }
 
 func NewServer(config *cfg.Config) *Server {
+	fmt.Printf("new server")
 	server := &Server{
 		config: config,
 		mux:    runtime.NewServeMux(),
@@ -34,6 +35,8 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("init handlers")
 
 }
 
