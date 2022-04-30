@@ -13,7 +13,7 @@ public class AggregatorController {
     @Autowired
     private AggregatorService aggregatorService;
 
-    @PostMapping("/registerUser")
+    @PostMapping("/register")
     public void addUser(@RequestBody Map<String, String> message){
         aggregatorService.addUser(message);
     }
