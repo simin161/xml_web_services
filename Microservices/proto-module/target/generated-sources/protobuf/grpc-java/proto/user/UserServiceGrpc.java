@@ -91,6 +91,38 @@ public final class UserServiceGrpc {
      return getGetUserMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<proto.user.Input2,
+      proto.user.Output> getInvalidateUserMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "invalidateUser",
+      requestType = proto.user.Input2.class,
+      responseType = proto.user.Output.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<proto.user.Input2,
+      proto.user.Output> getInvalidateUserMethod() {
+    io.grpc.MethodDescriptor<proto.user.Input2, proto.user.Output> getInvalidateUserMethod;
+    if ((getInvalidateUserMethod = UserServiceGrpc.getInvalidateUserMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getInvalidateUserMethod = UserServiceGrpc.getInvalidateUserMethod) == null) {
+          UserServiceGrpc.getInvalidateUserMethod = getInvalidateUserMethod = 
+              io.grpc.MethodDescriptor.<proto.user.Input2, proto.user.Output>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "invalidateUser"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.Input2.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.Output.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("invalidateUser"))
+                  .build();
+          }
+        }
+     }
+     return getInvalidateUserMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<proto.user.Input,
       proto.user.Output> getUpdateUserMethod;
 
@@ -98,7 +130,7 @@ public final class UserServiceGrpc {
       fullMethodName = SERVICE_NAME + '/' + "updateUser",
       requestType = proto.user.Input.class,
       responseType = proto.user.Output.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<proto.user.Input,
       proto.user.Output> getUpdateUserMethod() {
     io.grpc.MethodDescriptor<proto.user.Input, proto.user.Output> getUpdateUserMethod;
@@ -107,7 +139,7 @@ public final class UserServiceGrpc {
         if ((getUpdateUserMethod = UserServiceGrpc.getUpdateUserMethod) == null) {
           UserServiceGrpc.getUpdateUserMethod = getUpdateUserMethod = 
               io.grpc.MethodDescriptor.<proto.user.Input, proto.user.Output>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "user.UserService", "updateUser"))
               .setSampledToLocalTracing(true)
@@ -151,9 +183,6 @@ public final class UserServiceGrpc {
   public static abstract class UserServiceImplBase implements io.grpc.BindableService {
 
     /**
-     * <pre>
-     * unary
-     * </pre>
      */
     public void addUser(proto.user.Input request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
@@ -161,9 +190,6 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * server stream
-     * </pre>
      */
     public void getUser(proto.user.Input1 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
@@ -171,13 +197,17 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * client stream
-     * </pre>
      */
-    public io.grpc.stub.StreamObserver<proto.user.Input> updateUser(
+    public void invalidateUser(proto.user.Input2 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-      return asyncUnimplementedStreamingCall(getUpdateUserMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getInvalidateUserMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void updateUser(proto.user.Input request,
+        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+      asyncUnimplementedUnaryCall(getUpdateUserMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -197,8 +227,15 @@ public final class UserServiceGrpc {
                 proto.user.Output>(
                   this, METHODID_GET_USER)))
           .addMethod(
+            getInvalidateUserMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                proto.user.Input2,
+                proto.user.Output>(
+                  this, METHODID_INVALIDATE_USER)))
+          .addMethod(
             getUpdateUserMethod(),
-            asyncClientStreamingCall(
+            asyncUnaryCall(
               new MethodHandlers<
                 proto.user.Input,
                 proto.user.Output>(
@@ -226,9 +263,6 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * unary
-     * </pre>
      */
     public void addUser(proto.user.Input request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
@@ -237,9 +271,6 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * server stream
-     * </pre>
      */
     public void getUser(proto.user.Input1 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
@@ -248,14 +279,19 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * client stream
-     * </pre>
      */
-    public io.grpc.stub.StreamObserver<proto.user.Input> updateUser(
+    public void invalidateUser(proto.user.Input2 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-      return asyncClientStreamingCall(
-          getChannel().newCall(getUpdateUserMethod(), getCallOptions()), responseObserver);
+      asyncUnaryCall(
+          getChannel().newCall(getInvalidateUserMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void updateUser(proto.user.Input request,
+        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -278,9 +314,6 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * unary
-     * </pre>
      */
     public proto.user.Output addUser(proto.user.Input request) {
       return blockingUnaryCall(
@@ -288,13 +321,24 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * server stream
-     * </pre>
      */
     public proto.user.Output getUser(proto.user.Input1 request) {
       return blockingUnaryCall(
           getChannel(), getGetUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.Output invalidateUser(proto.user.Input2 request) {
+      return blockingUnaryCall(
+          getChannel(), getInvalidateUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.Output updateUser(proto.user.Input request) {
+      return blockingUnaryCall(
+          getChannel(), getUpdateUserMethod(), getCallOptions(), request);
     }
   }
 
@@ -317,9 +361,6 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * unary
-     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> addUser(
         proto.user.Input request) {
@@ -328,20 +369,34 @@ public final class UserServiceGrpc {
     }
 
     /**
-     * <pre>
-     * server stream
-     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> getUser(
         proto.user.Input1 request) {
       return futureUnaryCall(
           getChannel().newCall(getGetUserMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> invalidateUser(
+        proto.user.Input2 request) {
+      return futureUnaryCall(
+          getChannel().newCall(getInvalidateUserMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> updateUser(
+        proto.user.Input request) {
+      return futureUnaryCall(
+          getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD_USER = 0;
   private static final int METHODID_GET_USER = 1;
-  private static final int METHODID_UPDATE_USER = 2;
+  private static final int METHODID_INVALIDATE_USER = 2;
+  private static final int METHODID_UPDATE_USER = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -368,6 +423,14 @@ public final class UserServiceGrpc {
           serviceImpl.getUser((proto.user.Input1) request,
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
           break;
+        case METHODID_INVALIDATE_USER:
+          serviceImpl.invalidateUser((proto.user.Input2) request,
+              (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
+          break;
+        case METHODID_UPDATE_USER:
+          serviceImpl.updateUser((proto.user.Input) request,
+              (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -378,9 +441,6 @@ public final class UserServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_UPDATE_USER:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.updateUser(
-              (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -434,6 +494,7 @@ public final class UserServiceGrpc {
               .setSchemaDescriptor(new UserServiceFileDescriptorSupplier())
               .addMethod(getAddUserMethod())
               .addMethod(getGetUserMethod())
+              .addMethod(getInvalidateUserMethod())
               .addMethod(getUpdateUserMethod())
               .build();
         }

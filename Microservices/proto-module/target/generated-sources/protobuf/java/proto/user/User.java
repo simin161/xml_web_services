@@ -25,6 +25,11 @@ public final class User {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_user_Input1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_user_Input2_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_user_Input2_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_user_Output_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -41,14 +46,16 @@ public final class User {
       "\n\017user/user.proto\022\004user\"_\n\005Input\022\021\n\tfirs" +
       "tName\030\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\022\r\n\005email\030\003" +
       " \001(\t\022\020\n\010username\030\004 \001(\t\022\020\n\010password\030\005 \001(\t" +
-      "\"\027\n\006Input1\022\r\n\005email\030\003 \001(\t\"p\n\006Output\022\016\n\006r" +
-      "esult\030\001 \001(\t\022\021\n\tfirstName\030\002 \001(\t\022\020\n\010lastNa" +
-      "me\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\020\n\010username\030\005 \001(" +
-      "\t\022\020\n\010password\030\006 \001(\t2\213\001\n\013UserService\022&\n\007a" +
-      "ddUser\022\013.user.Input\032\014.user.Output\"\000\022\'\n\007g" +
-      "etUser\022\014.user.Input1\032\014.user.Output\"\000\022+\n\n" +
-      "updateUser\022\013.user.Input\032\014.user.Output\"\000(" +
-      "\001B\016\n\nproto.userP\001b\006proto3"
+      "\"\027\n\006Input1\022\r\n\005email\030\003 \001(\t\"\035\n\006Input2\022\023\n\013a" +
+      "ccessToken\030\001 \001(\t\"p\n\006Output\022\016\n\006result\030\001 \001" +
+      "(\t\022\021\n\tfirstName\030\002 \001(\t\022\020\n\010lastName\030\003 \001(\t\022" +
+      "\r\n\005email\030\004 \001(\t\022\020\n\010username\030\005 \001(\t\022\020\n\010pass" +
+      "word\030\006 \001(\t2\271\001\n\013UserService\022&\n\007addUser\022\013." +
+      "user.Input\032\014.user.Output\"\000\022\'\n\007getUser\022\014." +
+      "user.Input1\032\014.user.Output\"\000\022.\n\016invalidat" +
+      "eUser\022\014.user.Input2\032\014.user.Output\"\000\022)\n\nu" +
+      "pdateUser\022\013.user.Input\032\014.user.Output\"\000B\016" +
+      "\n\nproto.userP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -74,8 +81,14 @@ public final class User {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_user_Input1_descriptor,
         new java.lang.String[] { "Email", });
-    internal_static_user_Output_descriptor =
+    internal_static_user_Input2_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_user_Input2_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_user_Input2_descriptor,
+        new java.lang.String[] { "AccessToken", });
+    internal_static_user_Output_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_user_Output_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_user_Output_descriptor,
