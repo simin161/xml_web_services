@@ -13,6 +13,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="aggregator-service" target="8" />
+      <module name="example-service" target="8" />
       <module name="proto-module" target="8" />
       <module name="spring-grpc" target="8" />
       <module name="user-service" target="8" />
@@ -22,7 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="aggregator-service" options="-parameters" />
       <module name="proto-module" options="-parameters" />
-      <module name="spring-grpc" options="-parameters" />
+      <module name="spring-grpc" options="" />
     </option>
   </component>
 </project>

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package example;
+
+option java_package = "proto.example";
+option java_multiple_files = true;
+
+message Input {
+  string result = 1;
+}
+
+message Output {
+  string result = 1;
+
+}
+
+service UserService {
+  rpc exampleMethod(Input) returns (Output) {};
+}

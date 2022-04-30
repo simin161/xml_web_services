@@ -20,6 +20,7 @@
         <module>proto-module</module>
         <module>user-service</module>
         <module>aggregator-service</module>
+        <module>example-service</module>
     </modules>
 
     <dependencies>

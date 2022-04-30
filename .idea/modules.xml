@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Projekat.iml" filepath="$PROJECT_DIR$/.idea/Projekat.iml" />
       <module fileurl="file://$PROJECT_DIR$/Microservices/aggregator-service/aggregator-service.iml" filepath="$PROJECT_DIR$/Microservices/aggregator-service/aggregator-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices/example-service/example-service.iml" filepath="$PROJECT_DIR$/Microservices/example-service/example-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/Microservices/proto-module/proto-module.iml" filepath="$PROJECT_DIR$/Microservices/proto-module/proto-module.iml" />
       <module fileurl="file://$PROJECT_DIR$/Microservices/spring-grpc.iml" filepath="$PROJECT_DIR$/Microservices/spring-grpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/Microservices/calculator-service/user-service.iml" filepath="$PROJECT_DIR$/Microservices/calculator-service/user-service.iml" />
