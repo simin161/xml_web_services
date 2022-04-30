@@ -14,7 +14,8 @@ message Input {
 }
 
 message Input1 {
-  string email = 3;
+  string email = 1;
+  string password = 2;
 }
 
 message Input2 {
@@ -34,7 +35,7 @@ service UserService {
 
   rpc addUser(Input) returns (Output) {};
 
-  rpc getUser(Input1) returns (Output) {};
+  rpc logInUser(Input1) returns (Output) {};
 
   rpc invalidateUser(Input2) returns (Output) {};
 

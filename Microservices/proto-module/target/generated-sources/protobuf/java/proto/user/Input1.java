@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private Input1() {
     email_ = "";
+    password_ = "";
   }
 
   @java.lang.Override
@@ -43,10 +44,16 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 26: {
+          case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
             email_ = s;
+            break;
+          }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            password_ = s;
             break;
           }
           default: {
@@ -81,10 +88,10 @@ private static final long serialVersionUID = 0L;
             proto.user.Input1.class, proto.user.Input1.Builder.class);
   }
 
-  public static final int EMAIL_FIELD_NUMBER = 3;
+  public static final int EMAIL_FIELD_NUMBER = 1;
   private volatile java.lang.Object email_;
   /**
-   * <code>string email = 3;</code>
+   * <code>string email = 1;</code>
    */
   public java.lang.String getEmail() {
     java.lang.Object ref = email_;
@@ -99,7 +106,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string email = 3;</code>
+   * <code>string email = 1;</code>
    */
   public com.google.protobuf.ByteString
       getEmailBytes() {
@@ -109,6 +116,40 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       email_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PASSWORD_FIELD_NUMBER = 2;
+  private volatile java.lang.Object password_;
+  /**
+   * <code>string password = 2;</code>
+   */
+  public java.lang.String getPassword() {
+    java.lang.Object ref = password_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      password_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string password = 2;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPasswordBytes() {
+    java.lang.Object ref = password_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      password_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -130,7 +171,10 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!getEmailBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, email_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, email_);
+    }
+    if (!getPasswordBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
     }
     unknownFields.writeTo(output);
   }
@@ -142,7 +186,10 @@ private static final long serialVersionUID = 0L;
 
     size = 0;
     if (!getEmailBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, email_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, email_);
+    }
+    if (!getPasswordBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -162,6 +209,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && getEmail()
         .equals(other.getEmail());
+    result = result && getPassword()
+        .equals(other.getPassword());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -175,6 +224,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + EMAIL_FIELD_NUMBER;
     hash = (53 * hash) + getEmail().hashCode();
+    hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
+    hash = (53 * hash) + getPassword().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -310,6 +361,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       email_ = "";
 
+      password_ = "";
+
       return this;
     }
 
@@ -337,6 +390,7 @@ private static final long serialVersionUID = 0L;
     public proto.user.Input1 buildPartial() {
       proto.user.Input1 result = new proto.user.Input1(this);
       result.email_ = email_;
+      result.password_ = password_;
       onBuilt();
       return result;
     }
@@ -389,6 +443,10 @@ private static final long serialVersionUID = 0L;
         email_ = other.email_;
         onChanged();
       }
+      if (!other.getPassword().isEmpty()) {
+        password_ = other.password_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -420,7 +478,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object email_ = "";
     /**
-     * <code>string email = 3;</code>
+     * <code>string email = 1;</code>
      */
     public java.lang.String getEmail() {
       java.lang.Object ref = email_;
@@ -435,7 +493,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string email = 3;</code>
+     * <code>string email = 1;</code>
      */
     public com.google.protobuf.ByteString
         getEmailBytes() {
@@ -451,7 +509,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string email = 3;</code>
+     * <code>string email = 1;</code>
      */
     public Builder setEmail(
         java.lang.String value) {
@@ -464,7 +522,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string email = 3;</code>
+     * <code>string email = 1;</code>
      */
     public Builder clearEmail() {
       
@@ -473,7 +531,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string email = 3;</code>
+     * <code>string email = 1;</code>
      */
     public Builder setEmailBytes(
         com.google.protobuf.ByteString value) {
@@ -483,6 +541,75 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       email_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object password_ = "";
+    /**
+     * <code>string password = 2;</code>
+     */
+    public java.lang.String getPassword() {
+      java.lang.Object ref = password_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        password_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string password = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPasswordBytes() {
+      java.lang.Object ref = password_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        password_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string password = 2;</code>
+     */
+    public Builder setPassword(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      password_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string password = 2;</code>
+     */
+    public Builder clearPassword() {
+      
+      password_ = getDefaultInstance().getPassword();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string password = 2;</code>
+     */
+    public Builder setPasswordBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      password_ = value;
       onChanged();
       return this;
     }

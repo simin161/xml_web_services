@@ -24,9 +24,9 @@ public class AggregatorController {
         return aggregatorService.invalidateUser("");
     }
 
-    @GetMapping("/getUser")
-    public void getUser(){
-
+    @PostMapping("/logInUser")
+    public String logInUser(@RequestBody Map<String, String> message){
+        return aggregatorService.logInUser(message);
     }
 
     @PostMapping("/updateUser")

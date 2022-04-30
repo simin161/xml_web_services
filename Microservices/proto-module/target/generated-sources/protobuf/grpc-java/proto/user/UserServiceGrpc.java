@@ -60,35 +60,35 @@ public final class UserServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<proto.user.Input1,
-      proto.user.Output> getGetUserMethod;
+      proto.user.Output> getLogInUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "getUser",
+      fullMethodName = SERVICE_NAME + '/' + "logInUser",
       requestType = proto.user.Input1.class,
       responseType = proto.user.Output.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<proto.user.Input1,
-      proto.user.Output> getGetUserMethod() {
-    io.grpc.MethodDescriptor<proto.user.Input1, proto.user.Output> getGetUserMethod;
-    if ((getGetUserMethod = UserServiceGrpc.getGetUserMethod) == null) {
+      proto.user.Output> getLogInUserMethod() {
+    io.grpc.MethodDescriptor<proto.user.Input1, proto.user.Output> getLogInUserMethod;
+    if ((getLogInUserMethod = UserServiceGrpc.getLogInUserMethod) == null) {
       synchronized (UserServiceGrpc.class) {
-        if ((getGetUserMethod = UserServiceGrpc.getGetUserMethod) == null) {
-          UserServiceGrpc.getGetUserMethod = getGetUserMethod = 
+        if ((getLogInUserMethod = UserServiceGrpc.getLogInUserMethod) == null) {
+          UserServiceGrpc.getLogInUserMethod = getLogInUserMethod = 
               io.grpc.MethodDescriptor.<proto.user.Input1, proto.user.Output>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "user.UserService", "getUser"))
+                  "user.UserService", "logInUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   proto.user.Input1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   proto.user.Output.getDefaultInstance()))
-                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("getUser"))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("logInUser"))
                   .build();
           }
         }
      }
-     return getGetUserMethod;
+     return getLogInUserMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<proto.user.Input2,
@@ -191,9 +191,9 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void getUser(proto.user.Input1 request,
+    public void logInUser(proto.user.Input1 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetUserMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getLogInUserMethod(), responseObserver);
     }
 
     /**
@@ -220,12 +220,12 @@ public final class UserServiceGrpc {
                 proto.user.Output>(
                   this, METHODID_ADD_USER)))
           .addMethod(
-            getGetUserMethod(),
+            getLogInUserMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 proto.user.Input1,
                 proto.user.Output>(
-                  this, METHODID_GET_USER)))
+                  this, METHODID_LOG_IN_USER)))
           .addMethod(
             getInvalidateUserMethod(),
             asyncUnaryCall(
@@ -272,10 +272,10 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void getUser(proto.user.Input1 request,
+    public void logInUser(proto.user.Input1 request,
         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetUserMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getLogInUserMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -322,9 +322,9 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public proto.user.Output getUser(proto.user.Input1 request) {
+    public proto.user.Output logInUser(proto.user.Input1 request) {
       return blockingUnaryCall(
-          getChannel(), getGetUserMethod(), getCallOptions(), request);
+          getChannel(), getLogInUserMethod(), getCallOptions(), request);
     }
 
     /**
@@ -370,10 +370,10 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> getUser(
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> logInUser(
         proto.user.Input1 request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetUserMethod(), getCallOptions()), request);
+          getChannel().newCall(getLogInUserMethod(), getCallOptions()), request);
     }
 
     /**
@@ -394,7 +394,7 @@ public final class UserServiceGrpc {
   }
 
   private static final int METHODID_ADD_USER = 0;
-  private static final int METHODID_GET_USER = 1;
+  private static final int METHODID_LOG_IN_USER = 1;
   private static final int METHODID_INVALIDATE_USER = 2;
   private static final int METHODID_UPDATE_USER = 3;
 
@@ -419,8 +419,8 @@ public final class UserServiceGrpc {
           serviceImpl.addUser((proto.user.Input) request,
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
           break;
-        case METHODID_GET_USER:
-          serviceImpl.getUser((proto.user.Input1) request,
+        case METHODID_LOG_IN_USER:
+          serviceImpl.logInUser((proto.user.Input1) request,
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
           break;
         case METHODID_INVALIDATE_USER:
@@ -493,7 +493,7 @@ public final class UserServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new UserServiceFileDescriptorSupplier())
               .addMethod(getAddUserMethod())
-              .addMethod(getGetUserMethod())
+              .addMethod(getLogInUserMethod())
               .addMethod(getInvalidateUserMethod())
               .addMethod(getUpdateUserMethod())
               .build();

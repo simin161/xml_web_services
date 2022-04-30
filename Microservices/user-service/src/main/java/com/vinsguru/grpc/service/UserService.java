@@ -25,8 +25,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void getUser(proto.user.Input1 request, io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-
+    public void logInUser(proto.user.Input1 request, io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
+        proto.user.Output output;
+        if(user != null && user.getPassword().equals(request.getPassword()))
+            output = Output.newBuilder().setResult(Tokens.generateToken(user.getUsername(), user.getEmail())).build();
+        else
+            output = Output.newBuilder().setResult("false").build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
     }
 
     @Override
