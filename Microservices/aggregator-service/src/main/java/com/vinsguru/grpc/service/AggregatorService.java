@@ -11,6 +11,8 @@ import proto.user.UserServiceGrpc;
 import reactor.core.publisher.Flux;
 import java.util.Map;
 
+import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUserService;
+
 @Service
 public class AggregatorService {
 
@@ -18,26 +20,20 @@ public class AggregatorService {
     private UserServiceGrpc.UserServiceBlockingStub blockingStub;
 
     public String addUser(Map<String,String> message) {
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        blockingStub = openChannelToUserService();
         Input input = Input.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
                 .setLastName(message.get("lastName")).setPassword(message.get("password")).setUsername(message.get("username")).build();
         return this.blockingStub.addUser(input).getResult();
     }
 
     public String invalidateUser(String value){
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        blockingStub = openChannelToUserService();
         Input2 input = Input2.newBuilder().setAccessToken(value).build();
         return this.blockingStub.invalidateUser(input).getResult();
     }
 
     public String logInUser(Map<String, String> message) {
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        blockingStub = openChannelToUserService();
         Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
         return this.blockingStub.logInUser(input).getResult();
     }
