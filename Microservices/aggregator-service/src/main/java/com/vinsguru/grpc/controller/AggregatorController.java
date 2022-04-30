@@ -19,6 +19,11 @@ public class AggregatorController {
         return aggregatorService.addUser(message);
     }
 
+    @GetMapping("/invalidateUser")
+    public String invalidateUser(){
+        return aggregatorService.invalidateUser("");
+    }
+
     @GetMapping("/getUser")
     public void getUser(){
 

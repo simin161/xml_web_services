@@ -31,6 +31,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void invalidateUser(proto.user.Input2 request, io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-
+        proto.user.Output output = Output.newBuilder().setResult("").build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
     }
 }

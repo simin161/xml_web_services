@@ -25,11 +25,11 @@ public class AggregatorService {
         return this.blockingStub.addUser(input).getResult();
     }
 
-    public void invalidateUser(String value){
+    public String invalidateUser(String value){
         ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
         Channel channel = channelBuilder.build();
         blockingStub = UserServiceGrpc.newBlockingStub(channel);
         Input2 input = Input2.newBuilder().setAccessToken(value).build();
-        this.blockingStub.invalidateUser(input);
+        return this.blockingStub.invalidateUser(input).getResult();
     }
 }
