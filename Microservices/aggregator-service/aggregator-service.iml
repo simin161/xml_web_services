@@ -124,5 +124,8 @@
     <orderEntry type="module" module-name="spring-grpc" />
     <orderEntry type="library" name="Maven: io.projectreactor:reactor-core:3.4.12" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-sync:4.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:4.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.2.3" level="project" />
   </component>
 </module>

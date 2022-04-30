@@ -8,13 +8,15 @@ const SignIn = () => {
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
     var email = document.getElementById("email").value;
+    var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
     var confirmPassword = document.getElementById("confirmPassword").value;
     if(confirmPassword === password){
-      axios.post('api/register', {
+      axios.post('/register', {
                                     'firstName' : firstName,
                                     'lastName' : lastName,
                                     'email' : email,
+                                    'username' : username,
                                     'password' : password
                                   })
       .then(function (response) {
