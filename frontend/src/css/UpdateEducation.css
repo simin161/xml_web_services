@@ -1,0 +1,15 @@
+input{
+	width: 60%;
+	height: 35px;
+	background: white;
+	justify-content: left;
+	display: flex;
+	border: 1px solid purple;
+	outline: none;
+	border-radius: 5px;
+   
+}
+body {
+    background-color: #b594f1
+
+}
