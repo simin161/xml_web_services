@@ -15,7 +15,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void addUser(proto.user.Input request,
-                        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         System.out.println("MIKROSERVIS AAAAAAA");
         UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword()));
         ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6566).usePlaintext();

@@ -44,21 +44,14 @@ const SignIn = () => {
 
           <div class="signup">
               <label for="chk" aria-hidden="true">Sign up</label>
-              <table style={{paddingLeft: "58px", marginTop: "-55px"}}>
-                <tr>
-                  <td>
-                    <input style={{width: "94px"}} id="firstName" type="text" name="txt" placeholder="First name" required="true"/>
-                  </td>
-                  <td>
-                    <input style={{width: "94px"}} id="lastName" type="text" name="txt" placeholder="Last name" required="true"/>
-                  </td>
-                </tr>
-              </table>
+              <input style={{marginTop: "-10px"}} id="firstName" type="text" name="txt" placeholder="First name" required="true"/>
+              <input style={{marginTop: "-10px"}} id="lastName" type="text" name="txt" placeholder="Last name" required="true"/>
               <input style={{marginTop: "-10px"}} id="email" type="email" name="email" placeholder="Email" required="true"/>
               <input style={{marginTop: "-10px"}} id="username" type="text" name="txt" placeholder="Username" required="true"/>
               <input style={{marginTop: "-10px"}} id="password" type="password" name="pswd" placeholder="Password" required="true"/>
               <input style={{marginTop: "-10px"}} id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required="true"/>
               <button onClick={ e => register(e)}>Sign Up</button>
+          
           </div>
 
           <div class="login">

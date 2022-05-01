@@ -1,0 +1,53 @@
+.edit-profile-card{
+   margin-left: 10%;
+   margin-right: 10%;
+   margin-top: 5%;
+}
+input{
+	width: 60%;
+	height: 35px;
+	background: white;
+	justify-content: left;
+	display: flex;
+	border: 1px solid purple;
+	outline: none;
+	border-radius: 5px;
+   
+}
+select{
+    width: 60%;
+	height: 35px;
+	background: white;
+	justify-content: left;
+	display: flex;
+	border: 1px solid purple;
+	outline: none;
+	border-radius: 5px;
+   
+}
+#molimTe{
+    width: 70%;
+	height: 35px;
+    padding-left: 158px;
+    padding-top: 15px;
+}
+.inputFieldsDiv{
+    text-align: left;
+} 
+
+p {
+    font-size: 15px;
+    font-weight: bold;
+    padding-top: 25px
+  
+}
+
+textarea{
+    border: 1px solid purple;
+    width: 100%;
+    height: 150px
+}
+body {
+    background-color: #b594f1
+
+}

@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+import './css/AccountSettings.css'
+import './css/ProfilePage.css'
+import './css/EditProfile.css'
+import './css/UpdateEducation.css'
 import Main from './Main';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';

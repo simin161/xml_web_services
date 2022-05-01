@@ -1,13 +1,22 @@
 import React from 'react';
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import { BrowserRouter, Route,Routes, NavLink, HashRouter } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import Home from './pages/Home';
-
+import AccountSettings from './pages/AccountSettings';
+import ProfilePage from './pages/ProfilePage';
+import EditProfile from './pages/EditProfile'
+import UpdateEducation from './pages/UpdateEducation'
+import UpdateWorkExperience  from './pages/UpdateWorkExperience';
 const Main = () => {
   return (
         <Routes> {/* The Switch decides which component to show based on the current URL.*/}
             <Route exact path='/' element={<Home/>}></Route>
             <Route exact path='/signin' element={<SignIn/>}></Route>
+            <Route exact path='/accountSettings' element={<AccountSettings/>}></Route>
+            <Route exact path='/profilePage' element={<ProfilePage/>}></Route>
+            <Route exact path='/editProfile' element={<EditProfile/>}></Route>
+            <Route exact path='/updateEducation' element={<UpdateEducation/>}></Route>
+            <Route exact path='/updateWorkExperience' element={<UpdateWorkExperience/>}></Route>
         </Routes>
   );
 }
