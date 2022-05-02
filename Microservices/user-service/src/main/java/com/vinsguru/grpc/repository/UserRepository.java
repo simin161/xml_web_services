@@ -57,4 +57,8 @@ public class UserRepository {
         }
         return retVal;
     }
+
+    public List<Document> getAllUsers(){
+        return (List<Document>) usersCollection.find();
+    }
 }

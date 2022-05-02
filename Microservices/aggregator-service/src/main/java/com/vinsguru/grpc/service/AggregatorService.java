@@ -9,6 +9,8 @@ import proto.user.Input1;
 import proto.user.Input2;
 import proto.user.UserServiceGrpc;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 import java.util.Map;
 
 import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUserService;
@@ -36,5 +38,9 @@ public class AggregatorService {
         blockingStub = openChannelToUserService();
         Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
         return this.blockingStub.logInUser(input).getResult();
+    }
+
+    public List<String> getUsers(){
+        return null;
     }
 }

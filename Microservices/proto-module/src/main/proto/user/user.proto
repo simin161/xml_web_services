@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package user;
 
+import "google/protobuf/empty.proto";
+
 option java_package = "proto.user";
 option java_multiple_files = true;
 
@@ -31,6 +33,12 @@ message Output {
   string password = 6;
 }
 
+message Output2 {
+
+  repeated Input user = 1;
+
+}
+
 service UserService {
 
   rpc addUser(Input) returns (Output) {};
@@ -40,5 +48,7 @@ service UserService {
   rpc invalidateUser(Input2) returns (Output) {};
 
   rpc updateUser(Input) returns (Output) {};
+
+  rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
 
 }

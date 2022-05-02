@@ -155,6 +155,38 @@ public final class UserServiceGrpc {
      return getUpdateUserMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
+      proto.user.Output2> getGetAllUsersMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getAllUsers",
+      requestType = com.google.protobuf.Empty.class,
+      responseType = proto.user.Output2.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.google.protobuf.Empty,
+      proto.user.Output2> getGetAllUsersMethod() {
+    io.grpc.MethodDescriptor<com.google.protobuf.Empty, proto.user.Output2> getGetAllUsersMethod;
+    if ((getGetAllUsersMethod = UserServiceGrpc.getGetAllUsersMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getGetAllUsersMethod = UserServiceGrpc.getGetAllUsersMethod) == null) {
+          UserServiceGrpc.getGetAllUsersMethod = getGetAllUsersMethod = 
+              io.grpc.MethodDescriptor.<com.google.protobuf.Empty, proto.user.Output2>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "getAllUsers"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.Empty.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.Output2.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("getAllUsers"))
+                  .build();
+          }
+        }
+     }
+     return getGetAllUsersMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -210,6 +242,13 @@ public final class UserServiceGrpc {
       asyncUnimplementedUnaryCall(getUpdateUserMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getAllUsers(com.google.protobuf.Empty request,
+        io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetAllUsersMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -240,6 +279,13 @@ public final class UserServiceGrpc {
                 proto.user.Input,
                 proto.user.Output>(
                   this, METHODID_UPDATE_USER)))
+          .addMethod(
+            getGetAllUsersMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.google.protobuf.Empty,
+                proto.user.Output2>(
+                  this, METHODID_GET_ALL_USERS)))
           .build();
     }
   }
@@ -293,6 +339,14 @@ public final class UserServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getAllUsers(com.google.protobuf.Empty request,
+        io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetAllUsersMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -339,6 +393,13 @@ public final class UserServiceGrpc {
     public proto.user.Output updateUser(proto.user.Input request) {
       return blockingUnaryCall(
           getChannel(), getUpdateUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.Output2 getAllUsers(com.google.protobuf.Empty request) {
+      return blockingUnaryCall(
+          getChannel(), getGetAllUsersMethod(), getCallOptions(), request);
     }
   }
 
@@ -391,12 +452,21 @@ public final class UserServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output2> getAllUsers(
+        com.google.protobuf.Empty request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetAllUsersMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD_USER = 0;
   private static final int METHODID_LOG_IN_USER = 1;
   private static final int METHODID_INVALIDATE_USER = 2;
   private static final int METHODID_UPDATE_USER = 3;
+  private static final int METHODID_GET_ALL_USERS = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -430,6 +500,10 @@ public final class UserServiceGrpc {
         case METHODID_UPDATE_USER:
           serviceImpl.updateUser((proto.user.Input) request,
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
+          break;
+        case METHODID_GET_ALL_USERS:
+          serviceImpl.getAllUsers((com.google.protobuf.Empty) request,
+              (io.grpc.stub.StreamObserver<proto.user.Output2>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -496,6 +570,7 @@ public final class UserServiceGrpc {
               .addMethod(getLogInUserMethod())
               .addMethod(getInvalidateUserMethod())
               .addMethod(getUpdateUserMethod())
+              .addMethod(getGetAllUsersMethod())
               .build();
         }
       }

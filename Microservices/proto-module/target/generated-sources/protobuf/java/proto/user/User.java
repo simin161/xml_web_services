@@ -34,6 +34,11 @@ public final class User {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_user_Output_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_user_Output2_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_user_Output2_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -43,20 +48,23 @@ public final class User {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017user/user.proto\022\004user\"_\n\005Input\022\021\n\tfirs" +
-      "tName\030\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\022\r\n\005email\030\003" +
-      " \001(\t\022\020\n\010username\030\004 \001(\t\022\020\n\010password\030\005 \001(\t" +
-      "\")\n\006Input1\022\r\n\005email\030\001 \001(\t\022\020\n\010password\030\002 " +
-      "\001(\t\"\035\n\006Input2\022\023\n\013accessToken\030\001 \001(\t\"p\n\006Ou" +
-      "tput\022\016\n\006result\030\001 \001(\t\022\021\n\tfirstName\030\002 \001(\t\022" +
-      "\020\n\010lastName\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\020\n\010user" +
-      "name\030\005 \001(\t\022\020\n\010password\030\006 \001(\t2\273\001\n\013UserSer" +
-      "vice\022&\n\007addUser\022\013.user.Input\032\014.user.Outp" +
-      "ut\"\000\022)\n\tlogInUser\022\014.user.Input1\032\014.user.O" +
-      "utput\"\000\022.\n\016invalidateUser\022\014.user.Input2\032" +
-      "\014.user.Output\"\000\022)\n\nupdateUser\022\013.user.Inp" +
-      "ut\032\014.user.Output\"\000B\016\n\nproto.userP\001b\006prot" +
-      "o3"
+      "\n\017user/user.proto\022\004user\032\033google/protobuf" +
+      "/empty.proto\"_\n\005Input\022\021\n\tfirstName\030\001 \001(\t" +
+      "\022\020\n\010lastName\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\020\n\010use" +
+      "rname\030\004 \001(\t\022\020\n\010password\030\005 \001(\t\")\n\006Input1\022" +
+      "\r\n\005email\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"\035\n\006Inpu" +
+      "t2\022\023\n\013accessToken\030\001 \001(\t\"p\n\006Output\022\016\n\006res" +
+      "ult\030\001 \001(\t\022\021\n\tfirstName\030\002 \001(\t\022\020\n\010lastName" +
+      "\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\020\n\010username\030\005 \001(\t\022" +
+      "\020\n\010password\030\006 \001(\t\"$\n\007Output2\022\031\n\004user\030\001 \003" +
+      "(\0132\013.user.Input2\363\001\n\013UserService\022&\n\007addUs" +
+      "er\022\013.user.Input\032\014.user.Output\"\000\022)\n\tlogIn" +
+      "User\022\014.user.Input1\032\014.user.Output\"\000\022.\n\016in" +
+      "validateUser\022\014.user.Input2\032\014.user.Output" +
+      "\"\000\022)\n\nupdateUser\022\013.user.Input\032\014.user.Out" +
+      "put\"\000\0226\n\013getAllUsers\022\026.google.protobuf.E" +
+      "mpty\032\r.user.Output2\"\000B\016\n\nproto.userP\001b\006p" +
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -69,6 +77,7 @@ public final class User {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.google.protobuf.EmptyProto.getDescriptor(),
         }, assigner);
     internal_static_user_Input_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -94,6 +103,13 @@ public final class User {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_user_Output_descriptor,
         new java.lang.String[] { "Result", "FirstName", "LastName", "Email", "Username", "Password", });
+    internal_static_user_Output2_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_user_Output2_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_user_Output2_descriptor,
+        new java.lang.String[] { "User", });
+    com.google.protobuf.EmptyProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

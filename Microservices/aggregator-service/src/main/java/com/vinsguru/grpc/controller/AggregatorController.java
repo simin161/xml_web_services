@@ -3,8 +3,10 @@ package com.vinsguru.grpc.controller;
 import com.vinsguru.grpc.service.AggregatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import proto.user.User;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,6 +34,11 @@ public class AggregatorController {
     @PostMapping("/updateUser")
     public void updateUser(){
 
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<String> getUsers(){
+        return aggregatorService.getUsers();
     }
 
 }
