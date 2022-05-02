@@ -1,8 +1,10 @@
 package com.vinsguru.grpc.controller;
 
+import com.vinsguru.grpc.dto.UserDTO;
 import com.vinsguru.grpc.service.AggregatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import proto.user.Input;
 import proto.user.User;
 import reactor.core.publisher.Flux;
 
@@ -37,7 +39,7 @@ public class AggregatorController {
     }
 
     @GetMapping("/getAllUsers")
-    public List<String> getUsers(){
+    public List<UserDTO> getUsers(){
         return aggregatorService.getUsers();
     }
 

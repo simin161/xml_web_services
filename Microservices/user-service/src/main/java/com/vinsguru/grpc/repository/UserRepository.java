@@ -2,14 +2,13 @@ package com.vinsguru.grpc.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+
+import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.vinsguru.grpc.model.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import proto.user.Input;
 
 public class UserRepository {
     private static UserRepository instance = null;
@@ -58,7 +57,17 @@ public class UserRepository {
         return retVal;
     }
 
-    public List<Document> getAllUsers(){
-        return (List<Document>) usersCollection.find();
+    public List<User> getAllUsers(){
+
+        FindIterable<Document> iterable = usersCollection.find();
+        List<User> retVal = new ArrayList<User>();
+        for(Document d : iterable){
+           // Input i = Input.newBuilder().setFirstName(d.getString("firstName")).setLastName(d.getString("lastName")).setEmail(d.getString("email"))
+           //         .setUsername(d.getString("username")).setPassword(d.getString("password")).build();
+            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"));
+            retVal.add(u);
+        }
+        //return  usersCollection.find();
+        return retVal;
     }
 }

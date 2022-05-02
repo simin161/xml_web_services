@@ -1,19 +1,15 @@
 package com.vinsguru.grpc.service;
 
+import com.vinsguru.grpc.dto.UserDTO;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
-import proto.user.Input;
-import proto.user.Input1;
-import proto.user.Input2;
-import proto.user.UserServiceGrpc;
-<<<<<<< HEAD
+import proto.user.*;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.List;
-=======
->>>>>>> master
 import java.util.Map;
 
 import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUserService;
@@ -44,7 +40,19 @@ public class AggregatorService {
         return this.blockingStub.logInUser(input).getResult();
     }
 
-    public List<String> getUsers(){
-        return null;
+    public List<UserDTO> getUsers(){
+
+        com.google.protobuf.Empty request = null;
+        blockingStub = openChannelToUserService();
+        //List<Input> retval =  this.blockingStub.getAllUsers(request).getUserList();
+
+        List<UserDTO> retVal = new ArrayList<UserDTO>();
+
+        for(Input i : this.blockingStub.getAllUsers(request).getUserList()){
+            UserDTO userDTO = new UserDTO(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+            retVal.add(userDTO);
+        }
+
+        return retVal;
     }
 }

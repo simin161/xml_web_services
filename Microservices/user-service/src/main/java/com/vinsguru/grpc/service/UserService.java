@@ -52,14 +52,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void getAllUsers(com.google.protobuf.Empty request, io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver){
 
-        List<Document> documentedUsers = UserRepository.getInstance().getAllUsers();
+        List<User> documentedUsers = UserRepository.getInstance().getAllUsers();
         List<Input> inputs = new ArrayList<Input>();
-
-        for(Document d : documentedUsers){
-            Input i = Input.newBuilder().setFirstName(d.getString("firstName")).setLastName(d.getString("lastName")).setEmail(d.getString("email")).setPassword(d.getString("password")).setUsername(d.getString("username")).build();
+        for(User u : documentedUsers){
+            Input i = Input.newBuilder().setUsername(u.getUsername()).setLastName(u.getLastName()).setPassword(u.getPassword()).setEmail(u.getEmail()).setFirstName(u.getFirstName()).build();
             inputs.add(i);
         }
-
         proto.user.Output2 output2;
         output2 = Output2.newBuilder().addAllUser(inputs).build();
         responseObserver.onNext(output2);
