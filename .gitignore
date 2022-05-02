@@ -3,7 +3,9 @@
 /fronted/node_modules
 /Microservices/aggregator-service/target
 /Microservices/aggregator-service/aggregator-service.iml
-/Microservices/proto-module/target/proto-module.iml
-/Microservices/user-service/target/user-service.iml
+/Microservices/proto-module/target
+/Microservices/proto-module/proto-module.iml
+/Microservices/user-service/user-service.iml
+/Microservices/user-service/target
 /Microservices/spring-grpc.iml
 /Microservices/calculator-service

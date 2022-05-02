@@ -8,10 +8,10 @@ import proto.user.Input;
 import proto.user.Input1;
 import proto.user.Input2;
 import proto.user.UserServiceGrpc;
-import reactor.core.publisher.Flux;
 import java.util.Map;
 
 import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUserService;
+
 
 @Service
 public class AggregatorService {
