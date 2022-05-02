@@ -1,0 +1,9 @@
+.idea
+/frontend/build
+/fronted/node_modules
+/Microservices/aggregator-service/target
+/Microservices/aggregator-service/aggregator-service.iml
+/Microservices/proto-module/target/proto-module.iml
+/Microservices/user-service/target/user-service.iml
+/Microservices/spring-grpc.iml
+/Microservices/calculator-service
