@@ -30,6 +30,7 @@
             <version>4.6.0</version>
         </dependency>
         <dependency>
+<<<<<<< HEAD
             <groupId>org.example</groupId>
             <artifactId>proto-module</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -46,6 +47,23 @@
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
             <scope>compile</scope>
+=======
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.1</version>
+            <scope>runtime</scope>
+>>>>>>> master
         </dependency>
     </dependencies>
 

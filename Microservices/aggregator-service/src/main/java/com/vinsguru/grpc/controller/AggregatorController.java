@@ -3,6 +3,7 @@ package com.vinsguru.grpc.controller;
 import com.vinsguru.grpc.service.AggregatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
@@ -14,13 +15,18 @@ public class AggregatorController {
     private AggregatorService aggregatorService;
 
     @PostMapping("/register")
-    public void addUser(@RequestBody Map<String, String> message){
-        aggregatorService.addUser(message);
+    public String addUser(@RequestBody Map<String, String> message){
+        return aggregatorService.addUser(message);
     }
 
-    @GetMapping("/getUser")
-    public void getUser(){
+    @GetMapping("/invalidateUser")
+    public String invalidateUser(){
+        return aggregatorService.invalidateUser("");
+    }
 
+    @PostMapping("/logInUser")
+    public String logInUser(@RequestBody Map<String, String> message){
+        return aggregatorService.logInUser(message);
     }
 
     @PostMapping("/updateUser")

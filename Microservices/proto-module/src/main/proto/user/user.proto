@@ -14,7 +14,12 @@ message Input {
 }
 
 message Input1 {
-  string email = 3;
+  string email = 1;
+  string password = 2;
+}
+
+message Input2 {
+  string accessToken = 1;
 }
 
 message Output {
@@ -27,11 +32,13 @@ message Output {
 }
 
 service UserService {
-  // unary
+
   rpc addUser(Input) returns (Output) {};
-  // server stream
-  rpc getUser(Input1) returns (Output) {};
-  // client stream
-  rpc updateUser(stream Input) returns (Output) {};
+
+  rpc logInUser(Input1) returns (Output) {};
+
+  rpc invalidateUser(Input2) returns (Output) {};
+
+  rpc updateUser(Input) returns (Output) {};
 
 }

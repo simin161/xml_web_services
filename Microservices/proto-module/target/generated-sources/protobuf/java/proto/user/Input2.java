@@ -4,20 +4,19 @@
 package proto.user;
 
 /**
- * Protobuf type {@code user.Input1}
+ * Protobuf type {@code user.Input2}
  */
-public  final class Input1 extends
+public  final class Input2 extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:user.Input1)
-    Input1OrBuilder {
+    // @@protoc_insertion_point(message_implements:user.Input2)
+    Input2OrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use Input1.newBuilder() to construct.
-  private Input1(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use Input2.newBuilder() to construct.
+  private Input2(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Input1() {
-    email_ = "";
-    password_ = "";
+  private Input2() {
+    accessToken_ = "";
   }
 
   @java.lang.Override
@@ -25,7 +24,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private Input1(
+  private Input2(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -47,13 +46,7 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            email_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            password_ = s;
+            accessToken_ = s;
             break;
           }
           default: {
@@ -77,79 +70,45 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return proto.user.User.internal_static_user_Input1_descriptor;
+    return proto.user.User.internal_static_user_Input2_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return proto.user.User.internal_static_user_Input1_fieldAccessorTable
+    return proto.user.User.internal_static_user_Input2_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            proto.user.Input1.class, proto.user.Input1.Builder.class);
+            proto.user.Input2.class, proto.user.Input2.Builder.class);
   }
 
-  public static final int EMAIL_FIELD_NUMBER = 1;
-  private volatile java.lang.Object email_;
+  public static final int ACCESSTOKEN_FIELD_NUMBER = 1;
+  private volatile java.lang.Object accessToken_;
   /**
-   * <code>string email = 1;</code>
+   * <code>string accessToken = 1;</code>
    */
-  public java.lang.String getEmail() {
-    java.lang.Object ref = email_;
+  public java.lang.String getAccessToken() {
+    java.lang.Object ref = accessToken_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      email_ = s;
+      accessToken_ = s;
       return s;
     }
   }
   /**
-   * <code>string email = 1;</code>
+   * <code>string accessToken = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getEmailBytes() {
-    java.lang.Object ref = email_;
+      getAccessTokenBytes() {
+    java.lang.Object ref = accessToken_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      email_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int PASSWORD_FIELD_NUMBER = 2;
-  private volatile java.lang.Object password_;
-  /**
-   * <code>string password = 2;</code>
-   */
-  public java.lang.String getPassword() {
-    java.lang.Object ref = password_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      password_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string password = 2;</code>
-   */
-  public com.google.protobuf.ByteString
-      getPasswordBytes() {
-    java.lang.Object ref = password_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      password_ = b;
+      accessToken_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -170,11 +129,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getEmailBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, email_);
-    }
-    if (!getPasswordBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
+    if (!getAccessTokenBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, accessToken_);
     }
     unknownFields.writeTo(output);
   }
@@ -185,11 +141,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getEmailBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, email_);
-    }
-    if (!getPasswordBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
+    if (!getAccessTokenBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, accessToken_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -201,16 +154,14 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof proto.user.Input1)) {
+    if (!(obj instanceof proto.user.Input2)) {
       return super.equals(obj);
     }
-    proto.user.Input1 other = (proto.user.Input1) obj;
+    proto.user.Input2 other = (proto.user.Input2) obj;
 
     boolean result = true;
-    result = result && getEmail()
-        .equals(other.getEmail());
-    result = result && getPassword()
-        .equals(other.getPassword());
+    result = result && getAccessToken()
+        .equals(other.getAccessToken());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -222,78 +173,76 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + EMAIL_FIELD_NUMBER;
-    hash = (53 * hash) + getEmail().hashCode();
-    hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
-    hash = (53 * hash) + getPassword().hashCode();
+    hash = (37 * hash) + ACCESSTOKEN_FIELD_NUMBER;
+    hash = (53 * hash) + getAccessToken().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static proto.user.Input1 parseFrom(byte[] data)
+  public static proto.user.Input2 parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static proto.user.Input1 parseFrom(java.io.InputStream input)
+  public static proto.user.Input2 parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static proto.user.Input1 parseDelimitedFrom(java.io.InputStream input)
+  public static proto.user.Input2 parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static proto.user.Input1 parseDelimitedFrom(
+  public static proto.user.Input2 parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static proto.user.Input1 parseFrom(
+  public static proto.user.Input2 parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -306,7 +255,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(proto.user.Input1 prototype) {
+  public static Builder newBuilder(proto.user.Input2 prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -322,26 +271,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code user.Input1}
+   * Protobuf type {@code user.Input2}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:user.Input1)
-      proto.user.Input1OrBuilder {
+      // @@protoc_insertion_point(builder_implements:user.Input2)
+      proto.user.Input2OrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return proto.user.User.internal_static_user_Input1_descriptor;
+      return proto.user.User.internal_static_user_Input2_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return proto.user.User.internal_static_user_Input1_fieldAccessorTable
+      return proto.user.User.internal_static_user_Input2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              proto.user.Input1.class, proto.user.Input1.Builder.class);
+              proto.user.Input2.class, proto.user.Input2.Builder.class);
     }
 
-    // Construct using proto.user.Input1.newBuilder()
+    // Construct using proto.user.Input2.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -359,9 +308,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      email_ = "";
-
-      password_ = "";
+      accessToken_ = "";
 
       return this;
     }
@@ -369,17 +316,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return proto.user.User.internal_static_user_Input1_descriptor;
+      return proto.user.User.internal_static_user_Input2_descriptor;
     }
 
     @java.lang.Override
-    public proto.user.Input1 getDefaultInstanceForType() {
-      return proto.user.Input1.getDefaultInstance();
+    public proto.user.Input2 getDefaultInstanceForType() {
+      return proto.user.Input2.getDefaultInstance();
     }
 
     @java.lang.Override
-    public proto.user.Input1 build() {
-      proto.user.Input1 result = buildPartial();
+    public proto.user.Input2 build() {
+      proto.user.Input2 result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -387,10 +334,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public proto.user.Input1 buildPartial() {
-      proto.user.Input1 result = new proto.user.Input1(this);
-      result.email_ = email_;
-      result.password_ = password_;
+    public proto.user.Input2 buildPartial() {
+      proto.user.Input2 result = new proto.user.Input2(this);
+      result.accessToken_ = accessToken_;
       onBuilt();
       return result;
     }
@@ -429,22 +375,18 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof proto.user.Input1) {
-        return mergeFrom((proto.user.Input1)other);
+      if (other instanceof proto.user.Input2) {
+        return mergeFrom((proto.user.Input2)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(proto.user.Input1 other) {
-      if (other == proto.user.Input1.getDefaultInstance()) return this;
-      if (!other.getEmail().isEmpty()) {
-        email_ = other.email_;
-        onChanged();
-      }
-      if (!other.getPassword().isEmpty()) {
-        password_ = other.password_;
+    public Builder mergeFrom(proto.user.Input2 other) {
+      if (other == proto.user.Input2.getDefaultInstance()) return this;
+      if (!other.getAccessToken().isEmpty()) {
+        accessToken_ = other.accessToken_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -462,11 +404,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      proto.user.Input1 parsedMessage = null;
+      proto.user.Input2 parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (proto.user.Input1) e.getUnfinishedMessage();
+        parsedMessage = (proto.user.Input2) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -476,140 +418,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object email_ = "";
+    private java.lang.Object accessToken_ = "";
     /**
-     * <code>string email = 1;</code>
+     * <code>string accessToken = 1;</code>
      */
-    public java.lang.String getEmail() {
-      java.lang.Object ref = email_;
+    public java.lang.String getAccessToken() {
+      java.lang.Object ref = accessToken_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        email_ = s;
+        accessToken_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string email = 1;</code>
+     * <code>string accessToken = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getEmailBytes() {
-      java.lang.Object ref = email_;
+        getAccessTokenBytes() {
+      java.lang.Object ref = accessToken_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        email_ = b;
+        accessToken_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string email = 1;</code>
+     * <code>string accessToken = 1;</code>
      */
-    public Builder setEmail(
+    public Builder setAccessToken(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      email_ = value;
+      accessToken_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string email = 1;</code>
+     * <code>string accessToken = 1;</code>
      */
-    public Builder clearEmail() {
+    public Builder clearAccessToken() {
       
-      email_ = getDefaultInstance().getEmail();
+      accessToken_ = getDefaultInstance().getAccessToken();
       onChanged();
       return this;
     }
     /**
-     * <code>string email = 1;</code>
+     * <code>string accessToken = 1;</code>
      */
-    public Builder setEmailBytes(
+    public Builder setAccessTokenBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      email_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object password_ = "";
-    /**
-     * <code>string password = 2;</code>
-     */
-    public java.lang.String getPassword() {
-      java.lang.Object ref = password_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        password_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getPasswordBytes() {
-      java.lang.Object ref = password_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        password_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder setPassword(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      password_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder clearPassword() {
-      
-      password_ = getDefaultInstance().getPassword();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder setPasswordBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      password_ = value;
+      accessToken_ = value;
       onChanged();
       return this;
     }
@@ -626,41 +499,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:user.Input1)
+    // @@protoc_insertion_point(builder_scope:user.Input2)
   }
 
-  // @@protoc_insertion_point(class_scope:user.Input1)
-  private static final proto.user.Input1 DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:user.Input2)
+  private static final proto.user.Input2 DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new proto.user.Input1();
+    DEFAULT_INSTANCE = new proto.user.Input2();
   }
 
-  public static proto.user.Input1 getDefaultInstance() {
+  public static proto.user.Input2 getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Input1>
-      PARSER = new com.google.protobuf.AbstractParser<Input1>() {
+  private static final com.google.protobuf.Parser<Input2>
+      PARSER = new com.google.protobuf.AbstractParser<Input2>() {
     @java.lang.Override
-    public Input1 parsePartialFrom(
+    public Input2 parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Input1(input, extensionRegistry);
+      return new Input2(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<Input1> parser() {
+  public static com.google.protobuf.Parser<Input2> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<Input1> getParserForType() {
+  public com.google.protobuf.Parser<Input2> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public proto.user.Input1 getDefaultInstanceForType() {
+  public proto.user.Input2 getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

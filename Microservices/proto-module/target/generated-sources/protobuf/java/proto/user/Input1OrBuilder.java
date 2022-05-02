@@ -8,12 +8,22 @@ public interface Input1OrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string email = 3;</code>
+   * <code>string email = 1;</code>
    */
   java.lang.String getEmail();
   /**
-   * <code>string email = 3;</code>
+   * <code>string email = 1;</code>
    */
   com.google.protobuf.ByteString
       getEmailBytes();
+
+  /**
+   * <code>string password = 2;</code>
+   */
+  java.lang.String getPassword();
+  /**
+   * <code>string password = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getPasswordBytes();
 }

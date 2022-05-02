@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.vinsguru.grpc.model.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -45,6 +46,15 @@ public class UserRepository {
                 .append("username", user.getUsername())
                 .append("password", user.getPassword());
         usersCollection.insertOne(userToSave);
+    }
 
+    public User findUserByEmail(String email){
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        User retVal = null;
+        if(foundUser != null){
+            retVal = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"),foundUser.getString("email"),
+                    foundUser.getString("password"));
+        }
+        return retVal;
     }
 }
