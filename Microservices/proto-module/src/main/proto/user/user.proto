@@ -39,6 +39,12 @@ message Output2 {
 
 }
 
+message InputSearch{
+
+    string param = 1;
+
+}
+
 service UserService {
 
   rpc addUser(Input) returns (Output) {};
@@ -50,5 +56,7 @@ service UserService {
   rpc updateUser(Input) returns (Output) {};
 
   rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
+
+  rpc searchUsers(InputSearch) returns (Output2) {};
 
 }

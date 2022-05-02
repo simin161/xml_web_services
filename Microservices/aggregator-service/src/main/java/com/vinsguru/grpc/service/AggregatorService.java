@@ -55,4 +55,18 @@ public class AggregatorService {
 
         return retVal;
     }
+
+    public List<UserDTO> searchUsers(String param) {
+
+        blockingStub = openChannelToUserService();
+        List<UserDTO> retVal = new ArrayList<UserDTO>();
+        InputSearch is = InputSearch.newBuilder().setParam(param).build();
+
+        for(Input i : this.blockingStub.searchUsers(is).getUserList()){
+            UserDTO userDTO = new UserDTO(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+            retVal.add(userDTO);
+        }
+
+        return retVal;
+    }
 }

@@ -47,12 +47,16 @@ public class UserRepository {
         usersCollection.insertOne(userToSave);
     }
 
-    public User findUserByEmail(String email){
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
-        User retVal = null;
-        if(foundUser != null){
-            retVal = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"),foundUser.getString("email"),
+    public List<User> findUserByParam(String paramName, String paramValue){
+        FindIterable<Document> foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+        List<User> retVal = new ArrayList<>();
+        for(Document foundUser : foundUsers)
+        {
+
+                User u = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"));
+                retVal.add(u);
+
         }
         return retVal;
     }
