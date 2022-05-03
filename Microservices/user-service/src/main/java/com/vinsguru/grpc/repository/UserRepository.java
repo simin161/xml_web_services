@@ -82,6 +82,19 @@ public class UserRepository {
         }
         return retVal;
     }
+
+    public User findUserByUsersId(String usersId) {
+        Document foundUser = usersCollection.find(Filters.eq("_id",usersId)).first();
+        User retVal = null;
+        if(foundUser != null){
+            retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
+                    foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+
+        }
+        return retVal;
+    }
+
     public List<User> findUserByParam(String paramName, String paramValue){
         FindIterable<Document> foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
         List<User> retVal = new ArrayList<>();
@@ -104,7 +117,6 @@ public class UserRepository {
             User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"));
             retVal.add(u);
         }
-        //return  usersCollection.find();
         return retVal;
     }
 
@@ -161,4 +173,6 @@ public class UserRepository {
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
     }
+
+
 }

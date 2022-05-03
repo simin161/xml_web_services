@@ -77,19 +77,6 @@ public class AggregatorController {
 
     @GetMapping("/searchUsers/{param}")
     public List<UserDto> searchUsers(@PathVariable("param") String param){
-
-
-       // String url = "http://localhost:8080/searchUsers/queryParameter= {queryParameter}";
-
-       // RestTemplate template = new RestTemplate();
-
-       // HttpHeaders headers = new HttpHeaders();
-       // HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
-
-        //ResponseEntity<Map> response = template.exchange(, HttpMethod.GET, requestEntity, Map.class, uriVariables);
-
-
-        //return response.getBody();
         return aggregatorService.searchUsers(param);
     }
 
@@ -97,7 +84,6 @@ public class AggregatorController {
     public String addNewPost(@RequestBody PostDto post){
         return postService.addPost(post);
     }
-
 
     @PostMapping("/newFollower")
     public String addNewFollower(@RequestBody FollowDto follow){
@@ -119,7 +105,13 @@ public class AggregatorController {
         return postService.addComment(comment);
     }
 
+    @GetMapping("/getAllPosts")
+    public List<PostDto> getAllPosts(){
+        return postService.getAllPosts();
+    }
 
-
-
+    @GetMapping("/getAllUserPosts/user:{email}")
+    public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
+        return postService.getAllUsersPosts(email);
+    }
 }

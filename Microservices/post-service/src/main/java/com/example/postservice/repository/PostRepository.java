@@ -9,10 +9,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +52,20 @@ public class PostRepository {
                 .append("link", post.getLink()).append("comments",post.getComments());
 
         postsCollection.insertOne(postToSave);
+    }
+
+    public List<Post> getAllPosts(){
+        FindIterable<Document> iterable = postsCollection.find();
+        List<Post> retVal = new ArrayList<Post>();
+        for(Document d : iterable){
+            Post p = new Post();
+            p.setId(d.getString("id"));
+            p.setLink(d.getString("link"));
+            p.setPathToImage(d.getString("pathToImage"));
+            p.setText(d.getString("text"));
+            retVal.add(p);
+        }
+        return retVal;
     }
 
 

@@ -161,6 +161,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
+
+    @Override
     public void getAllUsers(com.google.protobuf.Empty request, io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver){
 
         List<User> documentedUsers = UserRepository.getInstance().getAllUsers();
@@ -223,6 +225,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         proto.user.OutputId output;
             output = OutputId.newBuilder().setUsersId(user.getId().toString()).build();
         responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void findUserEmailById(OutputId request, StreamObserver<InputForGetUserByEmail> responseObserver){
+        User user = UserRepository.getInstance().findUserByUsersId(request.getUsersId());
+        proto.user.InputForGetUserByEmail ifgube;
+        ifgube = InputForGetUserByEmail.newBuilder().setEmail(user.getEmail()).build();
+        responseObserver.onNext(ifgube);
         responseObserver.onCompleted();
     }
 

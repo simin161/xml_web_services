@@ -136,6 +136,8 @@ service UserService {
 
   rpc checkIfAccountIsPrivate(InputForGetUserByEmail) returns(OutputBool) {};
 
+  rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
+
 
 
 }
