@@ -34,9 +34,15 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
         InputForGetUserByEmail input1 = InputForGetUserByEmail.newBuilder().setEmail(request.getFollowerEmail()).build();
         String followersId= blockingStub.findUserIdByEmail(input1).getUsersId();
 
+
         if(personalId != null && followersId != null ){
-            FollowerRepository.getInstance().insert(new Follow(null,personalId,followersId));
-            output = OutputAddFollow.newBuilder().setResult("success").build();
+            if(!blockingStub.checkIfAccountIsPrivate(input).getPrivate()) {
+
+                FollowerRepository.getInstance().insert(new Follow(null, personalId, followersId));
+                output = OutputAddFollow.newBuilder().setResult("success").build();
+            }else {
+                output = OutputAddFollow.newBuilder().setResult("private profile").build();
+            }
         }else {
             output = OutputAddFollow.newBuilder().setResult("Bad request").build();
         }

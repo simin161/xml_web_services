@@ -104,6 +104,12 @@ message OutputId {
 
 }
 
+message OutputBool {
+
+  bool  private = 1;
+
+}
+
 service UserService {
 
   rpc addUser(Input) returns (Output) {};
@@ -128,6 +134,7 @@ service UserService {
 
   rpc findUserIdByEmail(InputForGetUserByEmail) returns (OutputId) {};
 
+  rpc checkIfAccountIsPrivate(InputForGetUserByEmail) returns(OutputBool) {};
 
 
 

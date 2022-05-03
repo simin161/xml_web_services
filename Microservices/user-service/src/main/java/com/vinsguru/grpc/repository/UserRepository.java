@@ -71,7 +71,6 @@ public class UserRepository {
 
     public User findUserByEmail(String email) {
         Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
-        ;
         User retVal = null;
         if (foundUser != null) {
             retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
@@ -86,11 +85,9 @@ public class UserRepository {
         List<User> retVal = new ArrayList<>();
         for(Document foundUser : foundUsers)
         {
-
-                User u = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
+            User u = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"));
-                retVal.add(u);
-
+            retVal.add(u);
         }
         return retVal;
     }

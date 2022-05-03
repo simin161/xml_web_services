@@ -30,7 +30,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void addUser(proto.user.Input request,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
-        if(UserRepository.getInstance().findUserByEmail(request.getEmail()) == null && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
+        if(UserRepository.getInstance().findUserByParam("email", request.getEmail()).isEmpty() && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
             UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword()));
             output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
         }else
@@ -221,5 +221,22 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             output = OutputId.newBuilder().setUsersId(user.getId().toString()).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void checkIfAccountIsPrivate(InputForGetUserByEmail request, StreamObserver<OutputBool> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
+
+        proto.user.OutputBool output;
+
+            if(user.isPrivateProfile())
+                output = OutputBool.newBuilder().setPrivate(true).build();
+            else
+                output = OutputBool.newBuilder().setPrivate(false).build();
+
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+
+
     }
 }
