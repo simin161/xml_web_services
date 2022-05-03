@@ -10,7 +10,12 @@ public class EducationDto {
     private String from;
     private String to;
 
-    public EducationDto() {
+    public EducationDto(String school, String degree, String fieldOfStudy, String from, String to) {
+        this.school = school;
+        this.degree = degree;
+        this.fieldOfStudy = fieldOfStudy;
+        this.from = from;
+        this.to = to;
     }
 
     public EducationDto(String email,String school, String degree, String fieldOfStudy, String from, String to) {

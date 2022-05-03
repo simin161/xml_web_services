@@ -23,6 +23,8 @@ import proto.user.Input;
 
 
 public class UserRepository {
+
+    final static Class<? extends List> docClazz = new ArrayList<Document>().getClass();
     private static UserRepository instance = null;
 
     public static UserRepository getInstance(){
@@ -136,10 +138,16 @@ public class UserRepository {
         usersCollection.updateOne(foundUser, updates, options);
     }
 
-    public List<Object> getEducationsUserByEmail(String email) {
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
-        List<Education> educations = new ArrayList<>();
-        return foundUser.getList("educations",Object.class);
+    public List<Education> getEducationsUserByEmail(String email) {
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+      List<Document> educationsDocuments =foundUser.get("educations",docClazz);
+    List<Education> educations = new ArrayList<>();
+       for(Document doc : educationsDocuments){
+
+           educations.add(new Education(doc.getObjectId("_idEducation"),doc.getString("school"),doc.getString("degree"),doc.getString("fieldOfStudy"),
+                   doc.getDate("from"),doc.getDate("to")));
+       }
+        return educations;
 
 
     }

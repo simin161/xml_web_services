@@ -100,7 +100,7 @@ public class AggregatorService {
                 .build();
 
         for (OutputEducation outputEducation:  this.blockingStub.getEducationsUserByEmail(input).getEducationsList()){
-            educationDtos.add(new EducationDto("",outputEducation.getSchool(),outputEducation.getDegree(),outputEducation.getFieldOfStudy(),
+            educationDtos.add(new EducationDto(email,outputEducation.getSchool(),outputEducation.getDegree(),outputEducation.getFieldOfStudy(),
                     outputEducation.getFrom(),outputEducation.getTo()));
         }
         return educationDtos;

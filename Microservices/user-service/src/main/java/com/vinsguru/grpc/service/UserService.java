@@ -126,14 +126,17 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void getEducationsUserByEmail(InputForGetUserByEmail request, StreamObserver<OutputEducations> responseObserver) {
-        proto.user.OutputEducations output=null;
-       List<Object> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
+        proto.user.OutputEducations output;
+      List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
 
-
-        for(Object education : educationList){
-            System.out.println("aaaaaa"+education.toString());
+        List<OutputEducation> educations = new ArrayList<OutputEducation>();
+        for(Education education : educationList){
+            OutputEducation ed = OutputEducation.newBuilder().setSchool(education.getSchool()).setDegree(education.getDegree()).setFieldOfStudy(education.getFieldOfStudy())
+                    .setFrom(education.getFrom().toString()).setTo(education.getTo().toString()).build();
+            educations.add(ed);
         }
 
+        output =  OutputEducations.newBuilder().addAllEducations(educations).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
