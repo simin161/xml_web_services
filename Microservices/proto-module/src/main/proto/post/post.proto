@@ -18,10 +18,14 @@ message OutputAddPost {
   string result = 1;
 }
 
+message AllPosts {
+  repeated InputAddPost allPosts = 1;
+}
+
 service PostService {
 
   rpc addPost(InputAddPost) returns (OutputAddPost) {};
-
+  rpc getAllPosts(google.protobuf.Empty) returns (AllPosts) {};
 
 
 }

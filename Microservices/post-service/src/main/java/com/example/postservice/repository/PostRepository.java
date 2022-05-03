@@ -1,10 +1,7 @@
 package com.example.postservice.repository;
 
 import com.example.postservice.model.Post;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -47,6 +44,20 @@ public class PostRepository {
                 .append("link", post.getLink());
 
         postsCollection.insertOne(postToSave);
+    }
+
+    public List<Post> getAllPosts(){
+        FindIterable<Document> iterable = postsCollection.find();
+        List<Post> retVal = new ArrayList<Post>();
+        for(Document d : iterable){
+            Post p = new Post();
+            p.setId(d.getString("id"));
+            p.setLink(d.getString("link"));
+            p.setPathToImage(d.getString("pathToImage"));
+            p.setText(d.getString("text"));
+            retVal.add(p);
+        }
+        return retVal;
     }
 
 
