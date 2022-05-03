@@ -1,11 +1,9 @@
 package com.vinsguru.grpc.controller;
 
-import com.vinsguru.grpc.dto.EducationDto;
-import com.vinsguru.grpc.dto.PostDto;
-import com.vinsguru.grpc.dto.UserDto;
-import com.vinsguru.grpc.dto.WorkExperienceDto;
+import com.vinsguru.grpc.dto.*;
 
 import com.vinsguru.grpc.service.AggregatorService;
+import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -30,6 +28,9 @@ public class AggregatorController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+   private FollowerService followerService;
 
     @PostMapping("/register")
     public String addUser(@RequestBody Map<String, String> message){
@@ -95,6 +96,12 @@ public class AggregatorController {
     @PostMapping("/newPost")
     public String addNewPost(@RequestBody PostDto post){
         return postService.addPost(post);
+    }
+
+
+    @PostMapping("/newFollower")
+    public String addNewFollower(@RequestBody FollowDto follow){
+        return followerService.addFollower(follow);
     }
 
 }
