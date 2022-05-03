@@ -1,8 +1,11 @@
 package com.vinsguru.grpc.model;
 
+import org.bson.types.ObjectId;
+
 import java.util.Date;
 
 public class Education {
+    private ObjectId idEducation;
     private String school;
     private String degree;
     private String fieldOfStudy;
@@ -12,12 +15,17 @@ public class Education {
     public Education() {
     }
 
-    public Education(String school, String degree, String fieldOfStudy, Date from, Date to) {
+    public Education(ObjectId idEducation, String school, String degree, String fieldOfStudy, Date from, Date to) {
+        this.idEducation = idEducation;
         this.school = school;
         this.degree = degree;
         this.fieldOfStudy = fieldOfStudy;
         this.from = from;
         this.to = to;
+    }
+
+    public ObjectId getIdEducation() {
+        return idEducation;
     }
 
     public String getSchool() {

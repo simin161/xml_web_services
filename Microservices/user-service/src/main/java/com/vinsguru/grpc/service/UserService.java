@@ -115,7 +115,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             e.printStackTrace();
         }
         proto.user.OutputMessage output;
-        UserRepository.getInstance().updateEducation(request.getEmail(),new Education(request.getSchool(),request.getDegree(),request.getFieldOfStudy(),
+        UserRepository.getInstance().updateEducation(request.getEmail(),new Education(null,request.getSchool(),request.getDegree(),request.getFieldOfStudy(),
                 from,to));
         output = OutputMessage.newBuilder().setOutputMessage("success").build();
         responseObserver.onNext(output);
@@ -127,15 +127,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void getEducationsUserByEmail(InputForGetUserByEmail request, StreamObserver<OutputEducations> responseObserver) {
         proto.user.OutputEducations output=null;
-      /* List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
+       List<Object> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
 
 
-        for(Education education : educationList){
-         output =  OutputEducations.newBuilder().setEducations(educationList.indexOf(education),OutputEducations.newBuilder().getEducations(0)).build();
+        for(Object education : educationList){
+            System.out.println("aaaaaa"+education.toString());
         }
 
         responseObserver.onNext(output);
-        responseObserver.onCompleted();*/
+        responseObserver.onCompleted();
     }
 
     @Override

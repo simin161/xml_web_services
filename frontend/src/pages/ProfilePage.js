@@ -29,13 +29,13 @@ const ProfilePage= () => {
        console.log(error);
        });
 
-      /* axios.get(process.env.REACT_APP_BACKEND_URL + 'educations/'+email+"/")
+       axios.get(process.env.REACT_APP_BACKEND_URL + 'educations/'+email+"/")
        .then(function (response) {
             console.log(response.data.length)
        })
        .catch(function (error) {
        console.log(error);
-       });*/
+       });
 
     })
 

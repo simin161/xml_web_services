@@ -8,3 +8,6 @@ grpc:
     post-service:
       address: localhost:6566
       negotiationType: plaintext
+    follower-service:
+      address: localhost:6567
+      negotiationType: plaintext
