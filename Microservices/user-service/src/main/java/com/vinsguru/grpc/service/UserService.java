@@ -30,7 +30,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void addUser(proto.user.Input request,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
-        if(UserRepository.getInstance().findUserByEmail(request.getEmail()) == null) {
+        if(UserRepository.getInstance().findUserByEmail(request.getEmail()) == null && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
             UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword()));
             output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
         }else

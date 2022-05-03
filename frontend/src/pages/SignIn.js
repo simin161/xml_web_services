@@ -25,7 +25,7 @@ const SignIn = () => {
           console.log("err");
         }else{
           localStorage.setItem("loggedUser", response.data);
-          navigate("/profilePage");
+          navigate("/profilePage/" + email, {replace: true});
         }
       })
       .catch(function (error) {
@@ -50,7 +50,7 @@ const SignIn = () => {
             console.log("err");
         }else{
             localStorage.setItem("loggedUser", response.data);
-            navigate("/profilePage");
+            navigate("/profilePage/" + email, {replace: true});
         }
     })
     .catch(function (error) {
