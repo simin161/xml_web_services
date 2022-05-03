@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 public class User {
     @Id
-    private String id;
+    private ObjectId id;
     private String firstName;
     private String lastName;
     private String username;
@@ -28,11 +29,11 @@ public class User {
     private List<Education> educations;
 
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -160,9 +161,10 @@ public class User {
         this.experinces=new ArrayList<>();
     }
 
-    public User(String firstName, String lastName, String username, String email, String password, boolean privateProfile,
+    public User(ObjectId id,String firstName, String lastName, String username, String email, String password, boolean privateProfile,
                 Date birthday, String gender, String phone, String biography, String interests, String skills,List<Education> educations,
                 List<WorkExperience> experinces) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package post;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.post";
+option java_multiple_files = true;
+
+message InputAddPost {
+  string email = 1;
+  string text = 2;
+  string pathToImage = 3;
+  string link = 4;
+}
+
+message OutputAddPost {
+  string result = 1;
+}
+
+service PostService {
+
+  rpc addPost(InputAddPost) returns (OutputAddPost) {};
+
+
+
+}

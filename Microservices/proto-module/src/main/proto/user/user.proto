@@ -98,6 +98,12 @@ message InputSearch{
 
 }
 
+message OutputId {
+
+ string  usersId = 1;
+
+}
+
 service UserService {
 
   rpc addUser(Input) returns (Output) {};
@@ -119,6 +125,10 @@ service UserService {
   rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
 
   rpc searchUsers(InputSearch) returns (Output2) {};
+
+  rpc findUserIdByEmail(InputForGetUserByEmail) returns (OutputId) {};
+
+
 
 
 }

@@ -87,7 +87,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void updateUser(updateUserInfoInput request, StreamObserver<OutputMessage> responseObserver) throws ParseException {
         Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthday());
         proto.user.OutputMessage output;
-        User userToUpdate=new User(request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
+        User userToUpdate=new User(null,request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
                 date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null);
         UserRepository.getInstance().update(userToUpdate);
         output = OutputMessage.newBuilder().setOutputMessage("success").build();
@@ -180,5 +180,14 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onCompleted();
 
 
+    }
+
+    @Override
+    public void findUserIdByEmail(InputForGetUserByEmail request, StreamObserver<OutputId> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
+        proto.user.OutputId output;
+            output = OutputId.newBuilder().setUsersId(user.getId().toString()).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
     }
 }

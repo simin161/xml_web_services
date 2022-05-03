@@ -5,3 +5,6 @@ grpc:
     user-service:
       address: localhost:6565
       negotiationType: plaintext
+    post-service:
+      address: localhost:6566
+      negotiationType: plaintext

@@ -1,6 +1,7 @@
 package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.EducationDto;
+import com.vinsguru.grpc.dto.PostDto;
 import com.vinsguru.grpc.dto.UserDto;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
 
@@ -10,6 +11,8 @@ import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
+import proto.post.InputAddPost;
+import proto.post.PostServiceGrpc;
 import proto.user.*;
 import reactor.core.publisher.Flux;
 
@@ -25,6 +28,8 @@ public class AggregatorService {
 
     @GrpcClient("user-service")
     private UserServiceGrpc.UserServiceBlockingStub blockingStub;
+
+
 
     public String addUser(Map<String,String> message) {
         blockingStub = openChannelToUserService();
@@ -144,5 +149,8 @@ public class AggregatorService {
             return retVal;
 
         }
+
+
+
 
 }
