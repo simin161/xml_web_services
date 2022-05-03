@@ -1,35 +1,69 @@
 
-
+import React, { useEffect } from 'react';
 import Education from '../components/UserProfile/Education';
 import WorkExperience from '../components/UserProfile/WorkExperience';
 import Timeline from '../components/UserProfile/Timeline';
 import {useNavigate} from "react-router-dom";
-
+import axios from 'axios'
 //import 'bootstrap';
 
-const ProfilePage = () => {
-   
-   let navigate=useNavigate()
-   
-    function redirectEditProfile(){
-        navigate("/editProfile",{replace:true})
-        
-    }
 
+
+const ProfilePage= () => {
+    const email= window.location.pathname.split('/')[2]
+    useEffect(()=>{
+     
+       axios.get(process.env.REACT_APP_BACKEND_URL + 'user/'+email+"/")
+       .then(function (response) {
+            document.getElementById("email").textContent=response.data.email
+            document.getElementById("username").textContent=response.data.username
+            document.getElementById("fullName").innerHTML=response.data.firstName+ " "+ response.data.lastName 
+            document.getElementById("phone").textContent=response.data.phone
+            document.getElementById("gender").textContent=response.data.gender
+            document.getElementById("birthday").textContent=response.data.birthday
+            document.getElementById("biography").textContent=response.data.biography
+            document.getElementById("interests").textContent=response.data.interests
+            document.getElementById("skills").textContent=response.data.skills
+       })
+       .catch(function (error) {
+       console.log(error);
+       });
+
+       axios.get(process.env.REACT_APP_BACKEND_URL + 'educations/'+email+"/")
+       .then(function (response) {
+            console.log(response.data.length)
+       })
+       .catch(function (error) {
+       console.log(error);
+       });
+
+    })
+
+    const navigate=useNavigate()
+      function redirectEditProfile(){
+        navigate("/editProfile/"+email)
+    }
+    function navigateToAddEducation(){
+        navigate("/updateEducation/"+email)
+    }
+    function navigateToAddExp(){
+        navigate("/updateWorkExperience/"+email)
+    }
 
 return (
 
 
 <div className="container">
    <br/>
+   
     <div className="row">
         <div className="col-lg-3 ">
             <div className="card left-profile-card">
                 <div className="card-body">
                     <div className="text-center">
                         <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" className="user-profile"/>
-                        <h3>John Doe</h3>
-                        <p>World of Internet</p>
+                        <h3 id="fullName">John Doe</h3>
+                        <p id="username"></p>
                         <div className="d-flex align-items-center justify-content-center mb-3">
                             <i className="fas fa-star text-info"></i>
                             <i className="fas fa-star text-info"></i>
@@ -41,25 +75,26 @@ return (
                     <div className="personal-info">
                         <h3>Personal Information</h3>
                         <ul className="personal-list">
-                            <li><i className="fas fa-briefcase "></i><span>Web Designer</span></li>
-                            <li><i className="fas fa-map-marker-alt "></i><span> New York</span></li>
-                            <li><i className="far fa-envelope "></i><span>like @example.com</span></li>
-                            <li><i className="fas fa-mobile "></i><span>1234564343</span></li>
+                            <li><i className="fas fa-briefcase "></i><span id="email"></span></li>
+                            <li><i className="fas fa-map-marker-alt "></i><span id="phone"> New York</span></li>
+                            <li><i className="far fa-envelope "></i><span id="gender">like @example.com</span></li>
+                            <li><i className="fas fa-mobile "></i><span id="birthday"></span></li>
                         </ul>
                     </div>
+
                     <div className="skill">
                         <h3>Biography</h3>
-
+                        <span id="biography"></span>
                         
                     </div>
                     <div className="skill">
                         <h3>Interests</h3>
-
+                        <span id="interests"></span>
                         
                     </div>
                     <div className="skill">
                         <h3>Skills</h3>
-
+                        <span id="skills"></span>
                         
                     </div>
                     
@@ -71,9 +106,34 @@ return (
                 <div className="card-body">
                     
                     <div className="personal-info">
+                        <div className="row">
+                        <div className='col'>
                         <h3>Education</h3>
+                           </div>
+                           <div className='col'>
+                               <button onClick={navigateToAddEducation}>+</button>
+                           </div>
+                        </div>
+                      
                          <hr/>
-                        <Education/>
+                         <div  id="pills-education" role="tabpanel" aria-labelledby="pills-education-tab">
+                            <div className="work-container">
+                                <h3>The Art Institute :- New Yourk</h3>
+                                <h6><i className="far fa-calendar-alt"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                            <div className="work-container">
+                                <h3>Eitech :- New Jersy</h3>
+                                <h6><i className="material-icons"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                            <div className="work-container">
+                                <h3>School of Visual Arts :- Chicago</h3>
+                                <h6><i className="material-icons"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
+
                     </div>
           
                     
@@ -85,7 +145,14 @@ return (
                 <div className="card-body">
                     
                     <div className="personal-info">
+                       <div className="row">
+                        <div className='col'>
                         <h3>Work experience</h3>
+                           </div>
+                           <div className='col'>
+                               <button onClick={navigateToAddExp}>+</button>
+                           </div>
+                        </div>
                         <hr/>
                         <WorkExperience/>
                     </div>
@@ -152,7 +219,7 @@ return (
 </div>
          
   );
-}
 
+}
   
 export default ProfilePage;
