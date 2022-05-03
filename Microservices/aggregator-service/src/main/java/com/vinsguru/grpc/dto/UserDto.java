@@ -32,6 +32,14 @@ public class UserDto {
         this.skills = skills;
     }
 
+    public UserDto(String username,String firstName, String lastName,String password, String email ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public String getFirstName() {
         return firstName;
     }

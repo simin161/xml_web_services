@@ -19,7 +19,7 @@ const UpdateEducation = () => {
             var from = document.getElementById("from").value;
             var to = document.getElementById("to").value;
             
-            axios.post(process.env.REACT_APP_BACKEND_URL + 'educations',
+            axios.post(process.env.REACT_APP_BACKEND_URL + 'education',
              {
                                             'email' : email,
                                             'school' : school,

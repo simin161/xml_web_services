@@ -30,7 +30,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void addUser(proto.user.Input request,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
-        if(UserRepository.getInstance().findUserByParam("email",request.getEmail()).isEmpty()) {
+        if(UserRepository.getInstance().findUserByEmail(request.getEmail()) == null) {
             UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword()));
             output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
         }else
@@ -38,7 +38,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
-
     @Override
     public void logInUser(proto.user.Input1 request, io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         List<User> user = UserRepository.getInstance().findUserByParam("email",request.getEmail());
@@ -113,7 +112,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void getEducationsUserByEmail(InputForGetUserByEmail request, StreamObserver<OutputEducations> responseObserver) {
         proto.user.OutputEducations output=null;
-        List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
+      /* List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
 
 
         for(Education education : educationList){
@@ -121,7 +120,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         }
 
         responseObserver.onNext(output);
-        responseObserver.onCompleted();
+        responseObserver.onCompleted();*/
     }
 
     @Override

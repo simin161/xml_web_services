@@ -3,7 +3,7 @@ package com.vinsguru.grpc.service;
 import com.vinsguru.grpc.dto.EducationDto;
 import com.vinsguru.grpc.dto.UserDto;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
-import com.vinsguru.grpc.dto.UserDTO;
+
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
@@ -112,35 +112,37 @@ public class AggregatorService {
                 .build();
         return this.blockingStub.updateWorkExperience(input).getOutputMessage();
 
-
-    public List<UserDTO> getUsers(){
-
-        com.google.protobuf.Empty request = null;
-        blockingStub = openChannelToUserService();
-        //List<Input> retval =  this.blockingStub.getAllUsers(request).getUserList();
-
-        List<UserDTO> retVal = new ArrayList<UserDTO>();
-
-        for(Input i : this.blockingStub.getAllUsers(request).getUserList()){
-            UserDTO userDTO = new UserDTO(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
-            retVal.add(userDTO);
-        }
-
-        return retVal;
     }
 
-    public List<UserDTO> searchUsers(String param) {
+        public List<UserDto> getUsers () {
 
-        blockingStub = openChannelToUserService();
-        List<UserDTO> retVal = new ArrayList<UserDTO>();
-        InputSearch is = InputSearch.newBuilder().setParam(param).build();
+            com.google.protobuf.Empty request = null;
+            blockingStub = openChannelToUserService();
+            //List<Input> retval =  this.blockingStub.getAllUsers(request).getUserList();
 
-        for(Input i : this.blockingStub.searchUsers(is).getUserList()){
-            UserDTO userDTO = new UserDTO(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
-            retVal.add(userDTO);
+            List<UserDto> retVal = new ArrayList<UserDto>();
+
+            for (Input i : this.blockingStub.getAllUsers(request).getUserList()) {
+                UserDto userDTO = new UserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+                retVal.add(userDTO);
+            }
+
+            return retVal;
         }
 
-        return retVal;
+        public List<UserDto> searchUsers (String param){
 
-    }
+            blockingStub = openChannelToUserService();
+            List<UserDto> retVal = new ArrayList<UserDto>();
+            InputSearch is = InputSearch.newBuilder().setParam(param).build();
+
+            for (Input i : this.blockingStub.searchUsers(is).getUserList()) {
+                UserDto userDTO = new UserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+                retVal.add(userDTO);
+            }
+
+            return retVal;
+
+        }
+
 }

@@ -45,6 +45,7 @@ public class AggregatorController {
     public String updateUser(@RequestBody Map<String, String> userDto){
        return aggregatorService.updateUser(userDto);
     }
+
     @PostMapping("/education")
     public String updateEducation(@RequestBody EducationDto educationDto){
         return aggregatorService.updateEducation(educationDto);
@@ -64,12 +65,12 @@ public class AggregatorController {
 
 
     @GetMapping("/getAllUsers")
-    public List<UserDTO> getUsers(){
+    public List<UserDto> getUsers(){
         return aggregatorService.getUsers();
     }
 
     @GetMapping("/searchUsers/{param}")
-    public List<UserDTO> searchUsers(@PathVariable("param") String param){
+    public List<UserDto> searchUsers(@PathVariable("param") String param){
 
 
        // String url = "http://localhost:8080/searchUsers/queryParameter= {queryParameter}";
