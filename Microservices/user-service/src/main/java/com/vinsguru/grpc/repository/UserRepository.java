@@ -127,18 +127,24 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
     public void updateEducation(String email,Education education){
-        Document query = new Document().append("email", email);
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        Document newEducation = new Document("_idEducation", new ObjectId());
+        newEducation.append("school",education.getSchool()).append("degree",education.getDegree()).append("fieldOfStudy",education.getFieldOfStudy()).append("from",education.getFrom())
+                .append("to",education.getTo());
+
         Bson updates = Updates.combine(
-                Updates.addToSet("educations", Arrays.asList(education.getSchool(),education.getDegree(),education.getFieldOfStudy(),education.getFrom(),
-                        education.getTo()))
+                Updates.addToSet("educations",newEducation)
         );
+
         UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(query, updates, options);
+        usersCollection.updateOne(foundUser, updates, options);
     }
 
     public List<Object> getEducationsUserByEmail(String email) {
         Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
+        List<Education> educations = new ArrayList<>();
         return foundUser.getList("educations",Object.class);
+
 
     }
 
