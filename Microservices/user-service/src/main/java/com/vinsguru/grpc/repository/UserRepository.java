@@ -136,9 +136,10 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
 
-    public List<Education> getEducationsUserByEmail(String email) {
+    public List<Object> getEducationsUserByEmail(String email) {
         Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
-        return foundUser.getList("educations",Education.class);
+        return foundUser.getList("educations",Object.class);
+
     }
 
     public void updateWorkExperience(String email,WorkExperience workExperience) {
