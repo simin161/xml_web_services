@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
-import proto.user.*;
+
 
 import java.util.ArrayList;
 
@@ -126,14 +126,14 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void updateWorkExperience(InputUpdateWorkExperience request, StreamObserver<OutputMessage> responseObserver) throws ParseException {
-        Date from=new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
-        Date to=new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
+        Date from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
+        Date to = new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
         proto.user.OutputMessage output;
-        UserRepository.getInstance().updateWorkExperience(request.getEmail(),new WorkExperience(request.getWorkPlace(),request.getWorkTitle(),from,to));
+        UserRepository.getInstance().updateWorkExperience(request.getEmail(), new WorkExperience(request.getWorkPlace(), request.getWorkTitle(), from, to));
         output = OutputMessage.newBuilder().setOutputMessage("success").build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
-
+    }
     public void getAllUsers(com.google.protobuf.Empty request, io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver){
 
         List<User> documentedUsers = UserRepository.getInstance().getAllUsers();

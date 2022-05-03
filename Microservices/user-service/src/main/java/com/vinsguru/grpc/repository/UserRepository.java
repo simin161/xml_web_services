@@ -69,14 +69,18 @@ public class UserRepository {
     }
 
 
-    public User findUserByEmail(String email){
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
+    public User findUserByEmail(String email) {
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        ;
         User retVal = null;
-        if(foundUser != null){
-            retVal = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"),foundUser.getString("email"),
-                    foundUser.getString("password"),foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"),foundUser.getString("gender"),
-                    foundUser.getString("phone"),foundUser.getString("biography"),foundUser.getString("interests"),foundUser.getString("skills"),null,null);
+        if (foundUser != null) {
+            retVal = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
+                    foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
 
+        }
+        return retVal;
+    }
     public List<User> findUserByParam(String paramName, String paramValue){
         FindIterable<Document> foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
         List<User> retVal = new ArrayList<>();
