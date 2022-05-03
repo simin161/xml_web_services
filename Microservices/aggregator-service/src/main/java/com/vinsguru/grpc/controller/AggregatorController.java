@@ -114,5 +114,12 @@ public class AggregatorController {
         return followerService.findPersonsFollowings(email);
     }
 
+    @PostMapping("/comment")
+    public String addNewComment(@RequestBody CommentDto comment){
+        return postService.addComment(comment);
+    }
+
+
+
 
 }

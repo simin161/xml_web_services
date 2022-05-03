@@ -1,6 +1,7 @@
 package com.example.postservice.model;
 
 import javax.persistence.Id;
+import java.util.List;
 
 public class Post {
     @Id
@@ -9,12 +10,14 @@ public class Post {
     private String text;
     private String pathToImage;
     private String link;
+    private List<Comment> comments;
 
-    public Post(String usersId, String text, String pathToImage, String link) {
+    public Post(String usersId, String text, String pathToImage, String link,List<Comment> comments) {
         this.usersId = usersId;
         this.text = text;
         this.pathToImage = pathToImage;
         this.link = link;
+        this.comments = comments;
     }
 
     public Post() {
@@ -58,5 +61,13 @@ public class Post {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

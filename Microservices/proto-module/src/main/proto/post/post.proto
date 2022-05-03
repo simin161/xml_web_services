@@ -14,14 +14,23 @@ message InputAddPost {
   string link = 4;
 }
 
+message InputAddComment {
+  string postId = 1;
+  string text = 2;
+  string email = 3;
+}
 message OutputAddPost {
   string result = 1;
 }
 
+message Output {
+  string result = 1;
+}
+
+
+
 service PostService {
 
   rpc addPost(InputAddPost) returns (OutputAddPost) {};
-
-
-
+  rpc addComment(InputAddComment) returns (Output) {};
 }
