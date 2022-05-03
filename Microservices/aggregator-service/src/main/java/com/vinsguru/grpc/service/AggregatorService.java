@@ -2,7 +2,7 @@ package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.EducationDto;
 import com.vinsguru.grpc.dto.PostDto;
-import com.vinsguru.grpc.dto.UserDto;
+import   com.vinsguru.grpc.dto.*;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 

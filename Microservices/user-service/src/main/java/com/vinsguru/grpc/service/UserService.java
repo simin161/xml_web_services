@@ -215,4 +215,21 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void checkIfAccountIsPrivate(InputForGetUserByEmail request, StreamObserver<OutputBool> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
+
+        proto.user.OutputBool output;
+
+            if(user.isPrivateProfile())
+                output = OutputBool.newBuilder().setPrivate(true).build();
+            else
+                output = OutputBool.newBuilder().setPrivate(false).build();
+
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+
+
+    }
 }
