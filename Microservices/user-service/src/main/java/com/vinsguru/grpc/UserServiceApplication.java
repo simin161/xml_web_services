@@ -16,7 +16,7 @@ public class UserServiceApplication {
                 .addService(new UserService())
                 .build();
 
-        // start
+        // startnpm startnpm
         server.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

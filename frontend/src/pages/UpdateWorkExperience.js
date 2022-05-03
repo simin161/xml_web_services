@@ -1,35 +1,43 @@
-import React from 'react';
+import React, { useState,useEffect} from 'react';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {useNavigate} from "react-router-dom";
 const UpdateWorkExperience = () => {
-  var lista=[]
-  function update(e){
-    e.stopPropagation();
-    console.log("ikad???");
+  const navigate=useNavigate()
+  const [startDate, setStartDate] = useState();
+         const [endDate, setEndDate] = useState();
+  const email= window.location.pathname.split('/')[2]
+
+  function update(){
+ 
     var workPlace = document.getElementById("workPlace").value;
     var workTitle = document.getElementById("workTitle").value;
     var from = document.getElementById("from").value;
     var to = document.getElementById("to").value;
 
-    lista.push({})
-      /**axios.post('/api/register', {
-                                    'firstName' : firstName,
-                                    'lastName' : lastName,
-                                    'email' : email,
-                                    'username' : username,
-                                    'password' : password
+   
+
+      axios.post(process.env.REACT_APP_BACKEND_URL +'workExperiences', {
+                                    'workPlace' : workPlace,
+                                    'workTitle' : workTitle,
+                                    'from' : from,
+                                    'to' : to,
+                                    'email' : email
                                   })
       .then(function (response) {
         console.log(response);
+        navigate("/profilePage/"+email)
       })
       .catch(function (error) {
         console.log(error);
-      });*/
+      });
    
   }
   return (
     <div className="card edit-profile-card">
         <div className="card-body">
-            <form>
+    
            <h3>Work experience</h3>
             <hr/>
                
@@ -41,7 +49,7 @@ const UpdateWorkExperience = () => {
 
                 <div className="col form-group">
                     <p id="p">Work title</p>   
-                    <input id="workTitle" type="text" pattern="[0-9]+\.?[0-9]*" className="form-control" required/>       
+                    <input id="workTitle" type="text" className="form-control" required/>       
                 </div> 
            
           </div>
@@ -49,21 +57,21 @@ const UpdateWorkExperience = () => {
 
                 <div className="col form-group">
                     <p id="p">From</p>   
-                    <input id="from"  type="text" pattern="[0-9]+\.?[0-9]*" className="form-control" required />       
+                    <DatePicker id="from" dateFormat={"yyyy-MM-dd"} selected={ startDate } onChange={(date)=>setStartDate(date)} ></DatePicker>       
                 </div> 
                  
                 <div className="col form-group">
                     <p id="p">To</p>   
-                    <input  id="to" pattern="[0-9]+\.?[0-9]*" className="form-control"  required/>
+                    <DatePicker id="to" dateFormat={"yyyy-MM-dd"} selected={ endDate } onChange={(date)=>setEndDate(date)} ></DatePicker>
                 </div> 
 
                <div  className="col form-group">
                     <p id="p">&nbsp;</p>   
-                    <button onClick={ e => update(e)}>add</button>
+                    <button onClick={update}>add</button>
                 </div> 
                
           </div>
-          </form>
+        
           <hr/>
           <br/> <br/>
 

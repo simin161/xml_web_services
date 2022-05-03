@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 const SignIn = () => {
-  
+  let navigate=useNavigate()
   function register(e){
     e.stopPropagation();
-    console.log("ikad???");
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
     var email = document.getElementById("email").value;
@@ -12,7 +12,7 @@ const SignIn = () => {
     var password = document.getElementById("password").value;
     var confirmPassword = document.getElementById("confirmPassword").value;
     if(confirmPassword === password){
-      axios.post('/api/register', {
+      axios.post(process.env.REACT_APP_BACKEND_URL + 'register', {
                                     'firstName' : firstName,
                                     'lastName' : lastName,
                                     'email' : email,
@@ -21,6 +21,7 @@ const SignIn = () => {
                                   })
       .then(function (response) {
         console.log(response);
+        navigate("/profilePage/"+email,{replace:true})
       })
       .catch(function (error) {
         console.log(error);
@@ -31,7 +32,7 @@ const SignIn = () => {
   }
 
   return (
-    <div class = "main-div-login"
+    <div className = "main-div-login"
       style={{
         display: 'flex',
         justifyContent: 'Right',
@@ -39,24 +40,24 @@ const SignIn = () => {
         height: '100vh'
       }}
     >
-      <div class="main">  	
+      <div className="main">  	
         <input type="checkbox" id="chk" aria-hidden="true"/>
 
-          <div class="signup">
-              <label for="chk" aria-hidden="true">Sign up</label>
-              <input style={{marginTop: "-10px"}} id="firstName" type="text" name="txt" placeholder="First name" required="true"/>
-              <input style={{marginTop: "-10px"}} id="lastName" type="text" name="txt" placeholder="Last name" required="true"/>
-              <input style={{marginTop: "-10px"}} id="email" type="email" name="email" placeholder="Email" required="true"/>
-              <input style={{marginTop: "-10px"}} id="username" type="text" name="txt" placeholder="Username" required="true"/>
-              <input style={{marginTop: "-10px"}} id="password" type="password" name="pswd" placeholder="Password" required="true"/>
-              <input style={{marginTop: "-10px"}} id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required="true"/>
+          <div className="signup">
+              <label htmlFor="chk" aria-hidden="true">Sign up</label>
+              <input style={{marginTop: "-10px"}} id="firstName" type="text" name="txt" placeholder="First name" required={true}/>
+              <input style={{marginTop: "-10px"}} id="lastName" type="text" name="txt" placeholder="Last name" required={true}/>
+              <input style={{marginTop: "-10px"}} id="email" type="email" name="email" placeholder="Email" required={true}/>
+              <input style={{marginTop: "-10px"}} id="username" type="text" name="txt" placeholder="Username" required={true}/>
+              <input style={{marginTop: "-10px"}} id="password" type="password" name="pswd" placeholder="Password" required={true}/>
+              <input style={{marginTop: "-10px"}} id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required={true}/>
               <button onClick={ e => register(e)}>Sign Up</button>
           
           </div>
 
-          <div class="login">
+          <div className="login">
             <form>
-              <label for="chk" aria-hidden="true">Sign In</label>
+              <label htmlFor="chk" aria-hidden="true">Sign In</label>
               <input type="email" name="email" placeholder="Email" required=""/>
               <input type="password" name="pswd" placeholder="Password" required=""/>
               <button>Sign In</button>

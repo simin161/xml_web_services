@@ -1,26 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect} from 'react';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
-class EditProfile extends Component {
- 
-    constructor (props) {
-        super(props)
-        this.state = {
-          startDate: new Date()
-        };
-        this.handleChange = this.handleChange.bind(this);
-    }
-    handleChange(date) {
-        this.setState({
-          startDate: date
-        })
-      }
-     update(e){
-        e.stopPropagation();
+import {useNavigate} from "react-router-dom";
+const EditProfile = () => {
+         const navigate=useNavigate()
+         const [startDate, setStartDate] = useState();
+         const email= window.location.pathname.split('/')[2]
+        
+          useEffect(()=>{
+          
+            axios.get(process.env.REACT_APP_BACKEND_URL + 'user/'+email+"/")
+            .then(function (response) {
+                  document.getElementById("email").value=response.data.email
+                  document.getElementById("username").value=response.data.username
+                  document.getElementById("firstName").value=response.data.firstName
+                  document.getElementById("lastName").value=response.data.lastName 
+                  document.getElementById("phone").value=response.data.phone
+                  document.getElementById("gender").value=response.data.gender
+                  document.getElementById("birthday").value=response.data.birthday
+                  document.getElementById("biography").value=response.data.biography
+                  document.getElementById("interests").value=response.data.interests
+                  document.getElementById("skills").value=response.data.skills
+                  if(response.data.privateProfile==true)
+                  document.getElementById("private").value="YES"
+                  else
+                  document.getElementById("private").value="NO"
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+
+          })
+
+     function update(){
+       
        
         var firstName = document.getElementById("firstName").value;
+        console.log("ssdfsdf   "+firstName)
         var lastName = document.getElementById("lastName").value;
         var email = document.getElementById("email").value;
         var username = document.getElementById("username").value;
@@ -34,10 +51,11 @@ class EditProfile extends Component {
         var profile
 
         if(privateProfile=="YES")
-            profile=true
+            profile="true"
         else 
-            profile=false
-        axios.post('/api/personalInfo', {
+            profile="false"
+        axios.post(process.env.REACT_APP_BACKEND_URL + 'personalInfo',
+         {
                                         'firstName' : firstName,
                                         'lastName' : lastName,
                                         'email' : email,
@@ -45,13 +63,16 @@ class EditProfile extends Component {
                                         'birthday' : birthday,
                                         'gender': gender,
                                         'phone' : phone,
-                                        'birogrpahy': biography,
+                                        'biography': biography,
                                         'interests': interests,
                                         'skills': skills,
                                         'private': profile
-                                      })
+          })
           .then(function (response) {
             console.log(response);
+            
+              navigate("/profilePage/"+email)
+          
           })
           .catch(function (error) {
             console.log(error);
@@ -59,13 +80,13 @@ class EditProfile extends Component {
 
           
       }
-    render(){
+    
   return (
       
     <div className="card edit-profile-card">
                 <div className="card-body">
               
-                    <form>
+                
                     <div className="inputFieldsDiv">
                     <h3>Personal infromation</h3>
                     <hr/>
@@ -92,7 +113,7 @@ class EditProfile extends Component {
                         <p>Birthday</p>
                         </div>
                         <div className="col-lg-9">
-                        <DatePicker id="birthday" dateFormat={"yyyy-MM-dd"} selected={ this.state.startDate } onChange={this.handleChange} ></DatePicker>
+                        <DatePicker id="birthday" dateFormat={"yyyy-MM-dd"} selected={ startDate } onChange={(date)=>setStartDate(date)} ></DatePicker>
                         </div>
                         </div>
 
@@ -117,7 +138,7 @@ class EditProfile extends Component {
                         <p>Phone num</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="phone" type="text" required/>
+                        <input id="phone" type="text" />
                         </div>
                         </div>
 
@@ -126,7 +147,7 @@ class EditProfile extends Component {
                         <p>Email</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="email" type="text" required/>
+                        <input id="email" type="text" disabled/>
                         </div>
                         </div>
 
@@ -135,7 +156,7 @@ class EditProfile extends Component {
                         <p>Username</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="username" type="text" required/>
+                        <input id="username" type="text" disabled/>
                         </div>
                         </div>
                         
@@ -170,13 +191,12 @@ class EditProfile extends Component {
                         <hr/>
                         <textarea id="skills"></textarea>
 
-                        <button onClick={ e => this.update(e)}>Save changes</button>
-                    </form>
-                    
+                        <button onClick={update}>Save changes</button>
+                  
                 </div>
     </div>
   );
-  }
+  
 };
   
 export default EditProfile;

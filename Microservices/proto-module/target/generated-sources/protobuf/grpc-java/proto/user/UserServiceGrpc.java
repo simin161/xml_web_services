@@ -123,36 +123,164 @@ public final class UserServiceGrpc {
      return getInvalidateUserMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<proto.user.Input,
-      proto.user.Output> getUpdateUserMethod;
+  private static volatile io.grpc.MethodDescriptor<proto.user.updateUserInfoInput,
+      proto.user.OutputMessage> getUpdateUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateUser",
-      requestType = proto.user.Input.class,
-      responseType = proto.user.Output.class,
+      requestType = proto.user.updateUserInfoInput.class,
+      responseType = proto.user.OutputMessage.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<proto.user.Input,
-      proto.user.Output> getUpdateUserMethod() {
-    io.grpc.MethodDescriptor<proto.user.Input, proto.user.Output> getUpdateUserMethod;
+  public static io.grpc.MethodDescriptor<proto.user.updateUserInfoInput,
+      proto.user.OutputMessage> getUpdateUserMethod() {
+    io.grpc.MethodDescriptor<proto.user.updateUserInfoInput, proto.user.OutputMessage> getUpdateUserMethod;
     if ((getUpdateUserMethod = UserServiceGrpc.getUpdateUserMethod) == null) {
       synchronized (UserServiceGrpc.class) {
         if ((getUpdateUserMethod = UserServiceGrpc.getUpdateUserMethod) == null) {
           UserServiceGrpc.getUpdateUserMethod = getUpdateUserMethod = 
-              io.grpc.MethodDescriptor.<proto.user.Input, proto.user.Output>newBuilder()
+              io.grpc.MethodDescriptor.<proto.user.updateUserInfoInput, proto.user.OutputMessage>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "user.UserService", "updateUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  proto.user.Input.getDefaultInstance()))
+                  proto.user.updateUserInfoInput.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  proto.user.Output.getDefaultInstance()))
+                  proto.user.OutputMessage.getDefaultInstance()))
                   .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("updateUser"))
                   .build();
           }
         }
      }
      return getUpdateUserMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail,
+      proto.user.Output> getGetUserByEmailMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getUserByEmail",
+      requestType = proto.user.InputForGetUserByEmail.class,
+      responseType = proto.user.Output.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail,
+      proto.user.Output> getGetUserByEmailMethod() {
+    io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail, proto.user.Output> getGetUserByEmailMethod;
+    if ((getGetUserByEmailMethod = UserServiceGrpc.getGetUserByEmailMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getGetUserByEmailMethod = UserServiceGrpc.getGetUserByEmailMethod) == null) {
+          UserServiceGrpc.getGetUserByEmailMethod = getGetUserByEmailMethod = 
+              io.grpc.MethodDescriptor.<proto.user.InputForGetUserByEmail, proto.user.Output>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "getUserByEmail"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.InputForGetUserByEmail.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.Output.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("getUserByEmail"))
+                  .build();
+          }
+        }
+     }
+     return getGetUserByEmailMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<proto.user.InputUpdateEducation,
+      proto.user.OutputMessage> getUpdateEducationMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "updateEducation",
+      requestType = proto.user.InputUpdateEducation.class,
+      responseType = proto.user.OutputMessage.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<proto.user.InputUpdateEducation,
+      proto.user.OutputMessage> getUpdateEducationMethod() {
+    io.grpc.MethodDescriptor<proto.user.InputUpdateEducation, proto.user.OutputMessage> getUpdateEducationMethod;
+    if ((getUpdateEducationMethod = UserServiceGrpc.getUpdateEducationMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getUpdateEducationMethod = UserServiceGrpc.getUpdateEducationMethod) == null) {
+          UserServiceGrpc.getUpdateEducationMethod = getUpdateEducationMethod = 
+              io.grpc.MethodDescriptor.<proto.user.InputUpdateEducation, proto.user.OutputMessage>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "updateEducation"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.InputUpdateEducation.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.OutputMessage.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("updateEducation"))
+                  .build();
+          }
+        }
+     }
+     return getUpdateEducationMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<proto.user.InputUpdateWorkExperience,
+      proto.user.OutputMessage> getUpdateWorkExperienceMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "updateWorkExperience",
+      requestType = proto.user.InputUpdateWorkExperience.class,
+      responseType = proto.user.OutputMessage.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<proto.user.InputUpdateWorkExperience,
+      proto.user.OutputMessage> getUpdateWorkExperienceMethod() {
+    io.grpc.MethodDescriptor<proto.user.InputUpdateWorkExperience, proto.user.OutputMessage> getUpdateWorkExperienceMethod;
+    if ((getUpdateWorkExperienceMethod = UserServiceGrpc.getUpdateWorkExperienceMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getUpdateWorkExperienceMethod = UserServiceGrpc.getUpdateWorkExperienceMethod) == null) {
+          UserServiceGrpc.getUpdateWorkExperienceMethod = getUpdateWorkExperienceMethod = 
+              io.grpc.MethodDescriptor.<proto.user.InputUpdateWorkExperience, proto.user.OutputMessage>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "updateWorkExperience"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.InputUpdateWorkExperience.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.OutputMessage.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("updateWorkExperience"))
+                  .build();
+          }
+        }
+     }
+     return getUpdateWorkExperienceMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail,
+      proto.user.OutputEducations> getGetEducationsUserByEmailMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getEducationsUserByEmail",
+      requestType = proto.user.InputForGetUserByEmail.class,
+      responseType = proto.user.OutputEducations.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail,
+      proto.user.OutputEducations> getGetEducationsUserByEmailMethod() {
+    io.grpc.MethodDescriptor<proto.user.InputForGetUserByEmail, proto.user.OutputEducations> getGetEducationsUserByEmailMethod;
+    if ((getGetEducationsUserByEmailMethod = UserServiceGrpc.getGetEducationsUserByEmailMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getGetEducationsUserByEmailMethod = UserServiceGrpc.getGetEducationsUserByEmailMethod) == null) {
+          UserServiceGrpc.getGetEducationsUserByEmailMethod = getGetEducationsUserByEmailMethod = 
+              io.grpc.MethodDescriptor.<proto.user.InputForGetUserByEmail, proto.user.OutputEducations>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "user.UserService", "getEducationsUserByEmail"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.InputForGetUserByEmail.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  proto.user.OutputEducations.getDefaultInstance()))
+                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("getEducationsUserByEmail"))
+                  .build();
+          }
+        }
+     }
+     return getGetEducationsUserByEmailMethod;
   }
 
   /**
@@ -205,9 +333,37 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void updateUser(proto.user.Input request,
-        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+    public void updateUser(proto.user.updateUserInfoInput request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
       asyncUnimplementedUnaryCall(getUpdateUserMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void getUserByEmail(proto.user.InputForGetUserByEmail request,
+        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetUserByEmailMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void updateEducation(proto.user.InputUpdateEducation request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
+      asyncUnimplementedUnaryCall(getUpdateEducationMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void updateWorkExperience(proto.user.InputUpdateWorkExperience request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
+      asyncUnimplementedUnaryCall(getUpdateWorkExperienceMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void getEducationsUserByEmail(proto.user.InputForGetUserByEmail request,
+        io.grpc.stub.StreamObserver<proto.user.OutputEducations> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetEducationsUserByEmailMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -237,9 +393,37 @@ public final class UserServiceGrpc {
             getUpdateUserMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                proto.user.Input,
-                proto.user.Output>(
+                proto.user.updateUserInfoInput,
+                proto.user.OutputMessage>(
                   this, METHODID_UPDATE_USER)))
+          .addMethod(
+            getGetUserByEmailMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                proto.user.InputForGetUserByEmail,
+                proto.user.Output>(
+                  this, METHODID_GET_USER_BY_EMAIL)))
+          .addMethod(
+            getUpdateEducationMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                proto.user.InputUpdateEducation,
+                proto.user.OutputMessage>(
+                  this, METHODID_UPDATE_EDUCATION)))
+          .addMethod(
+            getUpdateWorkExperienceMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                proto.user.InputUpdateWorkExperience,
+                proto.user.OutputMessage>(
+                  this, METHODID_UPDATE_WORK_EXPERIENCE)))
+          .addMethod(
+            getGetEducationsUserByEmailMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                proto.user.InputForGetUserByEmail,
+                proto.user.OutputEducations>(
+                  this, METHODID_GET_EDUCATIONS_USER_BY_EMAIL)))
           .build();
     }
   }
@@ -288,10 +472,42 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void updateUser(proto.user.Input request,
-        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+    public void updateUser(proto.user.updateUserInfoInput request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getUserByEmail(proto.user.InputForGetUserByEmail request,
+        io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetUserByEmailMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void updateEducation(proto.user.InputUpdateEducation request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getUpdateEducationMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void updateWorkExperience(proto.user.InputUpdateWorkExperience request,
+        io.grpc.stub.StreamObserver<proto.user.OutputMessage> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getUpdateWorkExperienceMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getEducationsUserByEmail(proto.user.InputForGetUserByEmail request,
+        io.grpc.stub.StreamObserver<proto.user.OutputEducations> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetEducationsUserByEmailMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -336,9 +552,37 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public proto.user.Output updateUser(proto.user.Input request) {
+    public proto.user.OutputMessage updateUser(proto.user.updateUserInfoInput request) {
       return blockingUnaryCall(
           getChannel(), getUpdateUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.Output getUserByEmail(proto.user.InputForGetUserByEmail request) {
+      return blockingUnaryCall(
+          getChannel(), getGetUserByEmailMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.OutputMessage updateEducation(proto.user.InputUpdateEducation request) {
+      return blockingUnaryCall(
+          getChannel(), getUpdateEducationMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.OutputMessage updateWorkExperience(proto.user.InputUpdateWorkExperience request) {
+      return blockingUnaryCall(
+          getChannel(), getUpdateWorkExperienceMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public proto.user.OutputEducations getEducationsUserByEmail(proto.user.InputForGetUserByEmail request) {
+      return blockingUnaryCall(
+          getChannel(), getGetEducationsUserByEmailMethod(), getCallOptions(), request);
     }
   }
 
@@ -386,10 +630,42 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> updateUser(
-        proto.user.Input request) {
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.OutputMessage> updateUser(
+        proto.user.updateUserInfoInput request) {
       return futureUnaryCall(
           getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.Output> getUserByEmail(
+        proto.user.InputForGetUserByEmail request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetUserByEmailMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.OutputMessage> updateEducation(
+        proto.user.InputUpdateEducation request) {
+      return futureUnaryCall(
+          getChannel().newCall(getUpdateEducationMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.OutputMessage> updateWorkExperience(
+        proto.user.InputUpdateWorkExperience request) {
+      return futureUnaryCall(
+          getChannel().newCall(getUpdateWorkExperienceMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<proto.user.OutputEducations> getEducationsUserByEmail(
+        proto.user.InputForGetUserByEmail request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetEducationsUserByEmailMethod(), getCallOptions()), request);
     }
   }
 
@@ -397,6 +673,10 @@ public final class UserServiceGrpc {
   private static final int METHODID_LOG_IN_USER = 1;
   private static final int METHODID_INVALIDATE_USER = 2;
   private static final int METHODID_UPDATE_USER = 3;
+  private static final int METHODID_GET_USER_BY_EMAIL = 4;
+  private static final int METHODID_UPDATE_EDUCATION = 5;
+  private static final int METHODID_UPDATE_WORK_EXPERIENCE = 6;
+  private static final int METHODID_GET_EDUCATIONS_USER_BY_EMAIL = 7;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -428,8 +708,24 @@ public final class UserServiceGrpc {
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
           break;
         case METHODID_UPDATE_USER:
-          serviceImpl.updateUser((proto.user.Input) request,
+          serviceImpl.updateUser((proto.user.updateUserInfoInput) request,
+              (io.grpc.stub.StreamObserver<proto.user.OutputMessage>) responseObserver);
+          break;
+        case METHODID_GET_USER_BY_EMAIL:
+          serviceImpl.getUserByEmail((proto.user.InputForGetUserByEmail) request,
               (io.grpc.stub.StreamObserver<proto.user.Output>) responseObserver);
+          break;
+        case METHODID_UPDATE_EDUCATION:
+          serviceImpl.updateEducation((proto.user.InputUpdateEducation) request,
+              (io.grpc.stub.StreamObserver<proto.user.OutputMessage>) responseObserver);
+          break;
+        case METHODID_UPDATE_WORK_EXPERIENCE:
+          serviceImpl.updateWorkExperience((proto.user.InputUpdateWorkExperience) request,
+              (io.grpc.stub.StreamObserver<proto.user.OutputMessage>) responseObserver);
+          break;
+        case METHODID_GET_EDUCATIONS_USER_BY_EMAIL:
+          serviceImpl.getEducationsUserByEmail((proto.user.InputForGetUserByEmail) request,
+              (io.grpc.stub.StreamObserver<proto.user.OutputEducations>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -496,6 +792,10 @@ public final class UserServiceGrpc {
               .addMethod(getLogInUserMethod())
               .addMethod(getInvalidateUserMethod())
               .addMethod(getUpdateUserMethod())
+              .addMethod(getGetUserByEmailMethod())
+              .addMethod(getUpdateEducationMethod())
+              .addMethod(getUpdateWorkExperienceMethod())
+              .addMethod(getGetEducationsUserByEmailMethod())
               .build();
         }
       }

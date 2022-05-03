@@ -1,7 +1,0 @@
-server:
-  port: 8080
-grpc:
-  client:
-    user-service:
-      address: localhost:6565
-      negotiationType: plaintext

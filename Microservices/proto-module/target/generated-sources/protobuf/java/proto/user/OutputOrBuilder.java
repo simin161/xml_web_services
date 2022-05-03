@@ -66,4 +66,69 @@ public interface OutputOrBuilder extends
    */
   com.google.protobuf.ByteString
       getPasswordBytes();
+
+  /**
+   * <code>bool privateProfile = 7;</code>
+   */
+  boolean getPrivateProfile();
+
+  /**
+   * <code>string birthday = 8;</code>
+   */
+  java.lang.String getBirthday();
+  /**
+   * <code>string birthday = 8;</code>
+   */
+  com.google.protobuf.ByteString
+      getBirthdayBytes();
+
+  /**
+   * <code>string gender = 9;</code>
+   */
+  java.lang.String getGender();
+  /**
+   * <code>string gender = 9;</code>
+   */
+  com.google.protobuf.ByteString
+      getGenderBytes();
+
+  /**
+   * <code>string phone = 10;</code>
+   */
+  java.lang.String getPhone();
+  /**
+   * <code>string phone = 10;</code>
+   */
+  com.google.protobuf.ByteString
+      getPhoneBytes();
+
+  /**
+   * <code>string biography = 11;</code>
+   */
+  java.lang.String getBiography();
+  /**
+   * <code>string biography = 11;</code>
+   */
+  com.google.protobuf.ByteString
+      getBiographyBytes();
+
+  /**
+   * <code>string interests = 12;</code>
+   */
+  java.lang.String getInterests();
+  /**
+   * <code>string interests = 12;</code>
+   */
+  com.google.protobuf.ByteString
+      getInterestsBytes();
+
+  /**
+   * <code>string skills = 13;</code>
+   */
+  java.lang.String getSkills();
+  /**
+   * <code>string skills = 13;</code>
+   */
+  com.google.protobuf.ByteString
+      getSkillsBytes();
 }

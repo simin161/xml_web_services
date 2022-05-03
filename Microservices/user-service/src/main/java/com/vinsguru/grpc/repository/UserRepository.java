@@ -1,15 +1,24 @@
 package com.vinsguru.grpc.repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
+import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
+import com.vinsguru.grpc.model.WorkExperience;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import proto.user.InputUpdateWorkExperience;
 
 public class UserRepository {
     private static UserRepository instance = null;
@@ -44,17 +53,68 @@ public class UserRepository {
                 .append("lastName", user.getLastName())
                 .append("email", user.getEmail())
                 .append("username", user.getUsername())
-                .append("password", user.getPassword());
+                .append("password", user.getPassword())
+                .append("privateProfile",user.isPrivateProfile())
+                .append("birthday",user.getBirthday())
+                .append("gender",user.getGender())
+                .append("phone",user.getPhone())
+                .append("biography",user.getBiography())
+                .append("interests",user.getInterests())
+                .append("skills",user.getSkills())
+                .append("educations",user.getEducations())
+                .append("experiences",user.getEducations());
         usersCollection.insertOne(userToSave);
     }
 
     public User findUserByEmail(String email){
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
         User retVal = null;
         if(foundUser != null){
             retVal = new User(foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"),foundUser.getString("email"),
-                    foundUser.getString("password"));
+                    foundUser.getString("password"),foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"),foundUser.getString("gender"),
+                    foundUser.getString("phone"),foundUser.getString("biography"),foundUser.getString("interests"),foundUser.getString("skills"),null,null);
         }
         return retVal;
+    }
+
+    public void update(User user){
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("firstName", user.getFirstName()),
+                Updates.set("lastName", user.getLastName()),
+                Updates.set("privateProfile", user.isPrivateProfile()),
+                Updates.set("birthday", user.getBirthday()),
+                Updates.set("gender", user.getGender()),
+                Updates.set("phone", user.getPhone()),
+                Updates.set("biography", user.getBiography()),
+                Updates.set("interests", user.getInterests()),
+                Updates.set("skills", user.getSkills())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
+    public void updateEducation(String email,Education education){
+        Document query = new Document().append("email", email);
+        Bson updates = Updates.combine(
+                Updates.addToSet("educations", Arrays.asList(education.getSchool(),education.getDegree(),education.getFieldOfStudy(),education.getFrom(),
+                        education.getTo()))
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
+
+    public List<Education> getEducationsUserByEmail(String email) {
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();;
+        return foundUser.getList("educations",Education.class);
+    }
+
+    public void updateWorkExperience(String email,WorkExperience workExperience) {
+        Document query = new Document().append("email", email);
+        Bson updates = Updates.combine(
+                Updates.addToSet("experiences", Arrays.asList(workExperience.getWorkPlace(),workExperience.getWorkTitle(),workExperience.getFrom(),
+                        workExperience.getTo()))
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
     }
 }

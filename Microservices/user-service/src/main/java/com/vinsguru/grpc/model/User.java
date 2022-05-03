@@ -2,6 +2,11 @@ package com.vinsguru.grpc.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class User {
     @Id
     private String id;
@@ -10,29 +15,126 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private boolean privateProfile;
+    private Date birthday;
+    private String gender;
+    private String phone;
+    private String biography;
+    private String interests;
+    private String skills;
+    private List<Education> educations;
+
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isPrivateProfile() {
+        return privateProfile;
+    }
+
+    public void setPrivateProfile(boolean privateProfile) {
+        this.privateProfile = privateProfile;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+    public List<WorkExperience> experinces;
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
     }
 
     public User() {
@@ -44,5 +146,41 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.privateProfile = false;
+        this.birthday = new Date();
+        this.gender = "";
+        this.phone = "";
+        this.biography = "";
+        this.interests = "";
+        this.skills = "";
+        this.educations=new ArrayList<>();
+        this.experinces=new ArrayList<>();
+    }
+
+    public User(String firstName, String lastName, String username, String email, String password, boolean privateProfile,
+                Date birthday, String gender, String phone, String biography, String interests, String skills,List<Education> educations,
+                List<WorkExperience> experinces) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.privateProfile = privateProfile;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phone = phone;
+        this.biography = biography;
+        this.interests = interests;
+        this.skills = skills;
+        this.educations=educations;
+        this.experinces=experinces;
+    }
+
+    public List<WorkExperience> getExperinces() {
+        return experinces;
+    }
+
+    public void setExperinces(List<WorkExperience> experinces) {
+        this.experinces = experinces;
     }
 }

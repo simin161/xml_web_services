@@ -22,6 +22,13 @@ private static final long serialVersionUID = 0L;
     email_ = "";
     username_ = "";
     password_ = "";
+    privateProfile_ = false;
+    birthday_ = "";
+    gender_ = "";
+    phone_ = "";
+    biography_ = "";
+    interests_ = "";
+    skills_ = "";
   }
 
   @java.lang.Override
@@ -82,6 +89,47 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             password_ = s;
+            break;
+          }
+          case 56: {
+
+            privateProfile_ = input.readBool();
+            break;
+          }
+          case 66: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            birthday_ = s;
+            break;
+          }
+          case 74: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            gender_ = s;
+            break;
+          }
+          case 82: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            phone_ = s;
+            break;
+          }
+          case 90: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            biography_ = s;
+            break;
+          }
+          case 98: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            interests_ = s;
+            break;
+          }
+          case 106: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            skills_ = s;
             break;
           }
           default: {
@@ -320,6 +368,219 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int PRIVATEPROFILE_FIELD_NUMBER = 7;
+  private boolean privateProfile_;
+  /**
+   * <code>bool privateProfile = 7;</code>
+   */
+  public boolean getPrivateProfile() {
+    return privateProfile_;
+  }
+
+  public static final int BIRTHDAY_FIELD_NUMBER = 8;
+  private volatile java.lang.Object birthday_;
+  /**
+   * <code>string birthday = 8;</code>
+   */
+  public java.lang.String getBirthday() {
+    java.lang.Object ref = birthday_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      birthday_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string birthday = 8;</code>
+   */
+  public com.google.protobuf.ByteString
+      getBirthdayBytes() {
+    java.lang.Object ref = birthday_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      birthday_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int GENDER_FIELD_NUMBER = 9;
+  private volatile java.lang.Object gender_;
+  /**
+   * <code>string gender = 9;</code>
+   */
+  public java.lang.String getGender() {
+    java.lang.Object ref = gender_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      gender_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string gender = 9;</code>
+   */
+  public com.google.protobuf.ByteString
+      getGenderBytes() {
+    java.lang.Object ref = gender_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      gender_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PHONE_FIELD_NUMBER = 10;
+  private volatile java.lang.Object phone_;
+  /**
+   * <code>string phone = 10;</code>
+   */
+  public java.lang.String getPhone() {
+    java.lang.Object ref = phone_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      phone_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string phone = 10;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPhoneBytes() {
+    java.lang.Object ref = phone_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      phone_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int BIOGRAPHY_FIELD_NUMBER = 11;
+  private volatile java.lang.Object biography_;
+  /**
+   * <code>string biography = 11;</code>
+   */
+  public java.lang.String getBiography() {
+    java.lang.Object ref = biography_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      biography_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string biography = 11;</code>
+   */
+  public com.google.protobuf.ByteString
+      getBiographyBytes() {
+    java.lang.Object ref = biography_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      biography_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int INTERESTS_FIELD_NUMBER = 12;
+  private volatile java.lang.Object interests_;
+  /**
+   * <code>string interests = 12;</code>
+   */
+  public java.lang.String getInterests() {
+    java.lang.Object ref = interests_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      interests_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string interests = 12;</code>
+   */
+  public com.google.protobuf.ByteString
+      getInterestsBytes() {
+    java.lang.Object ref = interests_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      interests_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int SKILLS_FIELD_NUMBER = 13;
+  private volatile java.lang.Object skills_;
+  /**
+   * <code>string skills = 13;</code>
+   */
+  public java.lang.String getSkills() {
+    java.lang.Object ref = skills_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      skills_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string skills = 13;</code>
+   */
+  public com.google.protobuf.ByteString
+      getSkillsBytes() {
+    java.lang.Object ref = skills_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      skills_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -352,6 +613,27 @@ private static final long serialVersionUID = 0L;
     if (!getPasswordBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, password_);
     }
+    if (privateProfile_ != false) {
+      output.writeBool(7, privateProfile_);
+    }
+    if (!getBirthdayBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, birthday_);
+    }
+    if (!getGenderBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, gender_);
+    }
+    if (!getPhoneBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, phone_);
+    }
+    if (!getBiographyBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 11, biography_);
+    }
+    if (!getInterestsBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 12, interests_);
+    }
+    if (!getSkillsBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 13, skills_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -378,6 +660,28 @@ private static final long serialVersionUID = 0L;
     }
     if (!getPasswordBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, password_);
+    }
+    if (privateProfile_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(7, privateProfile_);
+    }
+    if (!getBirthdayBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, birthday_);
+    }
+    if (!getGenderBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, gender_);
+    }
+    if (!getPhoneBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, phone_);
+    }
+    if (!getBiographyBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, biography_);
+    }
+    if (!getInterestsBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, interests_);
+    }
+    if (!getSkillsBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, skills_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -407,6 +711,20 @@ private static final long serialVersionUID = 0L;
         .equals(other.getUsername());
     result = result && getPassword()
         .equals(other.getPassword());
+    result = result && (getPrivateProfile()
+        == other.getPrivateProfile());
+    result = result && getBirthday()
+        .equals(other.getBirthday());
+    result = result && getGender()
+        .equals(other.getGender());
+    result = result && getPhone()
+        .equals(other.getPhone());
+    result = result && getBiography()
+        .equals(other.getBiography());
+    result = result && getInterests()
+        .equals(other.getInterests());
+    result = result && getSkills()
+        .equals(other.getSkills());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -430,6 +748,21 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getUsername().hashCode();
     hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
     hash = (53 * hash) + getPassword().hashCode();
+    hash = (37 * hash) + PRIVATEPROFILE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getPrivateProfile());
+    hash = (37 * hash) + BIRTHDAY_FIELD_NUMBER;
+    hash = (53 * hash) + getBirthday().hashCode();
+    hash = (37 * hash) + GENDER_FIELD_NUMBER;
+    hash = (53 * hash) + getGender().hashCode();
+    hash = (37 * hash) + PHONE_FIELD_NUMBER;
+    hash = (53 * hash) + getPhone().hashCode();
+    hash = (37 * hash) + BIOGRAPHY_FIELD_NUMBER;
+    hash = (53 * hash) + getBiography().hashCode();
+    hash = (37 * hash) + INTERESTS_FIELD_NUMBER;
+    hash = (53 * hash) + getInterests().hashCode();
+    hash = (37 * hash) + SKILLS_FIELD_NUMBER;
+    hash = (53 * hash) + getSkills().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -575,6 +908,20 @@ private static final long serialVersionUID = 0L;
 
       password_ = "";
 
+      privateProfile_ = false;
+
+      birthday_ = "";
+
+      gender_ = "";
+
+      phone_ = "";
+
+      biography_ = "";
+
+      interests_ = "";
+
+      skills_ = "";
+
       return this;
     }
 
@@ -607,6 +954,13 @@ private static final long serialVersionUID = 0L;
       result.email_ = email_;
       result.username_ = username_;
       result.password_ = password_;
+      result.privateProfile_ = privateProfile_;
+      result.birthday_ = birthday_;
+      result.gender_ = gender_;
+      result.phone_ = phone_;
+      result.biography_ = biography_;
+      result.interests_ = interests_;
+      result.skills_ = skills_;
       onBuilt();
       return result;
     }
@@ -677,6 +1031,33 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getPassword().isEmpty()) {
         password_ = other.password_;
+        onChanged();
+      }
+      if (other.getPrivateProfile() != false) {
+        setPrivateProfile(other.getPrivateProfile());
+      }
+      if (!other.getBirthday().isEmpty()) {
+        birthday_ = other.birthday_;
+        onChanged();
+      }
+      if (!other.getGender().isEmpty()) {
+        gender_ = other.gender_;
+        onChanged();
+      }
+      if (!other.getPhone().isEmpty()) {
+        phone_ = other.phone_;
+        onChanged();
+      }
+      if (!other.getBiography().isEmpty()) {
+        biography_ = other.biography_;
+        onChanged();
+      }
+      if (!other.getInterests().isEmpty()) {
+        interests_ = other.interests_;
+        onChanged();
+      }
+      if (!other.getSkills().isEmpty()) {
+        skills_ = other.skills_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1118,6 +1499,446 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       password_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean privateProfile_ ;
+    /**
+     * <code>bool privateProfile = 7;</code>
+     */
+    public boolean getPrivateProfile() {
+      return privateProfile_;
+    }
+    /**
+     * <code>bool privateProfile = 7;</code>
+     */
+    public Builder setPrivateProfile(boolean value) {
+      
+      privateProfile_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool privateProfile = 7;</code>
+     */
+    public Builder clearPrivateProfile() {
+      
+      privateProfile_ = false;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object birthday_ = "";
+    /**
+     * <code>string birthday = 8;</code>
+     */
+    public java.lang.String getBirthday() {
+      java.lang.Object ref = birthday_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        birthday_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string birthday = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBirthdayBytes() {
+      java.lang.Object ref = birthday_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        birthday_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string birthday = 8;</code>
+     */
+    public Builder setBirthday(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      birthday_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string birthday = 8;</code>
+     */
+    public Builder clearBirthday() {
+      
+      birthday_ = getDefaultInstance().getBirthday();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string birthday = 8;</code>
+     */
+    public Builder setBirthdayBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      birthday_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object gender_ = "";
+    /**
+     * <code>string gender = 9;</code>
+     */
+    public java.lang.String getGender() {
+      java.lang.Object ref = gender_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gender_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string gender = 9;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGenderBytes() {
+      java.lang.Object ref = gender_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string gender = 9;</code>
+     */
+    public Builder setGender(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      gender_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string gender = 9;</code>
+     */
+    public Builder clearGender() {
+      
+      gender_ = getDefaultInstance().getGender();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string gender = 9;</code>
+     */
+    public Builder setGenderBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      gender_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object phone_ = "";
+    /**
+     * <code>string phone = 10;</code>
+     */
+    public java.lang.String getPhone() {
+      java.lang.Object ref = phone_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        phone_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string phone = 10;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPhoneBytes() {
+      java.lang.Object ref = phone_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        phone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string phone = 10;</code>
+     */
+    public Builder setPhone(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      phone_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string phone = 10;</code>
+     */
+    public Builder clearPhone() {
+      
+      phone_ = getDefaultInstance().getPhone();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string phone = 10;</code>
+     */
+    public Builder setPhoneBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      phone_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object biography_ = "";
+    /**
+     * <code>string biography = 11;</code>
+     */
+    public java.lang.String getBiography() {
+      java.lang.Object ref = biography_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        biography_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string biography = 11;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBiographyBytes() {
+      java.lang.Object ref = biography_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        biography_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string biography = 11;</code>
+     */
+    public Builder setBiography(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      biography_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string biography = 11;</code>
+     */
+    public Builder clearBiography() {
+      
+      biography_ = getDefaultInstance().getBiography();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string biography = 11;</code>
+     */
+    public Builder setBiographyBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      biography_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object interests_ = "";
+    /**
+     * <code>string interests = 12;</code>
+     */
+    public java.lang.String getInterests() {
+      java.lang.Object ref = interests_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        interests_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string interests = 12;</code>
+     */
+    public com.google.protobuf.ByteString
+        getInterestsBytes() {
+      java.lang.Object ref = interests_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        interests_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string interests = 12;</code>
+     */
+    public Builder setInterests(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      interests_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string interests = 12;</code>
+     */
+    public Builder clearInterests() {
+      
+      interests_ = getDefaultInstance().getInterests();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string interests = 12;</code>
+     */
+    public Builder setInterestsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      interests_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object skills_ = "";
+    /**
+     * <code>string skills = 13;</code>
+     */
+    public java.lang.String getSkills() {
+      java.lang.Object ref = skills_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        skills_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string skills = 13;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSkillsBytes() {
+      java.lang.Object ref = skills_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        skills_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string skills = 13;</code>
+     */
+    public Builder setSkills(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      skills_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string skills = 13;</code>
+     */
+    public Builder clearSkills() {
+      
+      skills_ = getDefaultInstance().getSkills();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string skills = 13;</code>
+     */
+    public Builder setSkillsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      skills_ = value;
       onChanged();
       return this;
     }

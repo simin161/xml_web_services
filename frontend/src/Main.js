@@ -13,10 +13,10 @@ const Main = () => {
             <Route exact path='/' element={<Home/>}></Route>
             <Route exact path='/signin' element={<SignIn/>}></Route>
             <Route exact path='/accountSettings' element={<AccountSettings/>}></Route>
-            <Route exact path='/profilePage' element={<ProfilePage/>}></Route>
-            <Route exact path='/editProfile' element={<EditProfile/>}></Route>
-            <Route exact path='/updateEducation' element={<UpdateEducation/>}></Route>
-            <Route exact path='/updateWorkExperience' element={<UpdateWorkExperience/>}></Route>
+            <Route exact path='/profilePage/:email' element={<ProfilePage/>}></Route>
+            <Route exact path='/editProfile/:email' element={<EditProfile/>}></Route>
+            <Route exact path='/updateEducation/:email' element={<UpdateEducation/>}></Route>
+            <Route exact path='/updateWorkExperience/:email' element={<UpdateWorkExperience/>}></Route>
         </Routes>
   );
 }
