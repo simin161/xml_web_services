@@ -1,7 +1,5 @@
 package com.vinsguru.grpc.dto;
 
-import java.util.Date;
-
 public class UserDto {
 
     private String firstName;
