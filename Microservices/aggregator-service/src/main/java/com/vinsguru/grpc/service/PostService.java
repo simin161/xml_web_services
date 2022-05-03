@@ -5,6 +5,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import proto.post.InputAddPost;
 import proto.post.PostServiceGrpc;
+import proto.post.UserEmail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,21 @@ public class PostService {
         blockingStub = openChannelToPostService();
         List<PostDto> retVal = new ArrayList<PostDto>();
         for(InputAddPost iap : this.blockingStub.getAllPosts(request).getAllPostsList()){
+            PostDto postDTO = new PostDto();
+            postDTO.setEmail(iap.getEmail());
+            postDTO.setLink(iap.getLink());
+            postDTO.setText(iap.getText());
+            postDTO.setPathToImage(iap.getPathToImage());
+            retVal.add(postDTO);
+        }
+        return retVal;
+    }
+
+    public List<PostDto> getAllUsersPosts(String email){
+        UserEmail ue = UserEmail.newBuilder().setEmail(email).build();
+        blockingStub = openChannelToPostService();
+        List<PostDto> retVal = new ArrayList<PostDto>();
+        for(InputAddPost iap : this.blockingStub.getAllUserPosts(ue).getAllPostsList()){
             PostDto postDTO = new PostDto();
             postDTO.setEmail(iap.getEmail());
             postDTO.setLink(iap.getLink());

@@ -65,4 +65,24 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         responseObserver.onCompleted();
 
     }
+    @Override
+    public void getAllUserPosts(UserEmail request, StreamObserver<AllPosts> responseObserver){
+        List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
+        List<InputAddPost> iaps = new ArrayList<InputAddPost>();
+
+        msConnection.setUpCommunicationPostUser(blockingStub);
+        for(Post p : documentedPosts){
+            OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
+            String email = blockingStub.findUserEmailById(userId).getEmail();
+            if(request.getEmail().equals(email)){
+                InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
+                        .setLink(p.getLink()).setEmail(email).build();
+                iaps.add(iap);
+            }
+        }
+        AllPosts allUserPosts;
+        allUserPosts = AllPosts.newBuilder().addAllAllPosts(iaps).build();
+        responseObserver.onNext(allUserPosts);
+        responseObserver.onCompleted();
+    }
 }

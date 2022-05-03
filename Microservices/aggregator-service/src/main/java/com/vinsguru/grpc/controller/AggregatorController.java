@@ -95,4 +95,9 @@ public class AggregatorController {
     public List<PostDto> getAllPosts(){
         return postService.getAllPosts();
     }
+
+    @GetMapping("/getAllUserPosts/user:{email}")
+    public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
+        return postService.getAllUsersPosts(email);
+    }
 }
