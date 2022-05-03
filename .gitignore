@@ -6,6 +6,10 @@
 /Microservices/proto-module/target
 /Microservices/proto-module/proto-module.iml
 /Microservices/user-service/user-service.iml
+/Microservices/follower-service/follower-service.iml
+/Microservices/post-service/post-service.iml
 /Microservices/user-service/target
+/Microservices/follower-service/target
+/Microservices/post-service/target
 /Microservices/spring-grpc.iml
 /Microservices/calculator-service
