@@ -59,7 +59,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
 
-    public void getUserByEmail(InputForGetUserByEmail request, StreamObserver<Output> responseObserver) {
+    public void getUserByEmail(proto.user.InputForGetUserByEmail request, StreamObserver<Output> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         String s = formatter.format(user.getBirthday());
@@ -84,8 +84,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void updateUser(updateUserInfoInput request, StreamObserver<OutputMessage> responseObserver) throws ParseException {
-        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthday());
+    public void updateUser(updateUserInfoInput request, StreamObserver<OutputMessage> responseObserver) {
+        Date date1= null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthday());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         proto.user.OutputMessage output;
         User userToUpdate=new User(null,request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
                 date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null);
@@ -96,9 +101,19 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void updateEducation(InputUpdateEducation request, StreamObserver<OutputMessage> responseObserver) throws ParseException {
-        Date from=new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
-        Date to=new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
+    public void updateEducation(proto.user.InputUpdateEducation request, StreamObserver<OutputMessage> responseObserver) {
+        Date from= null;
+        try {
+            from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date to= null;
+        try {
+            to = new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         proto.user.OutputMessage output;
         UserRepository.getInstance().updateEducation(request.getEmail(),new Education(request.getSchool(),request.getDegree(),request.getFieldOfStudy(),
                 from,to));
@@ -124,9 +139,19 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void updateWorkExperience(InputUpdateWorkExperience request, StreamObserver<OutputMessage> responseObserver) throws ParseException {
-        Date from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
-        Date to = new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
+    public void updateWorkExperience(InputUpdateWorkExperience request, StreamObserver<OutputMessage> responseObserver) {
+        Date from = null;
+        try {
+            from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getFrom());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date to = null;
+        try {
+            to = new SimpleDateFormat("yyyy-MM-dd").parse(request.getTo());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         proto.user.OutputMessage output;
         UserRepository.getInstance().updateWorkExperience(request.getEmail(), new WorkExperience(request.getWorkPlace(), request.getWorkTitle(), from, to));
         output = OutputMessage.newBuilder().setOutputMessage("success").build();

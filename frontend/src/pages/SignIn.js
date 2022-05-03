@@ -21,7 +21,12 @@ const SignIn = () => {
                                   })
       .then(function (response) {
         console.log(response);
-        navigate("/profilePage/"+email,{replace:true})
+        if(!response.data){
+          console.log("err");
+        }else{
+          localStorage.setItem("loggedUser", response.data);
+          navigate("/profilePage");
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -29,6 +34,28 @@ const SignIn = () => {
     }else{
       console.log("invalid password");
     }
+  }
+
+  function logIn(e){
+    e.stopPropagation();
+    var email = document.getElementById("emailLog").value;
+    var password = document.getElementById("passwordLog").value;
+    axios.post(process.env.REACT_APP_BACKEND_URL + 'logInUser', {
+      'email' : email,
+      'password': password
+    })
+    .then(function (response) {
+        console.log(response);
+        if(!response.data ){
+            console.log("err");
+        }else{
+            localStorage.setItem("loggedUser", response.data);
+            navigate("/profilePage");
+        }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   return (
@@ -58,9 +85,9 @@ const SignIn = () => {
           <div className="login">
             <form>
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
-              <input type="email" name="email" placeholder="Email" required=""/>
-              <input type="password" name="pswd" placeholder="Password" required=""/>
-              <button>Sign In</button>
+              <input type="" id="emailLog" name="email" placeholder="Email" required={true}/>
+              <input type="password" id="passwordLog" name="pswd" placeholder="Password" required={true}/>
+              <button onClick={e => logIn(e)}>Sign In</button>
             </form>
           </div>
       </div>
