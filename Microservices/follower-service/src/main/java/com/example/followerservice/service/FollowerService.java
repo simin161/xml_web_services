@@ -6,13 +6,15 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.bson.types.ObjectId;
-import proto.post.InputAddPost;
-import proto.post.OutputAddPost;
+import proto.user.Input;
 import proto.user.InputForGetUserByEmail;
+import proto.user.Output2;
 import proto.user.UserServiceGrpc;
 
 import  proto.follow.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @GrpcService
 public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
@@ -48,10 +50,56 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
         }
         responseObserver.onNext(output);
         responseObserver.onCompleted();
-
-
-
     }
 
+    @Override
+    public void findPersonsFollowers(InputEmail request, StreamObserver<OutputFollowers> responseObserver) {
 
+        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
+        Channel channel = channelBuilder.build();
+        UserServiceGrpc.newBlockingStub(channel);
+
+        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
+        String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
+
+        List<Follow> personsFollowers = FollowerRepository.getInstance().findPersonsFollowers(personalId);
+
+
+        List<Followers> inputs = new ArrayList<>();
+        for(Follow u : personsFollowers){
+             Followers follows = Followers.newBuilder().setFollowerEmail(u.getFollowerId()).setPersonEmail(u.getPersonId()).build();
+            inputs.add(follows);
+        }
+        OutputFollowers output2;
+        output2 = OutputFollowers.newBuilder().addAllFollowers(inputs).build();
+        responseObserver.onNext(output2);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void findPersonsFollowings(InputEmail request, StreamObserver<OutputFollowers> responseObserver) {
+
+        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
+        Channel channel = channelBuilder.build();
+        UserServiceGrpc.newBlockingStub(channel);
+
+        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
+        String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
+
+        List<Follow> personsFollowers = FollowerRepository.getInstance().findPersonsFollowings(personalId);
+
+
+        List<Followers> inputs = new ArrayList<>();
+        for(Follow u : personsFollowers){
+            Followers follows = Followers.newBuilder().setFollowerEmail(u.getFollowerId()).setPersonEmail(u.getPersonId()).build();
+            inputs.add(follows);
+        }
+        OutputFollowers output2;
+        output2 = OutputFollowers.newBuilder().addAllFollowers(inputs).build();
+        responseObserver.onNext(output2);
+        responseObserver.onCompleted();
+
+    }
 }

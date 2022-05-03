@@ -1,10 +1,8 @@
 package com.example.followerservice.repository;
 
 import com.example.followerservice.model.Follow;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -46,4 +44,27 @@ public class FollowerRepository {
                 .append("followerId", follow.getFollowerId());
         followersCollection.insertOne(followToSave);
     }
+
+    public List<Follow> findPersonsFollowers(String personsId){
+        FindIterable<Document> foundUsers = followersCollection.find(Filters.eq("personId", personsId));
+        List<Follow> retVal = new ArrayList<>();
+        for(Document foundUser : foundUsers)
+        {
+            Follow u = new Follow(null,foundUser.getString("personId"),foundUser.getString("followerId"));
+            retVal.add(u);
+        }
+        return retVal;
+    }
+
+    public List<Follow> findPersonsFollowings(String followerId){
+        FindIterable<Document> foundUsers = followersCollection.find(Filters.eq("followerId", followerId));
+        List<Follow> retVal = new ArrayList<>();
+        for(Document foundUser : foundUsers)
+        {
+            Follow u = new Follow(null,foundUser.getString("personId"),foundUser.getString("followerId"));
+            retVal.add(u);
+        }
+        return retVal;
+    }
+
 }

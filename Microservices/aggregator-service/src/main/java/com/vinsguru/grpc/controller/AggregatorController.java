@@ -104,4 +104,15 @@ public class AggregatorController {
         return followerService.addFollower(follow);
     }
 
+    @GetMapping("/followers/{email:.+}/")
+    public List<FollowDto> getFollowers(@PathVariable("email")String email){
+        return followerService.findPersonsFollowers(email);
+    }
+
+    @GetMapping("/followings/{email:.+}/")
+    public List<FollowDto> getFollowings(@PathVariable("email")String email){
+        return followerService.findPersonsFollowings(email);
+    }
+
+
 }
