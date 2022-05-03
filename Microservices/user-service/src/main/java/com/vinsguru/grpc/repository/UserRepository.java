@@ -100,11 +100,8 @@ public class UserRepository {
         FindIterable<Document> iterable = usersCollection.find();
         List<User> retVal = new ArrayList<User>();
         for(Document d : iterable){
-           // Input i = Input.newBuilder().setFirstName(d.getString("firstName")).setLastName(d.getString("lastName")).setEmail(d.getString("email"))
-           //         .setUsername(d.getString("username")).setPassword(d.getString("password")).build();
             User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"));
             retVal.add(u);
-
         }
         //return  usersCollection.find();
         return retVal;
