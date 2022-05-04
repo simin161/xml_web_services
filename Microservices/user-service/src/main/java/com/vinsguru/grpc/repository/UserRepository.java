@@ -82,19 +82,6 @@ public class UserRepository {
         }
         return retVal;
     }
-
-    public User findUserByUsersId(String usersId) {
-        Document foundUser = usersCollection.find(Filters.eq("_id",usersId)).first();
-        User retVal = null;
-        if(foundUser != null){
-            retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
-                    foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
-                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
-
-        }
-        return retVal;
-    }
-
     public List<User> findUserByParam(String paramName, String paramValue){
         FindIterable<Document> foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
         List<User> retVal = new ArrayList<>();
@@ -117,6 +104,7 @@ public class UserRepository {
             User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"));
             retVal.add(u);
         }
+        //return  usersCollection.find();
         return retVal;
     }
 
@@ -165,14 +153,31 @@ public class UserRepository {
     }
 
     public void updateWorkExperience(String email,WorkExperience workExperience) {
-        Document query = new Document().append("email", email);
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+
+        Document newExperience = new Document("_idExperience", new ObjectId());
+        newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
+                .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
+
         Bson updates = Updates.combine(
-                Updates.addToSet("experiences", Arrays.asList(workExperience.getWorkPlace(),workExperience.getWorkTitle(),workExperience.getFrom(),
-                        workExperience.getTo()))
+                Updates.addToSet("experiences",newExperience)
         );
+
         UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(query, updates, options);
+        usersCollection.updateOne(foundUser, updates, options);
     }
 
+    public List<WorkExperience> getWorkExperienceByEmail(String email) {
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        List<Document> experiencesDocuments =foundUser.get("experiences",docClazz);
+        List<WorkExperience> experiences = new ArrayList<>();
+        for(Document doc : experiencesDocuments){
+            experiences.add(new WorkExperience(doc.getObjectId("_idExperience"),doc.getString("workPlace"),
+                    doc.getString("workTitle"),doc.getDate("from"),
+            doc.getDate("to")));
+        }
+        return experiences;
 
+
+    }
 }

@@ -129,7 +129,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         proto.user.OutputEducations output;
       List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
 
-        List<OutputEducation> educations = new ArrayList<OutputEducation>();
+        List<OutputEducation> educations = new ArrayList<>();
         for(Education education : educationList){
             OutputEducation ed = OutputEducation.newBuilder().setSchool(education.getSchool()).setDegree(education.getDegree()).setFieldOfStudy(education.getFieldOfStudy())
                     .setFrom(education.getFrom().toString()).setTo(education.getTo().toString()).build();
@@ -160,9 +160,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         output = OutputMessage.newBuilder().setOutputMessage("success").build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
-    }
 
-    @Override
+    }
     public void getAllUsers(com.google.protobuf.Empty request, io.grpc.stub.StreamObserver<proto.user.Output2> responseObserver){
 
         List<User> documentedUsers = UserRepository.getInstance().getAllUsers();
@@ -229,15 +228,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void findUserEmailById(OutputId request, StreamObserver<InputForGetUserByEmail> responseObserver){
-        User user = UserRepository.getInstance().findUserByUsersId(request.getUsersId());
-        proto.user.InputForGetUserByEmail ifgube;
-        ifgube = InputForGetUserByEmail.newBuilder().setEmail(user.getEmail()).build();
-        responseObserver.onNext(ifgube);
-        responseObserver.onCompleted();
-    }
-
-    @Override
     public void checkIfAccountIsPrivate(InputForGetUserByEmail request, StreamObserver<OutputBool> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
 
@@ -252,5 +242,22 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onCompleted();
 
 
+    }
+
+    @Override
+    public void getExperiencesByEmail(InputForGetUserByEmail request, StreamObserver<OutputExperiences> responseObserver) {
+        proto.user.OutputExperiences output;
+        List<WorkExperience> experiencesList=UserRepository.getInstance().getWorkExperienceByEmail(request.getEmail());
+
+        List<OutputExperience> experiences = new ArrayList<>();
+        for(WorkExperience experience : experiencesList){
+            OutputExperience ed = OutputExperience.newBuilder().setWorkPlace(experience.getWorkPlace()).setWorkTitle(experience.getWorkTitle())
+                    .setFrom(experience.getFrom().toString()).setTo(experience.getTo().toString()).build();
+            experiences.add(ed);
+        }
+
+        output =  OutputExperiences.newBuilder().addAllExperiences(experiences).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
     }
 }

@@ -27,19 +27,10 @@ message Output {
   string result = 1;
 }
 
-message AllPosts {
-  repeated InputAddPost allPosts = 1;
-}
 
-message UserEmail {
-  string email = 1;
-}
 
 service PostService {
 
   rpc addPost(InputAddPost) returns (OutputAddPost) {};
-  rpc getAllPosts(google.protobuf.Empty) returns (AllPosts) {};
-  rpc getAllUserPosts(UserEmail) returns (AllPosts) {};
   rpc addComment(InputAddComment) returns (Output) {};
-
 }

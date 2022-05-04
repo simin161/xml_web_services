@@ -79,12 +79,24 @@ message OutputEducations {
   repeated OutputEducation educations = 1;
 }
 message OutputEducation {
-  string school = 2;
-  string degree = 3;
-  string fieldOfStudy = 4;
-  string from = 5;
-  string to = 6;
+  string school = 1;
+  string degree = 2;
+  string fieldOfStudy = 3;
+  string from = 4;
+  string to = 5;
 }
+
+message OutputExperiences {
+  repeated OutputExperience experiences = 1;
+}
+message OutputExperience {
+  string workPlace = 1;
+  string workTitle = 2;
+  string from = 3;
+  string to = 4;
+}
+
+
 
 message Output2 {
 
@@ -128,6 +140,8 @@ service UserService {
 
   rpc getEducationsUserByEmail(InputForGetUserByEmail) returns (OutputEducations) {};
 
+  rpc getExperiencesByEmail(InputForGetUserByEmail) returns (OutputExperiences) {};
+
   rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
 
   rpc searchUsers(InputSearch) returns (Output2) {};
@@ -135,8 +149,6 @@ service UserService {
   rpc findUserIdByEmail(InputForGetUserByEmail) returns (OutputId) {};
 
   rpc checkIfAccountIsPrivate(InputForGetUserByEmail) returns(OutputBool) {};
-
-  rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
 
 
 

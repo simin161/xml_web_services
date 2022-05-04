@@ -151,6 +151,17 @@ public class AggregatorService {
         }
 
 
+    public List<WorkExperienceDto> getExperiencesByEmail(String email) {
+        blockingStub = openChannelToUserService();
+        List<WorkExperienceDto> experienceDtos = new ArrayList<>();
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder()
+                .setEmail(email)
+                .build();
 
+        for (OutputExperience output:  this.blockingStub.getExperiencesByEmail(input).getExperiencesList()){
+            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo()));
+        }
+        return experienceDtos;
+    }
 
 }
