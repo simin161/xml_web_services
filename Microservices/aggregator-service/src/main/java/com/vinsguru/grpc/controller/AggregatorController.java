@@ -69,6 +69,10 @@ public class AggregatorController {
         return aggregatorService.updateWorkExperiences(workExperienceDto);
     }
 
+    @GetMapping("/experiences/{email:.+}/")
+    public List<WorkExperienceDto> getExperiencesByEmail(@PathVariable("email")String email){
+        return aggregatorService.getExperiencesByEmail(email);
+    }
 
     @GetMapping("/getAllUsers")
     public List<UserDto> getUsers(){
@@ -113,5 +117,24 @@ public class AggregatorController {
     @GetMapping("/getAllUserPosts/user:{email}")
     public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
         return postService.getAllUsersPosts(email);
+    }
+    @PostMapping("/reaction")
+    public String addNewReaction(@RequestBody ReactionDto reaction){
+        return postService.addReaction(reaction);
+    }
+
+    @GetMapping("/postsForHomePage/{email:.+}/")
+    public List<PostDto> getPosts(@PathVariable("email")String email){
+        return postService.findAllPostsOfFollowingsByUserEmail(email);
+    }
+
+    @PostMapping("/numOfCommentsByPostId")
+    public int findNumOfCommentsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getNumOfCommentsByPostId(postId.get("id"));
+    }
+
+    @PostMapping("/numOfReactionsByPostId")
+    public int findNumOfReactionsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getNumOfReactionsByPostId(postId.get("id"));
     }
 }

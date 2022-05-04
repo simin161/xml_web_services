@@ -1,8 +1,11 @@
 package com.vinsguru.grpc.model;
 
+import org.bson.types.ObjectId;
+
 import java.util.Date;
 
 public class WorkExperience {
+    private ObjectId idExperience;
     private String workPlace;
     private String workTitle;
     private Date from;
@@ -40,7 +43,23 @@ public class WorkExperience {
         this.to = to;
     }
 
+    public ObjectId getIdExperience() {
+        return idExperience;
+    }
+
+    public void setIdExperience(ObjectId idExperience) {
+        this.idExperience = idExperience;
+    }
+
     public WorkExperience(String workPlace, String workTitle, Date from, Date to) {
+        this.workPlace = workPlace;
+        this.workTitle = workTitle;
+        this.from = from;
+        this.to = to;
+    }
+
+    public WorkExperience(ObjectId idExperience, String workPlace, String workTitle, Date from, Date to) {
+        this.idExperience = idExperience;
         this.workPlace = workPlace;
         this.workTitle = workTitle;
         this.from = from;

@@ -2,16 +2,20 @@ package com.vinsguru.grpc.dto;
 
 public class PostDto {
 
+    private String idPost;
     private String email;
     private String text;
     private String pathToImage;
     private String link;
+    private String date;
 
-    public PostDto(String email, String text, String pathToImage, String link) {
+    public PostDto(String idPost, String email, String text, String pathToImage, String link, String date) {
+        this.idPost = idPost;
         this.email = email;
         this.text = text;
         this.pathToImage = pathToImage;
         this.link = link;
+        this.date = date;
     }
 
     public PostDto() {
@@ -47,5 +51,21 @@ public class PostDto {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(String idPost) {
+        this.idPost = idPost;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

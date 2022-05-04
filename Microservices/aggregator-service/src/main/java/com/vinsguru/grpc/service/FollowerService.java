@@ -1,12 +1,9 @@
 package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.FollowDto;
-import com.vinsguru.grpc.dto.PostDto;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import proto.follow.*;
-import proto.post.InputAddPost;
-import proto.post.PostServiceGrpc;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -253,4 +253,21 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
 
     }
+
+    @Override
+    public void getExperiencesByEmail(InputForGetUserByEmail request, StreamObserver<OutputExperiences> responseObserver) {
+        proto.user.OutputExperiences output;
+        List<WorkExperience> experiencesList=UserRepository.getInstance().getWorkExperienceByEmail(request.getEmail());
+
+        List<OutputExperience> experiences = new ArrayList<>();
+        for(WorkExperience experience : experiencesList){
+            OutputExperience ed = OutputExperience.newBuilder().setWorkPlace(experience.getWorkPlace()).setWorkTitle(experience.getWorkTitle())
+                    .setFrom(experience.getFrom().toString()).setTo(experience.getTo().toString()).build();
+            experiences.add(ed);
+        }
+
+        output =  OutputExperiences.newBuilder().addAllExperiences(experiences).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
 }

@@ -1,20 +1,13 @@
 package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.EducationDto;
-import com.vinsguru.grpc.dto.PostDto;
 import   com.vinsguru.grpc.dto.*;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
-import proto.post.InputAddPost;
-import proto.post.PostServiceGrpc;
 import proto.user.*;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +103,7 @@ public class AggregatorService {
         blockingStub = openChannelToUserService();
         InputUpdateWorkExperience input = InputUpdateWorkExperience.newBuilder()
                 .setWorkPlace(workExperienceDto.getWorkPlace())
-                .setWorkTitle(workExperienceDto.getWorkPlace())
+                .setWorkTitle(workExperienceDto.getWorkTitle())
                 .setFrom(workExperienceDto.getFrom())
                 .setTo(workExperienceDto.getTo())
                 .setEmail(workExperienceDto.getEmail())
@@ -150,6 +143,18 @@ public class AggregatorService {
 
         }
 
+    public List<WorkExperienceDto> getExperiencesByEmail(String email) {
+        blockingStub = openChannelToUserService();
+        List<WorkExperienceDto> experienceDtos = new ArrayList<>();
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder()
+                .setEmail(email)
+                .build();
+
+        for (OutputExperience output:  this.blockingStub.getExperiencesByEmail(input).getExperiencesList()){
+            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo()));
+        }
+        return experienceDtos;
+    }
 
 
 
