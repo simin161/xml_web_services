@@ -18,6 +18,13 @@ public class WorkExperienceDto {
         this.email=email;
     }
 
+    public WorkExperienceDto(String workPlace, String workTitle, String from, String to) {
+        this.workPlace = workPlace;
+        this.workTitle = workTitle;
+        this.from = from;
+        this.to = to;
+    }
+
     public String getWorkPlace() {
         return workPlace;
     }

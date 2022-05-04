@@ -164,15 +164,33 @@ public class UserRepository {
 
     }
 
+
     public void updateWorkExperience(String email,WorkExperience workExperience) {
-        Document query = new Document().append("email", email);
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+
+        Document newExperience = new Document("_idExperience", new ObjectId());
+        newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
+                .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
+
         Bson updates = Updates.combine(
-                Updates.addToSet("experiences", Arrays.asList(workExperience.getWorkPlace(),workExperience.getWorkTitle(),workExperience.getFrom(),
-                        workExperience.getTo()))
+                Updates.addToSet("experiences",newExperience)
         );
+
         UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(query, updates, options);
+        usersCollection.updateOne(foundUser, updates, options);
     }
 
+    public List<WorkExperience> getWorkExperienceByEmail(String email) {
+        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        List<Document> experiencesDocuments =foundUser.get("experiences",docClazz);
+        List<WorkExperience> experiences = new ArrayList<>();
+        for(Document doc : experiencesDocuments){
+            experiences.add(new WorkExperience(doc.getObjectId("_idExperience"),doc.getString("workPlace"),
+                    doc.getString("workTitle"),doc.getDate("from"),
+                    doc.getDate("to")));
+        }
+        return experiences;
 
+
+    }
 }

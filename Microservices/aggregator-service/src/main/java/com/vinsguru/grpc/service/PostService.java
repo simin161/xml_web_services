@@ -2,12 +2,12 @@ package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.CommentDto;
 import com.vinsguru.grpc.dto.PostDto;
+import com.vinsguru.grpc.dto.ReactionDto;
+import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
-import proto.post.InputAddComment;
-import proto.post.InputAddPost;
-import proto.post.PostServiceGrpc;
-import proto.post.UserEmail;
+import proto.post.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,13 @@ public class PostService {
         return this.blockingStub.addComment(input).getResult();
     }
 
+    public String addReaction(ReactionDto reaction) {
+        blockingStub = openChannelToPostService();
+        InputAddReaction input = InputAddReaction.newBuilder()
+                .setEmail(reaction.getEmail()).setPostId(reaction.getPostId()).setReactionType(reaction.getReactionType()).build();
+        return this.blockingStub.addReaction(input).getResult();
+    }
+
     public List<PostDto> getAllPosts(){
         com.google.protobuf.Empty request = null;
         blockingStub = openChannelToPostService();
@@ -47,6 +54,7 @@ public class PostService {
         return retVal;
     }
 
+
     public List<PostDto> getAllUsersPosts(String email){
         UserEmail ue = UserEmail.newBuilder().setEmail(email).build();
         blockingStub = openChannelToPostService();
@@ -60,6 +68,30 @@ public class PostService {
             retVal.add(postDTO);
         }
         return retVal;
+    }
+
+    public List<PostDto> findAllPostsOfFollowingsByUserEmail(String email){
+        blockingStub = openChannelToPostService();
+        Input input = Input.newBuilder().setEmail(email).build();
+        List<PostDto> posts = new ArrayList<>();
+       for(OutputPost post: blockingStub.findAllPostsOfFollowingsByUserEmail(input).getPostsList()){
+            posts.add(new PostDto(post.getPostId(),post.getUsersId(),post.getText(),post.getPathToImage(),post.getLink(),post.getDate()));
+       }
+       return  posts;
+    }
+
+    public int getNumOfCommentsByPostId(String postId) {
+        blockingStub = openChannelToPostService();
+        InputPostId input = InputPostId.newBuilder().setPostId(postId).build();
+      return   blockingStub.getNumOfCommentsByPostId(input).getNum();
+
+    }
+
+    public int getNumOfReactionsByPostId(String postId) {
+        blockingStub = openChannelToPostService();
+        InputPostId input = InputPostId.newBuilder().setPostId(postId).build();
+        return   blockingStub.getNumOfReactionsByPostId(input).getNum();
+
     }
 
 }

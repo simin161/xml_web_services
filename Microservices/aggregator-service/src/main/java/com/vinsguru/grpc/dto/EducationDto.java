@@ -27,6 +27,9 @@ public class EducationDto {
         this.to = to;
     }
 
+    public EducationDto() {
+    }
+
     public String getEmail() {
         return email;
     }

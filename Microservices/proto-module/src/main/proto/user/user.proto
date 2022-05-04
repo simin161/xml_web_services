@@ -110,6 +110,18 @@ message OutputBool {
 
 }
 
+
+message OutputExperiences {
+  repeated OutputExperience experiences = 1;
+}
+message OutputExperience {
+  string workPlace = 1;
+  string workTitle = 2;
+  string from = 3;
+  string to = 4;
+}
+
+
 service UserService {
 
   rpc addUser(Input) returns (Output) {};
@@ -127,6 +139,8 @@ service UserService {
   rpc updateWorkExperience(InputUpdateWorkExperience) returns (OutputMessage) {};
 
   rpc getEducationsUserByEmail(InputForGetUserByEmail) returns (OutputEducations) {};
+
+  rpc getExperiencesByEmail(InputForGetUserByEmail) returns (OutputExperiences) {};
 
   rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
 
