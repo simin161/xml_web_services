@@ -1,6 +1,7 @@
 package com.example.postservice.model;
 
 import javax.persistence.Id;
+import java.util.Date;
 import java.util.List;
 
 public class Post {
@@ -12,15 +13,16 @@ public class Post {
     private String link;
     private List<Comment> comments;
     private List<Reaction> reactions;
+    private Date date;
 
-
-    public Post(String usersId, String text, String pathToImage, String link,List<Comment> comments,List<Reaction> reactions) {
+    public Post(String usersId, String text, String pathToImage, String link, List<Comment> comments, List<Reaction> reactions, Date date) {
         this.usersId = usersId;
         this.text = text;
         this.pathToImage = pathToImage;
         this.link = link;
         this.comments = comments;
         this.reactions = reactions;
+        this.date = date;
     }
 
     public Post() {
@@ -64,6 +66,14 @@ public class Post {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public List<Comment> getComments() {

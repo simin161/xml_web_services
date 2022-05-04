@@ -50,7 +50,10 @@ public class PostRepository {
         postToSave.append("usersId", post.getUsersId())
                 .append("text", post.getText())
                 .append("pathToImage", post.getPathToImage())
-                .append("link", post.getLink()).append("comments",post.getComments()).append("reactions",post.getReactions());
+                .append("link", post.getLink())
+                .append("comments",post.getComments())
+                .append("reactions",post.getReactions())
+                .append("date",post.getDate());
 
         postsCollection.insertOne(postToSave);
     }

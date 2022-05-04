@@ -34,6 +34,29 @@ message InputAddReaction {
 
 }
 
+message Input {
+  string email = 1;
+}
+
+
+message OutputPosts {
+  repeated OutputPost posts = 1;
+}
+message OutputPost {
+ string postId =1;
+ string text = 2;
+ string usersId =3;
+ string  pathToImage =4;
+ string link = 5;
+}
+
+message InputPostId {
+  string email = 1;
+}
+
+message OutputNumber {
+ int32 num= 1;
+}
 
 
 service PostService {
@@ -41,4 +64,7 @@ service PostService {
   rpc addPost(InputAddPost) returns (OutputAddPost) {};
   rpc addComment(InputAddComment) returns (Output) {};
   rpc addReaction(InputAddReaction) returns (Output) {};
+  rpc findAllPostsOfFollowingsByUserEmail(Input) returns (OutputPosts) {};
+  rpc getNumOfReactionsByPostId(InputPostId) returns (OutputNumber) {};
+  rpc getNumOfCommentsByPostId(InputPostId) returns (OutputNumber) {};
 }
