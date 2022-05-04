@@ -2,10 +2,12 @@ package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.CommentDto;
 import com.vinsguru.grpc.dto.PostDto;
+import com.vinsguru.grpc.dto.ReactionDto;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import proto.post.InputAddComment;
 import proto.post.InputAddPost;
+import proto.post.InputAddReaction;
 import proto.post.PostServiceGrpc;
 
 import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToPostService;
@@ -27,6 +29,13 @@ public class PostService {
         InputAddComment input = InputAddComment.newBuilder()
                 .setEmail(comment.getCommentatorsEmail()).setPostId(comment.getPostId()).setText(comment.getText()).build();
         return this.blockingStub.addComment(input).getResult();
+    }
+
+    public String addReaction(ReactionDto reaction) {
+        blockingStub = openChannelToPostService();
+        InputAddReaction input = InputAddReaction.newBuilder()
+                .setEmail(reaction.getEmail()).setPostId(reaction.getPostId()).setReactionType(reaction.getReactionType()).build();
+        return this.blockingStub.addReaction(input).getResult();
     }
 
 }

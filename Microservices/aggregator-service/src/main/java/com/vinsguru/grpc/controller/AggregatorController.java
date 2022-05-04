@@ -125,5 +125,11 @@ public class AggregatorController {
         return aggregatorService.getExperiencesByEmail(email);
     }
 
+    @PostMapping("/reaction")
+    public String addNewReaction(@RequestBody ReactionDto reaction){
+        return postService.addReaction(reaction);
+    }
+
+
 
 }

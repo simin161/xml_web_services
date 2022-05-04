@@ -11,13 +11,16 @@ public class Post {
     private String pathToImage;
     private String link;
     private List<Comment> comments;
+    private List<Reaction> reactions;
 
-    public Post(String usersId, String text, String pathToImage, String link,List<Comment> comments) {
+
+    public Post(String usersId, String text, String pathToImage, String link,List<Comment> comments,List<Reaction> reactions) {
         this.usersId = usersId;
         this.text = text;
         this.pathToImage = pathToImage;
         this.link = link;
         this.comments = comments;
+        this.reactions = reactions;
     }
 
     public Post() {
@@ -69,5 +72,13 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Reaction> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(List<Reaction> reactions) {
+        this.reactions = reactions;
     }
 }

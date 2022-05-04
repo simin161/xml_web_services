@@ -2,6 +2,7 @@ package com.example.postservice.repository;
 
 import com.example.postservice.model.Comment;
 import com.example.postservice.model.Post;
+import com.example.postservice.model.Reaction;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -49,7 +50,7 @@ public class PostRepository {
         postToSave.append("usersId", post.getUsersId())
                 .append("text", post.getText())
                 .append("pathToImage", post.getPathToImage())
-                .append("link", post.getLink()).append("comments",post.getComments());
+                .append("link", post.getLink()).append("comments",post.getComments()).append("reactions",post.getReactions());
 
         postsCollection.insertOne(postToSave);
     }
@@ -69,5 +70,18 @@ public class PostRepository {
         postsCollection.updateOne(foundPost, updates, options);
     }
 
+    public void addReaction(String postId, Reaction reaction){
+        Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
+
+        Document newReaction = new Document("_idReaction", new ObjectId());
+        newReaction.append("usersId",reaction.getUsersId()).append("reactionType",reaction.getReaction());
+
+        Bson updates = Updates.combine(
+                Updates.addToSet("reactions",newReaction)
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        postsCollection.updateOne(foundPost, updates, options);
+    }
 
 }

@@ -27,10 +27,18 @@ message Output {
   string result = 1;
 }
 
+message InputAddReaction {
+  string email = 1;
+  string reactionType = 2;
+  string  postId = 3;
+
+}
+
 
 
 service PostService {
 
   rpc addPost(InputAddPost) returns (OutputAddPost) {};
   rpc addComment(InputAddComment) returns (Output) {};
+  rpc addReaction(InputAddReaction) returns (Output) {};
 }
