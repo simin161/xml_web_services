@@ -82,12 +82,16 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         List<InputAddPost> iaps = new ArrayList<InputAddPost>();
 
         msConnection.setUpCommunicationPostUser(blockingStub);
-        for(Post p : documentedPosts){
-            OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
-            String email = blockingStub.findUserEmailById(userId).getEmail();
-            InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
-                    .setLink(p.getLink()).setEmail(email).build();
-            iaps.add(iap);
+        try {
+            for (Post p : documentedPosts) {
+                OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
+                String email = blockingStub.findUserEmailById(userId).getEmail();
+                InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
+                        .setLink(p.getLink()).setEmail(email).build();
+                iaps.add(iap);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
         }
         AllPosts allPosts;
         allPosts = AllPosts.newBuilder().addAllAllPosts(iaps).build();
@@ -101,14 +105,18 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         List<InputAddPost> iaps = new ArrayList<>();
 
         msConnection.setUpCommunicationPostUser(blockingStub);
-        for(Post p : documentedPosts){
-            OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
-            String email = blockingStub.findUserEmailById(userId).getEmail();
-            if(request.getEmail().equals(email)){
-                InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
-                        .setLink(p.getLink()).setEmail(email).build();
-                iaps.add(iap);
+        try {
+            for (Post p : documentedPosts) {
+                OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
+                String email = blockingStub.findUserEmailById(userId).getEmail();
+                if (request.getEmail().equals(email)) {
+                    InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
+                            .setLink(p.getLink()).setEmail(email).build();
+                    iaps.add(iap);
+                }
             }
+        } catch(Exception e){
+            e.printStackTrace();
         }
         AllPosts allUserPosts;
         allUserPosts = AllPosts.newBuilder().addAllAllPosts(iaps).build();

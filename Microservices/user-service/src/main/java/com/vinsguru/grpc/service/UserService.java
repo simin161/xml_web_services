@@ -231,10 +231,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void findUserEmailById(OutputId request, StreamObserver<InputForGetUserByEmail> responseObserver){
         User user = UserRepository.getInstance().findUserByUsersId(request.getUsersId());
-        proto.user.InputForGetUserByEmail ifgube;
-        ifgube = InputForGetUserByEmail.newBuilder().setEmail(user.getEmail()).build();
-        responseObserver.onNext(ifgube);
-        responseObserver.onCompleted();
+        if(!user.isPrivateProfile()){
+            proto.user.InputForGetUserByEmail ifgube;
+            ifgube = InputForGetUserByEmail.newBuilder().setEmail(user.getEmail()).build();
+            responseObserver.onNext(ifgube);
+            responseObserver.onCompleted();
+        } else{
+            responseObserver.onNext(null);
+            responseObserver.onCompleted();
+        }
     }
 
     @Override
