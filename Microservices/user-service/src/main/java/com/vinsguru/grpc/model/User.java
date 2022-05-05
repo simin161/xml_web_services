@@ -27,7 +27,7 @@ public class User {
     private String interests;
     private String skills;
     private List<Education> educations;
-
+    public List<WorkExperience> experinces;
 
     public ObjectId getId() {
         return id;
@@ -136,7 +136,7 @@ public class User {
     public List<Education> getEducations() {
         return educations;
     }
-    public List<WorkExperience> experinces;
+
     public void setEducations(List<Education> educations) {
         this.educations = educations;
     }

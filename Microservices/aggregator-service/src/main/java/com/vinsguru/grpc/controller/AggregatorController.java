@@ -2,19 +2,11 @@ package com.vinsguru.grpc.controller;
 
 import com.vinsguru.grpc.dto.*;
 
-import com.vinsguru.grpc.service.AggregatorService;
+import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +16,7 @@ import java.util.Map;
 public class AggregatorController {
 
     @Autowired
-    private AggregatorService aggregatorService;
+    private UsersService aggregatorService;
 
     @Autowired
     private PostService postService;

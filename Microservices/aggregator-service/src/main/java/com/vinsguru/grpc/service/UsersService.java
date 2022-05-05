@@ -17,7 +17,7 @@ import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUser
 
 
 @Service
-public class AggregatorService {
+public class UsersService {
 
     @GrpcClient("user-service")
     private UserServiceGrpc.UserServiceBlockingStub blockingStub;
