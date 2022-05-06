@@ -26,8 +26,9 @@ public class UsersService {
 
     public String addUser(Map<String,String> message) {
         blockingStub = openChannelToUserService();
-        Input input = Input.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
-                .setLastName(message.get("lastName")).setPassword(message.get("password")).setUsername(message.get("username")).build();
+        userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
+                .setLastName(message.get("lastName")).setPassword(message.get("password")).setUsername(message.get("username")).setGender(message.get("gender"))
+                .setBirthDate(message.get("birthDate")).build();
         return this.blockingStub.addUser(input).getResult();
     }
 

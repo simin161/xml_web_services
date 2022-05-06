@@ -27,12 +27,17 @@ import java.util.List;
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
-    public void addUser(proto.user.Input request,
+    public void addUser(proto.user.userReg request,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
         if(UserRepository.getInstance().findUserByParam("email", request.getEmail()).isEmpty() && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
-            UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword()));
-            output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthDate());
+                UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date));
+                output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
+            } catch (ParseException e) {
+                output = Output.newBuilder().setResult("false").build();
+            }
         }else
             output = Output.newBuilder().setResult("false").build();
         responseObserver.onNext(output);

@@ -29,6 +29,20 @@ public class User {
     private List<Education> educations;
     public List<WorkExperience> experinces;
 
+    public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.privateProfile = false;
+        this.birthday = birthDate;
+        this.gender = gender;
+        this.educations=new ArrayList<>();
+        this.experinces=new ArrayList<>();
+    }
+
+
     public ObjectId getId() {
         return id;
     }
