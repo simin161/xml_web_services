@@ -113,30 +113,29 @@ public class UsersService {
 
     }
 
-        public List<UserDto> getUsers () {
+        public List<DisplayUserDto> getUsers () {
 
             com.google.protobuf.Empty request = null;
             blockingStub = openChannelToUserService();
-            //List<Input> retval =  this.blockingStub.getAllUsers(request).getUserList();
 
-            List<UserDto> retVal = new ArrayList<UserDto>();
+            List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
 
             for (Input i : this.blockingStub.getAllUsers(request).getUserList()) {
-                UserDto userDTO = new UserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+                DisplayUserDto userDTO = new DisplayUserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getEmail());
                 retVal.add(userDTO);
             }
 
             return retVal;
         }
 
-        public List<UserDto> searchUsers (String param){
+        public List<DisplayUserDto> searchUsers (String param){
 
             blockingStub = openChannelToUserService();
-            List<UserDto> retVal = new ArrayList<UserDto>();
+            List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
             InputSearch is = InputSearch.newBuilder().setParam(param).build();
 
             for (Input i : this.blockingStub.searchUsers(is).getUserList()) {
-                UserDto userDTO = new UserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getPassword(), i.getEmail());
+                DisplayUserDto userDTO = new DisplayUserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getEmail());
                 retVal.add(userDTO);
             }
 

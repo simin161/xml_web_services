@@ -68,15 +68,15 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     @Override
     public void getAllPosts(com.google.protobuf.Empty request, io.grpc.stub.StreamObserver<proto.post.AllPosts> responseObserver){
         List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
-        List<InputAddPost> iaps = new ArrayList<InputAddPost>();
+        List<PostToShow> iaps = new ArrayList<PostToShow>();
 
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         try {
             for (Post p : documentedPosts) {
                 OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
                 String email = blockingStub.findUserEmailById(userId).getEmail();
-                InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
-                        .setLink(p.getLink()).setEmail(email).build();
+                PostToShow iap = PostToShow.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
+                        .setLink(p.getLink()).setEmail(email).setPostId(p.getId().toString()).setDate(p.getDate().toString()).build();
                 iaps.add(iap);
             }
         } catch(Exception e){
@@ -91,7 +91,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     @Override
     public void getAllUserPosts(UserEmail request, StreamObserver<AllPosts> responseObserver){
         List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
-        List<InputAddPost> iaps = new ArrayList<>();
+        List<PostToShow> iaps = new ArrayList<>();
 
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         try {
@@ -99,8 +99,8 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
                 OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
                 String email = blockingStub.findUserEmailById(userId).getEmail();
                 if (request.getEmail().equals(email)) {
-                    InputAddPost iap = InputAddPost.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
-                            .setLink(p.getLink()).setEmail(email).build();
+                    PostToShow iap = PostToShow.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
+                            .setLink(p.getLink()).setEmail(email).setPostId(p.getId().toString()).setDate(p.getDate().toString()).build();
                     iaps.add(iap);
                 }
             }

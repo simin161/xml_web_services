@@ -28,7 +28,7 @@ message Output {
 }
 
 message AllPosts {
-  repeated InputAddPost allPosts = 1;
+  repeated PostToShow allPosts = 1;
 }
 
 message UserEmail {
@@ -55,6 +55,15 @@ message OutputPost {
   string postId =1;
   string text = 2;
   string usersId =3;
+  string pathToImage =4;
+  string link = 5;
+  string date = 6;
+}
+
+message PostToShow {
+  string postId =1;
+  string text = 2;
+  string email =3;
   string pathToImage =4;
   string link = 5;
   string date = 6;

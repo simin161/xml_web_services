@@ -96,7 +96,13 @@ public class UserRepository {
     }
 
     public List<User> findUserByParam(String paramName, String paramValue){
-        FindIterable<Document> foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+
+        FindIterable<Document> foundUsers;
+        if(paramName.isEmpty()){
+            foundUsers = usersCollection.find();
+        }else{
+            foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+        }
         List<User> retVal = new ArrayList<>();
         for(Document foundUser : foundUsers)
         {
