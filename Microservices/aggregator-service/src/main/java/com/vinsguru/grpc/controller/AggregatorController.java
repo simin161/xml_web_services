@@ -67,12 +67,12 @@ public class AggregatorController {
     }
 
     @GetMapping("/getAllUsers")
-    public List<UserDto> getUsers(){
+    public List<DisplayUserDto> getUsers(){
         return aggregatorService.getUsers();
     }
 
     @GetMapping("/searchUsers/{param}")
-    public List<UserDto> searchUsers(@PathVariable("param") String param){
+    public List<DisplayUserDto> searchUsers(@PathVariable("param") String param){
         return aggregatorService.searchUsers(param);
     }
 
