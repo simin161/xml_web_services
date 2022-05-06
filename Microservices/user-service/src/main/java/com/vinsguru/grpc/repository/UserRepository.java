@@ -84,7 +84,7 @@ public class UserRepository {
     }
 
     public User findUserByUsersId(String usersId) {
-        Document foundUser = usersCollection.find(Filters.eq("_id",usersId)).first();
+        Document foundUser = usersCollection.find(Filters.eq("_id",new ObjectId(usersId))).first();
         User retVal = null;
         if(foundUser != null){
             retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),

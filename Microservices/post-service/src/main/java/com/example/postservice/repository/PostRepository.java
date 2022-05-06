@@ -62,7 +62,8 @@ public class PostRepository {
         List<Post> retVal = new ArrayList<Post>();
         for(Document d : iterable){
             Post p = new Post();
-            p.setId(d.getObjectId("id"));
+            p.setId(d.getObjectId("_id"));
+            p.setUsersId(d.getString("usersId"));
             p.setLink(d.getString("link"));
             p.setPathToImage(d.getString("pathToImage"));
             p.setText(d.getString("text"));
