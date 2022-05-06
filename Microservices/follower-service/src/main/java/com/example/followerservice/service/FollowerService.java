@@ -2,6 +2,7 @@ package com.example.followerservice.service;
 
 import com.example.followerservice.model.Follow;
 import com.example.followerservice.repository.FollowerRepository;
+import com.example.followerservice.utility.MicroserviceConnection;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -19,17 +20,11 @@ import java.util.List;
 @GrpcService
 public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
 
-    private UserServiceGrpc.UserServiceBlockingStub blockingStub;
-
     @Override
     public void addFollow(InputAddFollow request, StreamObserver<OutputAddFollow> responseObserver) {
         OutputAddFollow output;
 
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = MicroserviceConnection.openChannelToUserService();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getPersonEmail()).build();
         String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
 
@@ -55,11 +50,8 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
     @Override
     public void findPersonsFollowers(InputEmail request, StreamObserver<OutputFollowers> responseObserver) {
 
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = MicroserviceConnection.openChannelToUserService();
 
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
 
@@ -80,11 +72,8 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
     @Override
     public void findPersonsFollowings(InputEmail request, StreamObserver<OutputFollowers> responseObserver) {
 
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = MicroserviceConnection.openChannelToUserService();
 
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
 

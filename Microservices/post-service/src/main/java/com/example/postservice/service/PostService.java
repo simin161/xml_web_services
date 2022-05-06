@@ -26,18 +26,12 @@ import java.util.List;
 @GrpcService
 public class PostService extends PostServiceGrpc.PostServiceImplBase {
 
-    private UserServiceGrpc.UserServiceBlockingStub blockingStub;
     private final MicroserviceConnection msConnection = new MicroserviceConnection();
-    private FollowServiceGrpc.FollowServiceBlockingStub blockingFollowStub;
     @Override
     public void addPost(InputAddPost request, StreamObserver<OutputAddPost> responseObserver) {
 
         OutputAddPost output;
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId= blockingStub.findUserIdByEmail(input).getUsersId();
         if(usersId != null){
@@ -55,14 +49,9 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     @Override
     public void addComment(InputAddComment request, StreamObserver<Output> responseObserver) {
         Output output;
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId = blockingStub.findUserIdByEmail(input).getUsersId();
-
 
         if (usersId != null) {
             blockingStub.checkIfAccountIsPrivate(input).getPrivate();
@@ -81,7 +70,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
         List<InputAddPost> iaps = new ArrayList<InputAddPost>();
 
-        msConnection.setUpCommunicationPostUser(blockingStub);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         try {
             for (Post p : documentedPosts) {
                 OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
@@ -104,7 +93,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
         List<InputAddPost> iaps = new ArrayList<>();
 
-        msConnection.setUpCommunicationPostUser(blockingStub);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         try {
             for (Post p : documentedPosts) {
                 OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
@@ -128,11 +117,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     public void addReaction(InputAddReaction request, StreamObserver<Output> responseObserver) {
         ReactionType reactionType;
         Output output;
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId= blockingStub.findUserIdByEmail(input).getUsersId();
         if(request.getReactionType().equals("LIKE")){
@@ -157,9 +142,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     public void findAllPostsOfFollowingsByUserEmail(Input request, StreamObserver<OutputPosts> responseObserver) {
         OutputPosts output;
 
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6567).usePlaintext();
-        Channel channel = channelBuilder.build();
-        blockingFollowStub =   FollowServiceGrpc.newBlockingStub(channel);
+        FollowServiceGrpc.FollowServiceBlockingStub blockingFollowStub =   msConnection.setUpCommunicationPostFollower();
         InputEmail input = InputEmail.newBuilder().setEmail(request.getEmail()).build();
         List<Followers> followings =blockingFollowStub.findPersonsFollowings(input).getFollowersList();
         List<OutputPost> posts = new ArrayList<>();

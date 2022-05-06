@@ -7,22 +7,25 @@ import proto.user.UserServiceGrpc;
 
 public class MicroserviceConnection {
 
+    private static UserServiceGrpc.UserServiceBlockingStub blockingStubUser;
+    private static FollowServiceGrpc.FollowServiceBlockingStub blockingStubFollower;
 
-
-    public void setUpCommunicationPostUser(UserServiceGrpc.UserServiceBlockingStub blockingStub){
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = UserServiceGrpc.newBlockingStub(channel);
+    public UserServiceGrpc.UserServiceBlockingStub setUpCommunicationPostUser(){
+        if(blockingStubUser == null) {
+            ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext();
+            Channel channel = channelBuilder.build();
+            blockingStubUser = UserServiceGrpc.newBlockingStub(channel);
+        }
+        return blockingStubUser;
     }
 
-    public void setUpCommunicationPostFollower(FollowServiceGrpc.FollowServiceBlockingStub blockingStub){
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6567).usePlaintext();
-        Channel channel = channelBuilder.build();
-        UserServiceGrpc.newBlockingStub(channel);
-
-        blockingStub = FollowServiceGrpc.newBlockingStub(channel);
+    public FollowServiceGrpc.FollowServiceBlockingStub setUpCommunicationPostFollower() {
+        if (blockingStubFollower == null) {
+            ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6567).usePlaintext();
+            Channel channel = channelBuilder.build();
+            blockingStubFollower = FollowServiceGrpc.newBlockingStub(channel);
+        }
+        return blockingStubFollower;
     }
 
 }
