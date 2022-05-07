@@ -90,19 +90,23 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void updateUser(updateUserInfoInput request, StreamObserver<OutputMessage> responseObserver) {
-        Date date1= null;
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthday());
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(checkIfUserExists(request.getEmail())){
+            Date date1= null;
+            try {
+                date1 = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthday());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            proto.user.OutputMessage output;
+            User userToUpdate=new User(null,request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
+                    date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null);
+            UserRepository.getInstance().update(userToUpdate);
+            output = OutputMessage.newBuilder().setOutputMessage("success").build();
+            responseObserver.onNext(output);
+            responseObserver.onCompleted();
+        } else {
+            System.out.print("ovde se promenio mejl");
         }
-        proto.user.OutputMessage output;
-        User userToUpdate=new User(null,request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
-                date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null);
-        UserRepository.getInstance().update(userToUpdate);
-        output = OutputMessage.newBuilder().setOutputMessage("success").build();
-        responseObserver.onNext(output);
-        responseObserver.onCompleted();
     }
 
     @Override
@@ -279,5 +283,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         output =  OutputExperiences.newBuilder().addAllExperiences(experiences).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
+    }
+
+    public boolean checkIfUserExists(String email){
+        boolean retVal = false;
+        User u = null;
+        u = UserRepository.getInstance().findUserByEmail(email);
+        if(u != null) {
+            retVal = true;
+        }
+        return retVal;
     }
 }

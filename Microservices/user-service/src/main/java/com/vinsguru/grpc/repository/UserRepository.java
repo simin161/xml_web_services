@@ -143,17 +143,33 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
     public void updateEducation(String email,Education education){
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
-        Document newEducation = new Document("_idEducation", new ObjectId());
-        newEducation.append("school",education.getSchool()).append("degree",education.getDegree()).append("fieldOfStudy",education.getFieldOfStudy()).append("from",education.getFrom())
-                .append("to",education.getTo());
+        if(!checkIfEducationExists(email, education)){
+            Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+            Document newEducation = new Document("_idEducation", new ObjectId());
+            newEducation.append("school",education.getSchool()).append("degree",education.getDegree()).append("fieldOfStudy",education.getFieldOfStudy()).append("from",education.getFrom())
+                    .append("to",education.getTo());
 
-        Bson updates = Updates.combine(
-                Updates.addToSet("educations",newEducation)
-        );
+            Bson updates = Updates.combine(
+                    Updates.addToSet("educations",newEducation)
+            );
 
-        UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(foundUser, updates, options);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            usersCollection.updateOne(foundUser, updates, options);
+        }else{
+            System.out.println("postoji vec");
+        }
+    }
+
+    private boolean checkIfEducationExists(String email, Education education){
+        boolean retVal = false;
+        List<Education> allEducationsForUser = getEducationsUserByEmail(email);
+        for(Education e : allEducationsForUser){
+            if(e.equals(education)){
+                retVal = true;
+                break;
+            }
+        }
+        return retVal;
     }
 
     public List<Education> getEducationsUserByEmail(String email) {
@@ -172,18 +188,34 @@ public class UserRepository {
 
 
     public void updateWorkExperience(String email,WorkExperience workExperience) {
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        if(!checkIfWorkExperienceExists(email, workExperience)){
+            Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
 
-        Document newExperience = new Document("_idExperience", new ObjectId());
-        newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
-                .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
+            Document newExperience = new Document("_idExperience", new ObjectId());
+            newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
+                    .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
 
-        Bson updates = Updates.combine(
-                Updates.addToSet("experiences",newExperience)
-        );
+            Bson updates = Updates.combine(
+                    Updates.addToSet("experiences",newExperience)
+            );
 
-        UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(foundUser, updates, options);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            usersCollection.updateOne(foundUser, updates, options);
+        }
+        else{
+            System.out.print("postoji vec");
+        }
+    }
+
+    private boolean checkIfWorkExperienceExists(String email, WorkExperience workExperience){
+        boolean retVal = false;
+        for(WorkExperience we : getWorkExperienceByEmail(email)){
+            if(we.equals(workExperience)){
+                retVal = true;
+                break;
+            }
+        }
+        return retVal;
     }
 
     public List<WorkExperience> getWorkExperienceByEmail(String email) {
