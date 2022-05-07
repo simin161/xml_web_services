@@ -155,6 +155,8 @@ public class UserRepository {
 
             UpdateOptions options = new UpdateOptions().upsert(true);
             usersCollection.updateOne(foundUser, updates, options);
+        }else{
+            System.out.println("postoji vec");
         }
     }
 
@@ -186,18 +188,34 @@ public class UserRepository {
 
 
     public void updateWorkExperience(String email,WorkExperience workExperience) {
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+        if(!checkIfWorkExperienceExists(email, workExperience)){
+            Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
 
-        Document newExperience = new Document("_idExperience", new ObjectId());
-        newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
-                .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
+            Document newExperience = new Document("_idExperience", new ObjectId());
+            newExperience.append("workPlace",workExperience.getWorkPlace()).append("workTitle",workExperience.getWorkTitle())
+                    .append("from",workExperience.getFrom()).append("to",workExperience.getTo());
 
-        Bson updates = Updates.combine(
-                Updates.addToSet("experiences",newExperience)
-        );
+            Bson updates = Updates.combine(
+                    Updates.addToSet("experiences",newExperience)
+            );
 
-        UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(foundUser, updates, options);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            usersCollection.updateOne(foundUser, updates, options);
+        }
+        else{
+            System.out.print("postoji vec");
+        }
+    }
+
+    private boolean checkIfWorkExperienceExists(String email, WorkExperience workExperience){
+        boolean retVal = false;
+        for(WorkExperience we : getWorkExperienceByEmail(email)){
+            if(we.equals(workExperience)){
+                retVal = true;
+                break;
+            }
+        }
+        return retVal;
     }
 
     public List<WorkExperience> getWorkExperienceByEmail(String email) {
