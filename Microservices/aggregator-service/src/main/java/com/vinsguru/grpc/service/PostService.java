@@ -43,12 +43,13 @@ public class PostService {
         com.google.protobuf.Empty request = null;
         blockingStub = openChannelToPostService();
         List<PostDto> retVal = new ArrayList<PostDto>();
-        for(InputAddPost iap : this.blockingStub.getAllPosts(request).getAllPostsList()){
+        for(PostToShow iap : this.blockingStub.getAllPosts(request).getAllPostsList()){
             PostDto postDTO = new PostDto();
             postDTO.setEmail(iap.getEmail());
             postDTO.setLink(iap.getLink());
             postDTO.setText(iap.getText());
             postDTO.setPathToImage(iap.getPathToImage());
+            postDTO.setDate(iap.getDate());
             retVal.add(postDTO);
         }
         return retVal;
@@ -59,12 +60,13 @@ public class PostService {
         UserEmail ue = UserEmail.newBuilder().setEmail(email).build();
         blockingStub = openChannelToPostService();
         List<PostDto> retVal = new ArrayList<PostDto>();
-        for(InputAddPost iap : this.blockingStub.getAllUserPosts(ue).getAllPostsList()){
+        for(PostToShow iap : this.blockingStub.getAllUserPosts(ue).getAllPostsList()){
             PostDto postDTO = new PostDto();
             postDTO.setEmail(iap.getEmail());
             postDTO.setLink(iap.getLink());
             postDTO.setText(iap.getText());
             postDTO.setPathToImage(iap.getPathToImage());
+            postDTO.setDate(iap.getDate());
             retVal.add(postDTO);
         }
         return retVal;

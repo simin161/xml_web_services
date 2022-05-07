@@ -52,7 +52,8 @@ public class PostRepository {
                 .append("pathToImage", post.getPathToImage())
                 .append("link", post.getLink())
                 .append("comments",post.getComments())
-                .append("reactions",post.getReactions());
+                .append("reactions",post.getReactions())
+                .append("date", post.getDate());
 
         postsCollection.insertOne(postToSave);
     }
@@ -67,6 +68,7 @@ public class PostRepository {
             p.setLink(d.getString("link"));
             p.setPathToImage(d.getString("pathToImage"));
             p.setText(d.getString("text"));
+            p.setDate(d.getDate("date"));
             retVal.add(p);
         }
         return retVal;
