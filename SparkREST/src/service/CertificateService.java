@@ -129,6 +129,26 @@ public class CertificateService {
 
     }
 
+    public String loadCertificateToFile(String serialNumber) throws Exception {
+
+        Base64.Encoder encoder = Base64.getMimeEncoder(64, System.getProperty("line.separator").getBytes());
+
+        byte[] bytes = findCertBySerNum(new BigInteger(serialNumber)).getEncoded();
+
+        String certificate =  "-----BEGIN CERTIFICATE-----" + System.getProperty("line.separator") + new String(encoder.encode(bytes)) + System.getProperty("line.separator")
+                + "-----END CERTIFICATE-----";
+        String path = "static/certificates/"+serialNumber + ".cer";
+        writeBytesToFile(path, certificate.getBytes());
+        return "./" + path;
+
+    }
+
+    private void writeBytesToFile(String fileOutput, byte[] bytes) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(fileOutput)) {
+            fos.write(bytes);
+        }
+    }
+
     //ja se najiskrenije nadam da je ovo dobro jtzm
     public KeyStore findStoreByIssuer(Certificate cert) {
 

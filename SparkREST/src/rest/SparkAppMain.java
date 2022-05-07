@@ -8,15 +8,15 @@ import com.google.gson.Gson;
 import dao.CertificateStatusDAO;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import service.CertificateService;
-import service.UserService;
-import spark.Session;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import service.CertificateService;
+import service.UserService;
+import spark.Session;
+
 import java.io.File;
 import java.math.BigInteger;
 import java.security.*;
@@ -29,8 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static spark.Spark.*;
-import static spark.Spark.port;
-import static spark.Spark.staticFiles;
 
 public class SparkAppMain {
 
@@ -94,7 +92,7 @@ public class SparkAppMain {
 		Timer timer = new Timer();
 
 		//Use this if you want to execute it once
-		timer.schedule(new MyTimeTask(), date);
+		//timer.schedule(new MyTimeTask(), date);
 
 		get("/getMessage", (req, res)->{
 			res.type("application/json");
@@ -125,6 +123,16 @@ public class SparkAppMain {
 						.findUserByEmail(((User) gson.fromJson(req.body(), User.class)).getEmail()));
 			}
 			return returnValue;
+		});
+
+		post("/downloadCertificate", (req, res) -> {
+			res.type("application/json");
+			try{
+				String path = certificateService.loadCertificateToFile(gson.fromJson(req.body(), String.class));
+				return path;
+			}catch(Exception e){
+				return "";
+			}
 		});
 
 		post("/createCertificate", (req,res)->{

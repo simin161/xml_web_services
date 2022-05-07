@@ -46,5 +46,9 @@
   {
     "certificateSerialNumber": 775654280,
     "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 253802459,
+    "status": "VALID"
   }
 ]

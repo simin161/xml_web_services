@@ -3,13 +3,16 @@ Vue.component('details-screen', {
     		return{
     			c:null,
     			certsAbove: [],
-    			pdf: null
+    			pdf: null,
+    			downloadPath: ""
     		}
     	},
     template: `
             <div>
                 <div>
                     <input type="button" value="Create pdf" @click="createPdf"/>
+                    <input type="button" value="Prepare for download" @click="download"/>
+                    <a v-if="downloadPath !== ''" :href="downloadPath" download="certificate.cert">Download</a>
                     <a :href="pdf">Show pdf</a>
                     <input type="button" value="See certs above" @click="getCertsAbove"/>
                 </div>
@@ -44,6 +47,10 @@ Vue.component('details-screen', {
         createPdf : function(){
             axios.post("/getPdf")
                  .then(response => (response = response.data));
+        },
+        download : function(){
+            axios.post("/downloadCertificate", this.c.serialNumber)
+                 .then(response => (this.downloadPath = response.data));
         }
     },
     mounted(){
