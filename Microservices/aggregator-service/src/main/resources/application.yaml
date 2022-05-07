@@ -1,0 +1,13 @@
+server:
+  port: 8080
+grpc:
+  client:
+    user-service:
+      address: localhost:6565
+      negotiationType: plaintext
+    post-service:
+      address: localhost:6566
+      negotiationType: plaintext
+    follower-service:
+      address: localhost:6567
+      negotiationType: plaintext

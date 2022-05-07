@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.user";
+option java_multiple_files = true;
+
+message userReg{
+  string firstName = 1;
+  string lastName = 2;
+  string email = 3;
+  string username = 4;
+  string password = 5;
+  string birthDate = 6;
+  string gender = 7;
+}
+
+message Input {
+  string firstName = 1;
+  string lastName = 2;
+  string email = 3;
+  string username = 4;
+  string password = 5;
+}
+
+message Input1 {
+  string email = 1;
+  string password = 2;
+}
+
+message Input2 {
+  string accessToken = 1;
+}
+
+message InputForGetUserByEmail {
+  string email = 1;
+}
+message InputUpdateEducation {
+  string email = 1;
+  string school = 2;
+  string degree = 3;
+  string fieldOfStudy = 4;
+  string from = 5;
+  string to = 6;
+}
+
+message InputUpdateWorkExperience{
+  string workPlace = 1;
+  string workTitle = 2;
+  string from = 3;
+  string to = 4;
+  string email = 5;
+}
+message updateUserInfoInput {
+  string firstName = 1;
+  string lastName = 2;
+  string email = 3;
+  string username = 4;
+  string password = 5;
+  bool privateProfile = 6;
+  string birthday = 7;
+  string gender = 8;
+  string phone = 9;
+  string biography = 10;
+  string interests = 11;
+  string skills = 12;
+}
+message Output {
+  string result = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string username = 5;
+  string password = 6;
+  bool privateProfile = 7;
+  string birthday = 8;
+  string gender = 9;
+  string phone = 10;
+  string biography = 11;
+  string interests = 12;
+  string skills = 13;
+}
+message OutputMessage {
+  string outputMessage = 1;
+}
+message OutputEducations {
+  repeated OutputEducation educations = 1;
+}
+message OutputEducation {
+  string school = 2;
+  string degree = 3;
+  string fieldOfStudy = 4;
+  string from = 5;
+  string to = 6;
+}
+
+message Output2 {
+
+  repeated Input user = 1;
+
+}
+
+message InputSearch{
+
+    string param = 1;
+
+}
+
+message OutputId {
+
+ string  usersId = 1;
+
+}
+
+message OutputBool {
+
+  bool  private = 1;
+
+}
+
+
+message OutputExperiences {
+  repeated OutputExperience experiences = 1;
+}
+message OutputExperience {
+  string workPlace = 1;
+  string workTitle = 2;
+  string from = 3;
+  string to = 4;
+}
+
+
+service UserService {
+
+  rpc addUser(userReg) returns (Output) {};
+
+  rpc logInUser(Input1) returns (Output) {};
+
+  rpc invalidateUser(Input2) returns (Output) {};
+
+  rpc updateUser(updateUserInfoInput) returns (OutputMessage) {};
+
+  rpc getUserByEmail(InputForGetUserByEmail) returns (Output){};
+
+  rpc updateEducation(InputUpdateEducation) returns (OutputMessage) {};
+
+  rpc updateWorkExperience(InputUpdateWorkExperience) returns (OutputMessage) {};
+
+  rpc getEducationsUserByEmail(InputForGetUserByEmail) returns (OutputEducations) {};
+
+  rpc getExperiencesByEmail(InputForGetUserByEmail) returns (OutputExperiences) {};
+
+  rpc getAllUsers(google.protobuf.Empty) returns (Output2) {};
+
+  rpc searchUsers(InputSearch) returns (Output2) {};
+
+  rpc findUserIdByEmail(InputForGetUserByEmail) returns (OutputId) {};
+
+  rpc checkIfAccountIsPrivate(InputForGetUserByEmail) returns(OutputBool) {};
+
+  rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
+
+
+
+}

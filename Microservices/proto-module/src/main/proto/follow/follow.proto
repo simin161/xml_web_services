@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package post;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.follow";
+option java_multiple_files = true;
+
+message InputAddFollow {
+  string personEmail = 1;
+  string followerEmail = 2;
+}
+
+message OutputAddFollow {
+  string result = 1;
+}
+
+message InputEmail {
+ string email =1;
+}
+
+message OutputFollowers {
+  repeated Followers followers =1;
+}
+
+message Followers {
+  string personEmail = 1;
+  string followerEmail = 2;
+}
+
+
+service FollowService {
+
+  rpc addFollow(InputAddFollow) returns (OutputAddFollow) {};
+  rpc findPersonsFollowers(InputEmail) returns (OutputFollowers) {};
+  rpc findPersonsFollowings(InputEmail) returns (OutputFollowers) {};
+
+
+
+}

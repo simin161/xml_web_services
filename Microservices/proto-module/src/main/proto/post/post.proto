@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package post;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.post";
+option java_multiple_files = true;
+
+message InputAddPost {
+  string email = 1;
+  string text = 2;
+  string pathToImage = 3;
+  string link = 4;
+}
+
+message InputAddComment {
+  string postId = 1;
+  string text = 2;
+  string email = 3;
+}
+message OutputAddPost {
+  string result = 1;
+}
+
+message Output {
+  string result = 1;
+}
+
+message AllPosts {
+  repeated PostToShow allPosts = 1;
+}
+
+message UserEmail {
+  string email = 1;
+}
+
+
+message InputAddReaction {
+  string email = 1;
+  string reactionType = 2;
+  string  postId = 3;
+
+}
+
+message Input {
+  string email = 1;
+}
+
+
+message OutputPosts {
+  repeated OutputPost posts = 1;
+}
+message OutputPost {
+  string postId =1;
+  string text = 2;
+  string usersId =3;
+  string pathToImage =4;
+  string link = 5;
+  string date = 6;
+}
+
+message PostToShow {
+  string postId =1;
+  string text = 2;
+  string email =3;
+  string pathToImage =4;
+  string link = 5;
+  string date = 6;
+}
+
+message InputPostId {
+  string postId = 1;
+}
+
+message OutputNumber {
+  int32 num= 1;
+}
+
+
+service PostService {
+
+  rpc addPost(InputAddPost) returns (OutputAddPost) {};
+  rpc addReaction(InputAddReaction) returns (Output) {};
+  rpc getAllPosts(google.protobuf.Empty) returns (AllPosts) {};
+  rpc getAllUserPosts(UserEmail) returns (AllPosts) {};
+  rpc addComment(InputAddComment) returns (Output) {};
+  rpc findAllPostsOfFollowingsByUserEmail(Input) returns (OutputPosts) {};
+  rpc getNumOfReactionsByPostId(InputPostId) returns (OutputNumber) {};
+  rpc getNumOfCommentsByPostId(InputPostId) returns (OutputNumber) {};
+
+}
