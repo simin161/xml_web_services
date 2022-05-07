@@ -143,17 +143,31 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
     public void updateEducation(String email,Education education){
-        Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
-        Document newEducation = new Document("_idEducation", new ObjectId());
-        newEducation.append("school",education.getSchool()).append("degree",education.getDegree()).append("fieldOfStudy",education.getFieldOfStudy()).append("from",education.getFrom())
-                .append("to",education.getTo());
+        if(!checkIfEducationExists(email, education)){
+            Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
+            Document newEducation = new Document("_idEducation", new ObjectId());
+            newEducation.append("school",education.getSchool()).append("degree",education.getDegree()).append("fieldOfStudy",education.getFieldOfStudy()).append("from",education.getFrom())
+                    .append("to",education.getTo());
 
-        Bson updates = Updates.combine(
-                Updates.addToSet("educations",newEducation)
-        );
+            Bson updates = Updates.combine(
+                    Updates.addToSet("educations",newEducation)
+            );
 
-        UpdateOptions options = new UpdateOptions().upsert(true);
-        usersCollection.updateOne(foundUser, updates, options);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            usersCollection.updateOne(foundUser, updates, options);
+        }
+    }
+
+    private boolean checkIfEducationExists(String email, Education education){
+        boolean retVal = false;
+        List<Education> allEducationsForUser = getEducationsUserByEmail(email);
+        for(Education e : allEducationsForUser){
+            if(e.equals(education)){
+                retVal = true;
+                break;
+            }
+        }
+        return retVal;
     }
 
     public List<Education> getEducationsUserByEmail(String email) {
