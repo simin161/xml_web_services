@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
@@ -102,6 +103,30 @@ public class UserRepository {
             foundUsers = usersCollection.find();
         }else{
             foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+        }
+        List<User> retVal = new ArrayList<>();
+        for(Document foundUser : foundUsers)
+        {
+            User u =  new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
+                    foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+
+            retVal.add(u);
+        }
+        return retVal;
+    }
+
+    public List<User> searchUserByParam(String paramName, String paramValue){
+
+        FindIterable<Document> foundUsers;
+        usersCollection.createIndex(Indexes.text(paramName));
+        if(paramName.isEmpty()){
+            foundUsers = usersCollection.find();
+        }else{
+            //foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+            String newValue = "\"" + paramValue + "\"";
+            Bson filter = Filters.text(newValue);
+            foundUsers = usersCollection.find(filter);
         }
         List<User> retVal = new ArrayList<>();
         for(Document foundUser : foundUsers)
