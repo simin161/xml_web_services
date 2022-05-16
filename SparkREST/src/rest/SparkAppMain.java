@@ -42,7 +42,7 @@ public class SparkAppMain {
 	{
 		public void run()
 		{
-			for(X509Certificate c : certificateService.getAllCerts("aa")){
+			for(X509Certificate c : certificateService.getAllCerts()){
 				System.out.println("KASMDOKAMSDLAKNSDALKNDSALKNSD");
 				try {
 					c.checkValidity();

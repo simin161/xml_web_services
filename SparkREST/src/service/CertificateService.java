@@ -83,7 +83,7 @@ public class CertificateService {
                     KeyStore store;
                     store = KeyStore.getInstance("JKS");
                     fileName = findKeyStoreNameForCert(issuerCert.getSerialNumber());
-                    store.load(new FileInputStream(fileName), "password".toCharArray());
+                    store.load(new FileInputStream(fileName), PasswordGenerator.generatePassword(fileName).toCharArray());
                     issuerData = getIssuerBySerialNum(certificate.getPath().toString(), store.getCertificateAlias(issuerCert));
                 }else{
                     fileName = serialNumber;
@@ -100,6 +100,7 @@ public class CertificateService {
                 for(int i=0; i < pass.length(); i++)
                     password[i] = pass.charAt(i);
                 if(!certificate.getType().equals("ROOT")) {
+                    password = PasswordGenerator.generatePassword(fileName).toCharArray();
                     storeWriter.loadKeyStore(fileName, password);
                     storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, x509Certificate);
                     storeWriter.saveKeyStore(fileName, password);
@@ -108,6 +109,7 @@ public class CertificateService {
                 }else{
                     X509Certificate[] chain=new X509Certificate[1];
                     chain[0]= x509Certificate;
+                    password = PasswordGenerator.generatePassword(fileName).toCharArray();
                     storeWriter.loadKeyStore(null, password);
                     storeWriter.write(certificate.getAlias(), keyGen.getPrivateKey(), password, chain[0]);
                     storeWriter.saveKeyStore(fileName, password);
@@ -196,22 +198,28 @@ public class CertificateService {
     }
 
     public PrivateKey getPrivateKey(String alias){
-        try{
-                List<KeyStore> stores = getAllKeyStores();
-                for(KeyStore store : stores){
-                    PrivateKey pk = (PrivateKey) store.getKey(alias, "password".toCharArray());
-                    if(pk != null){
-                        return pk;
-                    }
+            try{
+                List<Names> names = KeyStoreNameDAO.getInstance().getAllNames();
+                for(Names n : names){
+                    if (new File(n.name).exists()){
+                        String password = PasswordGenerator.generatePassword(n.name);
+                        KeyStore store;
+                        store = KeyStore.getInstance("JKS");
+                        store.load(new FileInputStream(n.name), password.toCharArray());
+                        PrivateKey pk = (PrivateKey) store.getKey(alias, password.toCharArray());
+                        if(pk != null){
+                            return pk;
+                        }                    }
                 }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
         return null;
     }
 
     public X509Certificate findCertBySerNum(BigInteger a){
-        for(X509Certificate c : getAllCerts("aaa")){
+        for(X509Certificate c : getAllCerts()){
             if(Objects.equals(c.getSerialNumber(), a)){
                 return c;
             }
@@ -222,10 +230,11 @@ public class CertificateService {
     public List<KeyStore> getAllKeyStores(){
         List<KeyStore> keystores = new ArrayList<KeyStore>();
         List<Names> names = KeyStoreNameDAO.getInstance().getAllNames();
-        String password = "password";
+        String password = "";
         try{
             for(Names n : names){
                 if (new File(n.name).exists()){
+                    password = PasswordGenerator.generatePassword(n.name);
                     KeyStore store;
                     store = KeyStore.getInstance("JKS");
                     store.load(new FileInputStream(n.name), password.toCharArray());
@@ -247,6 +256,7 @@ public class CertificateService {
             for (Names name : keystoreNames) {
                 if (new File(name.name).exists()) {
                     KeyStore store;
+                    password = PasswordGenerator.generatePassword(name.name);
                     store = KeyStore.getInstance("JKS");
                     store.load(new FileInputStream(name.name), password.toCharArray());
                     Enumeration<String> certificateAliases = store.aliases();
@@ -266,16 +276,17 @@ public class CertificateService {
         return null;
     }
 
-    public List<X509Certificate> getAllCerts(String password) {
+    public List<X509Certificate> getAllCerts() {
 
 
         List<KeyStore> keystores = new ArrayList<KeyStore>();
         List<Names> keystoreNames = KeyStoreNameDAO.getInstance().getAllNames();
-        password = "password";
+        String password = "";
         try {
             for (Names name : keystoreNames) {
                 if (new File(name.name).exists()) {
                     KeyStore store;
+                    password = PasswordGenerator.generatePassword(name.name);
                     store = KeyStore.getInstance("JKS");
                     store.load(new FileInputStream(name.name), password.toCharArray());
                     keystores.add(store);
@@ -301,7 +312,7 @@ public class CertificateService {
 
     public List<X509Certificate> getAllNonEE(){
         List<X509Certificate> retVal = new ArrayList<>();
-        for(X509Certificate c : getAllCerts("")){
+        for(X509Certificate c : getAllCerts()){
             if(c.getBasicConstraints() != -1){
                 retVal.add(c);
             }
@@ -356,7 +367,7 @@ public class CertificateService {
 
     public List<CertificateView> getAllCertsForUser(String email) {
         List<CertificateView> retVal = new ArrayList<>();
-        for(X509Certificate cert : getAllCerts("password")){
+        for(X509Certificate cert : getAllCerts()){
             String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
             String emailToCheckIssuer = cert.getIssuerDN().getName().split(",")[2].split("=")[1];
 //String issuerDN, String subjectDN, String isValid, String serialNumber, String signatureAlg, String version, String publicKey, String dateFrom, String dateTo, String signature) {
@@ -376,6 +387,7 @@ public class CertificateService {
             for (Names name : keystoreNames) {
                 if (new File(name.name).exists()) {
                     KeyStore store;
+                    password = PasswordGenerator.generatePassword(name.name);
                     store = KeyStore.getInstance("JKS");
                     store.load(new FileInputStream(name.name), password.toCharArray());
                     Enumeration<String> certificateAliases = store.aliases();
@@ -399,7 +411,7 @@ public class CertificateService {
         List<CertificateView> retVal = new ArrayList<>();
         BigInteger serialNumber = new BigInteger(cCert);
         X509Certificate certificateBellow = findCertBySerNum(serialNumber);
-        List<X509Certificate> certs = getAllCerts("a");
+        List<X509Certificate> certs = getAllCerts();
        if(certificateBellow.getSubjectDN().equals(certificateBellow.getIssuerDN())) {
              retVal.add(new CertificateView(certificateBellow.getIssuerDN().toString(), certificateBellow.getSubjectDN().toString(), certificateBellow.getSerialNumber().toString(), certificateBellow.getSigAlgName(), String.valueOf(certificateBellow.getVersion()), certificateBellow.getPublicKey().toString(),
                      certificateBellow.getNotBefore().toString(), certificateBellow.getNotAfter().toString(), certificateBellow.getSignature().toString(), getAliasForCert( certificateBellow.getSerialNumber())));
@@ -435,7 +447,7 @@ public class CertificateService {
 
     public List<CertificateView> getAllCertsForAdmin() {
         List<CertificateView> retVal = new ArrayList<>();
-        for(X509Certificate cert : getAllCerts("password")){
+        for(X509Certificate cert : getAllCerts()){
             retVal.add(new CertificateView(cert.getIssuerDN().toString(), cert.getSubjectDN().toString(), cert.getSerialNumber().toString(), cert.getSigAlgName(), String.valueOf(cert.getVersion()), cert.getPublicKey().toString(),
                     cert.getNotBefore().toString(), cert.getNotAfter().toString(), cert.getSignature().toString(), getAliasForCert( cert.getSerialNumber())));
         }
@@ -445,7 +457,7 @@ public class CertificateService {
 
     public boolean checkIfUserHasCA(String email) {
         List<CertificateView> retVal = new ArrayList<>();
-        for(X509Certificate cert : getAllCerts("password")){
+        for(X509Certificate cert : getAllCerts()){
             String emailToCheck = cert.getSubjectDN().getName().split(",")[2].split("=")[1];
 
             if(emailToCheck.equals(email) && cert.getBasicConstraints() != -1)
@@ -468,7 +480,7 @@ public class CertificateService {
     private boolean invalidateBelow(String serialNumber) {
 
         X509Certificate certificate = findCertBySerNum(new BigInteger(serialNumber));
-        List<X509Certificate> allCertificates = getAllCerts("a");
+        List<X509Certificate> allCertificates = getAllCerts();
         boolean refresh = false;
         for(int i = 0; i < allCertificates.size(); ++i){
             if(refresh) {
