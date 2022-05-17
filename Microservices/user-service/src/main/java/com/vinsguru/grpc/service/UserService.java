@@ -78,10 +78,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .setPrivateProfile(user.isPrivateProfile())
                 .setBirthday(s)
                 .setGender(user.getGender())
-                .setPhone(user.getPhone())
-                .setBiography(user.getBiography())
-                .setInterests(user.getInterests())
-                .setSkills(user.getSkills())
+                .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
+                .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
+                .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
+                .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
                 .build();
 
         responseObserver.onNext(output);
