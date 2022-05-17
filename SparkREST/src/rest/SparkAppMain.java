@@ -38,10 +38,22 @@ public class SparkAppMain {
 	 * Ključ za potpisivanje JWT tokena.
 	 * Biblioteka: https://github.com/jwtk/jjwt
 	 */
-	private static class MyTimeTask extends TimerTask
-	{
-		public void run()
-		{
+
+	static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+	private static UserService userService = new UserService();
+	private static CertificateService certificateService = new CertificateService();
+	public static void main(String[] args) throws Exception {
+		port(8080);
+
+		//webSocket("/ws", WsHandler.class);
+
+		staticFiles.externalLocation(new File("./static").getCanonicalPath());
+		Date today = new Date();
+		DateFormat dateFormatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date date = dateFormatter .parse(today.toString());
+
+		get("/checkAndInvalidate", (req, res)->{
+			res.type("application/json");
 			for(X509Certificate c : certificateService.getAllCerts()){
 				System.out.println("KASMDOKAMSDLAKNSDALKNDSALKNSD");
 				try {
@@ -72,27 +84,8 @@ public class SparkAppMain {
 					CertificateStatusDAO.getInstance().invalidateCertificate(c.getSerialNumber().toString());
 				}
 			}
-		}
-	}
-
-	static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-	private static UserService userService = new UserService();
-	private static CertificateService certificateService = new CertificateService();
-	public static void main(String[] args) throws Exception {
-		port(8080);
-
-		//webSocket("/ws", WsHandler.class);
-
-		staticFiles.externalLocation(new File("./static").getCanonicalPath());
-		Date today = new Date();
-		DateFormat dateFormatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-		Date date = dateFormatter .parse(today.toString());
-
-		//Now create the time and schedule it
-		Timer timer = new Timer();
-
-		//Use this if you want to execute it once
-		//timer.schedule(new MyTimeTask(), date);
+			return "Zorica Markovic";
+		});
 
 		get("/getMessage", (req, res)->{
 			res.type("application/json");

@@ -5,11 +5,12 @@ import ReactBootstrap, {Jumbotron, Button, Col, Grid, Panel, FormGroup} from 're
   
 export const Nav = styled.nav`
   background: #6f5b89;
-  height: 41px;
+  height: 55px;
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding: 0.2rem calc((100vw - 1000px) / 2);
+  padding: 0 calc((100vw - 1000px) / 2) 0 0;
+  margin-top: -20px;
   z-index: 12;
   /* Third Nav */
   /* justify-content: flex-start; */

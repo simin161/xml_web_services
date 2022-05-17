@@ -35,6 +35,7 @@ Vue.component('firstpage', {
     	        <input type="button" value="Sign out" @click="signOut"/>
     	        <input type="button" value="Create certificate" @click="showCreateFun"/>
     	        <input type="button" value="Show all certificates" @click="showAllCertsFun"/>
+    	        <input type="button" value="Check validity" @click="check"/>
     	      </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0 && hasCA || user.userType==='ADMIN'">
                 <p>KREIRAJ</p>
@@ -194,6 +195,11 @@ Vue.component('firstpage', {
                     }
                  })
         },
+        check : function(){
+            axios.get("/checkAndInvalidate")
+                 .then(response=> (console.log(response.data)))
+        }
+        ,
         showDetails : function(c){
             axios.post("/saveChoosenCert", c)
                  .then(response => (router.push("/detailsScreen")))
