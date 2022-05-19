@@ -11,6 +11,7 @@ import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,7 +57,7 @@ public class AggregatorController {
 
             // Kreiraj token za tog korisnika
             User user = (User) authentication.getPrincipal();
-            String jwt = tokenUtils.generateToken(user.getEmail());
+            String jwt = tokenUtils.generateToken(user.getEmail(), "REG_USER");
             int expiresIn = tokenUtils.getExpiredIn();
 
             // Vrati token kao odgovor na uspesnu autentifikaciju
@@ -66,6 +67,7 @@ public class AggregatorController {
     }
 
     @GetMapping("/invalidateUser")
+    @PreAuthorize("hasRole(REG_USER)")
     public String invalidateUser(){
         return aggregatorService.invalidateUser("");
     }
@@ -85,7 +87,7 @@ public class AggregatorController {
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail());
+        String jwt = tokenUtils.generateToken(user.getEmail(), "REG_USER");
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju

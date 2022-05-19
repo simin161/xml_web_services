@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.helperModel;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 
 public class Authority implements GrantedAuthority {
