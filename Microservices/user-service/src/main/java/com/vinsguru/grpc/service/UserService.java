@@ -48,7 +48,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         List<User> user = UserRepository.getInstance().findUserByParam("email",request.getEmail());
         proto.user.Output output;
         if(!user.isEmpty() && user.get(0).getPassword().equals(request.getPassword()))
-            output = Output.newBuilder().setResult(Tokens.generateToken(user.get(0).getUsername(), user.get(0).getEmail())).build();
+            output = Output.newBuilder().setResult(user.get(0).getEmail()).build();
         else
             output = Output.newBuilder().setResult("false").build();
         responseObserver.onNext(output);

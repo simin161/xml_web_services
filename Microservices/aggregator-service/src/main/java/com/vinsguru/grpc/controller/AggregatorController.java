@@ -2,12 +2,22 @@ package com.vinsguru.grpc.controller;
 
 import com.vinsguru.grpc.dto.*;
 
+import com.vinsguru.grpc.helperModel.User;
+import com.vinsguru.grpc.helperModel.UserTokenState;
+import com.vinsguru.grpc.security.TokenUtils;
+import com.vinsguru.grpc.security.auth.JwtAuthenticationRequest;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 @CrossOrigin
@@ -23,6 +33,12 @@ public class AggregatorController {
 
     @Autowired
    private FollowerService followerService;
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
 
     @PostMapping("/register")
     public String addUser(@RequestBody Map<String, String> message){
@@ -35,8 +51,25 @@ public class AggregatorController {
     }
 
     @PostMapping("/logInUser")
-    public String logInUser(@RequestBody Map<String, String> message){
-        return aggregatorService.logInUser(message);
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest cred,
+                                                                    HttpServletResponse response) {
+
+        System.out.println(cred);
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
+                        cred.getPassword()));
+
+        // Ubaci korisnika u trenutni security kontekst
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Kreiraj token za tog korisnika
+        User user = (User) authentication.getPrincipal();
+        String jwt = tokenUtils.generateToken(user.getEmail());
+        int expiresIn = tokenUtils.getExpiredIn();
+
+        // Vrati token kao odgovor na uspesnu autentifikaciju
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 
     @PostMapping("/personalInfo")
