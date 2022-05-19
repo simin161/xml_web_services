@@ -41,8 +41,28 @@ public class AggregatorController {
 
 
     @PostMapping("/register")
-    public String addUser(@RequestBody Map<String, String> message){
-        return aggregatorService.addUser(message);
+    public ResponseEntity<UserTokenState> addUser(@RequestBody Map<String, String> message){
+        String registered = aggregatorService.addUser(message);
+        if(!registered.equals("false")){
+            JwtAuthenticationRequest cred = new JwtAuthenticationRequest();
+            cred.setPassword(message.get("password"));
+            cred.setEmail(message.get("email"));
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
+                            cred.getPassword()));
+
+            // Ubaci korisnika u trenutni security kontekst
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Kreiraj token za tog korisnika
+            User user = (User) authentication.getPrincipal();
+            String jwt = tokenUtils.generateToken(user.getEmail());
+            int expiresIn = tokenUtils.getExpiredIn();
+
+            // Vrati token kao odgovor na uspesnu autentifikaciju
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        }
+        return null;
     }
 
     @GetMapping("/invalidateUser")
