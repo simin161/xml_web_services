@@ -131,6 +131,13 @@ message OutputExperience {
   string to = 4;
 }
 
+message ForgottenPasswordEmail {
+  string email = 1;
+}
+
+message ForgottenPasswordReturnValue{
+  string value = 1;
+}
 
 service UserService {
 
@@ -162,6 +169,6 @@ service UserService {
 
   rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
 
-
+  rpc forgottenPasswordUpdate(ForgottenPasswordEmail) returns (ForgottenPasswordReturnValue) {};
 
 }

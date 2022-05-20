@@ -62,13 +62,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 // komunikacija izmedju klijenta i servera je stateless posto je u pitanju REST aplikacija
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//.and()
+/*
                 // sve neautentifikovane zahteve obradi uniformno i posalji 401 gresku
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
-                .authorizeRequests().antMatchers("/api/logInUser").permitAll().antMatchers("/api/register").permitAll()
+                .authorizeRequests().antMatchers("/api/**").permitAll().antMatchers("/api/register").permitAll()
                 .antMatchers("/api/getAllUsers").permitAll() .antMatchers("/api/searchUsers/{param}").permitAll()
                 .antMatchers("/api/invalidateUser").hasRole("REG_USER")
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
-        // zbog jednostavnosti primera
+        // zbog jednostavnosti primera */
         http.csrf().disable();
     }
 

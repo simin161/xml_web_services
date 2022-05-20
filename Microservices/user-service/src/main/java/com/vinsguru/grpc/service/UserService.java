@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.service;
 
+import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
 import com.vinsguru.grpc.model.WorkExperience;
@@ -13,6 +14,7 @@ import proto.user.*;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
@@ -293,5 +295,33 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             retVal = true;
         }
         return retVal;
+    }
+
+    @Override
+    public void forgottenPasswordUpdate(ForgottenPasswordEmail email, StreamObserver<ForgottenPasswordReturnValue> responseObserver){
+        ForgottenPasswordReturnValue fprv;
+        boolean value = false;
+        for(User u : UserRepository.getInstance().getAllUsers()){
+            if(u.getEmail().equals(email.getEmail())){
+                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                newPassword = newPassword.substring(0, 6);
+                u.setPassword(newPassword);
+                UserRepository.getInstance().updatePassword(u);
+                MailService ms = new MailService();
+                try{
+                    ms.sendForgottenPasswordEmail(email.getEmail(), newPassword);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                value = true;
+                break;
+            }
+        }
+        if(value)
+            fprv = ForgottenPasswordReturnValue.newBuilder().setValue("true").build();
+        else
+            fprv = ForgottenPasswordReturnValue.newBuilder().setValue("false").build();
+        responseObserver.onNext(fprv);
+        responseObserver.onCompleted();
     }
 }
