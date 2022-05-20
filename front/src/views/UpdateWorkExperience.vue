@@ -21,12 +21,12 @@
 
                 <div className="col form-group">
                     <p id="p">From</p>   
-                    <input type="date" v-model="workExp.from" id="from" ></DatePicker>       
+                    <input type="date" v-model="workExp.from" id="from" >      
                 </div> 
                  
                 <div className="col form-group">
                     <p id="p">To</p>   
-                    <input type="date" v-model="workExp.to" id="to" ></DatePicker>
+                    <input type="date" v-model="workExp.to" id="to" >
                 </div> 
 
                <div  className="col form-group">
@@ -63,7 +63,7 @@
   methods: {
   function update(){
 
-      axios.post(process.env.REACT_APP_BACKEND_URL +'workExperiences', this.workExp)
+      axios.post(process.env.VUE_APP_BACK +'workExperiences', this.workExp)
       .then(function (response) {
         console.log(response);
         this.$router.push("/profilePage/"+this.workExp.email)

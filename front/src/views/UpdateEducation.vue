@@ -63,7 +63,7 @@
   methods: {
   function update(){
 
-      axios.post(process.env.REACT_APP_BACKEND_URL + 'education',this.ed)
+      axios.post(process.env.VUE_APP_BACK + 'education',this.ed)
               .then(function (response) {
                 console.log(response);
                 

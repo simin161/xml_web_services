@@ -70,7 +70,7 @@
   },
   methods: {
   logIn : function(){
-          axios.post(process.env.REACT_APP_BACKEND_URL + 'logInUser', this.logDto)
+          axios.post(process.env.VUE_APP_BACK + 'logInUser', this.logDto)
           .then(function (response) {
               console.log(response);
               if(!response.data ){

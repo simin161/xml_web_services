@@ -142,7 +142,7 @@
     };
   },
   mounted() {
-     axios.get(process.env.REACT_APP_BACKEND_URL + 'user/'+email+"/")
+     axios.get(process.env.VUE_APP_BACK + 'user/'+email+"/")
        .then(function (response) {
             document.getElementById("email").textContent=response.data.email
             document.getElementById("username").textContent=response.data.username
@@ -154,7 +154,7 @@
             document.getElementById("interests").textContent=response.data.interests
             document.getElementById("skills").textContent=response.data.skills
 
-            axios.get(process.env.REACT_APP_BACKEND_URL + 'educations/'+email+"/")
+            axios.get(process.env.VUE_APP_BACK + 'educations/'+email+"/")
                  .then(function (response) {
                     console.log(response.data.length)
                  })
