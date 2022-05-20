@@ -36,8 +36,8 @@
 
           <div className="login">
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
-              <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" id="emailLog" name="email" placeholder="Email" required/>
-              <input type="password" id="passwordLog" name="pswd" placeholder="Password" required/>
+              <input type="email" v-model="logDto.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" id="emailLog" name="email" placeholder="Email" required/>
+              <input type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
               <button @click="logIn">Sign In</button>
           </div>
       </div>
@@ -70,8 +70,9 @@
   },
   methods: {
   logIn : function(){
-          axios.post(process.env.VUE_APP_BACK + 'logInUser', this.logDto)
-          .then(function (response) {
+          
+          axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password})
+          .then((response) => {
               console.log(response);
               if(!response.data ){
                   console.log("err");
@@ -87,8 +88,8 @@
   },
   register: function(){
   if(this.confirmPassword === this.dtoReg.password){
-          axios.post(process.env.REACT_APP_BACKEND_URL + 'register', this.dtoReg)
-          .then(function (response) {
+          axios.post(process.env.VUE_APP_BACK + 'register', this.dtoReg)
+          .then((response) => {
             console.log(response);
             if(!response.data){
               console.log("err");
