@@ -104,6 +104,17 @@
   export default{
   data() {
     return {
+        firstName ="",
+        lastName="",
+        email="",
+        username="",
+        birthday="",
+        gender="",
+        phone="",
+        biography="",
+        interests="",
+        skills="",
+        private=""
     };
   },
   mounted() {

@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import SignIn from '../views/SignIn.vue'
+import EditProfile from '../views/EditProfile.vue'
+import ProfilePage from '../views/ProfilePage.vue'
+import AccountSettings from '../views/AccountSettings.vue'
 
 const routes = [
   
@@ -14,7 +17,21 @@ const routes = [
     name: 'SignIn',
     component: SignIn
   },
-  
+  {
+    path: '/editProfile',
+    name: 'EditProfile',
+    component: EditProfile
+  },
+  {
+    path: '/profilePage',
+    name: 'ProfilePage',
+    component: ProfilePage
+  },
+  {
+    path: '/accountSettings',
+    name: 'AccountSettings',
+    component: AccountSettings
+  }
    
 ]
 
