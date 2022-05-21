@@ -174,7 +174,8 @@ public class UsersService {
         boolean value = false;
         String retVal = "";
         VerificationCode vc = VerificationCode.newBuilder().setVerificationCode(code).build();
-        value = Boolean.parseBoolean(blockingStub.verifyAccount(vc).getReturnValue());
+        String ret = blockingStub.verifyAccount(vc).getReturnValue();
+        value = Boolean.parseBoolean(ret);
         if(value){
             retVal = "verified";
         }else{

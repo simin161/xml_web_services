@@ -3,6 +3,7 @@ package com.vinsguru.grpc.repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.mongodb.client.*;
@@ -67,7 +68,9 @@ public class UserRepository {
                 .append("interests",user.getInterests())
                 .append("skills",user.getSkills())
                 .append("educations",user.getEducations())
-                .append("experiences",user.getEducations());
+                .append("experiences",user.getEducations())
+                .append("isActivated", user.isActivated())
+                .append("verificationCode", user.getVerificationCode());
         usersCollection.insertOne(userToSave);
     }
 
@@ -121,7 +124,18 @@ public class UserRepository {
         FindIterable<Document> iterable = usersCollection.find();
         List<User> retVal = new ArrayList<User>();
         for(Document d : iterable){
-            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"));
+            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), Boolean.parseBoolean(d.getString("isActivated")));
+            retVal.add(u);
+        }
+        return retVal;
+    }
+
+    public List<User> getAllUsersVerification(){
+        FindIterable<Document> iterable = usersCollection.find();
+        List<User> retVal = new ArrayList<User>();
+        boolean isActivated = false;
+        for(Document d : iterable){
+            User u = new User(d.getString("email"), d.getString("verificationCode"), false);
             retVal.add(u);
         }
         return retVal;
@@ -250,9 +264,12 @@ public class UserRepository {
 
     }
 
-    public User findUserByVerificationCode(VerificationCode code) {
-        for(User u : getAllUsers()){
-            if(u.getVerificationCode().equals(code.getVerificationCode())){
+    public User findUserByVerificationCode(String code) {
+        for(User u : getAllUsersVerification()){
+            if(u.getVerificationCode()==null){
+                continue;
+            }
+            if(u.getVerificationCode().equals(code)){
                 return u;
             }
         }
@@ -262,20 +279,11 @@ public class UserRepository {
     public void activateAccount(User user) {
         Document query = new Document().append("email",  user.getEmail());
         Bson updates = Updates.combine(
-                Updates.set("firstName", user.getFirstName()),
-                Updates.set("lastName", user.getLastName()),
-                Updates.set("privateProfile", user.isPrivateProfile()),
-                Updates.set("birthday", user.getBirthday()),
-                Updates.set("gender", user.getGender()),
-                Updates.set("phone", user.getPhone()),
-                Updates.set("biography", user.getBiography()),
-                Updates.set("interests", user.getInterests()),
-                Updates.set("skills", user.getSkills()),
-                Updates.set("password", user.getPassword()),
                 Updates.set("isActivated", user.isActivated()),
                 Updates.set("verificationCode", user.getVerificationCode())
         );
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
     }
+
 }

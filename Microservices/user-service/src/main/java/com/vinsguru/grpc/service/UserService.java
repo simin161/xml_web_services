@@ -346,7 +346,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void verifyAccount(VerificationCode code, StreamObserver<VerificationReturnValue> responseObserver){
         VerificationReturnValue vrv;
         boolean value;
-        User user = UserRepository.getInstance().findUserByVerificationCode(code);
+        User user = UserRepository.getInstance().findUserByVerificationCode(code.getVerificationCode());
         if(user == null || user.isActivated()){
             value = false;
         }else{

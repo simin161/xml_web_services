@@ -44,6 +44,19 @@ public class User {
         this.experinces=new ArrayList<>();
     }
 
+    public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate, String verificationCode, boolean isActivated) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.privateProfile = false;
+        this.birthday = birthDate;
+        this.gender = gender;
+        this.educations=new ArrayList<>();
+        this.experinces=new ArrayList<>();
+    }
+
     public boolean isActivated() {
         return isActivated;
     }
@@ -175,7 +188,7 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String email, String password) {
+    public User(String firstName, String lastName, String username, String email, String password, String verificationCode, boolean isActivated) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -190,6 +203,14 @@ public class User {
         this.skills = "";
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
+        this.verificationCode = verificationCode;
+        this.isActivated = isActivated;
+    }
+
+    public User(String email, String verificationCode, boolean isActivated){
+        this.email=email;
+        this.isActivated= isActivated;
+        this.verificationCode=verificationCode;
     }
 
     public User(ObjectId id,String firstName, String lastName, String username, String email, String password, boolean privateProfile,
