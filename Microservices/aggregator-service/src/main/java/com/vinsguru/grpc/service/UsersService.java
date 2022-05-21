@@ -157,5 +157,12 @@ public class UsersService {
     }
 
 
+    public boolean forgottenPassword(Map<String, String> email) {
+        blockingStub = openChannelToUserService();
+        boolean retVal = false;
+        ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).build();
+        retVal = Boolean.parseBoolean(blockingStub.forgottenPasswordUpdate(fpe).getValue());
 
+        return retVal;
+    }
 }

@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.service;
 
+import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
 import com.vinsguru.grpc.model.WorkExperience;
@@ -13,6 +14,7 @@ import proto.user.*;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
@@ -48,7 +50,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         List<User> user = UserRepository.getInstance().findUserByParam("email",request.getEmail());
         proto.user.Output output;
         if(!user.isEmpty() && user.get(0).getPassword().equals(request.getPassword()))
-            output = Output.newBuilder().setResult(Tokens.generateToken(user.get(0).getUsername(), user.get(0).getEmail())).build();
+            output = Output.newBuilder().setResult(user.get(0).getEmail()).build();
         else
             output = Output.newBuilder().setResult("false").build();
         responseObserver.onNext(output);
@@ -78,10 +80,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .setPrivateProfile(user.isPrivateProfile())
                 .setBirthday(s)
                 .setGender(user.getGender())
-                .setPhone(user.getPhone())
-                .setBiography(user.getBiography())
-                .setInterests(user.getInterests())
-                .setSkills(user.getSkills())
+                .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
+                .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
+                .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
+                .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
                 .build();
 
         responseObserver.onNext(output);
@@ -293,5 +295,33 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             retVal = true;
         }
         return retVal;
+    }
+
+    @Override
+    public void forgottenPasswordUpdate(ForgottenPasswordEmail email, StreamObserver<ForgottenPasswordReturnValue> responseObserver){
+        ForgottenPasswordReturnValue fprv;
+        boolean value = false;
+        for(User u : UserRepository.getInstance().getAllUsers()){
+            if(u.getEmail().equals(email.getEmail())){
+                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                newPassword = newPassword.substring(0, 6);
+                u.setPassword(newPassword);
+                UserRepository.getInstance().updatePassword(u);
+                MailService ms = new MailService();
+                try{
+                    ms.sendForgottenPasswordEmail(email.getEmail(), newPassword);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                value = true;
+                break;
+            }
+        }
+        if(value)
+            fprv = ForgottenPasswordReturnValue.newBuilder().setValue("true").build();
+        else
+            fprv = ForgottenPasswordReturnValue.newBuilder().setValue("false").build();
+        responseObserver.onNext(fprv);
+        responseObserver.onCompleted();
     }
 }

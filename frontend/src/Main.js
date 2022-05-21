@@ -7,6 +7,8 @@ import ProfilePage from './pages/ProfilePage';
 import EditProfile from './pages/EditProfile'
 import UpdateEducation from './pages/UpdateEducation'
 import UpdateWorkExperience  from './pages/UpdateWorkExperience';
+import CreatePost from './pages/CreatePost';
+
 const Main = () => {
   return (
         <Routes> {/* The Switch decides which component to show based on the current URL.*/}
@@ -17,6 +19,7 @@ const Main = () => {
             <Route exact path='/editProfile/:email' element={<EditProfile/>}></Route>
             <Route exact path='/updateEducation/:email' element={<UpdateEducation/>}></Route>
             <Route exact path='/updateWorkExperience/:email' element={<UpdateWorkExperience/>}></Route>
+            <Route exact path='/newPost' element={<CreatePost/>}></Route>
         </Routes>
   );
 }

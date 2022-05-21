@@ -167,6 +167,23 @@ public class UserRepository {
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
     }
+    public void updatePassword(User user){
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("firstName", user.getFirstName()),
+                Updates.set("lastName", user.getLastName()),
+                Updates.set("privateProfile", user.isPrivateProfile()),
+                Updates.set("birthday", user.getBirthday()),
+                Updates.set("gender", user.getGender()),
+                Updates.set("phone", user.getPhone()),
+                Updates.set("biography", user.getBiography()),
+                Updates.set("interests", user.getInterests()),
+                Updates.set("skills", user.getSkills()),
+                Updates.set("password", user.getPassword())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
     public void updateEducation(String email,Education education){
         if(!checkIfEducationExists(email, education)){
             Document foundUser = usersCollection.find(Filters.eq("email", email)).first();
