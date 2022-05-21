@@ -108,6 +108,9 @@
     };
   },
   mounted() {
+       if(localStorage.getItem("loggedUser") === ''){
+          this.$router.push("/signIn")
+      }
       axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
     axios.get(process.env.VUE_APP_BACK + 'user')

@@ -59,7 +59,9 @@
     };
   },
   mounted() {
-    
+     if(localStorage.getItem("loggedUser") === ''){
+          this.$router.push("/signIn")
+      }
   },
   methods: {
   update : function(){
