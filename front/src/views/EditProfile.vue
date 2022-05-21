@@ -9,7 +9,7 @@
                         <p>First name</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="firstName" type="text" required/>
+                        <input id="firstName" v-model="user.firstName" type="text" required/>
                         </div>
                         </div>
                         <div className="row">
@@ -17,7 +17,7 @@
                         <p>Last name</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="lastName" type="text" required/>
+                        <input id="lastName" v-model="user.lastName" type="text" required/>
                         </div>
                         </div>
                         <div className="row">
@@ -25,7 +25,7 @@
                         <p>Birthday</p>
                         </div>
                         <div className="col-lg-9">
-                        <input type="date" id="birthday" />
+                        <input type="date" v-model="user.birthday" id="birthday" />
                         </div>
                         </div>
                         <div className="row">
@@ -33,11 +33,11 @@
                         <p>Gender</p>
                         </div>
                         <div id="molimTe" className="col-lg-9">
-                                <select id="gender">
-                                    <option>
+                                <select id="gender" v-model="user.gender">
+                                    <option value="MALE">
                                         MALE
                                     </option>
-                                    <option>
+                                    <option value="FEMALE">
                                         FEMALE
                                     </option>
                                 </select>
@@ -48,7 +48,7 @@
                         <p>Phone num</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="phone" type="text" />
+                        <input id="phone" v-model="user.phone" type="text" />
                         </div>
                         </div>
                         <div className="row">
@@ -56,7 +56,7 @@
                         <p>Email</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="email" type="text" disabled/>
+                        <input id="email" v-model="user.email" type="text" disabled/>
                         </div>
                         </div>
                         <div className="row">
@@ -64,7 +64,7 @@
                         <p>Username</p>
                         </div>
                         <div className="col-lg-9">
-                        <input id="username" type="text" disabled/>
+                        <input id="username" v-model="user.username" type="text" disabled/>
                         </div>
                         </div>  
                         <div className="row">
@@ -72,11 +72,11 @@
                         <p>Private</p>
                         </div>
                         <div id="molimTe" className="col-lg-9">
-                                <select id="private">
-                                    <option>
+                                <select id="private"  v-model="user.private">
+                                    <option value="true">
                                         YES
                                     </option>
-                                    <option>
+                                    <option value="false">
                                         NO
                                     </option>
                                 </select>
@@ -85,14 +85,14 @@
                         </div>
                         <h3>Biography</h3>
                         <hr/>
-                        <textarea id="biography"></textarea>
+                        <textarea id="biography" v-model="user.biography"></textarea>
                         <h3>Interests</h3>
                         <hr/>
-                        <textarea id="interests"></textarea>
+                        <textarea id="interests" v-model="user.interests"></textarea>
 
                         <h3>Skills</h3>
                         <hr/>
-                        <textarea id="skills"></textarea>
+                        <textarea id="skills" v-model="user.skills"></textarea>
 
                         <button @click="update">Save changes</button>
                   
@@ -100,27 +100,38 @@
     </div>
 </template>
 <script>
-// import axios from "axios";
+ import axios from "axios";
   export default{
   data() {
     return {
-        firstName: "",
-        lastName:"",
-        email:"",
-        username:"",
-        birthday:"",
-        gender:"",
-        phone:"",
-        biography:"",
-        interests:"",
-        skills:"",
-        isPrivate:""
+        user: {}
     };
   },
   mounted() {
-    
+      axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
+    axios.get(process.env.VUE_APP_BACK + 'user')
+            .then((response) => {
+                this.user = response.data;
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
   },
-  methods: {    
+  methods: {  
+      update : function(){
+          axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
+            axios.post(process.env.VUE_APP_BACK + 'personalInfo', this.user)
+            .then((response) => {
+            console.log(response);
+            this.$router.push("/profilePage");
+          
+          })
+          .catch(function (error) {
+            console.log(error);
+          });  
+        }
   }
 };
 </script>

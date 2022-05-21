@@ -7,7 +7,7 @@
                 <div className="card-body">
                     <div className="text-center">
                         <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" className="user-profile"/>
-                        <h3 id="fullName">John Doe</h3>
+                        <h3 id="fullName">{{loggedUser.firstName}} {{loggedUser.lastName}}</h3>
                         <p id="username"></p>
                         <div className="d-flex align-items-center justify-content-center mb-3">
                             <i className="fas fa-star text-info"></i>
@@ -20,26 +20,26 @@
                     <div className="personal-info">
                         <h3>Personal Information</h3>
                         <ul className="personal-list">
-                            <li><i className="fas fa-briefcase "></i><span id="email"></span></li>
-                            <li><i className="fas fa-map-marker-alt "></i><span id="phone"> New York</span></li>
-                            <li><i className="far fa-envelope "></i><span id="gender">like @example.com</span></li>
-                            <li><i className="fas fa-mobile "></i><span id="birthday"></span></li>
+                            <li><i className="fas fa-briefcase "></i><span id="email">{{loggedUser.email}}</span></li>
+                            <li><i className="fas fa-map-marker-alt "></i><span id="phone"> {{loggedUser.phone}}</span></li>
+                            <li><i className="far fa-envelope "></i><span id="gender">{{loggedUser.gender}}</span></li>
+                            <li><i className="fas fa-mobile "></i><span id="birthday">{{loggedUser.birthday}}</span></li>
                         </ul>
                     </div>
 
                     <div className="skill">
                         <h3>Biography</h3>
-                        <span id="biography"></span>
+                        <span id="biography">{{loggedUser.biography}}</span>
                         
                     </div>
                     <div className="skill">
                         <h3>Interests</h3>
-                        <span id="interests"></span>
+                        <span id="interests">{{loggedUser.interests}}</span>
                         
                     </div>
                     <div className="skill">
                         <h3>Skills</h3>
-                        <span id="skills"></span>                    
+                        <span id="skills">{{loggedUser.skills}}</span>                    
                     </div>   
                 </div>
             </div>
@@ -57,20 +57,11 @@
                         </div>             
                          <hr/>
                          <div  id="pills-education" role="tabpanel" aria-labelledby="pills-education-tab">
-                            <div className="work-container">
-                                <h3>The Art Institute :- New Yourk</h3>
-                                <h6><i className="far fa-calendar-alt"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            </div>
-                            <div className="work-container">
-                                <h3>Eitech :- New Jersy</h3>
-                                <h6><i className="material-icons"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            </div>
-                            <div className="work-container">
-                                <h3>School of Visual Arts :- Chicago</h3>
-                                <h6><i className="material-icons"></i>Jan 2017 to <span className="badge badge-info">Current</span></h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <div className="work-container" v-for="ed in educations" v-bind:key="ed._idEducation">
+                                <h3>{{ed.school}}</h3>
+                                <h6>{{ed.from}} - {{ed.to}}</h6>
+                                <p>{{ed.fieldOfStudy}}</p>
+                                <p>{{ed.degree}}</p>
                             </div>
                         </div>
                     </div> 
@@ -89,7 +80,13 @@
                            </div>
                         </div>
                         <hr/>
-                        <WorkExperience/>
+                       <div  id="pills-education" role="tabpanel" aria-labelledby="pills-education-tab">
+                            <div className="work-container" v-for="we in workExperiences" v-bind:key="we._idExperience">
+                                <h3>{{we.workPlace}}</h3>
+                                <h6>{{we.workTitle}}</h6>
+                                <p>{{we.from}} - {{we.to}}</p>
+                            </div>
+                        </div>
                     </div> 
                 </div>
             </div>
@@ -139,7 +136,9 @@
   export default{
   data() {
     return {
-        loggedUser : null
+        loggedUser : {},
+        educations: {},
+        workExperiences: {}
     };
   },
   mounted() {
@@ -150,8 +149,15 @@
            this.loggedUser = response.data;
            console.log(response.data);
             axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
-                 .then(function (response) {
-                    console.log(response.data.length)
+                 .then((response) => {
+                    this.educations = response.data;
+                 })
+                 .catch(function (error) {
+                    console.log(error);
+                 });
+            axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.loggedUser.email+"/")
+                 .then((response) => {
+                    this.workExperiences = response.data;
                  })
                  .catch(function (error) {
                     console.log(error);

@@ -66,7 +66,7 @@
       axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
       axios.post(process.env.VUE_APP_BACK +'workExperiences', this.workExp)
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
         this.$router.push("/profilePage")
       })
