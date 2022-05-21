@@ -55,19 +55,21 @@
         fieldOfStudy : '',
         from : '',
         to : ''
+      }
     };
   },
   mounted() {
     
   },
   methods: {
-  function update(){
-
+  update : function(){
+      axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
       axios.post(process.env.VUE_APP_BACK + 'education',this.ed)
-              .then(function (response) {
+              .then((response) => {
                 console.log(response);
                 
-                  navigate("/profilePage/"+email)
+                  this.$router.push("/profilePage")
               
               })
               .catch(function (error) {

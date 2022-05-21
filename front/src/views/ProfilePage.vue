@@ -149,13 +149,13 @@
        .then((response) => {
            this.loggedUser = response.data;
            console.log(response.data);
-           /* axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
+            axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
                  .then(function (response) {
                     console.log(response.data.length)
                  })
                  .catch(function (error) {
                     console.log(error);
-                 });*/
+                 });
        })
        .catch(function (error) {
        console.log(error);
@@ -163,13 +163,13 @@
   },
   methods: {   
     redirectEditProfile: function(){
-        this.$router.push("/editProfile/"+this.loggedUser.email)
+        this.$router.push("/editProfile")
     },
     navigateToAddEducation: function(){
-        this.$router.push("/updateEducation/"+this.loggedUser.email)
+        this.$router.push("/updateEducation")
     },
     navigateToAddExp: function(){
-        this.$router.push("/updateWorkExperience/"+this.loggedUser.email)
+        this.$router.push("/updateWorkExperience")
     } 
   }
 };

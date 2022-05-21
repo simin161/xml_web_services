@@ -100,12 +100,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/personalInfo")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String updateUser(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> userDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             userDto.put("email",email);
             return aggregatorService.updateUser(userDto);   //note: na frontu skloniti mejl iz userdto da se prosledjuje
         }catch(Exception e){
@@ -115,12 +114,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/education")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String updateEducation(@RequestHeader("Authentication") HttpHeaders header, @RequestBody EducationDto educationDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             educationDto.setEmail(email);
             return aggregatorService.updateEducation(educationDto);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
@@ -138,8 +136,6 @@ public class AggregatorController {
     public UserDto getUserByEmail(@RequestHeader("Authorization") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-          //  final JSONObject obj = new JSONObject(value);
-          //  String user = obj.getString("accessToken");
             String email = tokenUtils.getUsernameFromToken(value);
             return aggregatorService.getUserByEmail(email);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
@@ -153,12 +149,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/workExperiences")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String updateWorkExperiences(@RequestHeader("Authentication") HttpHeaders header, @RequestBody WorkExperienceDto workExperienceDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             workExperienceDto.setEmail(email);
             return aggregatorService.updateWorkExperiences(workExperienceDto);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
@@ -183,12 +178,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/newPost")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String addNewPost(@RequestHeader("Authentication") HttpHeaders header, @RequestBody PostDto post){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             post.setEmail(email);
             return postService.addPost(post);   //note: na frontu skloniti mejl iz post da se prosledjuje
         }catch(Exception e){
@@ -198,12 +192,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/newFollower")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String addNewFollower(@RequestHeader("Authentication") HttpHeaders header, @RequestBody FollowDto follow){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             follow.setFollowerEmail(email);
             return followerService.addFollower(follow);  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
@@ -223,12 +216,11 @@ public class AggregatorController {
     }
 
     @PostMapping("/comment")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String addNewComment(@RequestHeader("Authentication") HttpHeaders header, @RequestBody CommentDto comment){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             comment.setCommentatorsEmail(email);
             return postService.addComment(comment);  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
@@ -247,12 +239,11 @@ public class AggregatorController {
         return postService.getAllUsersPosts(email);
     }
     @PostMapping("/reaction")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String addNewReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            final JSONObject obj = new JSONObject(value);
-            String user = obj.getString("accessToken");
-            String email = tokenUtils.getUsernameFromToken(user);
+            String email = tokenUtils.getUsernameFromToken(value);
             reaction.setEmail(email);
             return postService.addReaction(reaction);  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
@@ -261,8 +252,11 @@ public class AggregatorController {
         return "";
     }
 
-    @GetMapping("/postsForHomePage/{email:.+}/")
-    public List<PostDto> getPosts(@PathVariable("email")String email){
+    @GetMapping("/postsForHomePage")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public List<PostDto> getPosts(@RequestHeader("Authentication") HttpHeaders header){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
         return postService.findAllPostsOfFollowingsByUserEmail(email);
     }
 

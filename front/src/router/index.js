@@ -4,6 +4,8 @@ import SignIn from '../views/SignIn.vue'
 import EditProfile from '../views/EditProfile.vue'
 import ProfilePage from '../views/ProfilePage.vue'
 import AccountSettings from '../views/AccountSetting.vue'
+import UpdateEducation from '../views/UpdateEducation.vue'
+import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
 
 const routes = [
   
@@ -31,6 +33,16 @@ const routes = [
     path: '/accountSettings',
     name: 'AccountSettings',
     component: AccountSettings
+  },
+  {
+    path: '/updateEducation',
+    name: 'UpdateEducation',
+    component: UpdateEducation
+  },
+  {
+    path: '/updateWorkExperience',
+    name: 'UpdateWorkExperience',
+    component: UpdateWorkExperience
   }
    
 ]

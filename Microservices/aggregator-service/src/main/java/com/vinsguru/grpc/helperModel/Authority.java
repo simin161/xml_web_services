@@ -8,16 +8,6 @@ import java.util.List;
 public class Authority implements GrantedAuthority {
     private String name;
 
-    public void setPermisions(List<Permision> permisions) {
-        this.permisions = permisions;
-    }
-
-    public List<Permision> getPermisions() {
-        return permisions;
-    }
-
-    private List<Permision> permisions;
-
     public Authority(){}
 
     public Authority(String name) {

@@ -1,11 +1,5 @@
 package com.vinsguru.grpc.mail;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -18,11 +12,11 @@ import java.util.Properties;
 @Service
 public class MailService {
 
-    private JavaMailSender mailSender;
+    //private JavaMailSender mailSender;
 
     public void sendVerificationEmail(String email, String siteURL, String token)
             throws MessagingException, UnsupportedEncodingException {
-        String fromAddress = "findsfishy@gmail.com";
+     /*   String fromAddress = "findsfishy@gmail.com";
         String senderName = "Fishy Finds";
         String subject = "Please verify your registration";
         String content = "Dear user,<br>"
@@ -44,7 +38,7 @@ public class MailService {
 
         helper.setText(content, true);
 
-        mailSender.send(message);
+        mailSender.send(message);*/
 
     }
 

@@ -55,18 +55,20 @@
         from : '',
         to : '',
         email : ''
+      }
     };
   },
   mounted() {
     
   },
   methods: {
-  function update(){
-
+  update : function(){
+      axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
       axios.post(process.env.VUE_APP_BACK +'workExperiences', this.workExp)
       .then(function (response) {
         console.log(response);
-        this.$router.push("/profilePage/"+this.workExp.email)
+        this.$router.push("/profilePage")
       })
       .catch(function (error) {
         console.log(error);

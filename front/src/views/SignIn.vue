@@ -95,7 +95,7 @@
               console.log("err");
             }else{
               localStorage.setItem("loggedUser", response.data);
-              this.$router.push("/profilePage/" + this.dtoReg.email, {replace: true});
+              this.$router.push("/profilePage");
             }
           })
           .catch(function (error) {
