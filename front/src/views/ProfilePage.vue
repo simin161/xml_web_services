@@ -144,7 +144,11 @@
   },
   mounted() {
       if(localStorage.getItem("loggedUser") === ''){
-          this.$router.push("/signIn")
+          const email= window.location.pathname.split('/')[2]
+          if(email === '')
+            this.$router.push("/signIn")
+          else
+            localStorage.setItem("loggedUser", email);
       }
      axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
