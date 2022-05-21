@@ -5,11 +5,16 @@ import   com.vinsguru.grpc.dto.*;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 
+import com.vinsguru.grpc.mail.MailService;
+import com.vinsguru.grpc.security.TokenUtils;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.stereotype.Service;
 import proto.user.*;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +25,14 @@ import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUser
 @Service
 public class UsersService {
 
+    @Autowired
+    private TokenUtils tokenUtils;
+
     @GrpcClient("user-service")
     private UserServiceGrpc.UserServiceBlockingStub blockingStub;
 
-
+    @Autowired
+    private MailService mailService;
 
     public String addUser(Map<String,String> message, String siteURL) {
         blockingStub = openChannelToUserService();
@@ -184,5 +193,22 @@ public class UsersService {
             retVal = "error";
         }
         return retVal;
+    }
+
+    public String passwordlessLogin(Map<String, String> email, String siteURL) throws MessagingException, UnsupportedEncodingException {
+        blockingStub = openChannelToUserService();
+        //boolean value = false;
+        //PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(siteURL).build();
+        //value = Boolean.parseBoolean(blockingStub.passwordlessLogin(pl).getReturnValue());
+        UserDto d = getUserByEmail(email.get("email"));
+        if(d!=null){
+            String jwt = tokenUtils.generateToken(email.get("email"), "ROLE_REG_USER");
+            int expiresIn = tokenUtils.getExpiredIn();
+            PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(jwt).build();
+            blockingStub.passwordlessLogin(pl);
+            return "email sent";
+        }else{
+            return "user not found";
+        }
     }
 }

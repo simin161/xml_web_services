@@ -25,9 +25,17 @@ const routes = [
     component: EditProfile
   },
   {
-    path: '/profilePage',
+    path: '/profilePage/:id',
     name: 'ProfilePage',
-    component: ProfilePage
+    component: ProfilePage,
+    children: [
+
+      {
+        path: '/profilePage',
+        component: ProfilePage
+      }
+
+    ]
   },
   {
     path: '/accountSettings',
@@ -44,7 +52,6 @@ const routes = [
     name: 'UpdateWorkExperience',
     component: UpdateWorkExperience
   }
-   
 ]
 
 const router = createRouter({

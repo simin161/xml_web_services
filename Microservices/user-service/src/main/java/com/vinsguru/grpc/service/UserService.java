@@ -31,7 +31,7 @@ import java.util.List;
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
-    private MailService mailService = new MailService();
+    private final MailService mailService = new MailService();
 
     @Override
     public void addUser(proto.user.AddUserParam addUserParam,
@@ -375,4 +375,14 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         user.setVerificationCode(code);
     }
 
+    @Override
+    public void passwordlessLogin(PasswordlessLogin plogin, StreamObserver<VerificationReturnValue> responseObserver) {
+       try{ VerificationReturnValue vrv;
+        mailService.sendPasswordlessLoginEmail(plogin.getEmail(), plogin.getSiteURL());
+        vrv = VerificationReturnValue.newBuilder().setReturnValue("true").build();
+        responseObserver.onNext(vrv);
+        responseObserver.onCompleted();}catch(Exception e){
+           e.printStackTrace();
+       }
+    }
 }

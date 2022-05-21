@@ -23,8 +23,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -265,5 +267,10 @@ public class AggregatorController {
     private String getSiteURL(HttpServletRequest request){
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
+    }
+
+    @PostMapping("/passwordlessLogin")
+    public String passwordlessLogin(@RequestBody Map<String, String> email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+        return aggregatorService.passwordlessLogin(email, getSiteURL(request));
     }
 }

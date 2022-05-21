@@ -157,6 +157,11 @@ message AddUserParam {
   SiteURL url = 2;
 }
 
+message PasswordlessLogin{
+  string email = 1;
+  string siteURL = 2;
+}
+
 service UserService {
 
   rpc addUser(AddUserParam) returns (Output) {};
@@ -190,5 +195,7 @@ service UserService {
   rpc forgottenPasswordUpdate(ForgottenPasswordEmail) returns (ForgottenPasswordReturnValue) {};
 
   rpc verifyAccount(VerificationCode) returns (VerificationReturnValue) {};
+
+  rpc passwordlessLogin(PasswordlessLogin) returns (VerificationReturnValue) {};
 
 }
