@@ -2,6 +2,7 @@ package com.vinsguru.grpc.service;
 
 import com.vinsguru.grpc.dto.UserDto;
 import com.vinsguru.grpc.helperModel.Authority;
+import com.vinsguru.grpc.helperModel.Permision;
 import com.vinsguru.grpc.helperModel.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setEmail(d.getEmail());
             user.setPassword(passwordEncoder.encode(d.getPassword()));
             List<Authority> a = new ArrayList<>();
-            a.add(new Authority("REG_USER"));
+            Authority auth = new Authority("ROLE_REG_USER");
+            List<Permision> p = new ArrayList<>();
+            p.add(new Permision("/api/invalidateUser"));
+            p.add(new Permision("/api/user"));
+            auth.setPermisions(p);
+            a.add(auth);
             user.setAuthorities(a);
         }
         else

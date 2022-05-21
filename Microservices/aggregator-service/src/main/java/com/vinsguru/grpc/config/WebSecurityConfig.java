@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +21,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
@@ -69,8 +71,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
                 .authorizeRequests().antMatchers("/api/logInUser").permitAll().antMatchers("/api/register").permitAll()
-                .antMatchers("/api/getAllUsers").permitAll() .antMatchers("/api/searchUsers/{param}").permitAll()
-                .antMatchers("/api/invalidateUser").hasRole("REG_USER")
+                .antMatchers("/api/getAllUsers").permitAll().antMatchers("/api/searchUsers/{param}").permitAll()
+                .antMatchers("/api/user/{email:.+}/").permitAll()
+                .antMatchers("/api/educations/{email:.+}/").permitAll()
+                .antMatchers("/api/experiences/{email:.+}/").permitAll()
+                .antMatchers("/api/followers/{email:.+}/").permitAll()
+                .antMatchers("/api/followings/{email:.+}/").permitAll()
+                .antMatchers("/api/getAllPosts").permitAll()
+                .antMatchers("/api/getAllUserPosts/user:{email}").permitAll()
+                .antMatchers("/api/numOfCommentsByPostId").permitAll()
+                .antMatchers("/api/numOfReactionsByPostId").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
@@ -90,6 +100,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/getAllUsers");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/searchUsers/{param}");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/user/{email:.+}/");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/educations/{email:.+}/");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/experiences/{email:.+}/");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/followers/{email:.+}/");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/followings/{email:.+}/");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/getAllPosts");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/getAllUserPosts/user:{email}");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/numOfCommentsByPostId");
+        web.ignoring().antMatchers(HttpMethod.POST,"/api/numOfReactionsByPostId");
+
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");
     }

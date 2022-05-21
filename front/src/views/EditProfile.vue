@@ -100,21 +100,21 @@
     </div>
 </template>
 <script>
- import axios from "axios";
+// import axios from "axios";
   export default{
   data() {
     return {
-        firstName ="",
-        lastName="",
-        email="",
-        username="",
-        birthday="",
-        gender="",
-        phone="",
-        biography="",
-        interests="",
-        skills="",
-        private=""
+        firstName: "",
+        lastName:"",
+        email:"",
+        username:"",
+        birthday:"",
+        gender:"",
+        phone:"",
+        biography:"",
+        interests:"",
+        skills:"",
+        isPrivate:""
     };
   },
   mounted() {

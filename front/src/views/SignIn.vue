@@ -77,8 +77,8 @@
               if(!response.data ){
                   console.log("err");
               }else{
-                  localStorage.setItem("loggedUser", response.data);
-                  this.$router.push("/profilePage/" + this.logDto.email, {replace: true});
+                  localStorage.setItem("loggedUser", response.data.accessToken);
+                  this.$router.push("/profilePage");
               }
           })
           .catch(function (error) {

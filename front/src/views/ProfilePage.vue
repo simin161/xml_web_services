@@ -139,28 +139,23 @@
   export default{
   data() {
     return {
+        loggedUser : null
     };
   },
   mounted() {
-     axios.get(process.env.VUE_APP_BACK + 'user/'+email+"/")
-       .then(function (response) {
-            document.getElementById("email").textContent=response.data.email
-            document.getElementById("username").textContent=response.data.username
-            document.getElementById("fullName").innerHTML=response.data.firstName+ " "+ response.data.lastName 
-            document.getElementById("phone").textContent=response.data.phone
-            document.getElementById("gender").textContent=response.data.gender
-            document.getElementById("birthday").textContent=response.data.birthday
-            document.getElementById("biography").textContent=response.data.biography
-            document.getElementById("interests").textContent=response.data.interests
-            document.getElementById("skills").textContent=response.data.skills
-
-            axios.get(process.env.VUE_APP_BACK + 'educations/'+email+"/")
+     axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
+     axios.get(process.env.VUE_APP_BACK + 'user')
+       .then((response) => {
+           this.loggedUser = response.data;
+           console.log(response.data);
+           /* axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
                  .then(function (response) {
                     console.log(response.data.length)
                  })
                  .catch(function (error) {
                     console.log(error);
-                 });
+                 });*/
        })
        .catch(function (error) {
        console.log(error);
@@ -168,13 +163,13 @@
   },
   methods: {   
     redirectEditProfile: function(){
-        this.$router.push("/editProfile/"+email)
+        this.$router.push("/editProfile/"+this.loggedUser.email)
     },
     navigateToAddEducation: function(){
-        this.$router.push("/updateEducation/"+email)
+        this.$router.push("/updateEducation/"+this.loggedUser.email)
     },
     navigateToAddExp: function(){
-        this.$router.push("/updateWorkExperience/"+email)
+        this.$router.push("/updateWorkExperience/"+this.loggedUser.email)
     } 
   }
 };

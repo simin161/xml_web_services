@@ -3,7 +3,7 @@ import Home from '../views/Home.vue'
 import SignIn from '../views/SignIn.vue'
 import EditProfile from '../views/EditProfile.vue'
 import ProfilePage from '../views/ProfilePage.vue'
-import AccountSettings from '../views/AccountSettings.vue'
+import AccountSettings from '../views/AccountSetting.vue'
 
 const routes = [
   

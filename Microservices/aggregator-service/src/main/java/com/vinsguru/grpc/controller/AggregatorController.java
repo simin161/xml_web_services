@@ -62,7 +62,7 @@ public class AggregatorController {
 
             // Kreiraj token za tog korisnika
             User user = (User) authentication.getPrincipal();
-            String jwt = tokenUtils.generateToken(user.getEmail(), "REG_USER");
+            String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
             int expiresIn = tokenUtils.getExpiredIn();
 
             // Vrati token kao odgovor na uspesnu autentifikaciju
@@ -72,7 +72,7 @@ public class AggregatorController {
     }
 
     @GetMapping("/invalidateUser")
-    @PreAuthorize("hasRole(REG_USER)")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String invalidateUser(){
         return aggregatorService.invalidateUser("");
     }
@@ -92,7 +92,7 @@ public class AggregatorController {
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail(), "REG_USER");
+        String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
@@ -132,6 +132,20 @@ public class AggregatorController {
     @GetMapping("/user/{email:.+}/")
     public UserDto getUserByEmail(@PathVariable("email")String email){
         return aggregatorService.getUserByEmail(email);
+    }
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public UserDto getUserByEmail(@RequestHeader("Authorization") HttpHeaders header){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+          //  final JSONObject obj = new JSONObject(value);
+          //  String user = obj.getString("accessToken");
+            String email = tokenUtils.getUsernameFromToken(value);
+            return aggregatorService.getUserByEmail(email);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
     @GetMapping("/educations/{email:.+}/")
     public List<EducationDto> getEducationsUserByEmail(@PathVariable("email")String email){

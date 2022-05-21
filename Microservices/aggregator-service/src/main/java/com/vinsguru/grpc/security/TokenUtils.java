@@ -26,7 +26,7 @@ public class TokenUtils {
         private int EXPIRES_IN;
 
         // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
-        @Value("Authorization")
+        @Value("authorization")
         private String AUTH_HEADER;
 
         // Moguce je generisati JWT za razlicite klijente (npr. web i mobilni klijenti nece imati isto trajanje JWT, JWT za mobilne klijente ce trajati duze jer se mozda aplikacija redje koristi na taj nacin)
@@ -93,7 +93,7 @@ public class TokenUtils {
         // Funkcija za validaciju JWT tokena
         public Boolean validateToken(String token, String name) {
             final String username = getUsernameFromToken(token);
-            final Date created = getIssuedAtDateFromToken(token);
+            //final Date created = getIssuedAtDateFromToken(token);
 
             return (username != null && username.equals(name)
                  /*   && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())*/);
@@ -153,8 +153,8 @@ public class TokenUtils {
 
             // JWT se prosledjuje kroz header Authorization u formatu:
             // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                return authHeader.substring(7);
+            if (authHeader != null) {
+                return authHeader;
             }
 
             return null;
