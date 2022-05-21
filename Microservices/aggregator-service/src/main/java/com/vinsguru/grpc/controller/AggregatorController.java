@@ -275,4 +275,9 @@ public class AggregatorController {
     public int findNumOfReactionsByPostId(@RequestBody Map<String, String> postId){
         return postService.getNumOfReactionsByPostId(postId.get("id"));
     }
+
+    @PostMapping("/forgottenPassword")
+    public boolean forgottenPassword(@RequestBody Map<String, String> email){
+        return aggregatorService.forgottenPassword(email);
+    }
 }
