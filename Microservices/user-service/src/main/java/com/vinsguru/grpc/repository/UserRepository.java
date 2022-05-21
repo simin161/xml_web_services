@@ -20,6 +20,7 @@ import org.bson.types.ObjectId;
 import proto.user.InputUpdateWorkExperience;
 
 import proto.user.Input;
+import proto.user.VerificationCode;
 
 
 public class UserRepository {
@@ -247,5 +248,34 @@ public class UserRepository {
         return experiences;
 
 
+    }
+
+    public User findUserByVerificationCode(VerificationCode code) {
+        for(User u : getAllUsers()){
+            if(u.getVerificationCode().equals(code.getVerificationCode())){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public void activateAccount(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("firstName", user.getFirstName()),
+                Updates.set("lastName", user.getLastName()),
+                Updates.set("privateProfile", user.isPrivateProfile()),
+                Updates.set("birthday", user.getBirthday()),
+                Updates.set("gender", user.getGender()),
+                Updates.set("phone", user.getPhone()),
+                Updates.set("biography", user.getBiography()),
+                Updates.set("interests", user.getInterests()),
+                Updates.set("skills", user.getSkills()),
+                Updates.set("password", user.getPassword()),
+                Updates.set("isActivated", user.isActivated()),
+                Updates.set("verificationCode", user.getVerificationCode())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
     }
 }

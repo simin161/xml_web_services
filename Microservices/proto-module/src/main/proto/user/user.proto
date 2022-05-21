@@ -139,9 +139,26 @@ message ForgottenPasswordReturnValue{
   string value = 1;
 }
 
+message VerificationCode {
+  string verificationCode = 1;
+}
+
+message VerificationReturnValue {
+  string returnValue = 1;
+}
+
+message SiteURL {
+  string siteURL = 1;
+}
+
+message AddUserParam {
+  userReg reg = 1;
+  SiteURL url = 2;
+}
+
 service UserService {
 
-  rpc addUser(userReg) returns (Output) {};
+  rpc addUser(AddUserParam) returns (Output) {};
 
   rpc logInUser(Input1) returns (Output) {};
 
@@ -170,5 +187,7 @@ service UserService {
   rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
 
   rpc forgottenPasswordUpdate(ForgottenPasswordEmail) returns (ForgottenPasswordReturnValue) {};
+
+  rpc verifyAccount(VerificationCode) returns (VerificationReturnValue) {};
 
 }

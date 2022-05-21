@@ -7,10 +7,12 @@ import com.vinsguru.grpc.model.WorkExperience;
 import com.vinsguru.grpc.repository.UserRepository;
 import com.vinsguru.grpc.utility.Tokens;
 import io.grpc.stub.StreamObserver;
+import net.bytebuddy.utility.RandomString;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import proto.user.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import java.util.Date;
 import org.bson.Document;
 
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -28,17 +31,30 @@ import java.util.List;
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
+    private MailService mailService = new MailService();
+
     @Override
-    public void addUser(proto.user.userReg request,
+    public void addUser(proto.user.AddUserParam addUserParam,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
+        proto.user.userReg request = proto.user.userReg.newBuilder().setEmail(addUserParam.getReg().getEmail()).setBirthDate(addUserParam.getReg().getBirthDate())
+                .setFirstName(addUserParam.getReg().getFirstName()).setLastName(addUserParam.getReg().getLastName()).setUsername(addUserParam.getReg().getUsername())
+                .setGender(addUserParam.getReg().getGender()).setPassword(addUserParam.getReg().getPassword()).build();
         if(UserRepository.getInstance().findUserByParam("email", request.getEmail()).isEmpty() && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
             try {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthDate());
-                UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date));
-                output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
+                User u = new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date);
+                u.setActivated(false);
+                setVerificationCode(RandomString.make(64), u);
+                UserRepository.getInstance().insert(u);
+                mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
+                output = Output.newBuilder().setResult("false").build();
+                //output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
             } catch (ParseException e) {
                 output = Output.newBuilder().setResult("false").build();
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                output = Output.newBuilder().setResult("false").build();
+                e.printStackTrace();
             }
         }else
             output = Output.newBuilder().setResult("false").build();
@@ -304,6 +320,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         for(User u : UserRepository.getInstance().getAllUsers()){
             if(u.getEmail().equals(email.getEmail())){
                 String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                newPassword = newPassword.replace('-', '0');
                 newPassword = newPassword.substring(0, 6);
                 u.setPassword(newPassword);
                 UserRepository.getInstance().updatePassword(u);
@@ -324,4 +341,35 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(fprv);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void verifyAccount(VerificationCode code, StreamObserver<VerificationReturnValue> responseObserver){
+        VerificationReturnValue vrv;
+        boolean value;
+        User user = UserRepository.getInstance().findUserByVerificationCode(code);
+        if(user == null || user.isActivated()){
+            value = false;
+        }else{
+            value = activateAccount(user);
+        }
+        if(value){
+            vrv = VerificationReturnValue.newBuilder().setReturnValue("true").build();
+        }else{
+            vrv = VerificationReturnValue.newBuilder().setReturnValue("false").build();
+        }
+        responseObserver.onNext(vrv);
+        responseObserver.onCompleted();
+    }
+
+    private boolean activateAccount(User user){
+        user.setActivated(true);
+        setVerificationCode("", user);
+        UserRepository.getInstance().activateAccount(user);
+        return true;
+    }
+
+    private void setVerificationCode(String code, User user){
+        user.setVerificationCode(code);
+    }
+
 }

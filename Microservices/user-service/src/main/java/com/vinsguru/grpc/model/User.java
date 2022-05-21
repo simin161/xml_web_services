@@ -28,6 +28,8 @@ public class User {
     private String skills;
     private List<Education> educations;
     public List<WorkExperience> experinces;
+    private String verificationCode;
+    private boolean isActivated;
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
         this.firstName = firstName;
@@ -42,6 +44,21 @@ public class User {
         this.experinces=new ArrayList<>();
     }
 
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
+    }
+
+    public void setVerificationCode(String verificationCode){
+        this.verificationCode = verificationCode;
+    }
+
+    public String getVerificationCode(){
+        return verificationCode;
+    }
 
     public ObjectId getId() {
         return id;

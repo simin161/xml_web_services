@@ -13,6 +13,7 @@ import com.vinsguru.grpc.service.PostService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +49,8 @@ public class AggregatorController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserTokenState> addUser(@RequestBody Map<String, String> message){
-        String registered = aggregatorService.addUser(message);
+    public ResponseEntity<UserTokenState> addUser(@RequestBody Map<String, String> message, HttpServletRequest request){
+        String registered = aggregatorService.addUser(message, getSiteURL(request));
         if(!registered.equals("false")){
             JwtAuthenticationRequest cred = new JwtAuthenticationRequest();
             cred.setPassword(message.get("password"));
@@ -273,5 +275,15 @@ public class AggregatorController {
     @PostMapping("/forgottenPassword")
     public boolean forgottenPassword(@RequestBody Map<String, String> email){
         return aggregatorService.forgottenPassword(email);
+    }
+
+    @GetMapping("/verifyAccount")
+    public String verifyUser(@Param("code") String code){
+        return aggregatorService.verifyAccount(code);
+    }
+
+    private String getSiteURL(HttpServletRequest request){
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 }

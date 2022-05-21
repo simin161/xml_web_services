@@ -6,6 +6,7 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.stereotype.Service;
 import proto.user.*;
 
@@ -24,12 +25,14 @@ public class UsersService {
 
 
 
-    public String addUser(Map<String,String> message) {
+    public String addUser(Map<String,String> message, String siteURL) {
         blockingStub = openChannelToUserService();
         userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
                 .setLastName(message.get("lastName")).setPassword(message.get("password")).setUsername(message.get("username")).setGender(message.get("gender"))
                 .setBirthDate(message.get("birthDate")).build();
-        return this.blockingStub.addUser(input).getResult();
+        SiteURL url = SiteURL.newBuilder().setSiteURL(siteURL).build();
+        AddUserParam aup = AddUserParam.newBuilder().setReg(input).setUrl(url).build();
+        return this.blockingStub.addUser(aup).getResult();
     }
 
     public String invalidateUser(String value){
@@ -163,6 +166,20 @@ public class UsersService {
         ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).build();
         retVal = Boolean.parseBoolean(blockingStub.forgottenPasswordUpdate(fpe).getValue());
 
+        return retVal;
+    }
+
+    public String verifyAccount(String code) {
+        blockingStub = openChannelToUserService();
+        boolean value = false;
+        String retVal = "";
+        VerificationCode vc = VerificationCode.newBuilder().setVerificationCode(code).build();
+        value = Boolean.parseBoolean(blockingStub.verifyAccount(vc).getReturnValue());
+        if(value){
+            retVal = "verified";
+        }else{
+            retVal = "error";
+        }
         return retVal;
     }
 }
