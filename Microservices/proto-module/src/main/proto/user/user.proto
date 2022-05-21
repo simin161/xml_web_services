@@ -81,6 +81,7 @@ message Output {
   string biography = 11;
   string interests = 12;
   string skills = 13;
+  string isEnabled = 14;
 }
 message OutputMessage {
   string outputMessage = 1;

@@ -26,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(d != null) {
             user.setEmail(d.getEmail());
             user.setPassword(passwordEncoder.encode(d.getPassword()));
+            user.setEnabled(d.isEnabled());
             List<Authority> a = new ArrayList<>();
             Authority auth = new Authority("ROLE_REG_USER");
             a.add(auth);

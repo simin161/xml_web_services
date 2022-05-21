@@ -14,6 +14,7 @@ public class UserDto {
     private String biography;
     private String interests;
     private String skills;
+    private boolean isEnabled;
 
     public UserDto(String firstName, String lastName, String username, String email, String password, boolean privateProfile, String birthday, String gender, String phone, String biography, String interests, String skills) {
         this.firstName = firstName;
@@ -40,6 +41,14 @@ public class UserDto {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public boolean isEnabled(){
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled){
+        this.isEnabled = enabled;
     }
 
     public void setFirstName(String firstName) {

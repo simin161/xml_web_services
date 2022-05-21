@@ -11,6 +11,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private List<Authority> authorities;
+    private boolean isEnabled;
     public String getEmail() {
         return email;
     }
@@ -51,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public void setPassword(String password) {
@@ -61,4 +62,6 @@ public class User implements UserDetails {
     public void setAuthorities(List<Authority> a) {
         this.authorities = a;
     }
+
+    public void setEnabled(boolean enabled){ this.isEnabled = enabled;}
 }
