@@ -6,7 +6,9 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import proto.user.*;
 
@@ -23,12 +25,15 @@ public class UsersService {
     @GrpcClient("user-service")
     private UserServiceGrpc.UserServiceBlockingStub blockingStub;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public String addUser(Map<String,String> message, String siteURL) {
         blockingStub = openChannelToUserService();
+        String password = passwordEncoder.encode(message.get("password"));
         userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
-                .setLastName(message.get("lastName")).setPassword(message.get("password")).setUsername(message.get("username")).setGender(message.get("gender"))
+                .setLastName(message.get("lastName")).setPassword(password).setUsername(message.get("username")).setGender(message.get("gender"))
                 .setBirthDate(message.get("birthDate")).build();
         SiteURL url = SiteURL.newBuilder().setSiteURL(siteURL).build();
         AddUserParam aup = AddUserParam.newBuilder().setReg(input).setUrl(url).build();
