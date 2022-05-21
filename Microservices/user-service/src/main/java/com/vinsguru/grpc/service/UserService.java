@@ -49,7 +49,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
                 output = Output.newBuilder().setResult("false").build();
-                //output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
             } catch (ParseException e) {
                 output = Output.newBuilder().setResult("false").build();
             } catch (MessagingException | UnsupportedEncodingException e) {
@@ -85,23 +84,27 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void getUserByEmail(proto.user.InputForGetUserByEmail request, StreamObserver<Output> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String s = formatter.format(user.getBirthday());
         proto.user.Output output;
-        output = Output.newBuilder()
-                .setEmail(user.getEmail())
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
-                .setUsername(user.getUsername())
-                .setPassword(user.getPassword())
-                .setPrivateProfile(user.isPrivateProfile())
-                .setBirthday(s)
-                .setGender(user.getGender())
-                .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
-                .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
-                .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
-                .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
-                .build();
-
+        if(user == null){
+            output = Output.newBuilder().build();
+        }else {
+            String s = formatter.format(user.getBirthday());
+            output = Output.newBuilder()
+                    .setEmail(user.getEmail())
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
+                    .setUsername(user.getUsername())
+                    .setPassword(user.getPassword())
+                    .setPrivateProfile(user.isPrivateProfile())
+                    .setBirthday(s)
+                    .setGender(user.getGender())
+                    .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
+                    .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
+                    .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
+                    .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
+                    .setIsEnabled(String.valueOf(user.isActivated()))
+                    .build();
+        }
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }

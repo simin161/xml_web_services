@@ -93,9 +93,6 @@
             console.log(response);
             if(!response.data){
               console.log("err");
-            }else{
-              localStorage.setItem("loggedUser", response.data);
-              this.$router.push("/profilePage");
             }
           })
           .catch(function (error) {

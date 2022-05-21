@@ -83,6 +83,7 @@ public class UserRepository {
                     foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
                     foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
 
+            retVal.setActivated(foundUser.getBoolean("isActivated"));
         }
         return retVal;
     }
