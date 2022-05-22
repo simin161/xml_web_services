@@ -6,7 +6,6 @@ public class UserDto {
     private String lastName;
     private String username;
     private String email;
-    private String password;
     private boolean privateProfile;
     private String birthday;
     private String gender;
@@ -16,12 +15,11 @@ public class UserDto {
     private String skills;
     private boolean isEnabled;
 
-    public UserDto(String firstName, String lastName, String username, String email, String password, boolean privateProfile, String birthday, String gender, String phone, String biography, String interests, String skills) {
+    public UserDto(String firstName, String lastName, String username, String email, boolean privateProfile, String birthday, String gender, String phone, String biography, String interests, String skills) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.password = password;
         this.privateProfile = privateProfile;
         this.birthday = birthday;
         this.gender = gender;
@@ -31,12 +29,11 @@ public class UserDto {
         this.skills = skills;
     }
 
-    public UserDto(String username,String firstName, String lastName,String password, String email ) {
+    public UserDto(String username,String firstName, String lastName,String email ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -77,14 +74,6 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isPrivateProfile() {

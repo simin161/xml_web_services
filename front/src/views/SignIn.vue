@@ -116,7 +116,7 @@
                 axios.post(process.env.VUE_APP_BACK + 'register', this.dtoReg)
                 .then((response) => {
                   console.log(response);
-                  if(!response.data){
+                  if(response.data === 'false'){
                      swal({  
                           title: " Oops!",  
                           text: " Something went wrong, please try again later!",  

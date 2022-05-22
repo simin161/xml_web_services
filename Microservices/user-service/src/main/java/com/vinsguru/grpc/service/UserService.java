@@ -48,7 +48,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 setVerificationCode(RandomString.make(64), u);
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
-                output = Output.newBuilder().setResult("false").build();
+                output = Output.newBuilder().setResult("true").build();
             } catch (ParseException e) {
                 output = Output.newBuilder().setResult("false").build();
             } catch (MessagingException | UnsupportedEncodingException e) {
