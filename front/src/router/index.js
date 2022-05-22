@@ -7,6 +7,7 @@ import AccountSettings from '../views/AccountSetting.vue'
 import UpdateEducation from '../views/UpdateEducation.vue'
 import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
 import YetAnotherEmailForm from '../views/YetAnotherEmailForm.vue'
+import PasswordChange from '../views/PasswordChange.vue'
 
 const routes = [
   
@@ -65,6 +66,11 @@ const routes = [
       }
 
     ]
+  },
+  {
+    path: '/changePassword',
+    name: 'PasswordChange',
+    component: PasswordChange
   }
 ]
 

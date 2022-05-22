@@ -260,4 +260,12 @@ public class UsersService {
         }catch(Exception e){}
         return "error";
     }
+
+    public String changePassword(Map<String, String> message) {
+        blockingStub = openChannelToUserService();
+        PasswordChangeInput pI = PasswordChangeInput.newBuilder().setEmail(message.get("email"))
+                .setNewPassword(passwordEncoder.encode(message.get("newPassword")))
+                .setOldPassword(message.get("oldPassword")).build();
+        return blockingStub.changePassword(pI).getResult();
+    }
 }

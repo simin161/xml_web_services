@@ -307,4 +307,20 @@ public class AggregatorController {
     public String passwordlessLogin(@RequestBody Map<String, String> email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         return aggregatorService.passwordlessLogin(email, getSiteURL(request));
     }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestHeader("Authentication") HttpHeaders header,@RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                message.put("email", email);
+                if(Validation.validatePassword(message.get("oldPassword")) && Validation.validatePassword(message.get("newPassword"))){
+                    return aggregatorService.changePassword(message);
+                }
+            }
+
+        }catch(Exception e){}
+        return "false";
+    }
 }
