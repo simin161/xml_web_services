@@ -315,7 +315,7 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
                 String email = tokenUtils.getUsernameFromToken(value);
                 message.put("email", email);
-                if(Validation.validatePassword(message.get("oldPassword")) && Validation.validatePassword(message.get("newPassword"))){
+                if(Validation.validatePassword(message.get("newPassword"))){
                     return aggregatorService.changePassword(message);
                 }
             }
