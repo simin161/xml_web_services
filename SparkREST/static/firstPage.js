@@ -26,7 +26,9 @@ Vue.component('firstpage', {
     			password: "",
     			certificates: [],
     			hasCA : null,
-    			flag: null
+    			flag: null,
+    			selected: 'CRL_SIGN',
+    			selectedType: 'ROOT'
     		}
     	},
     template: `
@@ -53,7 +55,7 @@ Vue.component('firstpage', {
                 					<tr>
                 						<td>Certificate issued to:</td>
                 						<td>
-                						    <select v-model="certificate.receiver" style="width:100%;" @change="fillInputFields">
+                						    <select v-model="certificate.receiver" id="receiver" disabled="true" style="width:100%;" @change="fillInputFields">
                 						        <option v-for="us in users" :value="us" v-if="us.userType !== 'ADMIN' && us.email !== user.email">
                 						            {{us.email}}
                 						        </option>
@@ -99,15 +101,14 @@ Vue.component('firstpage', {
                                     <tr>
                                          <td>Certificate type: </td>
                                          <td>
-                                           <select v-model="certificate.type" style="width:100%" @change="changeUserIfRoot" >
-                                                <option style="display:none;">-----</option>
+                                           <select v-model="selectedType" style="width:100%" @change="changeUserIfRoot" >
                                                 <option v-if="user.userType === 'ADMIN'" value="ROOT">Root</option>
                                                 <option value="INTERMEDIATE">Intermediate</option>
                                                 <option value="END">End entity</option>
                                            </select>
                                          </td>
                                     </tr>
-                                    <tr v-if="certificate.type != 'ROOT' && certificate.type != ''">
+                                    <tr v-if="selectedType != 'ROOT' && selectedType != ''">
                                         <td>Certification path: </td>
                                         <td>
                                             <select v-model="certificate.path">
@@ -134,8 +135,8 @@ Vue.component('firstpage', {
                                     <tr>
                                         <td>Key usage:</td>
                                         <td>
-                                            <select v-model="certificate.keyUsage">
-                                                <option value="CRL_SIGN">CRL_SIGN</option>
+                                            <select v-model="selected">
+                                                <option value="CRL_SIGN" >CRL_SIGN</option>
                                                 <option value="DATA_ENCIPHERMENT">DATA_ENCIPHERMENT</option>
                                                 <option value="DECIPHER_ONLY">DECIPHER_ONLY</option>
                                                <!-- <option value="DIGITAL_SIGNATURE">DIGITAL_SIGNATURE</option>-->
@@ -148,7 +149,7 @@ Vue.component('firstpage', {
                                     </tr>
                                     <br/>
                 					<tr>
-                						<td colSpan="2" text-align="center"><input type="button" @click="createCertificate" value="neki tekst"></input></td>
+                						<td colSpan="2" text-align="center"><input type="button" :disabled="isCComplete" @click="createCertificate" value="neki tekst"></input></td>
                 					</tr>
                 </table>
               </div>
@@ -183,6 +184,16 @@ Vue.component('firstpage', {
          </div>
         `
     ,
+    computed:{
+        isCComplete(){
+            validText = /^[A-Z]+$/.test(this.certificate.purpose) &&
+              /^[A-Z]+$/.test(this.certificate.alias) &&
+              /^[A-Z]+$/.test(this.certificate.commonName);
+            validNonEmpty = /\S/.test(this.certificate.validFrom) &&
+                /\S/.test(this.certificate.validTo) &&
+                /\S/.test(this.certificate.keyUsage);
+        }
+    },
     methods:{
         signOut : function(){
             axios.get("/signOut")
@@ -206,14 +217,17 @@ Vue.component('firstpage', {
                  .then(response => (router.push("/detailsScreen")))
         },
         changeUserIfRoot : function(){
-            if(this.certificate.type === 'ROOT'){
+            if(this.selectedType === 'ROOT'){
                 this.certificate.receiver = this.user;
                  this.certificate.givenName = this.certificate.receiver.firstName;
                  this.certificate.surname = this.certificate.receiver.lastName;
                  this.certificate.organization = this.certificate.receiver.organizationName;
                  this.certificate.organizationalUnitName = this.certificate.receiver.organizationUnit;
                  this.certificate.country = this.certificate.receiver.countryId;
-                 this.certificate.organizationEmail = this.certificate.receiver.email
+                 this.certificate.organizationEmail = this.certificate.receiver.email;
+                 document.getElementById('receiver').disabled = true;
+            }else{
+                document.getElementById('receiver').disabled = false;
             }
         }
         ,
@@ -250,6 +264,8 @@ Vue.component('firstpage', {
         createCertificate : function(){
             this.certificate.issuerEmail = this.user.email;
             this.certificate.receiver = this.certificate.receiver.email;
+            this.certificate.keyUsage = this.selected;
+            this.certificate.type = this.selectedType;
             if(this.certificate.type === 'ROOT'){
                 this.certificate.path = 0;
             }
