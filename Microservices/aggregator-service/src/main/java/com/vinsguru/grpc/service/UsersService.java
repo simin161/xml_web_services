@@ -7,6 +7,7 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
+import com.vinsguru.grpc.utility.Validation;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -39,14 +40,22 @@ public class UsersService {
     private PasswordEncoder passwordEncoder;
 
     public String addUser(Map<String,String> message, String siteURL) {
-        blockingStub = openChannelToUserService();
-        String password = passwordEncoder.encode(message.get("password"));
-        userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
-                .setLastName(message.get("lastName")).setPassword(password).setUsername(message.get("username")).setGender(message.get("gender"))
-                .setBirthDate(message.get("birthDate")).build();
-        SiteURL url = SiteURL.newBuilder().setSiteURL(siteURL).build();
-        AddUserParam aup = AddUserParam.newBuilder().setReg(input).setUrl(url).build();
-        return this.blockingStub.addUser(aup).getResult();
+        try {
+            if (Validation.validatePassword(message.get("password")) && Validation.validateEmail(message.get("email")) &&
+                    Validation.validateName(message.get("firstName")) && Validation.validateName(message.get("lastName"))
+                    && Validation.validateUsername(message.get("username")) && Validation.validateName(message.get("gender"))) {
+                blockingStub = openChannelToUserService();
+                String password = passwordEncoder.encode(message.get("password"));
+                userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
+                        .setLastName(message.get("lastName")).setPassword(password).setUsername(message.get("username")).setGender(message.get("gender"))
+                        .setBirthDate(message.get("birthDate")).build();
+                SiteURL url = SiteURL.newBuilder().setSiteURL(siteURL).build();
+                AddUserParam aup = AddUserParam.newBuilder().setReg(input).setUrl(url).build();
+                return this.blockingStub.addUser(aup).getResult();
+            }
+        }catch(Exception e){
+        }
+        return "false";
     }
 
     public String invalidateUser(String value){
@@ -56,9 +65,15 @@ public class UsersService {
     }
 
     public String logInUser(Map<String, String> message) {
-        blockingStub = openChannelToUserService();
-        Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
-        return this.blockingStub.logInUser(input).getResult();
+        try {
+            if(Validation.validateEmail(message.get("email")) && Validation.validatePassword(message.get("password"))) {
+                blockingStub = openChannelToUserService();
+                Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
+                return this.blockingStub.logInUser(input).getResult();
+            }
+        }catch(Exception e){
+        }
+        return "false";
     }
 
     public UserDto getUserByEmail(String email){

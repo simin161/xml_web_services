@@ -10,6 +10,7 @@ import com.vinsguru.grpc.security.auth.JwtAuthenticationRequest;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
+import com.vinsguru.grpc.utility.Validation;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,21 +67,23 @@ public class AggregatorController {
                                                                     HttpServletResponse response) {
 
         System.out.println(cred);
+        if(Validation.validateEmail(cred.getEmail()) && Validation.validatePassword(cred.getPassword())){
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
+                            cred.getPassword()));
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
-                        cred.getPassword()));
+            // Ubaci korisnika u trenutni security kontekst
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Ubaci korisnika u trenutni security kontekst
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Kreiraj token za tog korisnika
+            User user = (User) authentication.getPrincipal();
+            String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
+            int expiresIn = tokenUtils.getExpiredIn();
 
-        // Kreiraj token za tog korisnika
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
-        int expiresIn = tokenUtils.getExpiredIn();
-
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+            // Vrati token kao odgovor na uspesnu autentifikaciju
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        }
+        return null;
     }
 
     @PostMapping("/personalInfo")
@@ -88,9 +91,10 @@ public class AggregatorController {
     public String updateUser(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> userDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
+            if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             userDto.put("email",email);
-            return aggregatorService.updateUser(userDto);   //note: na frontu skloniti mejl iz userdto da se prosledjuje
+            return aggregatorService.updateUser(userDto);}   //note: na frontu skloniti mejl iz userdto da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -102,9 +106,10 @@ public class AggregatorController {
     public String updateEducation(@RequestHeader("Authentication") HttpHeaders header, @RequestBody EducationDto educationDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
+            if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             educationDto.setEmail(email);
-            return aggregatorService.updateEducation(educationDto);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            return aggregatorService.updateEducation(educationDto);  } //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -113,15 +118,18 @@ public class AggregatorController {
     }
     @GetMapping("/user/{email:.+}/")
     public UserDto getUserByEmail(@PathVariable("email")String email){
-        return aggregatorService.getUserByEmail(email);
+        if(Validation.validateEmail(email))
+            return aggregatorService.getUserByEmail(email);
+        return null;
     }
     @GetMapping("/user")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
     public UserDto getUserByEmail(@RequestHeader("Authorization") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
+            if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
-            return aggregatorService.getUserByEmail(email);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            return aggregatorService.getUserByEmail(email); }  //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -129,7 +137,9 @@ public class AggregatorController {
     }
     @GetMapping("/educations/{email:.+}/")
     public List<EducationDto> getEducationsUserByEmail(@PathVariable("email")String email){
-        return aggregatorService.getEducationsUserByEmail(email);
+        if(Validation.validateEmail(email))
+         return aggregatorService.getEducationsUserByEmail(email);
+        return null;
     }
 
     @PostMapping("/workExperiences")
@@ -137,9 +147,11 @@ public class AggregatorController {
     public String updateWorkExperiences(@RequestHeader("Authentication") HttpHeaders header, @RequestBody WorkExperienceDto workExperienceDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            String email = tokenUtils.getUsernameFromToken(value);
-            workExperienceDto.setEmail(email);
-            return aggregatorService.updateWorkExperiences(workExperienceDto);   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                workExperienceDto.setEmail(email);
+                return aggregatorService.updateWorkExperiences(workExperienceDto);
+            }   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -148,7 +160,9 @@ public class AggregatorController {
 
     @GetMapping("/experiences/{email:.+}/")
     public List<WorkExperienceDto> getExperiencesByEmail(@PathVariable("email")String email){
-        return aggregatorService.getExperiencesByEmail(email);
+        if(Validation.validateEmail(email))
+         return aggregatorService.getExperiencesByEmail(email);
+        return null;
     }
 
     @GetMapping("/getAllUsers")
@@ -158,7 +172,9 @@ public class AggregatorController {
 
     @GetMapping("/searchUsers/{param}")
     public List<DisplayUserDto> searchUsers(@PathVariable("param") String param){
-        return aggregatorService.searchUsers(param);
+        if(!Validation.validateNonBrackets(param))
+            return aggregatorService.searchUsers(param);
+        return null;
     }
 
     @PostMapping("/newPost")
@@ -166,9 +182,11 @@ public class AggregatorController {
     public String addNewPost(@RequestHeader("Authentication") HttpHeaders header, @RequestBody PostDto post){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
-            String email = tokenUtils.getUsernameFromToken(value);
-            post.setEmail(email);
-            return postService.addPost(post);   //note: na frontu skloniti mejl iz post da se prosledjuje
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                post.setEmail(email);
+                return postService.addPost(post);
+            }  //note: na frontu skloniti mejl iz post da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -191,12 +209,16 @@ public class AggregatorController {
 
     @GetMapping("/followers/{email:.+}/")
     public List<FollowDto> getFollowers(@PathVariable("email")String email){
-        return followerService.findPersonsFollowers(email);
+        if(Validation.validateEmail(email))
+            return followerService.findPersonsFollowers(email);
+        return null;
     }
 
     @GetMapping("/followings/{email:.+}/")
     public List<FollowDto> getFollowings(@PathVariable("email")String email){
-        return followerService.findPersonsFollowings(email);
+        if(Validation.validateEmail(email))
+            return followerService.findPersonsFollowings(email);
+        return null;
     }
 
     @PostMapping("/comment")
@@ -220,16 +242,19 @@ public class AggregatorController {
 
     @GetMapping("/getAllUserPosts/user:{email}")
     public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
-        return postService.getAllUsersPosts(email);
+        if(Validation.validateEmail(email))
+            return postService.getAllUsersPosts(email);
+        return null;
     }
     @PostMapping("/reaction")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
     public String addNewReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
+            if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             reaction.setEmail(email);
-            return postService.addReaction(reaction);  //note: na frontu skloniti mejl da se prosledjuje
+            return postService.addReaction(reaction);}  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -240,8 +265,11 @@ public class AggregatorController {
     @PreAuthorize("hasRole('ROLE_REG_USER')")
     public List<PostDto> getPosts(@RequestHeader("Authentication") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)){
         String email = tokenUtils.getUsernameFromToken(value);
-        return postService.findAllPostsOfFollowingsByUserEmail(email);
+        return postService.findAllPostsOfFollowingsByUserEmail(email);}
+        return null;
     }
 
     @PostMapping("/numOfCommentsByPostId")
