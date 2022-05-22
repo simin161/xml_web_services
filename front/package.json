@@ -37,6 +37,7 @@
     "radium": "^0.26.2",
     "stylus": "^0.56.0",
     "stylus-loader": "^6.2.0",
+    "sweetalert": "^2.1.2",
     "vue": "^3.0.0",
     "vue-chart-3": "^3.1.8",
     "vue-loading-overlay": "5.0",

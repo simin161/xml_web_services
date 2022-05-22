@@ -38,7 +38,7 @@ export default {
   color: #2c3e50;
 }
 #slikadiv{
-  background-image: url('../assets/collage.png');
+  background-image: url('../assets/background.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   height: 700px

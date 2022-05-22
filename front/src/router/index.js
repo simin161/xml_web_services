@@ -6,6 +6,7 @@ import ProfilePage from '../views/ProfilePage.vue'
 import AccountSettings from '../views/AccountSetting.vue'
 import UpdateEducation from '../views/UpdateEducation.vue'
 import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
+import YetAnotherEmailForm from '../views/YetAnotherEmailForm.vue'
 
 const routes = [
   
@@ -51,6 +52,19 @@ const routes = [
     path: '/updateWorkExperience',
     name: 'UpdateWorkExperience',
     component: UpdateWorkExperience
+  },
+  {
+    path: '/passwordless',
+    name: 'YetAnotherEmailForm',
+    component: YetAnotherEmailForm,
+    children: [
+
+      {
+        path: '/forgottenPassword',
+        component: ProfilePage
+      }
+
+    ]
   }
 ]
 

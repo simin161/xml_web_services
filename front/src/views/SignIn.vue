@@ -4,7 +4,7 @@
         display: 'flex';
         justify-content: 'Right';
         align-items: 'Right';
-        height: '100vh'
+        height: '100vh';
       "
     >
       <div className="main">  	
@@ -38,6 +38,9 @@
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
               <input type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
               <input type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
+              <a href="/passwordless">Pssst, kid, I have skooma</a>
+              <br>
+              <a href="/forgottenPassword"> Khajiit has wares, if you have email</a>
               <input type="button" :disabled="isLComplete" @click="logIn" value="Sign in" />
           </div>
       </div>
