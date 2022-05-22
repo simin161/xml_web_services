@@ -31,14 +31,14 @@
               <input type="date" id="birthDate" v-model="dtoReg.birthDate" data-date-format="yyyy-mm-dd" />
               <input  id="password" v-model="dtoReg.password" style="margin-top: -10px" type="password" name="pswd" placeholder="Password" required/>
               <input style="margin-top: -10px" v-model="confirmPassword" id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required/>
-              <button :disable="isComplete" style="margin-top: -10px" @click="register">Sign Up</button>
+              <input type="button" :disabled="isComplete" style="margin-top: -10px" @click="register" value="Sign up"/>
           </div>
 
           <div className="login">
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
               <input type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
               <input type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
-              <button @click="logIn">Sign In</button>
+              <input type="button" :disabled="isLComplete" @click="logIn" value="Sign in" />
           </div>
       </div>
     </div>
@@ -144,7 +144,20 @@
   computed:{
     isComplete(){
       var validNames = /^[ a-zA-Z\-’]+$/.test(this.dtoReg.firstName) && /^[ a-zA-Z\-’]+$/.test(this.dtoReg.lastName);
-      if(validNames)
+      var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.dtoReg.password)
+       && /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.confirmPassword);        
+      var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.dtoReg.email);
+      var validGBD = /\S/.test(this.dtoReg.birthDate) && /\S/.test(this.dtoReg.gender);
+      var validUsername = /^[a-zA-Z]+([0-9]+)?$/.test(this.dtoReg.username);
+      if(validNames && validPassword && validEmail && validGBD && validUsername)
+        return false;
+
+      return true;
+    },
+    isLComplete(){
+      var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email);
+      var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.logDto.password);
+      if(validEmail && validPassword)
         return false;
 
       return true;
