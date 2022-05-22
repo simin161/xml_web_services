@@ -72,7 +72,7 @@
                         <p>Private</p>
                         </div>
                         <div id="molimTe" className="col-lg-9">
-                                <select id="private"  v-model="user.isPrivate">
+                                <select id="private"  v-model="selected">
                                     <option value="true">
                                         YES
                                     </option>
@@ -106,7 +106,8 @@
   data() {
     return {
         user: {},
-        bio: ''
+        bio: '',
+        selected: 'true'
     };
   },
   mounted() {
@@ -127,6 +128,8 @@
       update : function(){
           axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
+            
+            this.user.isPrivate = this.selected;
             axios.post(process.env.VUE_APP_BACK + 'personalInfo', this.user)
             .then((response) => {
                 swal({  

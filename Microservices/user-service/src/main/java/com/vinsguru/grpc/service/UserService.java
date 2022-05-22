@@ -377,13 +377,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void passwordlessLogin(PasswordlessLogin plogin, StreamObserver<VerificationReturnValue> responseObserver) {
-       try{ VerificationReturnValue vrv;
+        VerificationReturnValue vrv;
+        try{
         mailService.sendPasswordlessLoginEmail(plogin.getEmail(), plogin.getSiteURL());
         vrv = VerificationReturnValue.newBuilder().setReturnValue("true").build();
-        responseObserver.onNext(vrv);
-        responseObserver.onCompleted();}catch(Exception e){
-           e.printStackTrace();
+       }catch(Exception e){
+           vrv = VerificationReturnValue.newBuilder().setReturnValue("false").build();
        }
+        responseObserver.onNext(vrv);
+        responseObserver.onCompleted();
     }
 
     @Override

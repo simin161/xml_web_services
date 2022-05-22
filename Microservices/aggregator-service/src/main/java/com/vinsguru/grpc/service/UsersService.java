@@ -239,26 +239,27 @@ public class UsersService {
         return retVal;
     }
 
-    public String passwordlessLogin(Map<String, String> email, String siteURL) throws MessagingException, UnsupportedEncodingException {
+    public boolean passwordlessLogin(Map<String, String> email, String siteURL) throws MessagingException, UnsupportedEncodingException {
         try {
             if (Validation.validateEmail(email.get("email"))) {
-                blockingStub = openChannelToUserService();
+
                 //boolean value = false;
                 //PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(siteURL).build();
                 //value = Boolean.parseBoolean(blockingStub.passwordlessLogin(pl).getReturnValue());
                 UserDto d = getUserByEmail(email.get("email"));
                 if (d != null) {
-                    String jwt = tokenUtils.generateToken(email.get("email"), "ROLE_REG_USER");
+                    blockingStub = openChannelToUserService();
+                    String jwt = tokenUtils.generateToken(d.getEmail(), "ROLE_REG_USER");
                     int expiresIn = tokenUtils.getExpiredIn();
-                    PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(jwt).build();
-                    blockingStub.passwordlessLogin(pl);
-                    return "email sent";
+                    PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(d.getEmail()).setSiteURL(jwt).build();
+                    VerificationReturnValue vrv = blockingStub.passwordlessLogin(pl);
+                    return vrv.getReturnValue().equals("true");
                 } else {
-                    return "user not found";
+                    return false;
                 }
             }
         }catch(Exception e){}
-        return "error";
+        return false;
     }
 
     public String changePassword(Map<String, String> message) {
