@@ -145,7 +145,7 @@
         var validBiography = /[()[\]{}<>]/.test(this.user.biography);
         var validSkills = /[()[\]{}<>]/.test(this.user.skills);
         var validInterests = /[()[\]{}<>]/.test(this.user.interests);
-        if(!validBiography &&  validSkills && validInterests && validNames && validGBD && validPhone)
+        if(!validBiography &&  !validSkills && !validInterests && validNames && validGBD && validPhone)
             return false;
 
         return true;

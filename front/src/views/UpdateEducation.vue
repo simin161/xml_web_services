@@ -35,7 +35,7 @@
 
                <div  className="col form-group">
                     <p id="p">&nbsp;</p>   
-                    <button @click="update">add</button>
+                    <input :disabled="isComplete" @click="update" type="button" value="add"/>
                 </div> 
            
           </div>
@@ -77,7 +77,25 @@
               .catch(function (error) {
                 console.log(error);
               });
-  }}
+    }
+  },
+  computed:{
+    isComplete(){
+        var validSchool = /[()[\]{}<>]/.test(this.ed.school);
+        var validSkills = /[()[\]{}<>]/.test(this.ed.degree);
+        var validInterests = /[()[\]{}<>]/.test(this.ed.fieldOfStudy);
+        var validFrom = /\S/.test(this.ed.from);
+        var validTo = /\S/.test(this.ed.to);
+
+        if(validTo && validFrom && !validSchool && !validSkills && !validInterests 
+          && /\S/.test(this.ed.school)  && /\S/.test(this.ed.degree)  && /\S/.test(this.ed.fieldOfStudy)){
+            return false;
+          }
+
+        return true;
+
+    }
+  }
 };
 </script>
 
