@@ -8,6 +8,7 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.utility.Validation;
+import jdk.jfr.Experimental;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -88,36 +89,51 @@ public class UsersService {
     }
 
     public String updateUser(Map<String, String> user) {
-        blockingStub = openChannelToUserService();
-        boolean p=false;
-        if(user.get("private").equals("true")) p=true;
-        updateUserInfoInput input = updateUserInfoInput.newBuilder()
-                .setEmail(user.get("email"))
-                .setFirstName(user.get("firstName"))
-                .setLastName(user.get("lastName"))
-                .setUsername(user.get("username"))
-                .setPrivateProfile(p)
-                .setBirthday(user.get("birthday"))
-                .setGender(user.get("gender"))
-                .setPhone(user.get("phone"))
-                .setBiography(user.get("biography"))
-                .setInterests(user.get("interests"))
-                .setSkills(user.get("skills"))
-                .build();
-        return this.blockingStub.updateUser(input).getOutputMessage();
+        try{
+            if (Validation.validatePassword(user.get("password")) && Validation.validateEmail(user.get("email")) &&
+                    Validation.validateName(user.get("firstName")) && Validation.validateName(user.get("lastName"))
+                    && Validation.validateUsername(user.get("username")) && Validation.validateName(user.get("gender"))
+                    && Validation.validatePhone(user.get("phone")) && !Validation.validateNonBrackets(user.get("biography"))
+                    && !Validation.validateNonBrackets("interests") && !Validation.validateNonBrackets(user.get("skills"))) {
+                blockingStub = openChannelToUserService();
+                boolean p = false;
+                if (user.get("private").equals("true")) p = true;
+                updateUserInfoInput input = updateUserInfoInput.newBuilder()
+                        .setEmail(user.get("email"))
+                        .setFirstName(user.get("firstName"))
+                        .setLastName(user.get("lastName"))
+                        .setUsername(user.get("username"))
+                        .setPrivateProfile(p)
+                        .setBirthday(user.get("birthday"))
+                        .setGender(user.get("gender"))
+                        .setPhone(user.get("phone"))
+                        .setBiography(user.get("biography"))
+                        .setInterests(user.get("interests"))
+                        .setSkills(user.get("skills"))
+                        .build();
+                return this.blockingStub.updateUser(input).getOutputMessage();
+            }
+        } catch(Exception e) {
+
+        }
+        return null;
     }
 
     public String updateEducation(EducationDto educationDto) {
-        blockingStub = openChannelToUserService();
-        InputUpdateEducation input = InputUpdateEducation.newBuilder()
-                .setEmail(educationDto.getEmail())
-                .setSchool(educationDto.getSchool())
-                .setDegree(educationDto.getDegree())
-                .setFieldOfStudy(educationDto.getFieldOfStudy())
-                .setFrom(educationDto.getFrom())
-                .setTo(educationDto.getTo())
-                .build();
-        return this.blockingStub.updateEducation(input).getOutputMessage();
+        if(!Validation.validateNonBrackets(educationDto.getFieldOfStudy()) && !Validation.validateNonBrackets(educationDto.getDegree())
+        && !Validation.validateNonBrackets(educationDto.getSchool()) && Validation.validateEmail(educationDto.getEmail())) {
+            blockingStub = openChannelToUserService();
+            InputUpdateEducation input = InputUpdateEducation.newBuilder()
+                    .setEmail(educationDto.getEmail())
+                    .setSchool(educationDto.getSchool())
+                    .setDegree(educationDto.getDegree())
+                    .setFieldOfStudy(educationDto.getFieldOfStudy())
+                    .setFrom(educationDto.getFrom())
+                    .setTo(educationDto.getTo())
+                    .build();
+            return this.blockingStub.updateEducation(input).getOutputMessage();
+        }
+        return null;
     }
 
     public List<EducationDto> getEducationsUserByEmail(String email) {
@@ -135,16 +151,19 @@ public class UsersService {
     }
 
     public String updateWorkExperiences(WorkExperienceDto workExperienceDto) {
-        blockingStub = openChannelToUserService();
-        InputUpdateWorkExperience input = InputUpdateWorkExperience.newBuilder()
-                .setWorkPlace(workExperienceDto.getWorkPlace())
-                .setWorkTitle(workExperienceDto.getWorkTitle())
-                .setFrom(workExperienceDto.getFrom())
-                .setTo(workExperienceDto.getTo())
-                .setEmail(workExperienceDto.getEmail())
-                .build();
-        return this.blockingStub.updateWorkExperience(input).getOutputMessage();
-
+        if(!Validation.validateNonBrackets(workExperienceDto.getWorkPlace()) && !Validation.validateNonBrackets(workExperienceDto.getWorkTitle())
+        && Validation.validateEmail(workExperienceDto.getEmail())) {
+            blockingStub = openChannelToUserService();
+            InputUpdateWorkExperience input = InputUpdateWorkExperience.newBuilder()
+                    .setWorkPlace(workExperienceDto.getWorkPlace())
+                    .setWorkTitle(workExperienceDto.getWorkTitle())
+                    .setFrom(workExperienceDto.getFrom())
+                    .setTo(workExperienceDto.getTo())
+                    .setEmail(workExperienceDto.getEmail())
+                    .build();
+            return this.blockingStub.updateWorkExperience(input).getOutputMessage();
+        }
+        return null;
     }
 
         public List<DisplayUserDto> getUsers () {
@@ -192,12 +211,17 @@ public class UsersService {
 
 
     public boolean forgottenPassword(Map<String, String> email) {
-        blockingStub = openChannelToUserService();
-        boolean retVal = false;
-        ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).build();
-        retVal = Boolean.parseBoolean(blockingStub.forgottenPasswordUpdate(fpe).getValue());
+        try {
+            if (Validation.validateEmail(email.get("email"))) {
+                blockingStub = openChannelToUserService();
+                boolean retVal = false;
+                ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).build();
+                retVal = Boolean.parseBoolean(blockingStub.forgottenPasswordUpdate(fpe).getValue());
 
-        return retVal;
+                return retVal;
+            }
+        }catch(Exception e){}
+        return false;
     }
 
     public String verifyAccount(String code) {
@@ -216,19 +240,24 @@ public class UsersService {
     }
 
     public String passwordlessLogin(Map<String, String> email, String siteURL) throws MessagingException, UnsupportedEncodingException {
-        blockingStub = openChannelToUserService();
-        //boolean value = false;
-        //PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(siteURL).build();
-        //value = Boolean.parseBoolean(blockingStub.passwordlessLogin(pl).getReturnValue());
-        UserDto d = getUserByEmail(email.get("email"));
-        if(d!=null){
-            String jwt = tokenUtils.generateToken(email.get("email"), "ROLE_REG_USER");
-            int expiresIn = tokenUtils.getExpiredIn();
-            PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(jwt).build();
-            blockingStub.passwordlessLogin(pl);
-            return "email sent";
-        }else{
-            return "user not found";
-        }
+        try {
+            if (Validation.validateEmail(email.get("email"))) {
+                blockingStub = openChannelToUserService();
+                //boolean value = false;
+                //PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(siteURL).build();
+                //value = Boolean.parseBoolean(blockingStub.passwordlessLogin(pl).getReturnValue());
+                UserDto d = getUserByEmail(email.get("email"));
+                if (d != null) {
+                    String jwt = tokenUtils.generateToken(email.get("email"), "ROLE_REG_USER");
+                    int expiresIn = tokenUtils.getExpiredIn();
+                    PasswordlessLogin pl = PasswordlessLogin.newBuilder().setEmail(email.get("email")).setSiteURL(jwt).build();
+                    blockingStub.passwordlessLogin(pl);
+                    return "email sent";
+                } else {
+                    return "user not found";
+                }
+            }
+        }catch(Exception e){}
+        return "error";
     }
 }
