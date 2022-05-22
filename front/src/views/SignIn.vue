@@ -80,6 +80,12 @@
           .then((response) => {
               console.log(response);
               if(!response.data ){
+                  swal({  
+                          title: " Invalid credentials!",  
+                          text: " Please check your login credentials and try again.",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    }); 
                   console.log("err");
               }else{
                   localStorage.setItem("loggedUser", response.data.accessToken);
@@ -90,10 +96,20 @@
             console.log(error);
           });
         }else{
-          alert("Invalid password form");
+          swal({  
+                          title: " Invalid password!",  
+                          text: " The password you have entered is invalid. Check your password or email and try again.",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    }); 
         }
       }else{
-        alert("Invalid email form");
+        swal({  
+                          title: " Invalid email!",  
+                          text: " A user with given email does not exist. Please, check your login credentials and try again.",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    }); 
       }
      
   },

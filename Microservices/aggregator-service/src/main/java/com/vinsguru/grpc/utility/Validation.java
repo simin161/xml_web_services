@@ -30,13 +30,13 @@ public class Validation {
     }
 
     public static boolean validatePhone(String phone){
-        Pattern pattern = Pattern.compile("/^[0-9]+$/", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[0-9]+$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(phone);
         return matcher.find();
     }
 
     public static boolean validateNonBrackets(String text){
-        Pattern pattern = Pattern.compile("[()[\\]{}<>]", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[()\\[\\]{}<>]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         return matcher.find();
     }

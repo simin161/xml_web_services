@@ -68,20 +68,26 @@ public class AggregatorController {
 
         System.out.println(cred);
         if(Validation.validateEmail(cred.getEmail()) && Validation.validatePassword(cred.getPassword())){
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
-                            cred.getPassword()));
+            try{
+                Authentication authentication = authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
+                                cred.getPassword()));
 
-            // Ubaci korisnika u trenutni security kontekst
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Ubaci korisnika u trenutni security kontekst
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Kreiraj token za tog korisnika
-            User user = (User) authentication.getPrincipal();
-            String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
-            int expiresIn = tokenUtils.getExpiredIn();
+                // Kreiraj token za tog korisnika
+                User user = (User) authentication.getPrincipal();
+                String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
+                int expiresIn = tokenUtils.getExpiredIn();
 
-            // Vrati token kao odgovor na uspesnu autentifikaciju
-            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+                // Vrati token kao odgovor na uspesnu autentifikaciju
+                return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+            }
+            catch(Exception e){
+                //e.printStackTrace();
+                return null;
+            }
         }
         return null;
     }
