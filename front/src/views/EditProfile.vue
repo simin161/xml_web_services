@@ -101,6 +101,7 @@
 </template>
 <script>
  import axios from "axios";
+ import swal from 'sweetalert';  
   export default{
   data() {
     return {
@@ -128,8 +129,14 @@
                              localStorage.getItem("loggedUser");
             axios.post(process.env.VUE_APP_BACK + 'personalInfo', this.user)
             .then((response) => {
-            console.log(response);
-            this.$router.push("/profilePage");
+                swal({  
+                            title: "Information updated!",  
+                            text: "Your new information has been updated successfully.",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });
+                console.log(response);
+                this.$router.push("/profilePage");
           
           })
           .catch(function (error) {

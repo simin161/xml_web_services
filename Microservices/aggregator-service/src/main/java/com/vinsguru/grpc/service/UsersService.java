@@ -90,14 +90,14 @@ public class UsersService {
 
     public String updateUser(Map<String, String> user) {
         try{
-            if (Validation.validatePassword(user.get("password")) && Validation.validateEmail(user.get("email")) &&
+            if (/*Validation.validatePassword(user.get("password")) && */ Validation.validateEmail(user.get("email")) &&
                     Validation.validateName(user.get("firstName")) && Validation.validateName(user.get("lastName"))
                     && Validation.validateUsername(user.get("username")) && Validation.validateName(user.get("gender"))
                     && Validation.validatePhone(user.get("phone")) && !Validation.validateNonBrackets(user.get("biography"))
                     && !Validation.validateNonBrackets("interests") && !Validation.validateNonBrackets(user.get("skills"))) {
                 blockingStub = openChannelToUserService();
                 boolean p = false;
-                if (user.get("private").equals("true")) p = true;
+                if (user.get("isPrivate").equals("true")) p = true;
                 updateUserInfoInput input = updateUserInfoInput.newBuilder()
                         .setEmail(user.get("email"))
                         .setFirstName(user.get("firstName"))
