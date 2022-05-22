@@ -46,6 +46,7 @@
 
 <script>
    import axios from "axios";
+   import swal from 'sweetalert';  
   export default{
   data() {
     return {
@@ -103,7 +104,21 @@
                 .then((response) => {
                   console.log(response);
                   if(!response.data){
+                     swal({  
+                          title: " Oops!",  
+                          text: " Something went wrong, please try again later!",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    });    
                     console.log("err");
+                  }
+                  else{
+                    swal({  
+                            title: "Registration successful!",  
+                            text: "Please check you email for an account verification message!",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });  
                   }
                 })
                 .catch(function (error) {
