@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,12 +57,6 @@ public class AggregatorController {
         return aggregatorService.addUser(message, getSiteURL(request));
     }
 
-    @GetMapping("/invalidateUser")
-    @PreAuthorize("hasRole('ROLE_REG_USER')")
-    public String invalidateUser(){
-        return aggregatorService.invalidateUser("");
-    }
-
     @PostMapping("/logInUser")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest cred,
                                                                     HttpServletResponse response) {
@@ -94,6 +89,7 @@ public class AggregatorController {
 
     @PostMapping("/personalInfo")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String updateUser(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> userDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -109,6 +105,7 @@ public class AggregatorController {
 
     @PostMapping("/education")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String updateEducation(@RequestHeader("Authentication") HttpHeaders header, @RequestBody EducationDto educationDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -130,6 +127,7 @@ public class AggregatorController {
     }
     @GetMapping("/user")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public UserDto getUserByEmail(@RequestHeader("Authorization") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -150,6 +148,7 @@ public class AggregatorController {
 
     @PostMapping("/workExperiences")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String updateWorkExperiences(@RequestHeader("Authentication") HttpHeaders header, @RequestBody WorkExperienceDto workExperienceDto){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -185,6 +184,7 @@ public class AggregatorController {
 
     @PostMapping("/newPost")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String addNewPost(@RequestHeader("Authentication") HttpHeaders header, @RequestBody PostDto post){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -201,6 +201,7 @@ public class AggregatorController {
 
     @PostMapping("/newFollower")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String addNewFollower(@RequestHeader("Authentication") HttpHeaders header, @RequestBody FollowDto follow){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -229,6 +230,7 @@ public class AggregatorController {
 
     @PostMapping("/comment")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String addNewComment(@RequestHeader("Authentication") HttpHeaders header, @RequestBody CommentDto comment){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -254,6 +256,7 @@ public class AggregatorController {
     }
     @PostMapping("/reaction")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public String addNewReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
@@ -269,6 +272,7 @@ public class AggregatorController {
 
     @GetMapping("/postsForHomePage")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public List<PostDto> getPosts(@RequestHeader("Authentication") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
 

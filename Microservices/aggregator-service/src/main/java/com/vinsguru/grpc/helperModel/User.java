@@ -15,6 +15,24 @@ public class User implements UserDetails {
     public String getEmail() {
         return email;
     }
+    private String id;
+    private List<Permission> perm;
+
+    public void setPerm(List<Permission> perm) {
+        this.perm = perm;
+    }
+
+    public List<Permission> getPerm() {
+        return perm;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public void setEmail(String email) {
         this.email = email;

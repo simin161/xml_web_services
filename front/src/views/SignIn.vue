@@ -1,5 +1,5 @@
 <template>
- <div className = "main-div-login"
+ <div className = "main-div-login" id="slikadiv2"
       style="
         display: 'flex';
         justify-content: 'Right';
@@ -115,7 +115,7 @@
                 axios.post(process.env.VUE_APP_BACK + 'register', this.dtoReg)
                 .then((response) => {
                   console.log(response);
-                  if(!response.data){
+                  if(response.data === 'false'){
                      swal({  
                           title: " Oops!",  
                           text: " Something went wrong, please try again later!",  
@@ -178,4 +178,11 @@
 </script>
 
 <style>
+#slikadiv2{
+  background-image: url('../assets/backgroundSign.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 700px
+     
+}
 </style>

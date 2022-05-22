@@ -60,12 +60,6 @@ public class UsersService {
         return "false";
     }
 
-    public String invalidateUser(String value){
-        blockingStub = openChannelToUserService();
-        Input2 input = Input2.newBuilder().setAccessToken(value).build();
-        return this.blockingStub.invalidateUser(input).getResult();
-    }
-
     public String logInUser(Map<String, String> message) {
         try {
             if(Validation.validateEmail(message.get("email"))) {
@@ -83,7 +77,7 @@ public class UsersService {
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(email).build();
         Output result=this.blockingStub.getUserByEmail(input);
 
-        UserDto userDto =  new UserDto(result.getFirstName(),result.getLastName(),result.getUsername(),result.getEmail(),result.getPassword(),result.getPrivateProfile()
+        UserDto userDto =  new UserDto(result.getFirstName(),result.getLastName(),result.getUsername(),result.getEmail(),result.getPrivateProfile()
         , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills());
         userDto.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
         return userDto;
