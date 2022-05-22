@@ -164,7 +164,19 @@ message PasswordlessLogin{
   string siteURL = 2;
 }
 
+message PasswordChangeInput{
+  string email = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
+message PasswordChangeOutput{
+  string result = 1;
+}
+
 service UserService {
+
+  rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
 
   rpc addUser(AddUserParam) returns (Output) {};
 

@@ -384,4 +384,27 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(vrv);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void changePassword(PasswordChangeInput input, StreamObserver<PasswordChangeOutput> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user != null){
+            org.springframework.security.crypto.password.PasswordEncoder encoder
+                    = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+            if(encoder.matches(input.getOldPassword(),user.getPassword())){
+                user.setPassword(input.getNewPassword());
+                UserRepository.getInstance().updatePassword(user);
+                PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("true").build();
+                responseObserver.onNext(pso);
+            }
+            else{
+                PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("false").build();
+                responseObserver.onNext(pso);
+            }
+        }else{
+            PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("false").build();
+            responseObserver.onNext(pso);
+        }
+        responseObserver.onCompleted();
+    }
 }

@@ -93,7 +93,7 @@
                         <h3>Skills</h3>
                         <hr/>
                         <textarea id="skills" v-model="user.skills"></textarea>
-
+                        <a href="/changePassword">Wanna change password?</a>
                         <input type="button" :disabled="isComplete" @click="update" value="Save changes"/>
                   
                 </div>
