@@ -60,12 +60,6 @@ public class UsersService {
         return "false";
     }
 
-    public String invalidateUser(String value){
-        blockingStub = openChannelToUserService();
-        Input2 input = Input2.newBuilder().setAccessToken(value).build();
-        return this.blockingStub.invalidateUser(input).getResult();
-    }
-
     public String logInUser(Map<String, String> message) {
         try {
             if(Validation.validateEmail(message.get("email"))) {

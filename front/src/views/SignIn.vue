@@ -5,6 +5,7 @@
         justify-content: 'Right';
         align-items: 'Right';
         height: '100vh';
+        background-image: url('../assets/backgroundSign.jpg');
       "
     >
       <div className="main">  	

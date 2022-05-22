@@ -103,6 +103,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
                     .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
                     .setIsEnabled(String.valueOf(user.isActivated()))
+                    .setResult(user.getId().toString())
                     .build();
         }
         responseObserver.onNext(output);
