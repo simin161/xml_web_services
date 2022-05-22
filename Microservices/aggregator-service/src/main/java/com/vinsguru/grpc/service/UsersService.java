@@ -18,6 +18,7 @@ import proto.user.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class UsersService {
 
     public String logInUser(Map<String, String> message) {
         try {
-            if(Validation.validateEmail(message.get("email")) && Validation.validatePassword(message.get("password"))) {
+            if(Validation.validateEmail(message.get("email"))) {
                 blockingStub = openChannelToUserService();
                 Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
                 return this.blockingStub.logInUser(input).getResult();
@@ -215,7 +216,12 @@ public class UsersService {
             if (Validation.validateEmail(email.get("email"))) {
                 blockingStub = openChannelToUserService();
                 boolean retVal = false;
-                ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).build();
+                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                newPassword = newPassword.replace('-', '0');
+                newPassword = newPassword.substring(0, 6);
+                String newPasswordForEmail = new String(newPassword);
+                newPassword = passwordEncoder.encode(newPassword);
+                ForgottenPasswordEmail fpe = ForgottenPasswordEmail.newBuilder().setEmail(email.get("email")).setNewPassword(newPassword).setNewPasswordForEmail(newPasswordForEmail).build();
                 retVal = Boolean.parseBoolean(blockingStub.forgottenPasswordUpdate(fpe).getValue());
 
                 return retVal;

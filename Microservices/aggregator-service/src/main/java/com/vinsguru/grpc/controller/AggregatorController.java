@@ -67,7 +67,7 @@ public class AggregatorController {
                                                                     HttpServletResponse response) {
 
         System.out.println(cred);
-        if(Validation.validateEmail(cred.getEmail()) && Validation.validatePassword(cred.getPassword())){
+        if(Validation.validateEmail(cred.getEmail())){
             try{
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),

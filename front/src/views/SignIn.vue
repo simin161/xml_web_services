@@ -75,7 +75,7 @@
   methods: {
   logIn : function(){
     if(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email)){  
-      if(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.logDto.password)){
+      
           axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password})
           .then((response) => {
               console.log(response);
@@ -95,14 +95,7 @@
           .catch(function (error) {
             console.log(error);
           });
-        }else{
-          swal({  
-                          title: " Invalid password!",  
-                          text: " The password you have entered is invalid. Check your password or email and try again.",  
-                          icon: "error",  
-                          button: "Confirm",  
-                    }); 
-        }
+        
       }else{
         swal({  
                           title: " Invalid email!",  
@@ -175,8 +168,7 @@
     },
     isLComplete(){
       var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email);
-      var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.logDto.password);
-      if(validEmail && validPassword)
+      if(validEmail)
         return false;
 
       return true;
