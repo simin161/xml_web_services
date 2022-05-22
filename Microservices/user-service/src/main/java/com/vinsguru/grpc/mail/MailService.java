@@ -1,44 +1,54 @@
 package com.vinsguru.grpc.mail;
 
+import com.vinsguru.grpc.model.User;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 @Service
 public class MailService {
 
-    //private JavaMailSender mailSender;
-
-    public void sendVerificationEmail(String email, String siteURL, String token)
+    public void sendVerificationEmail(User u, String siteURL)
             throws MessagingException, UnsupportedEncodingException {
-     /*   String fromAddress = "findsfishy@gmail.com";
-        String senderName = "Fishy Finds";
+        String fromAddress = "dislinkt_24@yahoo.com";
+        String senderName = "Dislinkt";
         String subject = "Please verify your registration";
         String content = "Dear user,<br>"
                 + "Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + "Fishy Finds.";
+                + "Dislinkt Team.";
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        String host = "127.0.0.1";
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
 
-        helper.setFrom(fromAddress, senderName);
-        helper.setTo(email);
-        helper.setSubject(subject);
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
-        String verifyURL = siteURL + "/api/verifyCustomerAccount?code=" + token;
+            protected PasswordAuthentication getPasswordAuthentication() {
 
+                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+
+            }
+
+        });
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddress));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(u.getEmail()));
+        message.setSubject(subject);
+        String verifyURL = siteURL + "/api/verifyAccount?code=" + u.getVerificationCode();
         content = content.replace("[[URL]]", verifyURL);
+        message.setContent(content, "text/html");
 
-        helper.setText(content, true);
-
-        mailSender.send(message);*/
+        Transport.send(message);
 
     }
 
@@ -79,6 +89,45 @@ public class MailService {
         message.setContent(content, "text/html");
 
         Transport.send(message);
+    }
+
+    public void sendPasswordlessLoginEmail(String email, String siteURL) throws MessagingException {
+        String fromAddress = "dislinkt_24@yahoo.com";
+        String senderName = "Dislinkt";
+        String subject = "Your passwordless login is ready";
+        String content = "Dear user,<br>"
+                + "Please click the link below to login into your account:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">LOGIN</a></h3>"
+                + "Thank you,<br>"
+                + "Dislinkt Team.";
+
+        content = content.replace("[[URL]]", "http://localhost:3000/profilePage/" + siteURL);
+
+        String host = "127.0.0.1";
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+
+            }
+
+        });
+
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddress));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.setSubject(subject);
+        message.setContent(content, "text/html");
+
+        Transport.send(message);
+
     }
 }
 

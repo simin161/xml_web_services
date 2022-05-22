@@ -6,6 +6,8 @@ import ProfilePage from '../views/ProfilePage.vue'
 import AccountSettings from '../views/AccountSetting.vue'
 import UpdateEducation from '../views/UpdateEducation.vue'
 import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
+import YetAnotherEmailForm from '../views/YetAnotherEmailForm.vue'
+import PasswordChange from '../views/PasswordChange.vue'
 
 const routes = [
   
@@ -25,9 +27,17 @@ const routes = [
     component: EditProfile
   },
   {
-    path: '/profilePage',
+    path: '/profilePage/:id',
     name: 'ProfilePage',
-    component: ProfilePage
+    component: ProfilePage,
+    children: [
+
+      {
+        path: '/profilePage',
+        component: ProfilePage
+      }
+
+    ]
   },
   {
     path: '/accountSettings',
@@ -43,8 +53,25 @@ const routes = [
     path: '/updateWorkExperience',
     name: 'UpdateWorkExperience',
     component: UpdateWorkExperience
+  },
+  {
+    path: '/passwordless',
+    name: 'YetAnotherEmailForm',
+    component: YetAnotherEmailForm,
+    children: [
+
+      {
+        path: '/forgottenPassword',
+        component: ProfilePage
+      }
+
+    ]
+  },
+  {
+    path: '/changePassword',
+    name: 'PasswordChange',
+    component: PasswordChange
   }
-   
 ]
 
 const router = createRouter({

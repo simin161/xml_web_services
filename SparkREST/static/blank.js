@@ -14,7 +14,8 @@ Vue.component('homepage', {
     			logUser: {
     			    email: "",
     			    password: "",
-    			}
+    			},
+    			confirmPassword: ""
     		}
     	},
     template: `
@@ -25,8 +26,8 @@ Vue.component('homepage', {
     	      <br>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-if="showPage === 0">
                   <input type="text" placeholder="E-mail" v-model="logUser.email"/>
-                  <input type="text" placeholder="Password" v-model="logUser.password"/>
-                  <input type="button" value="Sign in" @click="signIn"/>
+                  <input type="password" placeholder="Password" v-model="logUser.password"/>
+                  <input type="button" :disabled="isLComplete" value="Sign in" @click="signIn"/>
               </div>
               <div style="margin-left: auto; margin-right:auto; width:30%;" v-if="showPage === 1">
                   <input type="text" placeholder="First name" v-model="user.firstName"/>
@@ -35,13 +36,35 @@ Vue.component('homepage', {
                   <input type="text" placeholder="Organization unit" v-model="user.organizationUnit"/>
                   <input type="text" placeholder="Country ID (for example: SRB, SLO, CRO...)" v-model="user.countryId"/>
                   <input type="text" placeholder="E-mail" v-model="user.email"/>
-                  <input type="text" placeholder="Password" v-model="user.password"/>
-                  <input type="button" value="Register" @click="register"/>
+                  <input type="password" placeholder="Password" v-model="user.password"/>
+                  <input type="password" placeholder="Confirm password" v-model="confirmPassword"/>
+                  <input type="button" :disabled="isRComplete" value="Register" @click="register"/>
               </div>
          </div>
 
         `
         ,
+        computed: {
+            isRComplete(){
+                 var validNames = /^[ a-zA-Z\-’]+$/.test(this.user.firstName) && /^[ a-zA-Z\-’]+$/.test(this.user.lastName);
+                 var validOGNames = /^[a-zA-Z0-9]+$/.test(this.user.organizationName) &&
+                 /&[a-zA-Z0-9]+$/.test(this.user.organizationUnit);
+                 var validCId = /^[A-Z]+$/.test(this.user.countryId);
+                 var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.user.email);
+                 var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.user.password);
+                 if(validNames && validOGNames && validCId && validEmail && validPassword && this.user.password === this.confirmPassword)
+                    return false;
+
+                 return true;
+            },
+            isLComplete(){
+                 var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logUser.email);
+                 var validPassword = /\S/.test(this.logUser.password);
+                 if(validEmail && validPassword)
+                    return false;
+                 return true;
+            }
+        },
         methods:{
             changeForm : function(){
                 if(this.showPage == 0){

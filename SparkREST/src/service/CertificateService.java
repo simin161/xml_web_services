@@ -141,7 +141,8 @@ public class CertificateService {
                 + "-----END CERTIFICATE-----";
         String path = "static/certificates/"+serialNumber + ".cer";
         writeBytesToFile(path, certificate.getBytes());
-        return "./" + path;
+        String pathForFront = "./certificates/" + serialNumber + ".cer";
+        return pathForFront;
 
     }
 

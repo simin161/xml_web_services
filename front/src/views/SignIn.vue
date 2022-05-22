@@ -4,7 +4,7 @@
         display: 'flex';
         justify-content: 'Right';
         align-items: 'Right';
-        height: '100vh'
+        height: '100vh';
       "
     >
       <div className="main">  	
@@ -15,30 +15,33 @@
               <table style="margin-left: 69px; margin-top: -70px">
                 <tr>
                   <td>
-                    <input style="width: 105px" pattern="^[ a-zA-Z\-\’]+$"  type="text" v-model="dtoReg.firstName" id="firstName" name="txt" placeholder="First name" required/>
+                    <input style="width: 105px"  type="text" v-model="dtoReg.firstName" id="firstName" name="txt" placeholder="First name" required/>
                   </td>
                   <td>
-                    <input style="width: 105px" pattern="^[ a-zA-Z\-\’]+$" type="text" v-model="dtoReg.lastName" id="lastName" name="txt" placeholder="Last name" required/>
+                    <input style="width: 105px" type="text" v-model="dtoReg.lastName" id="lastName" name="txt" placeholder="Last name" required/>
                   </td>
                 </tr>
               </table>
-              <input style="margin-top: -10px" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" id="email" v-model="dtoReg.email" type="email" name="email" placeholder="Email" required/>
-              <input style="margin-top: -10px" pattern="^[a-zA-Z]+([0-9]+)?$" id="username" v-model="dtoReg.username" type="text" name="txt" placeholder="Username" required/>
+              <input style="margin-top: -10px" id="email" v-model="dtoReg.email" type="email" name="email" placeholder="Email" required/>
+              <input style="margin-top: -10px" id="username" v-model="dtoReg.username" type="text" name="txt" placeholder="Username" required/>
               <select id="gender" v-model="dtoReg.gender" style="margin-left: 70px, margin-top : -10px, height: 30px">
                 <option value="FEMALE">FEMALE</option>
                 <option value="MALE">MALE</option>
               </select>
               <input type="date" id="birthDate" v-model="dtoReg.birthDate" data-date-format="yyyy-mm-dd" />
-              <input  id="password" pattern="^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$" v-model="dtoReg.password" style="margin-top: -10px" type="password" name="pswd" placeholder="Password" required/>
-              <input style="margin-top: -10px" pattern="^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$" v-model="confirmPassword" id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required/>
-              <button style="margin-top: -10px" @click="register">Sign Up</button>
+              <input  id="password" v-model="dtoReg.password" style="margin-top: -10px" type="password" name="pswd" placeholder="Password" required/>
+              <input style="margin-top: -10px" v-model="confirmPassword" id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required/>
+              <input type="button" :disabled="isComplete" style="margin-top: -10px" @click="register" value="Sign up"/>
           </div>
 
           <div className="login">
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
-              <input type="email" v-model="logDto.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" id="emailLog" name="email" placeholder="Email" required/>
+              <input type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
               <input type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
-              <button @click="logIn">Sign In</button>
+              <a href="/passwordless">Pssst, kid, I have skooma</a>
+              <br>
+              <a href="/forgottenPassword"> Khajiit has wares, if you have email</a>
+              <input type="button" :disabled="isLComplete" @click="logIn" value="Sign in" />
           </div>
       </div>
     </div>
@@ -46,6 +49,7 @@
 
 <script>
    import axios from "axios";
+   import swal from 'sweetalert';  
   export default{
   data() {
     return {
@@ -70,11 +74,18 @@
   },
   methods: {
   logIn : function(){
-          
+    if(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email)){  
+      
           axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password})
           .then((response) => {
               console.log(response);
               if(!response.data ){
+                  swal({  
+                          title: " Invalid credentials!",  
+                          text: " Please check your login credentials and try again.",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    }); 
                   console.log("err");
               }else{
                   localStorage.setItem("loggedUser", response.data.accessToken);
@@ -84,27 +95,85 @@
           .catch(function (error) {
             console.log(error);
           });
+        
+      }else{
+        swal({  
+                          title: " Invalid email!",  
+                          text: " A user with given email does not exist. Please, check your login credentials and try again.",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    }); 
+      }
      
   },
   register: function(){
-  if(this.confirmPassword === this.dtoReg.password){
-          axios.post(process.env.VUE_APP_BACK + 'register', this.dtoReg)
-          .then((response) => {
-            console.log(response);
-            if(!response.data){
-              console.log("err");
+  if(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.dtoReg.password) && this.confirmPassword === this.dtoReg.password){
+      if( /^[ a-zA-Z\-’]+$/.test(this.dtoReg.firstName) && /^[ a-zA-Z\-’]+$/.test(this.dtoReg.lastName)){
+        if(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.dtoReg.email)){
+          if(/^[a-zA-Z]+([0-9]+)?$/.test(this.dtoReg.username)){
+            if(/\S/.test(this.dtoReg.birthDate) && /\S/.test(this.dtoReg.gender)){
+                axios.post(process.env.VUE_APP_BACK + 'register', this.dtoReg)
+                .then((response) => {
+                  console.log(response);
+                  if(!response.data){
+                     swal({  
+                          title: " Oops!",  
+                          text: " Something went wrong, please try again later!",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    });    
+                    console.log("err");
+                  }
+                  else{
+                    swal({  
+                            title: "Registration successful!",  
+                            text: "Please check you email for an account verification message!",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });  
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+              }else{
+                alert("Gender and birthday  must not be empty!")
+              }
             }else{
-              localStorage.setItem("loggedUser", response.data);
-              this.$router.push("/profilePage");
+              alert("Invalid username")
             }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+          }else{
+            alert("Invalid email");
+          }
+        }else{
+          alert("Invalid first or last name");
+        }
       }else{
         alert("invalid password or password should contain at least one uppercase letter, one number and one special character");
       }
-  }}
+   }
+  },
+  computed:{
+    isComplete(){
+      var validNames = /^[ a-zA-Z\-’]+$/.test(this.dtoReg.firstName) && /^[ a-zA-Z\-’]+$/.test(this.dtoReg.lastName);
+      var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.dtoReg.password)
+       && /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.confirmPassword);        
+      var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.dtoReg.email);
+      var validGBD = /\S/.test(this.dtoReg.birthDate) && /\S/.test(this.dtoReg.gender);
+      var validUsername = /^[a-zA-Z]+([0-9]+)?$/.test(this.dtoReg.username);
+      if(validNames && validPassword && validEmail && validGBD && validUsername)
+        return false;
+
+      return true;
+    },
+    isLComplete(){
+      var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email);
+      if(validEmail)
+        return false;
+
+      return true;
+    }
+  }
 };
 </script>
 

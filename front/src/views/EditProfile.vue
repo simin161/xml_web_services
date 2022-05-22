@@ -72,7 +72,7 @@
                         <p>Private</p>
                         </div>
                         <div id="molimTe" className="col-lg-9">
-                                <select id="private"  v-model="user.private">
+                                <select id="private"  v-model="selected">
                                     <option value="true">
                                         YES
                                     </option>
@@ -93,21 +93,27 @@
                         <h3>Skills</h3>
                         <hr/>
                         <textarea id="skills" v-model="user.skills"></textarea>
-
-                        <button @click="update">Save changes</button>
+                        <a href="/changePassword">Wanna change password?</a>
+                        <input type="button" :disabled="isComplete" @click="update" value="Save changes"/>
                   
                 </div>
     </div>
 </template>
 <script>
  import axios from "axios";
+ import swal from 'sweetalert';  
   export default{
   data() {
     return {
-        user: {}
+        user: {},
+        bio: '',
+        selected: 'true'
     };
   },
   mounted() {
+      if(localStorage.getItem("loggedUser") === ''){
+          this.$router.push("/signIn")
+      }
       axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
     axios.get(process.env.VUE_APP_BACK + 'user')
@@ -122,16 +128,38 @@
       update : function(){
           axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
+            
+            this.user.isPrivate = this.selected;
             axios.post(process.env.VUE_APP_BACK + 'personalInfo', this.user)
             .then((response) => {
-            console.log(response);
-            this.$router.push("/profilePage");
+                swal({  
+                            title: "Information updated!",  
+                            text: "Your new information has been updated successfully.",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });
+                console.log(response);
+                this.$router.push("/profilePage");
           
           })
           .catch(function (error) {
             console.log(error);
           });  
         }
+  },
+  computed: {
+      isComplete(){
+        var validNames = /^[ a-zA-Z\-’]+$/.test(this.user.firstName) && /^[ a-zA-Z\-’]+$/.test(this.user.lastName);
+        var validGBD = /\S/.test(this.user.birthDate) && /\S/.test(this.user.gender) && /\S/.test(this.user.isPrivate);
+        var validPhone = /^[0-9]+$/.test(this.user.phone);
+        var validBiography = /[()[\]{}<>]/.test(this.user.biography);
+        var validSkills = /[()[\]{}<>]/.test(this.user.skills);
+        var validInterests = /[()[\]{}<>]/.test(this.user.interests);
+        if(!validBiography &&  !validSkills && !validInterests && validNames && validGBD && validPhone)
+            return false;
+
+        return true;
+      }
   }
 };
 </script>

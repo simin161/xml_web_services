@@ -7,10 +7,12 @@ import com.vinsguru.grpc.model.WorkExperience;
 import com.vinsguru.grpc.repository.UserRepository;
 import com.vinsguru.grpc.utility.Tokens;
 import io.grpc.stub.StreamObserver;
+import net.bytebuddy.utility.RandomString;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import proto.user.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import java.util.Date;
 import org.bson.Document;
 
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -28,17 +31,29 @@ import java.util.List;
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
+    private final MailService mailService = new MailService();
+
     @Override
-    public void addUser(proto.user.userReg request,
+    public void addUser(proto.user.AddUserParam addUserParam,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
         proto.user.Output output;
+        proto.user.userReg request = proto.user.userReg.newBuilder().setEmail(addUserParam.getReg().getEmail()).setBirthDate(addUserParam.getReg().getBirthDate())
+                .setFirstName(addUserParam.getReg().getFirstName()).setLastName(addUserParam.getReg().getLastName()).setUsername(addUserParam.getReg().getUsername())
+                .setGender(addUserParam.getReg().getGender()).setPassword(addUserParam.getReg().getPassword()).build();
         if(UserRepository.getInstance().findUserByParam("email", request.getEmail()).isEmpty() && UserRepository.getInstance().findUserByParam("username",request.getUsername()).isEmpty()) {
             try {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthDate());
-                UserRepository.getInstance().insert(new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date));
-                output = Output.newBuilder().setResult(Tokens.generateToken(request.getUsername(), request.getEmail())).build();
+                User u = new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date);
+                u.setActivated(false);
+                setVerificationCode(RandomString.make(64), u);
+                UserRepository.getInstance().insert(u);
+                mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
+                output = Output.newBuilder().setResult("false").build();
             } catch (ParseException e) {
                 output = Output.newBuilder().setResult("false").build();
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                output = Output.newBuilder().setResult("false").build();
+                e.printStackTrace();
             }
         }else
             output = Output.newBuilder().setResult("false").build();
@@ -69,23 +84,27 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void getUserByEmail(proto.user.InputForGetUserByEmail request, StreamObserver<Output> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String s = formatter.format(user.getBirthday());
         proto.user.Output output;
-        output = Output.newBuilder()
-                .setEmail(user.getEmail())
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
-                .setUsername(user.getUsername())
-                .setPassword(user.getPassword())
-                .setPrivateProfile(user.isPrivateProfile())
-                .setBirthday(s)
-                .setGender(user.getGender())
-                .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
-                .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
-                .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
-                .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
-                .build();
-
+        if(user == null){
+            output = Output.newBuilder().build();
+        }else {
+            String s = formatter.format(user.getBirthday());
+            output = Output.newBuilder()
+                    .setEmail(user.getEmail())
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
+                    .setUsername(user.getUsername())
+                    .setPassword(user.getPassword())
+                    .setPrivateProfile(user.isPrivateProfile())
+                    .setBirthday(s)
+                    .setGender(user.getGender())
+                    .setPhone(user.getPhone() == null ? "No information" : user.getPhone())
+                    .setBiography(user.getBiography() == null ? "No information" : user.getBiography())
+                    .setInterests(user.getInterests() == null ? "No information" : user.getInterests())
+                    .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
+                    .setIsEnabled(String.valueOf(user.isActivated()))
+                    .build();
+        }
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
@@ -303,13 +322,11 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         boolean value = false;
         for(User u : UserRepository.getInstance().getAllUsers()){
             if(u.getEmail().equals(email.getEmail())){
-                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
-                newPassword = newPassword.substring(0, 6);
-                u.setPassword(newPassword);
+                u.setPassword(email.getNewPassword());
                 UserRepository.getInstance().updatePassword(u);
                 MailService ms = new MailService();
                 try{
-                    ms.sendForgottenPasswordEmail(email.getEmail(), newPassword);
+                    ms.sendForgottenPasswordEmail(email.getEmail(), email.getNewPasswordForEmail());
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -322,6 +339,72 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         else
             fprv = ForgottenPasswordReturnValue.newBuilder().setValue("false").build();
         responseObserver.onNext(fprv);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void verifyAccount(VerificationCode code, StreamObserver<VerificationReturnValue> responseObserver){
+        VerificationReturnValue vrv;
+        boolean value;
+        User user = UserRepository.getInstance().findUserByVerificationCode(code.getVerificationCode());
+        if(user == null || user.isActivated()){
+            value = false;
+        }else{
+            value = activateAccount(user);
+        }
+        if(value){
+            vrv = VerificationReturnValue.newBuilder().setReturnValue("true").build();
+        }else{
+            vrv = VerificationReturnValue.newBuilder().setReturnValue("false").build();
+        }
+        responseObserver.onNext(vrv);
+        responseObserver.onCompleted();
+    }
+
+    private boolean activateAccount(User user){
+        user.setActivated(true);
+        setVerificationCode("", user);
+        UserRepository.getInstance().activateAccount(user);
+        return true;
+    }
+
+    private void setVerificationCode(String code, User user){
+        user.setVerificationCode(code);
+    }
+
+    @Override
+    public void passwordlessLogin(PasswordlessLogin plogin, StreamObserver<VerificationReturnValue> responseObserver) {
+        VerificationReturnValue vrv;
+        try{
+        mailService.sendPasswordlessLoginEmail(plogin.getEmail(), plogin.getSiteURL());
+        vrv = VerificationReturnValue.newBuilder().setReturnValue("true").build();
+       }catch(Exception e){
+           vrv = VerificationReturnValue.newBuilder().setReturnValue("false").build();
+       }
+        responseObserver.onNext(vrv);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void changePassword(PasswordChangeInput input, StreamObserver<PasswordChangeOutput> responseObserver) {
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user != null){
+            org.springframework.security.crypto.password.PasswordEncoder encoder
+                    = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+            if(encoder.matches(input.getOldPassword(),user.getPassword())){
+                user.setPassword(input.getNewPassword());
+                UserRepository.getInstance().updatePassword(user);
+                PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("true").build();
+                responseObserver.onNext(pso);
+            }
+            else{
+                PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("false").build();
+                responseObserver.onNext(pso);
+            }
+        }else{
+            PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("false").build();
+            responseObserver.onNext(pso);
+        }
         responseObserver.onCompleted();
     }
 }

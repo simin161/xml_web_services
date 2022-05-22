@@ -3,6 +3,7 @@ package com.vinsguru.grpc.service;
 import com.vinsguru.grpc.dto.UserDto;
 import com.vinsguru.grpc.helperModel.Authority;
 import com.vinsguru.grpc.helperModel.User;
+import com.vinsguru.grpc.utility.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,10 +23,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = new User();
-        UserDto d = userService.getUserByEmail(username);
+        UserDto d = null;
+        if(Validation.validateEmail(username))
+            d = userService.getUserByEmail(username);
         if(d != null) {
             user.setEmail(d.getEmail());
-            user.setPassword(passwordEncoder.encode(d.getPassword()));
+            user.setPassword(d.getPassword());
+            user.setEnabled(d.isEnabled());
             List<Authority> a = new ArrayList<>();
             Authority auth = new Authority("ROLE_REG_USER");
             a.add(auth);

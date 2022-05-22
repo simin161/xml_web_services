@@ -81,6 +81,7 @@ message Output {
   string biography = 11;
   string interests = 12;
   string skills = 13;
+  string isEnabled = 14;
 }
 message OutputMessage {
   string outputMessage = 1;
@@ -133,15 +134,51 @@ message OutputExperience {
 
 message ForgottenPasswordEmail {
   string email = 1;
+  string newPassword = 2;
+  string newPasswordForEmail = 3;
 }
 
 message ForgottenPasswordReturnValue{
   string value = 1;
 }
 
+message VerificationCode {
+  string verificationCode = 1;
+}
+
+message VerificationReturnValue {
+  string returnValue = 1;
+}
+
+message SiteURL {
+  string siteURL = 1;
+}
+
+message AddUserParam {
+  userReg reg = 1;
+  SiteURL url = 2;
+}
+
+message PasswordlessLogin{
+  string email = 1;
+  string siteURL = 2;
+}
+
+message PasswordChangeInput{
+  string email = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
+message PasswordChangeOutput{
+  string result = 1;
+}
+
 service UserService {
 
-  rpc addUser(userReg) returns (Output) {};
+  rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
+
+  rpc addUser(AddUserParam) returns (Output) {};
 
   rpc logInUser(Input1) returns (Output) {};
 
@@ -170,5 +207,9 @@ service UserService {
   rpc findUserEmailById(OutputId) returns (InputForGetUserByEmail) {};
 
   rpc forgottenPasswordUpdate(ForgottenPasswordEmail) returns (ForgottenPasswordReturnValue) {};
+
+  rpc verifyAccount(VerificationCode) returns (VerificationReturnValue) {};
+
+  rpc passwordlessLogin(PasswordlessLogin) returns (VerificationReturnValue) {};
 
 }
