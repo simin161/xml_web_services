@@ -322,14 +322,11 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         boolean value = false;
         for(User u : UserRepository.getInstance().getAllUsers()){
             if(u.getEmail().equals(email.getEmail())){
-                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
-                newPassword = newPassword.replace('-', '0');
-                newPassword = newPassword.substring(0, 6);
-                u.setPassword(newPassword);
+                u.setPassword(email.getNewPassword());
                 UserRepository.getInstance().updatePassword(u);
                 MailService ms = new MailService();
                 try{
-                    ms.sendForgottenPasswordEmail(email.getEmail(), newPassword);
+                    ms.sendForgottenPasswordEmail(email.getEmail(), email.getNewPasswordForEmail());
                 }catch(Exception e){
                     e.printStackTrace();
                 }

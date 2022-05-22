@@ -134,6 +134,8 @@ message OutputExperience {
 
 message ForgottenPasswordEmail {
   string email = 1;
+  string newPassword = 2;
+  string newPasswordForEmail = 3;
 }
 
 message ForgottenPasswordReturnValue{
