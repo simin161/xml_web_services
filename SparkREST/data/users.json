@@ -5,7 +5,7 @@
     "organizationName": "a",
     "organizationUnit": "a",
     "countryId": "AZ",
-    "email": "admin",
+    "email": "admin@admin.com",
     "userType": "ADMIN",
     "password": "admin"
   },
@@ -15,7 +15,7 @@
     "organizationName": "aaa",
     "organizationUnit": "aaa",
     "countryId": "aaaa",
-    "email": "aaa",
+    "email": "aaa@aa.com",
     "userType": "REGULAR_USER",
     "password": "aaa"
   },
@@ -25,7 +25,7 @@
     "organizationName": "bbb",
     "organizationUnit": "bbb",
     "countryId": "bbb",
-    "email": "bbb",
+    "email": "bbb@bb.com",
     "userType": "REGULAR_USER",
     "password": "bbb"
   },

@@ -54,7 +54,10 @@ Vue.component('details-screen', {
         }
     },
     mounted(){
-            axios.get("/getChoosenCert")
+        if(localStorage.getItem("logged") == '')
+            router.push('/')
+
+        axios.get("/getChoosenCert")
                  .then(response => {
                     this.c = response.data;
                     this.pdf = this.c.serialNumber + ".pdf";

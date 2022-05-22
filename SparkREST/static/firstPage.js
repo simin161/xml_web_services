@@ -188,6 +188,7 @@ Vue.component('firstpage', {
             axios.get("/signOut")
                  .then(response=>{
                     if(response.data == true){
+                        localStorage.setItem("logged", "");
                         router.push("/")
                     }
                     else{
@@ -263,12 +264,14 @@ Vue.component('firstpage', {
 
             axios.post("/invalidateCertificate", c)
             .then(response=>(console.log(response.data)))
-
         }
     },
 
     mounted(){
-            axios.get("/getLoggedUser", this.password)
-                 .then(response => {this.user = response.data});
+     if(localStorage.getItem("logged") == '')
+        router.push('/')
+
+     axios.get("/getLoggedUser", this.password)
+          .then(response => {this.user = response.data; localStorage.setItem("logged", "true");});
     }
 });
