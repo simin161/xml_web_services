@@ -304,7 +304,7 @@ public class AggregatorController {
     }
 
     @PostMapping("/passwordlessLogin")
-    public String passwordlessLogin(@RequestBody Map<String, String> email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+    public boolean passwordlessLogin(@RequestBody Map<String, String> email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         return aggregatorService.passwordlessLogin(email, getSiteURL(request));
     }
 }
