@@ -16,6 +16,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import service.CertificateService;
 import service.UserService;
 import spark.Session;
+import utility.Validation;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -130,7 +131,15 @@ public class SparkAppMain {
 
 		post("/createCertificate", (req,res)->{
 			res.type("application/json");
-			return certificateService.createCertificate((Certificate) gson.fromJson(req.body(), Certificate.class));
+			Certificate cert = (Certificate) gson.fromJson(req.body(), Certificate.class);
+			if(Validation.validateText(cert.getType()) && Validation.validateText(cert.getAlias())
+			&& Validation.validateText(cert.getCommonName()) && Validation.validateText(cert.getGivenName())
+			&& Validation.validateText(cert.getOrganization()) && Validation.validateText(cert.getOrganizationalUnitName())
+			&& Validation.validateEmail(cert.getOrganizationEmail()) && Validation.validateText(cert.getCountry())
+			&& Validation.validateTextWithNumber(cert.getKeyUsage()))
+			return certificateService.createCertificate(cert);
+
+			return null;
 		});
 
 		get("/signOut", (req, res) -> {
