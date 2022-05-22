@@ -186,12 +186,15 @@ Vue.component('firstpage', {
     ,
     computed:{
         isCComplete(){
-            validText = /^[A-Z]+$/.test(this.certificate.purpose) &&
-              /^[A-Z]+$/.test(this.certificate.alias) &&
-              /^[A-Z]+$/.test(this.certificate.commonName);
+            validText = /^[a-zA-Z]+$/.test(this.certificate.purpose) &&
+              /^[a-zA-Z]+$/.test(this.certificate.alias) &&
+              /^[a-zA-Z]+$/.test(this.certificate.commonName);
             validNonEmpty = /\S/.test(this.certificate.validFrom) &&
-                /\S/.test(this.certificate.validTo) &&
-                /\S/.test(this.certificate.keyUsage);
+                /\S/.test(this.certificate.validTo);
+            if(validText && validNonEmpty)
+                return false;
+
+            return true;
         }
     },
     methods:{
