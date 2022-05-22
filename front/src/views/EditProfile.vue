@@ -72,7 +72,7 @@
                         <p>Private</p>
                         </div>
                         <div id="molimTe" className="col-lg-9">
-                                <select id="private"  v-model="user.private">
+                                <select id="private"  v-model="user.isPrivate">
                                     <option value="true">
                                         YES
                                     </option>
@@ -94,7 +94,7 @@
                         <hr/>
                         <textarea id="skills" v-model="user.skills"></textarea>
 
-                        <button @click="update">Save changes</button>
+                        <input type="button" :disabled="isComplete" @click="update" value="Save changes"/>
                   
                 </div>
     </div>
@@ -104,11 +104,12 @@
   export default{
   data() {
     return {
-        user: {}
+        user: {},
+        bio: ''
     };
   },
   mounted() {
-       if(localStorage.getItem("loggedUser") === ''){
+      if(localStorage.getItem("loggedUser") === ''){
           this.$router.push("/signIn")
       }
       axios.defaults.headers.common["Authorization"] =
@@ -135,6 +136,20 @@
             console.log(error);
           });  
         }
+  },
+  computed: {
+      isComplete(){
+        var validNames = /^[ a-zA-Z\-’]+$/.test(this.user.firstName) && /^[ a-zA-Z\-’]+$/.test(this.user.lastName);
+        var validGBD = /\S/.test(this.user.birthDate) && /\S/.test(this.user.gender) && /\S/.test(this.user.isPrivate);
+        var validPhone = /^[0-9]+$/.test(this.user.phone);
+        var validBiography = /[()[\]{}<>]/.test(this.user.biography);
+        var validSkills = /[()[\]{}<>]/.test(this.user.skills);
+        var validInterests = /[()[\]{}<>]/.test(this.user.interests);
+        if(!validBiography &&  validSkills && validInterests && validNames && validGBD && validPhone)
+            return false;
+
+        return true;
+      }
   }
 };
 </script>
