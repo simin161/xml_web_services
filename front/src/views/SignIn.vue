@@ -1,11 +1,10 @@
 <template>
- <div className = "main-div-login"
+ <div className = "main-div-login" id="slikadiv2"
       style="
         display: 'flex';
         justify-content: 'Right';
         align-items: 'Right';
         height: '100vh';
-        background-image: url('../assets/backgroundSign.jpg');
       "
     >
       <div className="main">  	
@@ -179,4 +178,11 @@
 </script>
 
 <style>
+#slikadiv2{
+  background-image: url('../assets/backgroundSign.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 700px
+     
+}
 </style>
