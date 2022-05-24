@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,14 @@ public class JobOfferRepository {
     }
 
     public void createJobOffer(JobOffer jobOffer){
-        
+        Document jobOfferToSave = new Document("_id", new ObjectId());
+        jobOfferToSave.append("position", jobOffer.getPosition())
+                .append("jobDescription", jobOffer.getJobDescription())
+                .append("dailyActivities", jobOffer.getDailyActivities())
+                .append("candidateRequirements", jobOffer.getCandidateRequirements());
+        jobOfferCollection.insertOne(jobOfferToSave);
     }
+
+    
 
 }

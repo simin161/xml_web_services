@@ -69,7 +69,7 @@ public class UserRepository {
                 .append("interests",user.getInterests())
                 .append("skills",user.getSkills())
                 .append("educations",user.getEducations())
-                .append("experiences",user.getEducations())
+                .append("experiences",user.getExperinces())
                 .append("isActivated", user.isActivated())
                 .append("verificationCode", user.getVerificationCode());
         usersCollection.insertOne(userToSave);
