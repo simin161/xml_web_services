@@ -7,6 +7,7 @@ import com.vinsguru.grpc.helperModel.User;
 import com.vinsguru.grpc.helperModel.UserTokenState;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.security.auth.JwtAuthenticationRequest;
+import com.vinsguru.grpc.service.JobOfferService;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,6 +52,9 @@ public class AggregatorController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JobOfferService jobOfferService;
 
 
     @PostMapping("/register")
@@ -326,5 +331,24 @@ public class AggregatorController {
 
         }catch(Exception e){}
         return "false";
+    }
+
+    @PostMapping("/createJobOffer")
+   // @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean createJobOffer(@RequestHeader("Authentication") HttpHeaders header, @RequestBody JobOfferDto jobOfferDto){
+        return jobOfferService.createJobOffer(jobOfferDto);
+    }
+
+    @GetMapping("/getAllUserCompanies")
+    //@PreAuthorize("hasRole('ROLE_REG_USER')")
+    public List<String> getAllUserCompanies(@RequestHeader("Authentication")HttpHeaders header){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            String email = tokenUtils.getUsernameFromToken(value);
+            return jobOfferService.getAllUserCompanies(email);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }

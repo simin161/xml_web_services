@@ -12,23 +12,26 @@ public class JobOffer {
     @Id
     private ObjectId id;
     private String position;
+    private String companyName;
     private String jobDescription;
     private String dailyActivities;
     private List<String> candidateRequirements;
 
-    public JobOffer(String position, String jobDescription, String dailyActivities, List<String> candidateRequirements){
+    public JobOffer(String position, String jobDescription, String dailyActivities, List<String> candidateRequirements, String companyName){
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
+        this.companyName = companyName;
     }
 
-    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, List<String> candidateRequirements){
+    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, List<String> candidateRequirements, String companyName){
         this.id = id;
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
+        this.companyName = companyName;
     }
 
     @Override
@@ -52,11 +55,20 @@ public class JobOffer {
         this.id = id;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public JobOffer(){
         this.position="";
         this.jobDescription="";
         this.dailyActivities="";
         this.candidateRequirements= new ArrayList<>();
+        this.companyName = "";
     }
 
     public String getPosition() {

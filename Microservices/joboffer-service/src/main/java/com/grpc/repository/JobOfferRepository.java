@@ -4,7 +4,6 @@ import com.grpc.model.JobOffer;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class JobOfferRepository {
             foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
         }
         for(Document d : foundOffers){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass), d.getString("companyName"));
             jobOffers.add(offer);
         }
         return jobOffers;
@@ -67,7 +66,7 @@ public class JobOfferRepository {
         List<JobOffer> allOffers = new ArrayList<>();
         FindIterable<Document> allOffersDocs = jobOfferCollection.find();
         for(Document d : allOffersDocs){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass), d.getString("companyName"));
             allOffers.add(offer);
         }
         return allOffers;

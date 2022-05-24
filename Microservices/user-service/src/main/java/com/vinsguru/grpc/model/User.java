@@ -30,6 +30,8 @@ public class User {
     public List<WorkExperience> experinces;
     private String verificationCode;
     private boolean isActivated;
+    private boolean companyOwner;
+
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
         this.firstName = firstName;
@@ -42,6 +44,7 @@ public class User {
         this.gender = gender;
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
+        this.companyOwner = false;
     }
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate, String verificationCode, boolean isActivated) {
@@ -55,6 +58,7 @@ public class User {
         this.gender = gender;
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
+        this.companyOwner = false;
     }
 
     public boolean isActivated() {
@@ -205,12 +209,14 @@ public class User {
         this.experinces=new ArrayList<>();
         this.verificationCode = verificationCode;
         this.isActivated = isActivated;
+        this.companyOwner = false;
     }
 
     public User(String email, String verificationCode, boolean isActivated){
         this.email=email;
         this.isActivated= isActivated;
         this.verificationCode=verificationCode;
+        this.companyOwner = false;
     }
 
     public User(ObjectId id,String firstName, String lastName, String username, String email, String password, boolean privateProfile,
@@ -231,6 +237,7 @@ public class User {
         this.skills = skills;
         this.educations=educations;
         this.experinces=experinces;
+        this.companyOwner = false;
     }
 
     public List<WorkExperience> getExperinces() {
@@ -247,6 +254,14 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return firstName.equals(user.firstName) && lastName.equals(user.lastName) && username.equals(user.username) && email.equals(user.email) && password.equals(user.password);
+    }
+
+    public boolean isCompanyOwner() {
+        return companyOwner;
+    }
+
+    public void setCompanyOwner(boolean companyOwner) {
+        this.companyOwner = companyOwner;
     }
 
     @Override

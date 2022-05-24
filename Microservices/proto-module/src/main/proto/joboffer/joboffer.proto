@@ -15,15 +15,25 @@ message JobOfferCreationParams{
   string position = 1;
   string jobDescription = 2;
   string dailyActivities = 3;
-  CandidateRequirements candidateRequirements = 4;
+  string candidateRequirements = 4;
+  string companyName = 5;
 }
 
 message CandidateRequirements{
   repeated string requirement = 1;
 }
 
+message CompanyOwnerEmail{
+  string email = 1;
+}
+
+message CompanyNamesForEmail{
+  string companyNames = 1;
+}
+
 service JobOfferService {
 
     rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
+    rpc getCompanyNamesForEmail(CompanyOwnerEmail) returns (CompanyNamesForEmail) {};
 
 }
