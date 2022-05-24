@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JobOffer {
 
@@ -20,6 +21,35 @@ public class JobOffer {
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
+    }
+
+    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, List<String> candidateRequirements){
+        this.id = id;
+        this.position = position;
+        this.jobDescription = jobDescription;
+        this.dailyActivities = dailyActivities;
+        this.candidateRequirements = candidateRequirements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JobOffer jobOffer = (JobOffer) o;
+        return Objects.equals(getId(), jobOffer.getId()) && Objects.equals(getPosition(), jobOffer.getPosition()) && Objects.equals(getJobDescription(), jobOffer.getJobDescription()) && Objects.equals(getDailyActivities(), jobOffer.getDailyActivities()) && Objects.equals(getCandidateRequirements(), jobOffer.getCandidateRequirements());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPosition(), getJobDescription(), getDailyActivities(), getCandidateRequirements());
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public JobOffer(){

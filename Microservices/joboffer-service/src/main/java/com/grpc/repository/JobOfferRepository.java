@@ -1,11 +1,10 @@
 package com.grpc.repository;
 
 import com.grpc.model.JobOffer;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 
 public class JobOfferRepository {
 
+    final static Class<? extends List> docClass = new ArrayList<Document>().getClass();
     private static JobOfferRepository instance = null;
     private MongoClient mongoClient;
     private MongoDatabase jobOfferDatabase;
@@ -48,6 +48,38 @@ public class JobOfferRepository {
         jobOfferCollection.insertOne(jobOfferToSave);
     }
 
-    
+    public List<JobOffer> searchJobOfferByParam(String paramName, String paramValue){
+        FindIterable<Document> foundOffers;
+        List<JobOffer> jobOffers = new ArrayList<>();
+        if(paramName.isEmpty()){
+            foundOffers = jobOfferCollection.find();
+        }else{
+            foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
+        }
+        for(Document d : foundOffers){
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass));
+            jobOffers.add(offer);
+        }
+        return jobOffers;
+    }
+
+    public List<JobOffer> getAllJobOffers(){
+        List<JobOffer> allOffers = new ArrayList<>();
+        FindIterable<Document> allOffersDocs = jobOfferCollection.find();
+        for(Document d : allOffersDocs){
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass));
+            allOffers.add(offer);
+        }
+        return allOffers;
+    }
+
+    public JobOffer findJobOfferById(ObjectId id){
+        for(JobOffer jo : getAllJobOffers()){
+            if(jo.getId().equals(id)){
+                return jo;
+            }
+        }
+        return new JobOffer();
+    }
 
 }
