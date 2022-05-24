@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package joboffer;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.joboffer";
+option java_multiple_files = true;
+
+service JobOfferService {
+
+
+
+}
