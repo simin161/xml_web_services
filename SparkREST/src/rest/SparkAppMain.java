@@ -44,7 +44,7 @@ public class SparkAppMain {
 	private static UserService userService = new UserService();
 	private static CertificateService certificateService = new CertificateService();
 	public static void main(String[] args) throws Exception {
-		port(8080);
+		port(8081);
 
 		//webSocket("/ws", WsHandler.class);
 
