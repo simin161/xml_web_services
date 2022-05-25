@@ -282,6 +282,29 @@ public class AggregatorController {
         return null;
     }
 
+    @PostMapping("/deleteEducation")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean deleteEducation(@RequestHeader("Authentication") HttpHeaders header,@RequestBody EducationDto educationDto){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)) {
+            String email = tokenUtils.getUsernameFromToken(value);
+            return aggregatorService.deleteEducation(email,educationDto.getId());
+        }
+        return false;
+    }
+    @PostMapping("/deleteExperience")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean deleteExperience(@RequestHeader("Authentication") HttpHeaders header,@RequestBody WorkExperienceDto workExperienceDto){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)) {
+            String email = tokenUtils.getUsernameFromToken(value);
+            return aggregatorService.deleteExperience(email,workExperienceDto.getId());
+        }
+        return false;
+    }
+
     @PostMapping("/numOfCommentsByPostId")
     public int findNumOfCommentsByPostId(@RequestBody Map<String, String> postId){
         return postService.getNumOfCommentsByPostId(postId.get("id"));

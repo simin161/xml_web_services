@@ -1,14 +1,18 @@
 <template>
+<nav  class="navbar navbar-fixed-top navbar-expand" style="background-color: white; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
+      <div class="container-fluid" style="background-color: white; text-align: right">
+      <a class="navbar-brand"   >
+      <img src="../assets/dislinktLogo.jpg" alt="" width="200" height="80" >
+      </a>
+     <button id="buttonhomepage" class="btn" @click="sign()" style="font-size: 150%">Sign up</button>
+     
+      </div>
+    </nav>
 
-<div  >
-  <div class="row" id="slikadiv" >
-    <div class=" justify-content-center" style="padding: 5%; padding-left: 20%; padding-right: 20%; ">
-       <div class="row" style="height: 20%; padding-bottom: 5%;" >
-         <button class="btn" @click="sign()" style=" background-color: black; color: white; font-size: 200%">Show me</button>
-       </div>
-    </div>
-  </div>
-</div>
+
+
+        
+       
 </template>
 
 <script>
@@ -52,6 +56,14 @@ export default {
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+}
+#buttonhomepage{
+   background-color: #000000;
+   color: white;
+}
+#buttonhomepage:hover{
+   background-color: #e385fe;
+   color: white;
 }
 
 #nav a.router-link-exact-active {
