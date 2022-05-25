@@ -44,7 +44,8 @@ public class JobOfferRepository {
         jobOfferToSave.append("position", jobOffer.getPosition())
                 .append("jobDescription", jobOffer.getJobDescription())
                 .append("dailyActivities", jobOffer.getDailyActivities())
-                .append("candidateRequirements", jobOffer.getCandidateRequirements());
+                .append("candidateRequirements", jobOffer.getCandidateRequirements())
+                .append("userAPItoken", jobOffer.getUserAPItoken());
         jobOfferCollection.insertOne(jobOfferToSave);
     }
 
@@ -57,7 +58,7 @@ public class JobOfferRepository {
             foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
         }
         for(Document d : foundOffers){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"), d.getString("userAPItoken"));
             jobOffers.add(offer);
         }
         return jobOffers;
@@ -67,7 +68,7 @@ public class JobOfferRepository {
         List<JobOffer> allOffers = new ArrayList<>();
         FindIterable<Document> allOffersDocs = jobOfferCollection.find();
         for(Document d : allOffersDocs){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"), d.getString("userAPItoken"));
             allOffers.add(offer);
         }
         return allOffers;

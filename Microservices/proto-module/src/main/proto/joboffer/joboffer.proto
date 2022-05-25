@@ -17,6 +17,7 @@ message JobOfferCreationParams{
   string dailyActivities = 3;
   string candidateRequirements = 4;
   string companyName = 5;
+  string userApiToken = 6;
 }
 
 message CandidateRequirements{
@@ -46,12 +47,12 @@ message SearchedOffer{
   string dailyActivities = 4;
   string candidateRequirements = 5;
   string companyName = 6;
+  string userApiToken = 7;
 }
 
 service JobOfferService {
 
     rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
-    rpc getCompanyNamesForEmail(CompanyOwnerEmail) returns (CompanyNamesForEmail) {};
     rpc searchJobOffers(SearchParam) returns (SearchReturnValue) {};
 
 }

@@ -10,13 +10,15 @@ public class JobOfferDto {
     private String dailyActivities;
     private String companyName;
     private String candidateRequirements;
+    private String userAPItoken;
 
-    public JobOfferDto(String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName){
+    public JobOfferDto(String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName, String userAPItoken){
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
         this.companyName = companyName;
+        this.userAPItoken = userAPItoken;
     }
 
     public JobOfferDto(){
@@ -25,6 +27,7 @@ public class JobOfferDto {
         this.dailyActivities="";
         this.candidateRequirements= "";
         this.companyName="";
+        this.userAPItoken="";
     }
 
     public String getPosition() {
@@ -66,4 +69,13 @@ public class JobOfferDto {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
+    public String getUserAPItoken() {
+        return userAPItoken;
+    }
+
+    public void setUserAPItoken(String userAPItoken) {
+        this.userAPItoken = userAPItoken;
+    }
+
 }

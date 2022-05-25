@@ -13,24 +13,34 @@ public class JobOffer {
     private String jobDescription;
     private String dailyActivities;
     private String candidateRequirements;
+    private String userAPItoken;
 
-    public JobOffer(String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName){
+    public JobOffer(String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName, String userAPItoken){
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
         this.companyName = companyName;
+        this.userAPItoken = userAPItoken;
     }
 
-    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName){
+    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName, String userAPItoken){
         this.id = id;
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
         this.candidateRequirements = candidateRequirements;
         this.companyName = companyName;
+        this.userAPItoken = userAPItoken;
     }
-
+    public JobOffer(){
+        this.position="";
+        this.jobDescription="";
+        this.dailyActivities="";
+        this.candidateRequirements="";
+        this.companyName="";
+        this.userAPItoken = "";
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,14 +68,6 @@ public class JobOffer {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public JobOffer(){
-        this.position="";
-        this.jobDescription="";
-        this.dailyActivities="";
-        this.candidateRequirements="";
-        this.companyName="";
     }
 
     public String getPosition() {
@@ -98,5 +100,13 @@ public class JobOffer {
 
     public void setCandidateRequirements(String candidateRequirements) {
         this.candidateRequirements = candidateRequirements;
+    }
+
+    public String getUserAPItoken() {
+        return userAPItoken;
+    }
+
+    public void setUserAPItoken(String userAPItoken) {
+        this.userAPItoken = userAPItoken;
     }
 }

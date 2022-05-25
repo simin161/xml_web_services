@@ -334,22 +334,8 @@ public class AggregatorController {
     }
 
     @PostMapping("/createJobOffer")
-   // @PreAuthorize("hasRole('ROLE_REG_USER')")
-    public boolean createJobOffer(@RequestHeader("Authentication") HttpHeaders header, @RequestBody JobOfferDto jobOfferDto){
+    public boolean createJobOffer(@RequestBody JobOfferDto jobOfferDto){
         return jobOfferService.createJobOffer(jobOfferDto);
-    }
-
-    @GetMapping("/getAllUserCompanies")
-    //@PreAuthorize("hasRole('ROLE_REG_USER')")
-    public List<String> getAllUserCompanies(@RequestHeader("Authentication")HttpHeaders header){
-        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-        try{
-            String email = tokenUtils.getUsernameFromToken(value);
-            return jobOfferService.getAllUserCompanies(email);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
     }
 
     @GetMapping("/searchJobOffers/{param}")
