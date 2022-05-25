@@ -82,6 +82,7 @@ message Output {
   string interests = 12;
   string skills = 13;
   string isEnabled = 14;
+  string userAPIToken = 15;
 }
 message OutputMessage {
   string outputMessage = 1;
@@ -182,6 +183,15 @@ message FindUserByAPItokenOutput{
   string result = 1;
 }
 
+message SaveUserAPITokenInput{
+  string email = 1;
+  string tokenValue = 2;
+}
+
+message SaveUserAPITokenOutput{
+  string value = 1;
+}
+
 service UserService {
 
   rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
@@ -221,5 +231,7 @@ service UserService {
   rpc passwordlessLogin(PasswordlessLogin) returns (VerificationReturnValue) {};
 
   rpc findUserByAPItoken(FindUserByAPItokenInput) returns (FindUserByAPItokenOutput) {};
+
+  rpc saveUserAPIToken(SaveUserAPITokenInput) returns (SaveUserAPITokenOutput) {};
 
 }

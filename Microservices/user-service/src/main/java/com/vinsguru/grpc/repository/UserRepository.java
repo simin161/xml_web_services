@@ -319,4 +319,13 @@ public class UserRepository {
         }
         return null;
     }
+
+    public void updateTokenValue(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("userAPItoken", user.getUserAPItoken())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
 }

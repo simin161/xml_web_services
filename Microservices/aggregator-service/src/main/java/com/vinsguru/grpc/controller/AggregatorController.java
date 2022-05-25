@@ -31,9 +31,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -341,6 +341,21 @@ public class AggregatorController {
     @GetMapping("/searchJobOffers/{param}")
     public List<JobOfferDto> searchJobOffers(@PathVariable("param") String param){
         return jobOfferService.searchJobOffers(param);
+    }
+
+    @PostMapping("/generateUserAPIToken")
+    public boolean generateUserAPIToken(@RequestHeader("Authentication")HttpHeaders header){
+        boolean retVal = false;
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        String token = tokenUtils.generateToken(email, "API");
+        token = token.substring(8, 26);
+        SecureRandom random = new SecureRandom();
+        byte []bytes = new byte[20];
+        random.nextBytes(bytes);
+        token = token.concat(Base64.getUrlEncoder().encodeToString(bytes));
+        retVal = aggregatorService.saveGeneratedToken(email, token);
+        return retVal;
     }
 
 }

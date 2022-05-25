@@ -14,8 +14,9 @@ public class UserDto {
     private String interests;
     private String skills;
     private boolean isEnabled;
+    private String userAPIToken;
 
-    public UserDto(String firstName, String lastName, String username, String email, boolean privateProfile, String birthday, String gender, String phone, String biography, String interests, String skills) {
+    public UserDto(String firstName, String lastName, String username, String email, boolean privateProfile, String birthday, String gender, String phone, String biography, String interests, String skills, String userAPIToken) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -27,6 +28,7 @@ public class UserDto {
         this.biography = biography;
         this.interests = interests;
         this.skills = skills;
+        this.userAPIToken= userAPIToken;
     }
 
     public UserDto(String username,String firstName, String lastName,String email ) {
@@ -135,5 +137,11 @@ public class UserDto {
     public UserDto() {
     }
 
+    public String getUserAPIToken() {
+        return userAPIToken;
+    }
 
+    public void setUserAPIToken(String userAPIToken) {
+        this.userAPIToken = userAPIToken;
+    }
 }

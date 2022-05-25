@@ -26,6 +26,7 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @GrpcService
@@ -105,6 +106,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
                     .setIsEnabled(String.valueOf(user.isActivated()))
                     .setResult(user.getId().toString())
+                    .setUserAPIToken(user.getUserAPItoken())
                     .build();
         }
         responseObserver.onNext(output);
@@ -418,6 +420,23 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             output = FindUserByAPItokenOutput.newBuilder().setResult("false").build();
         }else{
             output = FindUserByAPItokenOutput.newBuilder().setResult("true").build();
+        }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void saveUserAPIToken(SaveUserAPITokenInput input, StreamObserver<SaveUserAPITokenOutput> responseObserver){
+        SaveUserAPITokenOutput output;
+        try{
+            User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+            user.setUserAPItoken(input.getTokenValue());
+            UserRepository.getInstance().updateTokenValue(user);
+            mailService.sendUserAPITokenMail(input.getEmail(), input.getTokenValue());
+            output = SaveUserAPITokenOutput.newBuilder().setValue("true").build();
+        }catch(Exception e){
+            output = SaveUserAPITokenOutput.newBuilder().setValue("false").build();
+            e.printStackTrace();
         }
         responseObserver.onNext(output);
         responseObserver.onCompleted();
