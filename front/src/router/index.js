@@ -8,6 +8,7 @@ import UpdateEducation from '../views/UpdateEducation.vue'
 import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
 import YetAnotherEmailForm from '../views/YetAnotherEmailForm.vue'
 import PasswordChange from '../views/PasswordChange.vue'
+import Homepage from '../views/Homepage.vue'
 
 const routes = [
   
@@ -35,6 +36,19 @@ const routes = [
       {
         path: '/profilePage',
         component: ProfilePage
+      }
+
+    ]
+  },
+  {
+    path: '/homepage/:id',
+    name: 'Homepage',
+    component: Homepage,
+    children: [
+
+      {
+        path: '/homepage',
+        component: Homepage
       }
 
     ]

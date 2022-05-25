@@ -9,25 +9,36 @@ public class EducationDto {
     private String fieldOfStudy;
     private String from;
     private String to;
+    private String id;
 
-    public EducationDto(String school, String degree, String fieldOfStudy, String from, String to) {
+    public EducationDto(String school, String degree, String fieldOfStudy, String from, String to,String id) {
         this.school = school;
         this.degree = degree;
         this.fieldOfStudy = fieldOfStudy;
         this.from = from;
         this.to = to;
+        this.id=id;
     }
 
-    public EducationDto(String email,String school, String degree, String fieldOfStudy, String from, String to) {
+    public EducationDto(String email,String school, String degree, String fieldOfStudy, String from, String to,String id) {
         this.email = email;
         this.school = school;
         this.degree = degree;
         this.fieldOfStudy = fieldOfStudy;
         this.from = from;
         this.to = to;
+        this.id=id;
     }
 
     public EducationDto() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {

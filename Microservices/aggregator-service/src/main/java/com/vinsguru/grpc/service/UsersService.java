@@ -8,7 +8,7 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.utility.Validation;
-import jdk.jfr.Experimental;
+
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -140,7 +140,7 @@ public class UsersService {
 
         for (OutputEducation outputEducation:  this.blockingStub.getEducationsUserByEmail(input).getEducationsList()){
             educationDtos.add(new EducationDto(email,outputEducation.getSchool(),outputEducation.getDegree(),outputEducation.getFieldOfStudy(),
-                    outputEducation.getFrom(),outputEducation.getTo()));
+                    outputEducation.getFrom(),outputEducation.getTo(),outputEducation.getId()));
         }
         return educationDtos;
     }
@@ -199,7 +199,7 @@ public class UsersService {
                 .build();
 
         for (OutputExperience output:  this.blockingStub.getExperiencesByEmail(input).getExperiencesList()){
-            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo()));
+            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo(),output.getId()));
         }
         return experienceDtos;
     }
@@ -268,5 +268,19 @@ public class UsersService {
                 .setNewPassword(passwordEncoder.encode(message.get("newPassword")))
                 .setOldPassword(message.get("oldPassword")).build();
         return blockingStub.changePassword(pI).getResult();
+    }
+
+    public boolean deleteEducation(String email, String id) {
+        blockingStub = openChannelToUserService();
+        InputDeleting dI = InputDeleting.newBuilder().setEmail(email)
+                .setId(id).build();
+        return blockingStub.deleteEducation(dI).getPrivate();
+    }
+
+    public boolean deleteExperience(String email, String id) {
+        blockingStub = openChannelToUserService();
+        InputDeleting dI = InputDeleting.newBuilder().setEmail(email)
+                .setId(id).build();
+        return blockingStub.deleteExperience(dI).getPrivate();
     }
 }

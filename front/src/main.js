@@ -4,8 +4,7 @@ import router from './router'
 //bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap';
-import './index.css'
-import './sweetalert.css'
+
 //alertovi
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'; 
