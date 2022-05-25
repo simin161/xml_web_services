@@ -61,6 +61,18 @@ public class User {
         this.userAPItoken="";
     }
 
+    public User(String firstName, String lastName, String username, String email, String password, String verificationCode, Boolean isActivated, String userAPItoken) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.privateProfile = false;
+        this.educations=new ArrayList<>();
+        this.experinces=new ArrayList<>();
+        this.userAPItoken=userAPItoken;
+    }
+
     public boolean isActivated() {
         return isActivated;
     }
