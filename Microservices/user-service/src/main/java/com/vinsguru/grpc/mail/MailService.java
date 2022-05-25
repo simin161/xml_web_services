@@ -15,7 +15,7 @@ public class MailService {
 
     public void sendVerificationEmail(User u, String siteURL)
             throws MessagingException, UnsupportedEncodingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Please verify your registration";
         String content = "Dear user,<br>"
@@ -35,7 +35,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
@@ -54,7 +54,7 @@ public class MailService {
 
     public void sendForgottenPasswordEmail(String email, String newPassword)
             throws MessagingException, UnsupportedEncodingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Forgotten password";
         String content = "Dear user,<br>"
@@ -76,7 +76,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
@@ -92,7 +92,7 @@ public class MailService {
     }
 
     public void sendPasswordlessLoginEmail(String email, String siteURL) throws MessagingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Your passwordless login is ready";
         String content = "Dear user,<br>"
@@ -114,7 +114,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
