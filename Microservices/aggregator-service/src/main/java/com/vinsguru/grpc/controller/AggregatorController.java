@@ -248,7 +248,7 @@ public class AggregatorController {
         return postService.getAllPosts();
     }
 
-    @GetMapping("/getAllUserPosts/user:{email}")
+    @GetMapping("/getAllUserPosts/{email:.+}/")
     public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
         if(Validation.validateEmail(email))
             return postService.getAllUsersPosts(email);
