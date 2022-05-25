@@ -2,9 +2,6 @@ package com.grpc.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class JobOffer {
@@ -15,9 +12,9 @@ public class JobOffer {
     private String companyName;
     private String jobDescription;
     private String dailyActivities;
-    private List<String> candidateRequirements;
+    private String candidateRequirements;
 
-    public JobOffer(String position, String jobDescription, String dailyActivities, List<String> candidateRequirements, String companyName){
+    public JobOffer(String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName){
         this.position = position;
         this.jobDescription = jobDescription;
         this.dailyActivities = dailyActivities;
@@ -25,7 +22,7 @@ public class JobOffer {
         this.companyName = companyName;
     }
 
-    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, List<String> candidateRequirements, String companyName){
+    public JobOffer(ObjectId id, String position, String jobDescription, String dailyActivities, String candidateRequirements, String companyName){
         this.id = id;
         this.position = position;
         this.jobDescription = jobDescription;
@@ -67,8 +64,8 @@ public class JobOffer {
         this.position="";
         this.jobDescription="";
         this.dailyActivities="";
-        this.candidateRequirements= new ArrayList<>();
-        this.companyName = "";
+        this.candidateRequirements="";
+        this.companyName="";
     }
 
     public String getPosition() {
@@ -95,11 +92,11 @@ public class JobOffer {
         this.dailyActivities = dailyActivities;
     }
 
-    public List<String> getCandidateRequirements() {
+    public String getCandidateRequirements() {
         return candidateRequirements;
     }
 
-    public void setCandidateRequirements(List<String> candidateRequirements) {
+    public void setCandidateRequirements(String candidateRequirements) {
         this.candidateRequirements = candidateRequirements;
     }
 }

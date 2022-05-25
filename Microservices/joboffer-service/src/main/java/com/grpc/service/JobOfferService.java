@@ -9,6 +9,7 @@ import proto.joboffer.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @GrpcService
 public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase {
@@ -18,12 +19,7 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
         JobOfferCreationReturnValue jocrv;
         //pretpostavka: job offer cak i kada je isti moguce je da su u pitanju dva razlicita job offera?
         try{
-            List<String> reqs = new ArrayList<>();
-            String []parts = createParams.getCandidateRequirements().split(", ");
-            for(String p : parts){
-                reqs.add(p);
-            }
-            JobOffer jobOffer = new JobOffer(createParams.getPosition(), createParams.getJobDescription(), createParams.getDailyActivities(), reqs, createParams.getCompanyName());
+            JobOffer jobOffer = new JobOffer(createParams.getPosition(), createParams.getJobDescription(), createParams.getDailyActivities(), createParams.getCandidateRequirements(), createParams.getCompanyName());
             JobOfferRepository.getInstance().createJobOffer(jobOffer);
             jocrv = JobOfferCreationReturnValue.newBuilder().setRetVal("true").build();
         }catch(Exception e){
@@ -33,6 +29,7 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
         responseObserver.onCompleted();
     }
 
+    //proveriti da li valja
     @Override
     public void getCompanyNamesForEmail(CompanyOwnerEmail email, StreamObserver<CompanyNamesForEmail> responseObserver){
         CompanyNamesForEmail cnfe;
@@ -51,6 +48,26 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
             e.printStackTrace();
         }
         responseObserver.onNext(cnfe);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void searchJobOffers(SearchParam param, StreamObserver<SearchReturnValue> responseObserver){
+        SearchReturnValue srv;
+        try{
+            List<JobOffer> searchedOffers = JobOfferRepository.getInstance().searchJobOfferByParam("position", param.getParam());
+            List<SearchedOffer> retVal = new ArrayList<>();
+            for(JobOffer jo : searchedOffers){
+                SearchedOffer so = SearchedOffer.newBuilder().setId(jo.getId().toString()).setCompanyName(jo.getCompanyName()).setDailyActivities(jo.getDailyActivities())
+                        .setJobDescription(jo.getJobDescription()).setCandidateRequirements(jo.getCandidateRequirements()).build();
+                retVal.add(so);
+            }
+            srv = SearchReturnValue.newBuilder().addAllOffer(retVal).build();
+        }catch(Exception e){
+            srv = SearchReturnValue.newBuilder().build();
+            e.printStackTrace();
+        }
+        responseObserver.onNext(srv);
         responseObserver.onCompleted();
     }
 

@@ -7,6 +7,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JobOfferRepository {
@@ -56,7 +57,7 @@ public class JobOfferRepository {
             foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
         }
         for(Document d : foundOffers){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass), d.getString("companyName"));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"));
             jobOffers.add(offer);
         }
         return jobOffers;
@@ -66,7 +67,7 @@ public class JobOfferRepository {
         List<JobOffer> allOffers = new ArrayList<>();
         FindIterable<Document> allOffersDocs = jobOfferCollection.find();
         for(Document d : allOffersDocs){
-            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.get("candidateRequirements", docClass), d.getString("companyName"));
+            JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"));
             allOffers.add(offer);
         }
         return allOffers;

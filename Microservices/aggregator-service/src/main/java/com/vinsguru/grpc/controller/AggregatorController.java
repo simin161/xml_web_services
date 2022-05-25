@@ -351,4 +351,10 @@ public class AggregatorController {
         }
         return new ArrayList<>();
     }
+
+    @GetMapping("/searchJobOffers/{param}")
+    public List<JobOfferDto> searchJobOffers(@PathVariable("param") String param){
+        return jobOfferService.searchJobOffers(param);
+    }
+
 }

@@ -48,4 +48,20 @@ public class JobOfferService {
         }
         return allCompanyNames;
     }
+
+    public List<JobOfferDto> searchJobOffers(String param){
+        List<JobOfferDto> searchedOffers = new ArrayList<>();
+        try{
+            blockingStub = openChannelToJobOfferService();
+            SearchParam sp = SearchParam.newBuilder().setParam(param).build();
+            SearchReturnValue srv = blockingStub.searchJobOffers(sp);
+            for(SearchedOffer so : srv.getOfferList()){
+                JobOfferDto jod = new JobOfferDto(so.getPosition(), so.getJobDescription(), so.getDailyActivities(), so.getCandidateRequirements(), so.getCompanyName());
+                searchedOffers.add(jod);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return searchedOffers;
+    }
 }

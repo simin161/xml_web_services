@@ -31,9 +31,27 @@ message CompanyNamesForEmail{
   string companyNames = 1;
 }
 
+message SearchParam{
+  string param = 1;
+}
+
+message SearchReturnValue{
+  repeated SearchedOffer offer = 1;
+}
+
+message SearchedOffer{
+  string id = 1;
+  string position = 2;
+  string jobDescription = 3;
+  string dailyActivities = 4;
+  string candidateRequirements = 5;
+  string companyName = 6;
+}
+
 service JobOfferService {
 
     rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
     rpc getCompanyNamesForEmail(CompanyOwnerEmail) returns (CompanyNamesForEmail) {};
+    rpc searchJobOffers(SearchParam) returns (SearchReturnValue) {};
 
 }
