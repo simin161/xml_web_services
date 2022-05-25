@@ -269,4 +269,14 @@ public class UsersService {
                 .setOldPassword(message.get("oldPassword")).build();
         return blockingStub.changePassword(pI).getResult();
     }
+
+    public boolean findUserByAPItoken(String userAPItoken){
+        boolean retVal = false;
+        blockingStub = openChannelToUserService();
+        FindUserByAPItokenInput input = FindUserByAPItokenInput.newBuilder().setUserAPItoken(userAPItoken).build();
+        String ret = blockingStub.findUserByAPItoken(input).getResult();
+        if(ret.equals("true"))
+            retVal = true;
+        return retVal;
+    }
 }

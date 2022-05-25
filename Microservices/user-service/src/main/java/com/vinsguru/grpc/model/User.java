@@ -30,7 +30,7 @@ public class User {
     public List<WorkExperience> experinces;
     private String verificationCode;
     private boolean isActivated;
-    private boolean companyOwner;
+    private String userAPItoken;
 
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
@@ -44,7 +44,7 @@ public class User {
         this.gender = gender;
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
-        this.companyOwner = false;
+        this.userAPItoken="";
     }
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate, String verificationCode, boolean isActivated) {
@@ -58,7 +58,7 @@ public class User {
         this.gender = gender;
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
-        this.companyOwner = false;
+        this.userAPItoken="";
     }
 
     public boolean isActivated() {
@@ -209,14 +209,14 @@ public class User {
         this.experinces=new ArrayList<>();
         this.verificationCode = verificationCode;
         this.isActivated = isActivated;
-        this.companyOwner = false;
+        this.userAPItoken = "";
     }
 
     public User(String email, String verificationCode, boolean isActivated){
         this.email=email;
         this.isActivated= isActivated;
         this.verificationCode=verificationCode;
-        this.companyOwner = false;
+        this.userAPItoken = "";
     }
 
     public User(ObjectId id,String firstName, String lastName, String username, String email, String password, boolean privateProfile,
@@ -237,7 +237,7 @@ public class User {
         this.skills = skills;
         this.educations=educations;
         this.experinces=experinces;
-        this.companyOwner = false;
+        this.userAPItoken = "";
     }
 
     public List<WorkExperience> getExperinces() {
@@ -256,12 +256,12 @@ public class User {
         return firstName.equals(user.firstName) && lastName.equals(user.lastName) && username.equals(user.username) && email.equals(user.email) && password.equals(user.password);
     }
 
-    public boolean isCompanyOwner() {
-        return companyOwner;
+    public String getUserAPItoken() {
+        return userAPItoken;
     }
 
-    public void setCompanyOwner(boolean companyOwner) {
-        this.companyOwner = companyOwner;
+    public void setUserAPItoken(String userAPItoken) {
+        this.userAPItoken = userAPItoken;
     }
 
     @Override

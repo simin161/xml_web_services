@@ -45,6 +45,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthDate());
                 User u = new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date);
                 u.setActivated(false);
+                u.setUserAPItoken("");
                 setVerificationCode(RandomString.make(64), u);
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
@@ -406,6 +407,19 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("false").build();
             responseObserver.onNext(pso);
         }
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void findUserByAPItoken(FindUserByAPItokenInput input, StreamObserver<FindUserByAPItokenOutput> responseObserver){
+        User user = UserRepository.getInstance().findUserByAPItoken(input.getUserAPItoken());
+        FindUserByAPItokenOutput output;
+        if(user == null) {
+            output = FindUserByAPItokenOutput.newBuilder().setResult("false").build();
+        }else{
+            output = FindUserByAPItokenOutput.newBuilder().setResult("true").build();
+        }
+        responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
 }

@@ -312,4 +312,11 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
 
+    public User findUserByAPItoken(String userAPItoken) {
+        for(User u : getAllUsers()){
+            if(u.getUserAPItoken().equals(userAPItoken))
+                return u;
+        }
+        return null;
+    }
 }
