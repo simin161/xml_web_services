@@ -9,7 +9,8 @@ import UpdateWorkExperience from '../views/UpdateWorkExperience.vue'
 import YetAnotherEmailForm from '../views/YetAnotherEmailForm.vue'
 import PasswordChange from '../views/PasswordChange.vue'
 import Homepage from '../views/Homepage.vue'
-
+import CreateNewPost from  '../views/CreateNewPost.vue'
+import ShowProfile from '../views/ShowProfile.vue'
 const routes = [
   
   {
@@ -41,6 +42,19 @@ const routes = [
     ]
   },
   {
+    path: '/showProfile/:id/:username',
+    name: 'ShowProfile',
+    component: ShowProfile,
+    children: [
+
+      {
+        path: '/showProfile/:username',
+        component: ShowProfile
+      }
+
+    ]
+  },
+  {
     path: '/homepage/:id',
     name: 'Homepage',
     component: Homepage,
@@ -49,6 +63,19 @@ const routes = [
       {
         path: '/homepage',
         component: Homepage
+      }
+
+    ]
+  },
+  {
+    path: '/createNewPost/:id',
+    name: 'CreateNewPost',
+    component: CreateNewPost,
+    children: [
+
+      {
+        path: '/createNewPost',
+        component: CreateNewPost
       }
 
     ]

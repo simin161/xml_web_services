@@ -32,13 +32,13 @@
                 <div class="card-body" style="padding: 5%;">
                     <div class="text-center" style="padding: 3%;">
                         <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><title>Lucy Stone</title><mask id="mask__beam" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#mask__beam)"><rect width="36" height="36" fill="#a65bb7"></rect><rect x="0" y="0" width="36" height="36" transform="translate(4 4) rotate(340 18 18) scale(1.1)" fill="#240c39" rx="36"></rect><g transform="translate(-4 -3) rotate(0 18 18)"><path d="M15 20c2 1 4 1 6 0" stroke="#FFFFFF" fill="none" stroke-linecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect></g></g></svg>
-                        <h3 id="fullName">{{loggedUser.firstName}} {{loggedUser.lastName}}</h3>
-                        <p id="username">{{loggedUser.username}} </p>
-                       
+                        <h3 id="fullName">{{user.firstName}} {{user.lastName}}</h3>
+                        <p id="username" >{{user.username}} </p>
+                         <p id="username" v-if="user.privateProfile==true">PRIVATE PROFILE</p>
                     </div>
                     <br>
     <br>
-                    <div class="personal-info" style="text-align: left;">
+                    <div v-if="user.privateProfile==false" class="personal-info" style="text-align: left;">
                         <h5 style="text-align: left">Personal Information</h5>
                            <hr>
                             <div class="row">
@@ -46,7 +46,7 @@
                                  Email
                                 </div>
                                 <div class="col" style="text-align: right">
-                                    <p id="email"><b>{{loggedUser.email}}</b></p>
+                                    <p id="email"><b>{{user.email}}</b></p>
                                 </div>
                             </div>
 
@@ -55,7 +55,7 @@
                                  Phone
                                 </div>
                                 <div class="col" style="text-align: right">
-                                     <p id="phone"><b> {{loggedUser.phone}}</b></p>
+                                     <p id="phone"><b> {{user.phone}}</b></p>
                                 </div>
                             </div>
 
@@ -64,7 +64,7 @@
                                  Gender
                                 </div>
                                 <div class="col" style="text-align: right">
-                                     <p id="phone"> <b>{{loggedUser.gender}} </b></p>
+                                     <p id="phone"> <b>{{user.gender}} </b></p>
                                 </div>
                             </div>
                               <div class="row">
@@ -72,7 +72,7 @@
                                  Birthday
                                 </div>
                                 <div class="col" style="text-align: right">
-                                     <p id="phone"><b> {{loggedUser.birthday}}</b></p>
+                                     <p id="phone"><b> {{user.birthday}}</b></p>
                                 </div>
                             </div>
                           
@@ -80,37 +80,34 @@
                   
                     </div>
                    <br>
-                    <div class="skill">
+                    <div class="skill" v-if="user.privateProfile==false">
                         <h5 style="text-align: left">Biography</h5>
                         <hr>
-                        <p><b>{{loggedUser.biography}}</b></p>
+                        <p><b>{{user.biography}}</b></p>
                         
                     </div>
-                    <div class="skill">
+                    <div class="skill" v-if="user.privateProfile==false">
                         <h5 style="text-align: left">Interests</h5>
                         <hr>
-                        <p id="interests"><b>{{loggedUser.interests}}</b></p>
+                        <p id="interests"><b>{{user.interests}}</b></p>
                         
                     </div>
-                    <div class="skill">
+                    <div class="skill" v-if="user.privateProfile==false">
                         <h5 style="text-align: left">Skills</h5>
                         <hr>
-                        <p id="skills"><b>{{loggedUser.skills}}</b></p>                    
+                        <p id="skills"><b>{{user.skills}}</b></p>                    
                     </div>   
                 </div>
             </div>
             <br>
 
-            <div class="card left-profile-card">
+            <div class="card left-profile-card" v-if="user.privateProfile==false">
                 <div class="card-body">
                     
                     <div class="personal-info">
                         <div class="row">
                         <div class='col'>
                         <h4 style="text-align: left">Education</h4>
-                           </div>
-                           <div class='col'>
-                               <button id="smaillbuttonProfile" @click="navigateToAddEducation">+</button>
                            </div>
                         </div>             
                          <hr/>
@@ -125,10 +122,7 @@
                                 <p> {{ed.from}} - {{ed.to}}</p>
                                 <p>{{ed.degree}}, {{ed.fieldOfStudy}}</p>
                                 <div style="text-align: right;">
-                                <button @click="educationToDelete=ed" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-  style="width: 13%" type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-</svg></button>
+                            
                                 </div>
                             </li>
                             </ul>
@@ -137,16 +131,13 @@
                 </div>
             </div>
             <br>
-            <div class="card left-profile-card">
+            <div class="card left-profile-card" v-if="user.privateProfile==false">
                 <div class="card-body">
                     
                     <div class="personal-info">
                      <div class="row">
                                 <div class='col'>
                                 <h4 style="text-align: left">Work experience</h4>
-                                </div>
-                                <div class='col'>
-                                    <button id="smaillbuttonProfile" @click="navigateToAddExp">+</button>
                                 </div>
                                 </div>
                         <hr/>
@@ -163,9 +154,7 @@
                                 <p> {{we.workTitle}}</p>
                                 <p>{{we.from}} - {{we.to}}</p>
                                 <div style="text-align: right;">
-                                <button @click="workExpToDelete=we" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" style="width: 13%" type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-</svg></button>
+                             
                                 </div>
                             </li>
                             </ul>
@@ -175,48 +164,59 @@
             </div>
         </div>
         <div class="col-lg-8">
-            <div class="card right-profile-card">
-                <div class="card-header alert-primary" style="background-color: white; color: white;" >
-                                <div class='row' >
-                           
-                             
-                                <div class='col' >
-                                <button @click="redirectCreatePost" id="buttonProfile">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                        </svg> Create post
-                                </button>
-                                </div>
+            <div v-for="post in posts" v-bind:key="post.idPost" class="card">
+                <div class="card-body" style="text-align: left;">
+                    <h5 style="text-align: left"><b>{{user.firstName}} {{user.lastName}}</b></h5>
+           <p style="color: gray; font-size: 13px">{{post.date}}</p>
+           <p style="text-align: left">{{post.text}}</p>
+           
+           <a  target="_blank"  v-bind:href="'http://'+ post.link">{{post.link}}</a> <br>
+           <div style="text-align: center">
+            <img src="../assets/dislinktLogo.jpg" alt="" width="700" height="300" >
+            </div>       
+            <hr>
+                 <div >
+                   <a @click="loadReactions()" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="color: gray; text-decoration: none" target="_blank"  ><b>{{findNumOfReactions(post.idPost)}} reactions </b></a> ,
+                   <a @click="loadComments()" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" style="color: gray; text-decoration: none" target="_blank"  ><b>{{findNumOfComments(post.idPost)}} comments </b></a> 
+                 
+                    
+              
+                 </div>
+      <br>
+            <div >
+                <button style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                 <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                 </svg> Like</button>
 
-                                <div class='col'>
 
-                                <button @click="redirectEditProfile" id="buttonProfile">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                        </svg> Edit profile
-                                </button>
-                             
-                                </div>
-        </div>
-                </div>
-               
-                <div class="card-body">
-                    M
-                </div>
+                <button style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down-fill" viewBox="0 0 16 16">
+                 <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.378 1.378 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51.136.02.285.037.443.051.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.896 1.896 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2.094 2.094 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.162 3.162 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.823 4.823 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591z"/>
+                 </svg> Dislike</button>
+
+
+                <button style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-dots-fill" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg> Comment</button>
                 
             </div>
+                </div>
+            </div>
+             
         </div>
     </div>
 </div>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
 <br><br>
 <div style="background-color: #e6e5e3;" class="footer" >
    <br><br>
     XWS project.
    <br><br> <br><br>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -226,36 +226,37 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete education?</p>
+        <h3>Reactions</h3>
+        <hr>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button @click="deleteEducation()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel1"></h5>
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete experience?</p>
+        <h3>Comments</h3>
+        <hr>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button @click="deleteWorkExp()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
       </div>
     </div>
   </div>
 </div>
+    
 </template>
 <script>
   import axios from "axios";
@@ -263,13 +264,17 @@
   data() {
     return {
         loggedUser : {},
+        user : {},
         educations: {},
         workExperiences: {},
-        educationToDelete: null,
-        workExpToDelete: null,
+        posts: {},
+
     };
   },
   mounted() {
+      
+          const username= window.location.pathname.split('/')[2]
+          console.log("username "+username)
       if(localStorage.getItem("loggedUser") === ''){
           const email= window.location.pathname.split('/')[2]
           if(email === '')
@@ -283,95 +288,85 @@
        .then((response) => {
            this.loggedUser = response.data;
            console.log(response.data);
-            axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
-                 .then((response) => {
-                    this.educations = response.data;
-                 })
-                 .catch(function (error) {
-                    console.log(error);
-                 });
-            axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.loggedUser.email+"/")
-                 .then((response) => {
-                    this.workExperiences = response.data;
-                 })
-                 .catch(function (error) {
-                    console.log(error);
-                 });
-       })
-       .catch(function (error) {
-       console.log(error);
-       });
-  },
-  methods: {   
-    redirectEditProfile: function(){
-        this.$router.push("/editProfile")
-    },
-    redirectCreatePost: function(){
-        this.$router.push("/createNewPost")
-    },
-    navigateToAddEducation: function(){
-        this.$router.push("/updateEducation")
-    },
-    navigateToAddExp: function(){
-        this.$router.push("/updateWorkExperience")
-    } ,
-    signOut : function(){
-        localStorage.setItem("loggedUser", '');
-        this.$router.push("/signIn");
-    },
-    deleteEducation: function(){
-    console.log("MENE BRISES" +this.educationToDelete.school)
-                 axios.post(process.env.VUE_APP_BACK + 'deleteEducation',
-                 {
-                    id:  this.educationToDelete.id
-                 })
-                 .then((response) => {
-                       this.$swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Education deleted',
-                         showConfirmButton: false,
-                          timer: 1500
-                             })
-                       axios.get(process.env.VUE_APP_BACK + 'educations/'+this.loggedUser.email+"/")
+                axios.get(process.env.VUE_APP_BACK + 'user/'+username+"/")
+                .then((response) => {
+                    this.user = response.data;
+                    console.log(response.data);
+                        axios.get(process.env.VUE_APP_BACK + 'educations/'+this.user.email+"/")
                             .then((response) => {
                                 this.educations = response.data;
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-                            return response;
-                  })
-                 .catch(function (error) {
-                    console.log(error);
-                 });
-    },
-    deleteWorkExp: function(){
-    console.log("MENE BRISES" +this.workExpToDelete.workTitle)
-     axios.post(process.env.VUE_APP_BACK + 'deleteExperience',
-                 {
-                    id:  this.workExpToDelete.id
-                 })
-                 .then((response) => {
-                       this.$swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Work experience deleted',
-                         showConfirmButton: false,
-                          timer: 1500
-                             })
-                       axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.loggedUser.email+"/")
+                        axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.user.email+"/")
                             .then((response) => {
                                 this.workExperiences = response.data;
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-                            return response;
-                  })
-                 .catch(function (error) {
-                    console.log(error);
-                 });
+                        axios.get(process.env.VUE_APP_BACK + 'getAllUserPosts/'+this.user.email+"/")
+                            .then((response) => {
+                                this.posts = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        })
+                        .catch(function (error) {
+                        console.log(error);
+                        });
+                })
+       .catch(function (error) {
+       console.log(error);
+       });
+  },
+  methods: {   
+    signOut : function(){
+        localStorage.setItem("loggedUser", '');
+        this.$router.push("/signIn");
+    },
+    findNumOfReactions: function(id){
+        var numOfReactions=0;
+        console.log("Id od posta  "+id)
+                            axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
+                            {
+                                id: id
+                            }
+                            )
+                            .then((response) => {
+                                     console.log("broj rekacijaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "+response.data);
+                                numOfReactions= response.data;
+                            
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        return numOfReactions;
+    },
+     findNumOfComments: function(id){
+         var numOfComments=0
+        console.log("Id od posta  "+id)
+                            axios.post(process.env.VUE_APP_BACK + 'numOfCommentsByPostId',
+                            {
+                                id: id
+                            }
+                            )
+                            .then((response) => {
+                                numOfComments= response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                            return numOfComments;
+                        
+    },
+    loadReactions: function(){
+
+    },
+    loadComments: function(){
+
     }
   }
 };
