@@ -29,6 +29,9 @@ message Input1 {
   string email = 1;
   string password = 2;
 }
+message InputID {
+  string id = 1;
+}
 
 message Input2 {
   string accessToken = 1;
@@ -126,8 +129,6 @@ message OutputBool {
   bool  private = 1;
 
 }
-
-
 message OutputExperiences {
   repeated OutputExperience experiences = 1;
 }
@@ -194,6 +195,8 @@ service UserService {
   rpc updateUser(updateUserInfoInput) returns (OutputMessage) {};
 
   rpc getUserByEmail(InputForGetUserByEmail) returns (Output){};
+
+  rpc getUserById(InputID) returns (Output){};
 
   rpc updateEducation(InputUpdateEducation) returns (OutputMessage) {};
 

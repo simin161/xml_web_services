@@ -46,4 +46,19 @@ public class FollowerService {
         return  followers;
     }
 
+    public boolean checkIfUserIsFollowingOtherUser(String myUserEmail, String otherUserEmail) {
+        blockingStub = openChannelToFollowService();
+        Followers input = Followers.newBuilder().setPersonEmail(otherUserEmail).setFollowerEmail(myUserEmail).build();
+        return this.blockingStub.checkIfUserIsFollowingOtherUser(input).getPersonIsFollowing();
+    }
+
+    public void removeFollower(FollowDto follow) {
+        blockingStub = openChannelToFollowService();
+        System.out.println("FOLOV PERSON " +follow.getPersonEmail());
+        System.out.println("FOLOVer " +follow.getFollowerEmail());
+        InputRemoveFollow input = InputRemoveFollow.newBuilder().setPersonEmail(follow.getPersonEmail())
+                .setFollowerEmail(follow.getFollowerEmail())
+                .build();
+        this.blockingStub.removeFollow(input);
+    }
 }

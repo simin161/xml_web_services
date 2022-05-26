@@ -34,7 +34,28 @@
                         <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><title>Lucy Stone</title><mask id="mask__beam" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#mask__beam)"><rect width="36" height="36" fill="#a65bb7"></rect><rect x="0" y="0" width="36" height="36" transform="translate(4 4) rotate(340 18 18) scale(1.1)" fill="#240c39" rx="36"></rect><g transform="translate(-4 -3) rotate(0 18 18)"><path d="M15 20c2 1 4 1 6 0" stroke="#FFFFFF" fill="none" stroke-linecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect></g></g></svg>
                         <h3 id="fullName">{{user.firstName}} {{user.lastName}}</h3>
                         <p id="username" >{{user.username}} </p>
-                         <p id="username" v-if="user.privateProfile==true">PRIVATE PROFILE</p>
+
+                        <p id="username" v-if="user.privateProfile==true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                 <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                         </svg> PRIVATE PROFILE</p>
+                        <hr>
+                        <div class="row">
+                                  <div class="col">
+                                     <a data-bs-toggle="modal" data-bs-target="#staticBackdropFollowing" style="color: gray; text-decoration: none"   ><b>{{followingsNum}} Following </b></a>
+
+                                 </div>
+                                  <div class="col">
+                                       <a data-bs-toggle="modal" data-bs-target="#staticBackdropFollowers" style="color: gray; text-decoration: none"   ><b>{{followersNum}} Followers </b></a> 
+
+                                  </div>
+                 
+                    
+                        </div>
+                         
+        
+                        <button @mouseenter="setButtonMouseEnter()" @mouseleave="setButtonMouseLeave()"
+                         @click="addFollower()" id="buttonFollow" type="button" class="btn" >{{followButton}}</button>
+                      
                     </div>
                     <br>
     <br>
@@ -256,6 +277,50 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropFollowing" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>{{user.username}}'s followings</h3>
+        <hr>
+        <ul class="list-group">
+            <li  v-for="following in followings" v-bind:key="following.followerEmail" class="list-group-item">{{following.personEmail}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropFollowers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>{{user.username}}'s followers</h3>
+        <hr>
+         <li  v-for="follower in followers" v-bind:key="follower.followerEmail" class="list-group-item">{{follower.followerEmail}}</li>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     
 </template>
 <script>
@@ -268,6 +333,14 @@
         educations: {},
         workExperiences: {},
         posts: {},
+        userIsFollowingThisProfile: false,
+        followings: [],
+        followers: [],
+        followersNum: 0,
+        followingsNum: 0,
+        followButton: 'Follow',
+        followButtonTemp: 'Follow'
+        
 
     };
   },
@@ -288,39 +361,63 @@
        .then((response) => {
            this.loggedUser = response.data;
            console.log(response.data);
+
+
                 axios.get(process.env.VUE_APP_BACK + 'user/'+username+"/")
                 .then((response) => {
                     this.user = response.data;
+
+
+                    axios.post(process.env.VUE_APP_BACK + 'checkIfUserIsFollowingOtherUser/',{otherUserEmail: this.user.email})
+                    .then((response) => {
+                                this.userIsFollowingThisProfile = response.data;
+                                console.log("da li megi prati daju  "+this.userIsFollowingThisProfile)
+                                if(this.userIsFollowingThisProfile==true){
+
+                                             this.followButton="Following"
+                                             this.followButtonTemp="Following"
+                                }
+                                 
+
+                    })
+
+                    axios.get(process.env.VUE_APP_BACK + 'followers/'+this.user.email+"/")
+                    .then((response) => {
+                                this.followers = response.data;
+                                this.followersNum = response.data.length
+                    })
+                    axios.get(process.env.VUE_APP_BACK + 'followings/'+this.user.email+"/")
+                    .then((response) => {
+                                this.followings = response.data;
+                                this.followingsNum = response.data.length
+                    })
+
+                    /*** ako ta osoba ima javan profil ili je pratim onda mogu da gledam njene postove,edukacije itd*/
+                    if(this.userIsFollowingThisProfile==true || this.user.privateProfile==false){
                     console.log(response.data);
+
+                    
                         axios.get(process.env.VUE_APP_BACK + 'educations/'+this.user.email+"/")
                             .then((response) => {
                                 this.educations = response.data;
                             })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+
                         axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.user.email+"/")
                             .then((response) => {
                                 this.workExperiences = response.data;
                             })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+
                         axios.get(process.env.VUE_APP_BACK + 'getAllUserPosts/'+this.user.email+"/")
                             .then((response) => {
                                 this.posts = response.data;
                             })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                        })
-                        .catch(function (error) {
-                        console.log(error);
-                        });
+                    }
+
+
                 })
-       .catch(function (error) {
-       console.log(error);
-       });
+       
+                       
+        })
   },
   methods: {   
     signOut : function(){
@@ -367,13 +464,88 @@
     },
     loadComments: function(){
 
-    }
+    },
+    getUserInfo: function(email){
+        var username=""
+        axios.get(process.env.VUE_APP_BACK + 'user/'+email+"/")
+                            .then((response) => {
+                                username = response.data;
+                            })
+        return username
+    },
+    addFollower: function(){
+                            if(this.followButton=="Follow"){
+                                    axios.post(process.env.VUE_APP_BACK + 'newFollower',{
+                                        personEmail: this.user.email
+                                    })
+                                    .then((response) => {
+                                        this.userIsFollowingThisProfile = true;
+                                        this.followButton = "Following"
+                                        this.followButtonTemp = "Following"
+                                        axios.get(process.env.VUE_APP_BACK + 'followers/'+this.user.email+"/")
+                                        .then((response) => {
+                                            this.followers = response.data;
+                                            this.followersNum= response.data.length;
+                                            })
+                                        return response.data;
+                                    })
+                            }else if(this.followButton=="Unfollow"){
+                                    axios.post(process.env.VUE_APP_BACK + 'removeFollower',{
+                                    personEmail: this.user.email
+                                    })
+                                    .then((response) => {
+                                        this.userIsFollowingThisProfile = true;
+                                        this.followButton = "Follow"
+                                        this.followButtonTemp = "Follow"
+                                        axios.get(process.env.VUE_APP_BACK + 'followers/'+this.user.email+"/")
+                                        .then((response) => {
+                                            this.followers = response.data;
+                                            this.followersNum= response.data.length;
+                                            })
+                                        return response.data;
+                                    })
+
+                            }
+
+    },
+    setButtonMouseEnter: function(){
+             if(this.followButton=="Following")
+                 this.followButton="Unfollow"
+             
+    },
+    setButtonMouseLeave: function(){
+            this.followButton=this.followButtonTemp
+    },
   }
 };
 </script>
 <style>
 
 #buttonProfile{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #e385fe;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+#buttonFollow:hover{
+	background-color: white;
+    color: #69558d;
+    border: 1px solid #69558d;
+    
+
+}
+#buttonFollow{
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
