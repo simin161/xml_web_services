@@ -11,6 +11,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
@@ -310,6 +311,42 @@ public class UserRepository {
         );
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
+    }
+    public boolean deleteEducation(String userEmail,String id) {
+       Document educationToDelete=new Document();
+       Document foundUser = usersCollection.find(Filters.eq("email", userEmail)).first();
+       List<Document> educationsDocuments =foundUser.get("educations",docClazz);
+       for(Document doc : educationsDocuments){
+           if(doc.getObjectId("_idEducation").toString().equals(id)){
+               educationToDelete= doc;
+               break;
+           }
+       }
+       Bson updates = Updates.combine(
+               Updates.pull("educations",educationToDelete)
+       );
+
+       usersCollection.updateOne(foundUser, updates);
+
+       return true;
+    }
+    public boolean deleteExperience(String userEmail,String id) {
+        Document experienceToDelete=new Document();
+        Document foundUser = usersCollection.find(Filters.eq("email", userEmail)).first();
+        List<Document> experienceDocuments =foundUser.get("experiences",docClazz);
+        for(Document doc : experienceDocuments){
+            if(doc.getObjectId("_idExperience").toString().equals(id)){
+                experienceToDelete= doc;
+                break;
+            }
+        }
+        Bson updates = Updates.combine(
+                Updates.pull("experiences",experienceToDelete)
+        );
+
+        usersCollection.updateOne(foundUser, updates);
+
+        return true;
     }
 
 }

@@ -21,7 +21,8 @@ public class PostService {
 
     public String addPost(PostDto post) {
         blockingStub = openChannelToPostService();
-        InputAddPost input = InputAddPost.newBuilder().setEmail(post.getEmail()).setText(post.getText()).setLink(post.getLink()).setPathToImage(post.getPathToImage()).build();
+        System.out.println("EMAIL U POSTU JEEEE "+post.getEmail());
+        InputAddPost input = InputAddPost.newBuilder().setEmail(post.getEmail()).setText(post.getText()).setLink(post.getLink()).setPathToImage("post.getPathToImage()").build();
         return this.blockingStub.addPost(input).getResult();
     }
 
@@ -67,6 +68,7 @@ public class PostService {
             postDTO.setText(iap.getText());
             postDTO.setPathToImage(iap.getPathToImage());
             postDTO.setDate(iap.getDate());
+            postDTO.setIdPost(iap.getPostId());
             retVal.add(postDTO);
         }
         return retVal;

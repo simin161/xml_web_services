@@ -1,39 +1,65 @@
 <template>
-<div className="card edit-profile-card">
-                <div className="card-body">
-                    <div className="inputFieldsDiv">
-                    <h3>Personal infromation</h3>
+<nav  class="navbar navbar-fixed-top navbar-expand" style="background-color: white; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
+      <div class="container-fluid" style="background-color: white; text-align: right">
+      <a class="navbar-brand"   >
+      <img src="../assets/dislinktLogo.jpg" alt="" width="200" height="80" >
+      </a>
+     
+       <li class="nav-item dropdown">
+          <a style="color: black;" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+          </a>
+          <ul class="dropdown-menu" >
+            <li><a @click="redirectMyProfile" class="dropdown-item" href="#">My profile</a></li>
+            <hr>
+            <li><a @click="signOut" class="dropdown-item" href="#">Log out</a></li>
+          </ul>
+        </li>
+     
+      </div>
+    </nav>
+ 
+    <br>
+    <br>
+    <div class="container">
+<div class="card" >
+                <div class="card-body">
+                    <div >
+                    <h3 style="text-align: left;">Personal infromation</h3>
                     <hr/>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>First name</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">First name</p>
                         </div>
-                        <div className="col-lg-9">
-                        <input id="firstName" v-model="user.firstName" type="text" required/>
-                        </div>
-                        </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Last name</p>
-                        </div>
-                        <div className="col-lg-9">
-                        <input id="lastName" v-model="user.lastName" type="text" required/>
+                        <div class="col-lg-9">
+                        <input class="form-control"  id="firstName" v-model="user.firstName" type="text" required />
                         </div>
                         </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Birthday</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Last name</p>
                         </div>
-                        <div className="col-lg-9">
-                        <input type="date" v-model="user.birthday" id="birthday" />
+                        <div class="col-lg-9">
+                        <input class="form-control"  id="lastName" v-model="user.lastName" type="text" required/>
                         </div>
                         </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Gender</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Birthday</p>
                         </div>
-                        <div id="molimTe" className="col-lg-9">
-                                <select id="gender" v-model="user.gender">
+                        <div class="col-lg-9">
+                        <input class="form-control"  type="date" v-model="user.birthday" id="birthday" />
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Gender</p>
+                        </div>
+                        <div  class="col-lg-9">
+                                <select class="form-control"  id="gender" v-model="user.gender">
                                     <option value="MALE">
                                         MALE
                                     </option>
@@ -43,36 +69,36 @@
                                 </select>
                         </div>
                         </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Phone num</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Phone num</p>
                         </div>
-                        <div className="col-lg-9">
-                        <input id="phone" v-model="user.phone" type="text" />
-                        </div>
-                        </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Email</p>
-                        </div>
-                        <div className="col-lg-9">
-                        <input id="email" v-model="user.email" type="text" disabled/>
+                        <div class="col-lg-9">
+                        <input class="form-control"  id="phone" v-model="user.phone" type="text" />
                         </div>
                         </div>
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Username</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Email</p>
                         </div>
-                        <div className="col-lg-9">
-                        <input id="username" v-model="user.username" type="text" disabled/>
+                        <div class="col-lg-9">
+                        <input class="form-control"  id="email" v-model="user.email" type="text" disabled/>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Username</p>
+                        </div>
+                        <div class="col-lg-9">
+                        <input class="form-control" id="username" v-model="user.username" type="text" disabled/>
                         </div>
                         </div>  
-                        <div className="row">
-                        <div className="col-lg-3">
-                        <p>Private</p>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <p style="text-align: left;">Private</p>
                         </div>
-                        <div id="molimTe" className="col-lg-9">
-                                <select id="private"  v-model="selected">
+                        <div  class="col-lg-9">
+                                <select class="form-control"  id="private"  v-model="selected">
                                     <option value="true">
                                         YES
                                     </option>
@@ -83,25 +109,47 @@
                         </div>
                         </div>                   
                         </div>
-                        <h3>Biography</h3>
-                        <hr/>
-                        <textarea id="biography" v-model="user.biography"></textarea>
-                        <h3>Interests</h3>
-                        <hr/>
-                        <textarea id="interests" v-model="user.interests"></textarea>
+                        <hr>
+                        <br>
+                        <h3 style="text-align: left;">Biography</h3>
+                    
+                        <textarea class="form-control" id="biography" v-model="user.biography"></textarea>
+                        <br>
+                        <h3 style="text-align: left;">Interests</h3>
+                       
+                        <textarea  class="form-control" id="interests" v-model="user.interests"></textarea>
+                        <br>
 
-                        <h3>Skills</h3>
-                        <hr/>
-                        <textarea id="skills" v-model="user.skills"></textarea>
-                        <a href="/changePassword">Wanna change password?</a>
-                        <input type="button" :disabled="isComplete" @click="update" value="Save changes"/>
+                        <h3 style="text-align: left;">Skills</h3>
+                      
+                        <textarea  class="form-control" id="skills" v-model="user.skills"></textarea>
+                        <br>
+                         <br>
+                          <br>
+                        <div class="row">
+                            <div class="col"> 
+                                <button @click="navigateToChangePassword()"  type="button" style="width: 50%" class="btn btn-outline-danger">Change password</button>
+                            </div>
+
+                            <div class="col"> 
+                               <button type="button"  :disabled="isComplete" @click="update" style="width: 50%"  class="btn btn-primary">Update profile</button>
+                            </div>
+                        </div>
                   
-                </div>
+       </div>
     </div>
+    </div>
+       <br><br>
+    <div style="background-color: #e6e5e3;" class="footer" >
+   <br><br>
+    XWS project.
+   <br><br> <br><br>
+</div>
+
+
 </template>
 <script>
  import axios from "axios";
- import swal from 'sweetalert';  
   export default{
   data() {
     return {
@@ -125,6 +173,16 @@
             });
   },
   methods: {  
+       redirectMyProfile: function(){
+        this.$router.push("/profilePage")
+    },
+    signOut : function(){
+        localStorage.setItem("loggedUser", '');
+        this.$router.push("/signIn");
+    },
+      navigateToChangePassword: function(){
+              this.$router.push("/changePassword");
+      },
       update : function(){
           axios.defaults.headers.common["Authorization"] =
                              localStorage.getItem("loggedUser");
@@ -132,12 +190,13 @@
             this.user.isPrivate = this.selected;
             axios.post(process.env.VUE_APP_BACK + 'personalInfo', this.user)
             .then((response) => {
-                swal({  
-                            title: "Information updated!",  
-                            text: "Your new information has been updated successfully.",  
-                            icon: "success",  
-                            button: "Confirm",  
-                      });
+                this.$swal.fire({
+                 position: 'top-end',
+                  icon: 'success',
+                 title: 'Your work has been saved',
+               showConfirmButton: false,
+               timer: 1500
+    })
                 console.log(response);
                 this.$router.push("/profilePage");
           
