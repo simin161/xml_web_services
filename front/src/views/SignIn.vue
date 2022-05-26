@@ -1,16 +1,16 @@
 <template>
- <div className = "main-div-login" id="slikadiv2"
+ <div class = "main-div-login" id="slikadiv2"
       style="
         display: 'flex';
         justify-content: 'Right';
         align-items: 'Right';
-        height: '100vh';
+        height: '200vh';
       "
     >
-      <div className="main">  	
+      <div class="main" >  	
         <input type="checkbox" id="chk" aria-hidden="true"/>
 
-          <div className="signup">
+          <div class="signup" style="height: 110%">
               <label htmlFor="chk" aria-hidden="true">Sign up</label>
               <table style="margin-left: 69px; margin-top: -70px">
                 <tr>
@@ -22,26 +22,26 @@
                   </td>
                 </tr>
               </table>
-              <input style="margin-top: -10px" id="email" v-model="dtoReg.email" type="email" name="email" placeholder="Email" required/>
-              <input style="margin-top: -10px" id="username" v-model="dtoReg.username" type="text" name="txt" placeholder="Username" required/>
-              <select id="gender" v-model="dtoReg.gender" style="margin-left: 70px, margin-top : -10px, height: 30px">
+              <input style="margin-top: 10px; margin-left: 70px" id="email" v-model="dtoReg.email" type="email" name="email" placeholder="Email" required/>
+              <input style="margin-top: 10px; margin-left: 70px" id="username" v-model="dtoReg.username" type="text" name="txt" placeholder="Username" required/>
+              <select id="gender" v-model="dtoReg.gender" style=" margin-top : 10px; margin-left: 70px; height: 30px">
                 <option value="FEMALE">FEMALE</option>
                 <option value="MALE">MALE</option>
               </select>
-              <input type="date" id="birthDate" v-model="dtoReg.birthDate" data-date-format="yyyy-mm-dd" />
-              <input  id="password" v-model="dtoReg.password" style="margin-top: -10px" type="password" name="pswd" placeholder="Password" required/>
-              <input style="margin-top: -10px" v-model="confirmPassword" id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required/>
-              <input type="button" :disabled="isComplete" style="margin-top: -10px" @click="register" value="Sign up"/>
+              <input type="date" style="margin-top: 10px; margin-left: 70px" id="birthDate" v-model="dtoReg.birthDate" data-date-format="yyyy-mm-dd" />
+              <input  id="password" v-model="dtoReg.password" style="margin-top: 10px; margin-left: 70px" type="password" name="pswd" placeholder="Password" required/>
+              <input style="margin-top: 10px; margin-left: 70px" v-model="confirmPassword" id="confirmPassword" type="password" name="pswd" placeholder="Confirm Password" required/>
+              <input type="button" id="buttonSignup" :disabled="isComplete" style="margin-top: 10px; margin-left: 70px" @click="register" value="Sign up"/>
           </div>
 
-          <div className="login">
+          <div class="login"  >
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
-              <input type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
-              <input type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
-              <a href="/passwordless">Pssst, kid, I have skooma</a>
+              <input  style="margin-top: 10px; margin-left: 70px" type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
+              <input style="margin-top: 10px; margin-left: 70px"   type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
+              <a href="/passwordless">Passworldess</a>
               <br>
-              <a href="/forgottenPassword"> Khajiit has wares, if you have email</a>
-              <input type="button" :disabled="isLComplete" @click="logIn" value="Sign in" />
+              <a href="/forgottenPassword">Forgot password?</a>
+              <input type="button" id="buttonSignup" :disabled="isLComplete" @click="logIn" value="Sign in" />
           </div>
       </div>
     </div>
@@ -49,7 +49,8 @@
 
 <script>
    import axios from "axios";
-   import swal from 'sweetalert';  
+   //import swal from 'sweetalert';  
+ 
   export default{
   data() {
     return {
@@ -80,7 +81,7 @@
           .then((response) => {
               console.log(response);
               if(!response.data ){
-                  swal({  
+                  this.$swal.fire({  
                           title: " Invalid credentials!",  
                           text: " Please check your login credentials and try again.",  
                           icon: "error",  
@@ -89,7 +90,7 @@
                   console.log("err");
               }else{
                   localStorage.setItem("loggedUser", response.data.accessToken);
-                  this.$router.push("/profilePage");
+                  this.$router.push("/homepage");
               }
           })
           .catch(function (error) {
@@ -97,7 +98,7 @@
           });
         
       }else{
-        swal({  
+        this.$swal.fire({  
                           title: " Invalid email!",  
                           text: " A user with given email does not exist. Please, check your login credentials and try again.",  
                           icon: "error",  
@@ -116,7 +117,7 @@
                 .then((response) => {
                   console.log(response);
                   if(response.data === 'false'){
-                     swal({  
+                     this.$swal.fire({  
                           title: " Oops!",  
                           text: " Something went wrong, please try again later!",  
                           icon: "error",  
@@ -125,7 +126,7 @@
                     console.log("err");
                   }
                   else{
-                    swal({  
+                    this.$swal.fire({  
                             title: "Registration successful!",  
                             text: "Please check you email for an account verification message!",  
                             icon: "success",  
@@ -178,11 +179,104 @@
 </script>
 
 <style>
-#slikadiv2{
-  background-image: url('../assets/backgroundSign.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 700px
-     
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
+
+.main-div-login{
+  margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	font-family: 'Jost', sans-serif;
+	background: linear-gradient(to bottom, #0f0c29, #3f2b63, #e385fe);
+}
+.main{
+	width: 350px;
+	height:550px;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+    margin:auto;
+}
+#chk{
+	display: none;
+}
+.signup{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+label{
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input, select{
+	width: 60%;
+	height: 35px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+#buttonSignup{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #e385fe;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+#buttonSignup{
+	background: #3f2b63;
+}
+.login{
+	height: 460px;
+	background: #eee;
+	border-radius: 60% / 30%;
+	transform: translateY(-155px);
+	transition: .8s ease-in-out;
+}
+.login label{
+	color: #3f2b63;
+	transform: scale(.6);
+}
+
+#chk:checked ~ .login{
+	transform: translateY(-500px);
+}
+#chk:checked ~ .login label{
+	transform: scale(1);	
+}
+#chk:checked ~ .signup label{
+	transform: scale(.6);
+}
+
+
 </style>

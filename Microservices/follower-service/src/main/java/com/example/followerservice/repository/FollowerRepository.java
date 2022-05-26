@@ -3,7 +3,9 @@ package com.example.followerservice.repository;
 import com.example.followerservice.model.Follow;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -67,4 +69,28 @@ public class FollowerRepository {
         return retVal;
     }
 
+    public boolean checkIfUserIsFollowingOtherUser(String personalId, String followersId) {
+        List<Follow> followers=findPersonsFollowers(personalId);
+        for(Follow follow: followers){
+            if(follow.getFollowerId().equals(followersId));
+             return true;
+        }
+        return false;
+    }
+
+    public void removeFollow(String personalId, String followersId) {
+        Document followerToDelete=new Document();
+        FindIterable<Document> foundFollowers = followersCollection.find(Filters.eq("personId", personalId));
+
+        for(Document doc : foundFollowers){
+            if(doc.get("followerId").toString().equals(followersId)){
+                followerToDelete= doc;
+                break;
+            }
+        }
+      /*  Bson updates = Updates.combine(
+                Updates.pull("followers",followerToDelete)
+        );*/
+        followersCollection.deleteOne(new Document("_id", new ObjectId(followerToDelete.getObjectId("_id").toString())));
+    }
 }

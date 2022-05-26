@@ -37,7 +37,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void addUser(proto.user.AddUserParam addUserParam,
                         io.grpc.stub.StreamObserver<proto.user.Output> responseObserver) {
-        proto.user.Output output;
+        proto.user.Output output = null;
         proto.user.userReg request = proto.user.userReg.newBuilder().setEmail(addUserParam.getReg().getEmail()).setBirthDate(addUserParam.getReg().getBirthDate())
                 .setFirstName(addUserParam.getReg().getFirstName()).setLastName(addUserParam.getReg().getLastName()).setUsername(addUserParam.getReg().getUsername())
                 .setGender(addUserParam.getReg().getGender()).setPassword(addUserParam.getReg().getPassword()).build();
@@ -55,6 +55,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 output = Output.newBuilder().setResult("false").build();
             } catch (MessagingException | UnsupportedEncodingException e) {
                 output = Output.newBuilder().setResult("false").build();
+                e.printStackTrace();
+            } catch (com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException e) {
                 e.printStackTrace();
             }
         }else
@@ -82,7 +84,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-
     public void getUserByEmail(proto.user.InputForGetUserByEmail request, StreamObserver<Output> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -107,6 +108,24 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     .setIsEnabled(String.valueOf(user.isActivated()))
                     .setResult(user.getId().toString())
                     .setUserAPIToken(user.getUserAPItoken())
+                    .build();
+        }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserById(InputID request, StreamObserver<Output> responseObserver) {
+        User user = UserRepository.getInstance().findUserByUsersId(request.getId());
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        proto.user.Output output;
+        if(user == null){
+            output = Output.newBuilder().build();
+        }else {
+            String s = formatter.format(user.getBirthday());
+            output = Output.newBuilder()
+                    .setEmail(user.getEmail())
+                    .setUsername(user.getUsername())
                     .build();
         }
         responseObserver.onNext(output);
@@ -161,12 +180,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void getEducationsUserByEmail(InputForGetUserByEmail request, StreamObserver<OutputEducations> responseObserver) {
         proto.user.OutputEducations output;
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
       List<Education> educationList=UserRepository.getInstance().getEducationsUserByEmail(request.getEmail());
 
         List<OutputEducation> educations = new ArrayList<OutputEducation>();
         for(Education education : educationList){
+            String from = formatter.format(education.getFrom());
+            String to = formatter.format(education.getTo());
             OutputEducation ed = OutputEducation.newBuilder().setSchool(education.getSchool()).setDegree(education.getDegree()).setFieldOfStudy(education.getFieldOfStudy())
-                    .setFrom(education.getFrom().toString()).setTo(education.getTo().toString()).build();
+                    .setFrom(from).setTo(to).setId(education.getIdEducation().toString()).build();
             educations.add(ed);
         }
 
@@ -295,13 +317,16 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void getExperiencesByEmail(InputForGetUserByEmail request, StreamObserver<OutputExperiences> responseObserver) {
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         proto.user.OutputExperiences output;
         List<WorkExperience> experiencesList=UserRepository.getInstance().getWorkExperienceByEmail(request.getEmail());
 
         List<OutputExperience> experiences = new ArrayList<>();
         for(WorkExperience experience : experiencesList){
+            String from = formatter.format(experience.getFrom());
+            String to = formatter.format(experience.getTo());
             OutputExperience ed = OutputExperience.newBuilder().setWorkPlace(experience.getWorkPlace()).setWorkTitle(experience.getWorkTitle())
-                    .setFrom(experience.getFrom().toString()).setTo(experience.getTo().toString()).build();
+                    .setFrom(from).setTo(to).setId(experience.getIdExperience().toString()).build();
             experiences.add(ed);
         }
 
@@ -413,12 +438,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void findUserByAPItoken(FindUserByAPItokenInput input, StreamObserver<FindUserByAPItokenOutput> responseObserver){
+    public void findUserByAPItoken(FindUserByAPItokenInput input, StreamObserver<FindUserByAPItokenOutput> responseObserver) {
         User user = UserRepository.getInstance().findUserByAPItoken(input.getUserAPItoken());
         FindUserByAPItokenOutput output;
-        if(user == null) {
+        if (user == null) {
             output = FindUserByAPItokenOutput.newBuilder().setResult("false").build();
-        }else{
+        } else {
             output = FindUserByAPItokenOutput.newBuilder().setResult("true").build();
         }
         responseObserver.onNext(output);
@@ -426,18 +451,36 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void saveUserAPIToken(SaveUserAPITokenInput input, StreamObserver<SaveUserAPITokenOutput> responseObserver){
+    public void deleteEducation(InputDeleting request, StreamObserver<OutputBool> responseObserver) {
+        proto.user.OutputBool output;
+        boolean response=UserRepository.getInstance().deleteEducation(request.getEmail(),request.getId());
+        output = OutputBool.newBuilder().setPrivate(response).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void saveUserAPIToken(SaveUserAPITokenInput input, StreamObserver<SaveUserAPITokenOutput> responseObserver) {
         SaveUserAPITokenOutput output;
-        try{
+        try {
             User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
             user.setUserAPItoken(input.getTokenValue());
             UserRepository.getInstance().updateTokenValue(user);
             mailService.sendUserAPITokenMail(input.getEmail(), input.getTokenValue());
             output = SaveUserAPITokenOutput.newBuilder().setValue("true").build();
-        }catch(Exception e){
+        } catch (Exception e) {
             output = SaveUserAPITokenOutput.newBuilder().setValue("false").build();
             e.printStackTrace();
         }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteExperience(InputDeleting request, StreamObserver<OutputBool> responseObserver) {
+        proto.user.OutputBool output;
+        boolean response=UserRepository.getInstance().deleteExperience(request.getEmail(),request.getId());
+        output = OutputBool.newBuilder().setPrivate(response).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }

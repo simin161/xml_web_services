@@ -29,6 +29,9 @@ message Input1 {
   string email = 1;
   string password = 2;
 }
+message InputID {
+  string id = 1;
+}
 
 message Input2 {
   string accessToken = 1;
@@ -96,6 +99,7 @@ message OutputEducation {
   string fieldOfStudy = 4;
   string from = 5;
   string to = 6;
+  string id = 7 ;
 }
 
 message Output2 {
@@ -109,7 +113,12 @@ message InputSearch{
     string param = 1;
 
 }
+message InputDeleting{
 
+  string email = 1;
+  string id = 2;
+
+}
 message OutputId {
 
  string  usersId = 1;
@@ -121,8 +130,6 @@ message OutputBool {
   bool  private = 1;
 
 }
-
-
 message OutputExperiences {
   repeated OutputExperience experiences = 1;
 }
@@ -131,6 +138,7 @@ message OutputExperience {
   string workTitle = 2;
   string from = 3;
   string to = 4;
+  string id = 5;
 }
 
 message ForgottenPasswordEmail {
@@ -206,6 +214,8 @@ service UserService {
 
   rpc getUserByEmail(InputForGetUserByEmail) returns (Output){};
 
+  rpc getUserById(InputID) returns (Output){};
+
   rpc updateEducation(InputUpdateEducation) returns (OutputMessage) {};
 
   rpc updateWorkExperience(InputUpdateWorkExperience) returns (OutputMessage) {};
@@ -233,5 +243,9 @@ service UserService {
   rpc findUserByAPItoken(FindUserByAPItokenInput) returns (FindUserByAPItokenOutput) {};
 
   rpc saveUserAPIToken(SaveUserAPITokenInput) returns (SaveUserAPITokenOutput) {};
+
+  rpc deleteEducation(InputDeleting) returns (OutputBool) {};
+
+  rpc deleteExperience(InputDeleting) returns (OutputBool) {};
 
 }

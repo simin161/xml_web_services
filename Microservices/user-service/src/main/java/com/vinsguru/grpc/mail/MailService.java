@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.mail;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import com.vinsguru.grpc.model.User;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.Properties;
 public class MailService {
 
     public void sendVerificationEmail(User u, String siteURL)
-            throws MessagingException, UnsupportedEncodingException {
+            throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
         String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Please verify your registration";
@@ -53,7 +54,7 @@ public class MailService {
     }
 
     public void sendForgottenPasswordEmail(String email, String newPassword)
-            throws MessagingException, UnsupportedEncodingException {
+            throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
         String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Forgotten password";
@@ -91,7 +92,7 @@ public class MailService {
         Transport.send(message);
     }
 
-    public void sendPasswordlessLoginEmail(String email, String siteURL) throws MessagingException {
+    public void sendPasswordlessLoginEmail(String email, String siteURL) throws MessagingException, javax.mail.MessagingException {
         String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Your passwordless login is ready";
@@ -131,7 +132,7 @@ public class MailService {
     }
 
     public void sendUserAPITokenMail(String email, String userAPIToken)
-            throws MessagingException, UnsupportedEncodingException {
+            throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
         String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "API Token";

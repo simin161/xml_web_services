@@ -38,6 +38,11 @@ public class UserDto {
         this.email = email;
     }
 
+    public UserDto(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
     public String getFirstName() {
         return firstName;
     }

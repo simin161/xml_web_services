@@ -15,6 +15,11 @@ message InputAddFollow {
 message OutputAddFollow {
   string result = 1;
 }
+message InputRemoveFollow {
+  string personEmail = 1;
+  string followerEmail = 2;
+}
+
 
 message InputEmail {
  string email =1;
@@ -28,13 +33,17 @@ message Followers {
   string personEmail = 1;
   string followerEmail = 2;
 }
-
+message OutputBoolean{
+  bool personIsFollowing =1;
+}
 
 service FollowService {
 
   rpc addFollow(InputAddFollow) returns (OutputAddFollow) {};
+  rpc removeFollow(InputRemoveFollow) returns (OutputBoolean) {};
   rpc findPersonsFollowers(InputEmail) returns (OutputFollowers) {};
   rpc findPersonsFollowings(InputEmail) returns (OutputFollowers) {};
+  rpc checkIfUserIsFollowingOtherUser(Followers) returns (OutputBoolean) {};
 
 
 
