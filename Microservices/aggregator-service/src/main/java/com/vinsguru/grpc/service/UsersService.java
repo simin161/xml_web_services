@@ -82,6 +82,13 @@ public class UsersService {
         userDto.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
         return userDto;
     }
+    public UserDto getUserById(String Id){
+        blockingStub = openChannelToUserService();
+        InputID input = InputID.newBuilder().setId(Id).build();
+        Output result=this.blockingStub.getUserById(input);
+        UserDto userDto =  new UserDto(result.getUsername(),result.getEmail());
+        return userDto;
+    }
 
     public String updateUser(Map<String, String> user) {
         try{
@@ -283,4 +290,5 @@ public class UsersService {
                 .setId(id).build();
         return blockingStub.deleteExperience(dI).getPrivate();
     }
+
 }
