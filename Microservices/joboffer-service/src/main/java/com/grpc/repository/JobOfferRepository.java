@@ -3,7 +3,9 @@ package com.grpc.repository;
 import com.grpc.model.JobOffer;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -52,10 +54,19 @@ public class JobOfferRepository {
     public List<JobOffer> searchJobOfferByParam(String paramName, String paramValue){
         FindIterable<Document> foundOffers;
         List<JobOffer> jobOffers = new ArrayList<>();
-        if(paramName.isEmpty()){
+        if(paramValue.isEmpty()){
             foundOffers = jobOfferCollection.find();
         }else{
-            foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
+            jobOfferCollection.createIndex(Indexes.text("position"));
+            if(paramValue.split(" ").length == 1){
+                Bson filter = Filters.text(paramValue);
+                foundOffers = jobOfferCollection.find(filter);
+            }else{
+                Bson filter = Filters.text("\"" + paramValue + "\"");
+                foundOffers = jobOfferCollection.find(filter);
+            }
+
+            //foundOffers = jobOfferCollection.find(Filters.eq(paramName, paramValue));
         }
         for(Document d : foundOffers){
             JobOffer offer = new JobOffer(d.getObjectId("_id"),d.getString("position"), d.getString("jobDescription"), d.getString("dailyActivities"), d.getString("candidateRequirements"), d.getString("companyName"), d.getString("userAPItoken"));

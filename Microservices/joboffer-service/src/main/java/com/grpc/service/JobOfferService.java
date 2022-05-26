@@ -37,7 +37,7 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
             List<SearchedOffer> retVal = new ArrayList<>();
             for(JobOffer jo : searchedOffers){
                 SearchedOffer so = SearchedOffer.newBuilder().setId(jo.getId().toString()).setCompanyName(jo.getCompanyName()).setDailyActivities(jo.getDailyActivities())
-                        .setJobDescription(jo.getJobDescription()).setCandidateRequirements(jo.getCandidateRequirements()).build();
+                        .setJobDescription(jo.getJobDescription()).setCandidateRequirements(jo.getCandidateRequirements()).setPosition(jo.getPosition()).build();
                 retVal.add(so);
             }
             srv = SearchReturnValue.newBuilder().addAllOffer(retVal).build();
