@@ -26,6 +26,7 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @GrpcService
@@ -45,6 +46,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getBirthDate());
                 User u = new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date);
                 u.setActivated(false);
+                u.setUserAPItoken("");
                 setVerificationCode(RandomString.make(64), u);
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
@@ -105,6 +107,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     .setSkills(user.getSkills() == null ? "No information" : user.getSkills())
                     .setIsEnabled(String.valueOf(user.isActivated()))
                     .setResult(user.getId().toString())
+                    .setUserAPIToken(user.getUserAPItoken())
                     .build();
         }
         responseObserver.onNext(output);
@@ -435,10 +438,40 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
+    public void findUserByAPItoken(FindUserByAPItokenInput input, StreamObserver<FindUserByAPItokenOutput> responseObserver) {
+        User user = UserRepository.getInstance().findUserByAPItoken(input.getUserAPItoken());
+        FindUserByAPItokenOutput output;
+        if (user == null) {
+            output = FindUserByAPItokenOutput.newBuilder().setResult("false").build();
+        } else {
+            output = FindUserByAPItokenOutput.newBuilder().setResult("true").build();
+        }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void deleteEducation(InputDeleting request, StreamObserver<OutputBool> responseObserver) {
         proto.user.OutputBool output;
         boolean response=UserRepository.getInstance().deleteEducation(request.getEmail(),request.getId());
         output = OutputBool.newBuilder().setPrivate(response).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void saveUserAPIToken(SaveUserAPITokenInput input, StreamObserver<SaveUserAPITokenOutput> responseObserver) {
+        SaveUserAPITokenOutput output;
+        try {
+            User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+            user.setUserAPItoken(input.getTokenValue());
+            UserRepository.getInstance().updateTokenValue(user);
+            mailService.sendUserAPITokenMail(input.getEmail(), input.getTokenValue());
+            output = SaveUserAPITokenOutput.newBuilder().setValue("true").build();
+        } catch (Exception e) {
+            output = SaveUserAPITokenOutput.newBuilder().setValue("false").build();
+            e.printStackTrace();
+        }
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }

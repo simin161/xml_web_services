@@ -197,7 +197,7 @@
                                         <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                         </svg> Edit profile
                                 </button>
-                             
+                                <button @click="generateAPIToken">Generate API Token</button>
                                 </div>
         </div>
                 </div>
@@ -259,6 +259,7 @@
 </template>
 <script>
   import axios from "axios";
+  import swal from "sweetalert";
   export default{
   data() {
     return {
@@ -318,6 +319,32 @@
     signOut : function(){
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
+    },
+    generateAPIToken : function(){
+        axios.defaults.headers.common["Authorization"] = localStorage.getItem("loggedUser");
+        axios.post(process.env.VUE_APP_BACK + 'generateUserAPIToken')
+        .then((response)=>{
+            console.log(response);
+            if(response.data == true){
+                swal({  
+                            title: "Token generation successful!",  
+                            text: "Please check you email for a message containing your API token!",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });  
+            }else{
+                swal({  
+                          title: " Oops!",  
+                          text: " Something went wrong, please try again later!",  
+                          icon: "error",  
+                          button: "Confirm",  
+                    });    
+            }
+
+        })
+        .catch(function (error){
+            console.log(error);
+        })
     },
     deleteEducation: function(){
     console.log("MENE BRISES" +this.educationToDelete.school)

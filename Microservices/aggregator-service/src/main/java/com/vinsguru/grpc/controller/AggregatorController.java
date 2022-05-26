@@ -7,6 +7,7 @@ import com.vinsguru.grpc.helperModel.User;
 import com.vinsguru.grpc.helperModel.UserTokenState;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.security.auth.JwtAuthenticationRequest;
+import com.vinsguru.grpc.service.JobOfferService;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +31,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -50,6 +52,9 @@ public class AggregatorController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JobOfferService jobOfferService;
 
 
     @PostMapping("/register")
@@ -362,6 +367,32 @@ public class AggregatorController {
         }catch(Exception e){}
         return "false";
     }
+
+    @PostMapping("/createJobOffer")
+    public boolean createJobOffer(@RequestBody JobOfferDto jobOfferDto){
+        return jobOfferService.createJobOffer(jobOfferDto);
+    }
+
+    @GetMapping("/searchJobOffers/{param}")
+    public List<JobOfferDto> searchJobOffers(@PathVariable("param") String param){
+        return jobOfferService.searchJobOffers(param);
+    }
+
+    @PostMapping("/generateUserAPIToken")
+    public boolean generateUserAPIToken(@RequestHeader("Authentication")HttpHeaders header){
+        boolean retVal = false;
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        String token = tokenUtils.generateToken(email, "API");
+        token = token.substring(8, 26);
+        SecureRandom random = new SecureRandom();
+        byte []bytes = new byte[20];
+        random.nextBytes(bytes);
+        token = token.concat(Base64.getUrlEncoder().encodeToString(bytes));
+        retVal = aggregatorService.saveGeneratedToken(email, token);
+        return retVal;
+    }
+
     @PostMapping("/checkIfUserIsFollowingOtherUser")
     public boolean checkIfUserIsFollowingOtherUser(@RequestHeader("Authentication") HttpHeaders header,@RequestBody Map<String, String> message){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);

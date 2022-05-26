@@ -130,5 +130,44 @@ public class MailService {
         Transport.send(message);
 
     }
+
+    public void sendUserAPITokenMail(String email, String userAPIToken)
+            throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
+        String fromAddress = "dislinkt_team_23@yahoo.com";
+        String senderName = "Dislinkt";
+        String subject = "API Token";
+        String content = "Dear user,<br>"
+                + "This is your API Token: <b>[[userAPIToken]]</b><br>"
+                + "Use this token to access our website from other applications but keep it private. <br>"
+                + "Thank you,<br>"
+                + "Dislinkt team.";
+
+        content = content.replace("[[userAPIToken]]", userAPIToken);
+
+        String host = "127.0.0.1";
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
+
+            }
+
+        });
+
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddress));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.setSubject(subject);
+        message.setContent(content, "text/html");
+
+        Transport.send(message);
+    }
 }
 

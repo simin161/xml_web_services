@@ -78,7 +78,7 @@ public class UsersService {
         Output result=this.blockingStub.getUserByEmail(input);
 
         UserDto userDto =  new UserDto(result.getFirstName(),result.getLastName(),result.getUsername(),result.getEmail(),result.getPrivateProfile()
-        , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills());
+        , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills(),result.getUserAPIToken());
         userDto.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
         return userDto;
     }
@@ -277,6 +277,26 @@ public class UsersService {
         return blockingStub.changePassword(pI).getResult();
     }
 
+    public boolean findUserByAPItoken(String userAPItoken){
+        boolean retVal = false;
+        blockingStub = openChannelToUserService();
+        FindUserByAPItokenInput input = FindUserByAPItokenInput.newBuilder().setUserAPItoken(userAPItoken).build();
+        String ret = blockingStub.findUserByAPItoken(input).getResult();
+        if(ret.equals("true"))
+            retVal = true;
+        return retVal;
+    }
+
+    public boolean saveGeneratedToken(String email, String token) {
+        boolean retVal = false;
+        blockingStub = openChannelToUserService();
+        SaveUserAPITokenInput input = SaveUserAPITokenInput.newBuilder().setEmail(email).setTokenValue(token).build();
+        String ret = blockingStub.saveUserAPIToken(input).getValue();
+        if(ret.equals("true"))
+            retVal = true;
+        return retVal;
+    }
+
     public boolean deleteEducation(String email, String id) {
         blockingStub = openChannelToUserService();
         InputDeleting dI = InputDeleting.newBuilder().setEmail(email)
@@ -290,5 +310,4 @@ public class UsersService {
                 .setId(id).build();
         return blockingStub.deleteExperience(dI).getPrivate();
     }
-
 }

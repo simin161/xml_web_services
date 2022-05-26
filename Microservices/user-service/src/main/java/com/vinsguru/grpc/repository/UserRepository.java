@@ -70,7 +70,7 @@ public class UserRepository {
                 .append("interests",user.getInterests())
                 .append("skills",user.getSkills())
                 .append("educations",user.getEducations())
-                .append("experiences",user.getEducations())
+                .append("experiences",user.getExperinces())
                 .append("isActivated", user.isActivated())
                 .append("verificationCode", user.getVerificationCode());
         usersCollection.insertOne(userToSave);
@@ -151,7 +151,7 @@ public class UserRepository {
         FindIterable<Document> iterable = usersCollection.find();
         List<User> retVal = new ArrayList<User>();
         for(Document d : iterable){
-            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"));
+            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPItoken"));
             retVal.add(u);
         }
         return retVal;
@@ -241,8 +241,6 @@ public class UserRepository {
                    doc.getDate("from"),doc.getDate("to")));
        }
         return educations;
-
-
     }
 
 
@@ -287,8 +285,6 @@ public class UserRepository {
                     doc.getDate("to")));
         }
         return experiences;
-
-
     }
 
     public User findUserByVerificationCode(String code) {
@@ -312,6 +308,7 @@ public class UserRepository {
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
     }
+
     public boolean deleteEducation(String userEmail,String id) {
        Document educationToDelete=new Document();
        Document foundUser = usersCollection.find(Filters.eq("email", userEmail)).first();
@@ -325,9 +322,7 @@ public class UserRepository {
        Bson updates = Updates.combine(
                Updates.pull("educations",educationToDelete)
        );
-
        usersCollection.updateOne(foundUser, updates);
-
        return true;
     }
     public boolean deleteExperience(String userEmail,String id) {
@@ -349,4 +344,20 @@ public class UserRepository {
         return true;
     }
 
+    public User findUserByAPItoken(String userAPItoken) {
+        for(User u : getAllUsers()){
+            if(u.getUserAPItoken().equals(userAPItoken))
+                return u;
+        }
+        return null;
+    }
+
+    public void updateTokenValue(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("userAPItoken", user.getUserAPItoken())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
 }
