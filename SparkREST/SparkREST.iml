@@ -7,95 +7,43 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib" />
+          <root url="jar://$MODULE_DIR$/lib/websocket-api-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jjwt-gson-0.11.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/websocket-servlet-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/xmlsec-2.0.8.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/spark-core-2.5.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/slf4j-simple-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/slf4j-api-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/slf4j-api-1.7.13.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jjwt-impl-0.11.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/websocket-common-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/websocket-server-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-webapp-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jjwt-api-0.11.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/websocket-client-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-xml-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-server-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-util-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-servlet-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/bcpkix-jdk15on-1.56.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/bcprov-jdk15on-1.56.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/gson-2.2.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/javax.servlet-api-3.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/javaxt-core.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-http-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-io-9.3.6.v20151106.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jetty-security-9.3.6.v20151106.jar!/" />
+          <root url="file://$MODULE_DIR$" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/debugger-app-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/fontbox-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/pdfbox-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/pdfbox-app-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/pdfbox-debugger-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/pdfbox-tools-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/preflight-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/preflight-app-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../Instaleri/xmpbox-2.0.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/src" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

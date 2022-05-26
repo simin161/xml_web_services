@@ -8,7 +8,7 @@ import com.vinsguru.grpc.dto.WorkExperienceDto;
 import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.utility.Validation;
-import jdk.jfr.Experimental;
+
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -78,8 +78,15 @@ public class UsersService {
         Output result=this.blockingStub.getUserByEmail(input);
 
         UserDto userDto =  new UserDto(result.getFirstName(),result.getLastName(),result.getUsername(),result.getEmail(),result.getPrivateProfile()
-        , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills());
+        , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills(),result.getUserAPIToken());
         userDto.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
+        return userDto;
+    }
+    public UserDto getUserById(String Id){
+        blockingStub = openChannelToUserService();
+        InputID input = InputID.newBuilder().setId(Id).build();
+        Output result=this.blockingStub.getUserById(input);
+        UserDto userDto =  new UserDto(result.getUsername(),result.getEmail());
         return userDto;
     }
 
@@ -140,7 +147,7 @@ public class UsersService {
 
         for (OutputEducation outputEducation:  this.blockingStub.getEducationsUserByEmail(input).getEducationsList()){
             educationDtos.add(new EducationDto(email,outputEducation.getSchool(),outputEducation.getDegree(),outputEducation.getFieldOfStudy(),
-                    outputEducation.getFrom(),outputEducation.getTo()));
+                    outputEducation.getFrom(),outputEducation.getTo(),outputEducation.getId()));
         }
         return educationDtos;
     }
@@ -199,7 +206,7 @@ public class UsersService {
                 .build();
 
         for (OutputExperience output:  this.blockingStub.getExperiencesByEmail(input).getExperiencesList()){
-            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo()));
+            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo(),output.getId()));
         }
         return experienceDtos;
     }
@@ -268,5 +275,39 @@ public class UsersService {
                 .setNewPassword(passwordEncoder.encode(message.get("newPassword")))
                 .setOldPassword(message.get("oldPassword")).build();
         return blockingStub.changePassword(pI).getResult();
+    }
+
+    public boolean findUserByAPItoken(String userAPItoken){
+        boolean retVal = false;
+        blockingStub = openChannelToUserService();
+        FindUserByAPItokenInput input = FindUserByAPItokenInput.newBuilder().setUserAPItoken(userAPItoken).build();
+        String ret = blockingStub.findUserByAPItoken(input).getResult();
+        if(ret.equals("true"))
+            retVal = true;
+        return retVal;
+    }
+
+    public boolean saveGeneratedToken(String email, String token) {
+        boolean retVal = false;
+        blockingStub = openChannelToUserService();
+        SaveUserAPITokenInput input = SaveUserAPITokenInput.newBuilder().setEmail(email).setTokenValue(token).build();
+        String ret = blockingStub.saveUserAPIToken(input).getValue();
+        if(ret.equals("true"))
+            retVal = true;
+        return retVal;
+    }
+
+    public boolean deleteEducation(String email, String id) {
+        blockingStub = openChannelToUserService();
+        InputDeleting dI = InputDeleting.newBuilder().setEmail(email)
+                .setId(id).build();
+        return blockingStub.deleteEducation(dI).getPrivate();
+    }
+
+    public boolean deleteExperience(String email, String id) {
+        blockingStub = openChannelToUserService();
+        InputDeleting dI = InputDeleting.newBuilder().setEmail(email)
+                .setId(id).build();
+        return blockingStub.deleteExperience(dI).getPrivate();
     }
 }

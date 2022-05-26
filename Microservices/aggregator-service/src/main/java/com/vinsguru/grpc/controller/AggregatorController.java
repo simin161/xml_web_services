@@ -7,6 +7,7 @@ import com.vinsguru.grpc.helperModel.User;
 import com.vinsguru.grpc.helperModel.UserTokenState;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.security.auth.JwtAuthenticationRequest;
+import com.vinsguru.grpc.service.JobOfferService;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +31,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -50,6 +52,9 @@ public class AggregatorController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JobOfferService jobOfferService;
 
 
     @PostMapping("/register")
@@ -213,6 +218,18 @@ public class AggregatorController {
         }
         return "";
     }
+    @PostMapping("/removeFollower")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public void removeFollower(@RequestHeader("Authentication") HttpHeaders header, @RequestBody FollowDto follow){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            String email = tokenUtils.getUsernameFromToken(value);
+            follow.setFollowerEmail(email);
+            followerService.removeFollower(follow);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @GetMapping("/followers/{email:.+}/")
     public List<FollowDto> getFollowers(@PathVariable("email")String email){
@@ -248,7 +265,7 @@ public class AggregatorController {
         return postService.getAllPosts();
     }
 
-    @GetMapping("/getAllUserPosts/user:{email}")
+    @GetMapping("/getAllUserPosts/{email:.+}/")
     public List<PostDto> getAllUserPosts(@PathVariable("email") String email){
         if(Validation.validateEmail(email))
             return postService.getAllUsersPosts(email);
@@ -280,6 +297,29 @@ public class AggregatorController {
         String email = tokenUtils.getUsernameFromToken(value);
         return postService.findAllPostsOfFollowingsByUserEmail(email);}
         return null;
+    }
+
+    @PostMapping("/deleteEducation")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean deleteEducation(@RequestHeader("Authentication") HttpHeaders header,@RequestBody EducationDto educationDto){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)) {
+            String email = tokenUtils.getUsernameFromToken(value);
+            return aggregatorService.deleteEducation(email,educationDto.getId());
+        }
+        return false;
+    }
+    @PostMapping("/deleteExperience")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean deleteExperience(@RequestHeader("Authentication") HttpHeaders header,@RequestBody WorkExperienceDto workExperienceDto){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)) {
+            String email = tokenUtils.getUsernameFromToken(value);
+            return aggregatorService.deleteExperience(email,workExperienceDto.getId());
+        }
+        return false;
     }
 
     @PostMapping("/numOfCommentsByPostId")
@@ -326,5 +366,42 @@ public class AggregatorController {
 
         }catch(Exception e){}
         return "false";
+    }
+
+    @PostMapping("/createJobOffer")
+    public boolean createJobOffer(@RequestBody JobOfferDto jobOfferDto){
+        return jobOfferService.createJobOffer(jobOfferDto);
+    }
+
+    @GetMapping("/searchJobOffers/{param}")
+    public List<JobOfferDto> searchJobOffers(@PathVariable("param") String param){
+        return jobOfferService.searchJobOffers(param);
+    }
+
+    @PostMapping("/generateUserAPIToken")
+    public boolean generateUserAPIToken(@RequestHeader("Authentication")HttpHeaders header){
+        boolean retVal = false;
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        String token = tokenUtils.generateToken(email, "API");
+        token = token.substring(8, 26);
+        SecureRandom random = new SecureRandom();
+        byte []bytes = new byte[20];
+        random.nextBytes(bytes);
+        token = token.concat(Base64.getUrlEncoder().encodeToString(bytes));
+        retVal = aggregatorService.saveGeneratedToken(email, token);
+        return retVal;
+    }
+
+    @PostMapping("/checkIfUserIsFollowingOtherUser")
+    public boolean checkIfUserIsFollowingOtherUser(@RequestHeader("Authentication") HttpHeaders header,@RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+
+        if(!Validation.validateNonBrackets(value)) {
+            String myUserEmail = tokenUtils.getUsernameFromToken(value);
+            return followerService.checkIfUserIsFollowingOtherUser(myUserEmail,message.get("otherUserEmail"));
+
+        }
+        return false;
     }
 }

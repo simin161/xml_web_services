@@ -11,8 +11,8 @@
 	<groupId>com.agentapp</groupId>
 	<artifactId>isa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>insurance</name>
-	<description>agemt app</description>
+	<name>agent</name>
+	<description>agent app</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

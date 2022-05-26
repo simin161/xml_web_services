@@ -3,6 +3,7 @@ package com.vinsguru.grpc.utility;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import proto.follow.FollowServiceGrpc;
+import proto.joboffer.JobOfferServiceGrpc;
 import proto.post.PostServiceGrpc;
 import proto.user.UserServiceGrpc;
 
@@ -11,6 +12,7 @@ public class MicroserviceConnection {
     private static UserServiceGrpc.UserServiceBlockingStub userBlockingStub;
     private static PostServiceGrpc.PostServiceBlockingStub postServiceBlockingStub;
     private static FollowServiceGrpc.FollowServiceBlockingStub followServiceBlockingStub;
+    private static JobOfferServiceGrpc.JobOfferServiceBlockingStub jobOfferServiceBlockingStub;
 
     public static UserServiceGrpc.UserServiceBlockingStub openChannelToUserService(){
         if(userBlockingStub == null) {
@@ -37,5 +39,14 @@ public class MicroserviceConnection {
             followServiceBlockingStub = FollowServiceGrpc.newBlockingStub(channel);
         }
         return followServiceBlockingStub;
+    }
+
+    public static JobOfferServiceGrpc.JobOfferServiceBlockingStub openChannelToJobOfferService(){
+        if(jobOfferServiceBlockingStub == null){
+            ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress("localhost", 6568).usePlaintext();
+            Channel channel = channelBuilder.build();
+            jobOfferServiceBlockingStub = JobOfferServiceGrpc.newBlockingStub(channel);
+        }
+        return jobOfferServiceBlockingStub;
     }
 }

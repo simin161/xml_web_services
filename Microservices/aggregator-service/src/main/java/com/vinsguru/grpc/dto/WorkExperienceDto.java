@@ -7,22 +7,33 @@ public class WorkExperienceDto {
     private String from;
     private String to;
     private String email;
+    private String id;
     public WorkExperienceDto() {
     }
 
-    public WorkExperienceDto(String workPlace, String workTitle, String from, String to,String email) {
+    public WorkExperienceDto(String workPlace, String workTitle, String from, String to,String email,String id) {
         this.workPlace = workPlace;
         this.workTitle = workTitle;
         this.from = from;
         this.to = to;
         this.email=email;
+        this.id=id;
     }
 
-    public WorkExperienceDto(String workPlace, String workTitle, String from, String to) {
+    public WorkExperienceDto(String workPlace, String workTitle, String from, String to,String id) {
         this.workPlace = workPlace;
         this.workTitle = workTitle;
         this.from = from;
         this.to = to;
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getWorkPlace() {

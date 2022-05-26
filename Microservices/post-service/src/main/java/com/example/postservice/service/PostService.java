@@ -35,7 +35,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId= blockingStub.findUserIdByEmail(input).getUsersId();
         if(usersId != null){
-            PostRepository.getInstance().insert(new Post(usersId,request.getText(),request.getPathToImage(),request.getLink(),new ArrayList<>(),new ArrayList<>(),new Date()));
+            PostRepository.getInstance().insert(new Post(usersId,request.getText(),"request.getPathToImage()",request.getLink(),new ArrayList<>(),new ArrayList<>(),new Date()));
             output = OutputAddPost.newBuilder().setResult("success").build();
         }else {
             output = OutputAddPost.newBuilder().setResult("Bad request").build();

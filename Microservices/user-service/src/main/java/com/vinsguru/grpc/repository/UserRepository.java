@@ -8,8 +8,10 @@ import java.util.List;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
@@ -68,7 +70,7 @@ public class UserRepository {
                 .append("interests",user.getInterests())
                 .append("skills",user.getSkills())
                 .append("educations",user.getEducations())
-                .append("experiences",user.getEducations())
+                .append("experiences",user.getExperinces())
                 .append("isActivated", user.isActivated())
                 .append("verificationCode", user.getVerificationCode());
         usersCollection.insertOne(userToSave);
@@ -120,12 +122,36 @@ public class UserRepository {
         return retVal;
     }
 
+    public List<User> searchUserByParam(String paramName, String paramValue){
+
+        FindIterable<Document> foundUsers;
+        usersCollection.createIndex(Indexes.text(paramName));
+        if(paramName.isEmpty()){
+            foundUsers = usersCollection.find();
+        }else{
+            //foundUsers = usersCollection.find(Filters.eq(paramName, paramValue));
+            String newValue = "\"" + paramValue + "\"";
+            Bson filter = Filters.text(newValue);
+            foundUsers = usersCollection.find(filter);
+        }
+        List<User> retVal = new ArrayList<>();
+        for(Document foundUser : foundUsers)
+        {
+            User u =  new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
+                    foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+
+            retVal.add(u);
+        }
+        return retVal;
+    }
+
     public List<User> getAllUsers(){
 
         FindIterable<Document> iterable = usersCollection.find();
         List<User> retVal = new ArrayList<User>();
         for(Document d : iterable){
-            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"));
+            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPItoken"));
             retVal.add(u);
         }
         return retVal;
@@ -215,8 +241,6 @@ public class UserRepository {
                    doc.getDate("from"),doc.getDate("to")));
        }
         return educations;
-
-
     }
 
 
@@ -261,8 +285,6 @@ public class UserRepository {
                     doc.getDate("to")));
         }
         return experiences;
-
-
     }
 
     public User findUserByVerificationCode(String code) {
@@ -287,4 +309,55 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
     }
 
+    public boolean deleteEducation(String userEmail,String id) {
+       Document educationToDelete=new Document();
+       Document foundUser = usersCollection.find(Filters.eq("email", userEmail)).first();
+       List<Document> educationsDocuments =foundUser.get("educations",docClazz);
+       for(Document doc : educationsDocuments){
+           if(doc.getObjectId("_idEducation").toString().equals(id)){
+               educationToDelete= doc;
+               break;
+           }
+       }
+       Bson updates = Updates.combine(
+               Updates.pull("educations",educationToDelete)
+       );
+       usersCollection.updateOne(foundUser, updates);
+       return true;
+    }
+    public boolean deleteExperience(String userEmail,String id) {
+        Document experienceToDelete=new Document();
+        Document foundUser = usersCollection.find(Filters.eq("email", userEmail)).first();
+        List<Document> experienceDocuments =foundUser.get("experiences",docClazz);
+        for(Document doc : experienceDocuments){
+            if(doc.getObjectId("_idExperience").toString().equals(id)){
+                experienceToDelete= doc;
+                break;
+            }
+        }
+        Bson updates = Updates.combine(
+                Updates.pull("experiences",experienceToDelete)
+        );
+
+        usersCollection.updateOne(foundUser, updates);
+
+        return true;
+    }
+
+    public User findUserByAPItoken(String userAPItoken) {
+        for(User u : getAllUsers()){
+            if(u.getUserAPItoken().equals(userAPItoken))
+                return u;
+        }
+        return null;
+    }
+
+    public void updateTokenValue(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("userAPItoken", user.getUserAPItoken())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
 }
