@@ -9,10 +9,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping(value="/api", produces= MediaType.APPLICATION_JSON_VALUE)
@@ -65,5 +62,10 @@ public class JobOfferController {
             e.printStackTrace();
         }
         return retVal;
+    }
+
+    @GetMapping("/getAllJobOffers")
+    public List<JobOffer> getAllJobOffers(){
+        return jobOfferService.getAllJobOffers();
     }
 }
