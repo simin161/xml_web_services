@@ -45,8 +45,9 @@ public class JobOfferController {
        // headers.add("Authorization", "Basic" + base64Creds);
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
-        if(offer==null){
+        if(offer==null || message.get("userAPIToken")==null){
             jobOffer.put("neam samana", "e jebiga");
+            return false;
         }else{
             jobOffer.put("id", offer.getId().toString());
             jobOffer.put("position", offer.getPosition());
