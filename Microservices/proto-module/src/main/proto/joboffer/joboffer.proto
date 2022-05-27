@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package joboffer;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "proto.joboffer";
+option java_multiple_files = true;
+
+message JobOfferCreationReturnValue{
+  string retVal = 1;
+}
+
+message JobOfferCreationParams{
+  string position = 1;
+  string jobDescription = 2;
+  string dailyActivities = 3;
+  string candidateRequirements = 4;
+  string companyName = 5;
+  string userApiToken = 6;
+}
+
+message CandidateRequirements{
+  repeated string requirement = 1;
+}
+
+message CompanyOwnerEmail{
+  string email = 1;
+}
+
+message CompanyNamesForEmail{
+  string companyNames = 1;
+}
+
+message SearchParam{
+  string param = 1;
+}
+
+message SearchReturnValue{
+  repeated SearchedOffer offer = 1;
+}
+
+message SearchedOffer{
+  string id = 1;
+  string position = 2;
+  string jobDescription = 3;
+  string dailyActivities = 4;
+  string candidateRequirements = 5;
+  string companyName = 6;
+  string userApiToken = 7;
+}
+
+service JobOfferService {
+
+    rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
+    rpc searchJobOffers(SearchParam) returns (SearchReturnValue) {};
+
+}

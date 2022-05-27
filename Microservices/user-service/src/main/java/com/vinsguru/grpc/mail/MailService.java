@@ -16,7 +16,7 @@ public class MailService {
 
     public void sendVerificationEmail(User u, String siteURL)
             throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Please verify your registration";
         String content = "Dear user,<br>"
@@ -36,7 +36,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
@@ -55,7 +55,7 @@ public class MailService {
 
     public void sendForgottenPasswordEmail(String email, String newPassword)
             throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Forgotten password";
         String content = "Dear user,<br>"
@@ -77,7 +77,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
@@ -92,8 +92,8 @@ public class MailService {
         Transport.send(message);
     }
 
-    public void sendPasswordlessLoginEmail(String email, String siteURL) throws javax.mail.MessagingException {
-        String fromAddress = "dislinkt_24@yahoo.com";
+    public void sendPasswordlessLoginEmail(String email, String siteURL) throws MessagingException, javax.mail.MessagingException {
+        String fromAddress = "dislinkt_team_23@yahoo.com";
         String senderName = "Dislinkt";
         String subject = "Your passwordless login is ready";
         String content = "Dear user,<br>"
@@ -115,7 +115,7 @@ public class MailService {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(fromAddress, "bxyiibxcspxtcytc");
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
 
             }
 
@@ -129,6 +129,45 @@ public class MailService {
 
         Transport.send(message);
 
+    }
+
+    public void sendUserAPITokenMail(String email, String userAPIToken)
+            throws MessagingException, UnsupportedEncodingException, javax.mail.MessagingException {
+        String fromAddress = "dislinkt_team_23@yahoo.com";
+        String senderName = "Dislinkt";
+        String subject = "API Token";
+        String content = "Dear user,<br>"
+                + "This is your API Token: <b>[[userAPIToken]]</b><br>"
+                + "Use this token to access our website from other applications but keep it private. <br>"
+                + "Thank you,<br>"
+                + "Dislinkt team.";
+
+        content = content.replace("[[userAPIToken]]", userAPIToken);
+
+        String host = "127.0.0.1";
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(fromAddress, "txvqjsyjuuvpgkpu");
+
+            }
+
+        });
+
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddress));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.setSubject(subject);
+        message.setContent(content, "text/html");
+
+        Transport.send(message);
     }
 }
 
