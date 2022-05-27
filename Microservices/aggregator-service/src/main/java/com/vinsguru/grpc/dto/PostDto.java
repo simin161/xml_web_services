@@ -8,6 +8,8 @@ public class PostDto {
     private String pathToImage;
     private String link;
     private String date;
+    private int numOfReactions;
+    private int numOfComments;
 
     public PostDto(String idPost, String email, String text, String pathToImage, String link, String date) {
         this.idPost = idPost;
@@ -18,7 +20,34 @@ public class PostDto {
         this.date = date;
     }
 
+    public PostDto(String idPost, String email, String text, String pathToImage, String link, String date, int numOfReactions, int numOfComments) {
+        this.idPost = idPost;
+        this.email = email;
+        this.text = text;
+        this.pathToImage = pathToImage;
+        this.link = link;
+        this.date = date;
+        this.numOfReactions = numOfReactions;
+        this.numOfComments = numOfComments;
+    }
+
     public PostDto() {
+    }
+
+    public int getNumOfReactions() {
+        return numOfReactions;
+    }
+
+    public void setNumOfReactions(int numOfReactions) {
+        this.numOfReactions = numOfReactions;
+    }
+
+    public int getNumOfComments() {
+        return numOfComments;
+    }
+
+    public void setNumOfComments(int numOfComments) {
+        this.numOfComments = numOfComments;
     }
 
     public String getEmail() {

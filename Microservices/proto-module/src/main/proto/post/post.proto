@@ -77,6 +77,34 @@ message OutputNumber {
   int32 num= 1;
 }
 
+message OutputReactions {
+  repeated OutputReaction reactions = 1;
+}
+message OutputComments {
+  repeated OutputComment comments = 1;
+}
+
+message OutputReaction {
+  string idReaction = 1;
+  string usersId = 2;
+  string reaction = 3;
+}
+
+message OutputComment {
+  string idComment = 1;
+  string text = 2;
+  string commentatorsId = 3;
+}
+
+message InputCheck {
+  string postId = 1;
+  string email = 2;
+}
+
+message OutputCheck {
+  string check =1;
+}
+
 
 service PostService {
 
@@ -88,5 +116,10 @@ service PostService {
   rpc findAllPostsOfFollowingsByUserEmail(Input) returns (OutputPosts) {};
   rpc getNumOfReactionsByPostId(InputPostId) returns (OutputNumber) {};
   rpc getNumOfCommentsByPostId(InputPostId) returns (OutputNumber) {};
+  rpc getReactionsByPostId(InputPostId) returns (OutputReactions) {};
+  rpc getCommentsByPostId(InputPostId) returns (OutputComments) {};
+  rpc checkReaction(InputCheck) returns (OutputCheck) {};
+  rpc deleteReaction(InputAddReaction) returns (Output) {};
+
 
 }

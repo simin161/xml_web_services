@@ -7,6 +7,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import proto.post.*;
+import proto.user.InputForGetUserByEmail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,13 @@ public class PostService {
         return this.blockingStub.addReaction(input).getResult();
     }
 
+    public String deleteReaction(ReactionDto reaction) {
+        blockingStub = openChannelToPostService();
+        InputAddReaction input = InputAddReaction.newBuilder()
+                .setEmail(reaction.getEmail()).setPostId(reaction.getPostId()).setReactionType(reaction.getReactionType()).build();
+        return this.blockingStub.deleteReaction(input).getResult();
+    }
+
     public List<PostDto> getAllPosts(){
         com.google.protobuf.Empty request = null;
         blockingStub = openChannelToPostService();
@@ -68,6 +76,10 @@ public class PostService {
             postDTO.setPathToImage(iap.getPathToImage());
             postDTO.setDate(iap.getDate());
             postDTO.setIdPost(iap.getPostId());
+            int numOfReactions = this.blockingStub.getNumOfReactionsByPostId(InputPostId.newBuilder().setPostId(iap.getPostId()).build()).getNum();
+            int numOfComments = this.blockingStub.getNumOfCommentsByPostId(InputPostId.newBuilder().setPostId(iap.getPostId()).build()).getNum();
+            postDTO.setNumOfReactions(numOfReactions);
+            postDTO.setNumOfComments(numOfComments);
             retVal.add(postDTO);
         }
         return retVal;
@@ -95,6 +107,33 @@ public class PostService {
         InputPostId input = InputPostId.newBuilder().setPostId(postId).build();
         return   blockingStub.getNumOfReactionsByPostId(input).getNum();
 
+    }
+
+    public List<ReactionDto> getReactionsByPostId(String postId) {
+        blockingStub = openChannelToPostService();
+        InputPostId input = InputPostId.newBuilder().setPostId(postId).build();
+        List<ReactionDto> reactions = new ArrayList<>();
+        for(OutputReaction reaction:blockingStub.getReactionsByPostId(input).getReactionsList()){
+            reactions.add(new ReactionDto(reaction.getIdReaction(),reaction.getUsersId(),reaction.getReaction()));
+        }
+     return reactions;
+
+    }
+
+    public List<CommentDto> getCommentsByPostId(String postId) {
+        blockingStub = openChannelToPostService();
+        InputPostId input = InputPostId.newBuilder().setPostId(postId).build();
+        List<CommentDto> comments = new ArrayList<>();
+        for(OutputComment comment:blockingStub.getCommentsByPostId(input).getCommentsList()){
+            comments.add(new CommentDto(comment.getIdComment(),comment.getText(),comment.getCommentatorsId()));
+        }
+        return comments;
+
+    }
+    public String checkReaction(String postId,String email) {
+        blockingStub = openChannelToPostService();
+        InputCheck input = InputCheck.newBuilder().setEmail(email).setPostId(postId).build();
+        return this.blockingStub.checkReaction(input).getCheck();
     }
 
 }
