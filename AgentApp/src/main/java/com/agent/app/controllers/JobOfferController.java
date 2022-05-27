@@ -32,17 +32,17 @@ public class JobOfferController {
     public boolean sendJobOfferRequest(@RequestHeader("Authentication")HttpHeaders header, @RequestBody Map<String, String> message){
         boolean retVal = jobOfferService.setUserAPIToken(message);
         final RestTemplate restTemplate = new RestTemplate();
-        final String uri = "http://localhost:8080/createJobOffer";
-        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-        String email = tokenUtils.getUsernameFromToken(value);
-        String plainCreds = email+":"+"Dajjedangriz*7";
-        byte[] plainCredsBytes = plainCreds.getBytes();
-        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = new String(base64CredsBytes);
+        final String uri = "http://localhost:8080/api/createJobOffer";
+       // final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+       // String email = tokenUtils.getUsernameFromToken(value);
+      //  String plainCreds = email+":"+"Dajjedangriz*7";
+      //  byte[] plainCredsBytes = plainCreds.getBytes();
+      //  byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+      //  String base64Creds = new String(base64CredsBytes);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("Authorization", "Basic" + base64Creds);
+       // headers.add("Authorization", "Basic" + base64Creds);
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
         if(offer==null){
@@ -54,7 +54,7 @@ public class JobOfferController {
             jobOffer.put("jobDescription", offer.getJobDescription());
             jobOffer.put("dailyActivities", offer.getDailyActivities());
             jobOffer.put("candidateRequirements", offer.getCandidateRequirements());
-            jobOffer.put("userAPIToken", message.get("userAPIToken"));
+            jobOffer.put("userAPItoken", message.get("userAPIToken"));
         }
         try{
             HttpEntity<Map<String, Object>> entity= new HttpEntity<Map<String, Object>>(jobOffer, headers);

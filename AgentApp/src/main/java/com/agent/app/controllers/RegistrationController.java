@@ -4,6 +4,7 @@ import com.agent.app.model.User;
 import com.agent.app.model.UserTokenState;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.security.auth.JwtAuthenticationRequest;
+import com.agent.app.service.CompanyService;
 import com.agent.app.service.CustomUserDetailsService;
 import com.agent.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,14 @@ public class RegistrationController {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @PostMapping("/registerCompany")
+    public boolean registerCompany(@RequestBody Map<String, String> message){
+        return companyService.registerCompany(message);
+    }
 
     @PostMapping("/logIn")
     public ResponseEntity<UserTokenState> logIn(@RequestBody JwtAuthenticationRequest cred,

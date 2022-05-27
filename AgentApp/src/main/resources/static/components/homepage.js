@@ -66,8 +66,8 @@ changeForm : function(){
             signIn : function(){
               axios.post("/api/logIn", this.logUser)
                      .then(response => {
-                        if(response.data == true){
-                            //router.push('/firstPage')
+                        if(response.data !== ""){
+                            router.push('/firstPage')
                             console.log("Da")
                         }else{
                             console.log("Ne")
@@ -77,8 +77,8 @@ changeForm : function(){
             register : function(){
                 axios.post("/api/register", this.registerUser)
                      .then(response => {
-                        if(response.data == true){
-                            //router.push('/firstPage')
+                        if(response.data !== ""){
+                            router.push('/firstPage')
                             console.log("Da")
                         }else{
                             console.log("Ne")
