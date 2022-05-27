@@ -35,14 +35,14 @@ public class JobOfferController {
         final String uri = "http://localhost:8080/createJobOffer";
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         String email = tokenUtils.getUsernameFromToken(value);
-        String plainCreds = email+":"+"a";
+        String plainCreds = email+":"+"Dajjedangriz*7";
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add("Authorization", "Basic" + value);
+        headers.add("Authorization", "Basic" + base64Creds);
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
         if(offer==null){
@@ -56,8 +56,13 @@ public class JobOfferController {
             jobOffer.put("candidateRequirements", offer.getCandidateRequirements());
             jobOffer.put("userAPIToken", message.get("userAPIToken"));
         }
-        HttpEntity<Map<String, Object>> entity= new HttpEntity<Map<String, Object>>(jobOffer, headers);
-        JobOffer response = restTemplate.postForObject(uri, entity, JobOffer.class);
+        try{
+            HttpEntity<Map<String, Object>> entity= new HttpEntity<Map<String, Object>>(jobOffer, headers);
+            JobOffer response = restTemplate.postForObject(uri, entity, JobOffer.class);
+        }catch(Exception e){
+            retVal = false;
+            e.printStackTrace();
+        }
         return retVal;
     }
 }
