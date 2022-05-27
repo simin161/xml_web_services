@@ -104,8 +104,8 @@
 			if(file != null){
 				this.imagePath = true;
         reader.onloadend = () => {
-				 this.postDto.pathToImage = reader.result
-         console.log("AAAAAA"+ this.postDto.pathToImage)
+				this.postDto.pathToImage = reader.result
+        console.log("AAAAAA"+ this.postDto.pathToImage)
 				}
 				reader.readAsDataURL(file);
 			}
