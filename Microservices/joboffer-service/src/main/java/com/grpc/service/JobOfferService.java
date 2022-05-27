@@ -1,5 +1,6 @@
 package com.grpc.service;
 
+import com.google.protobuf.Empty;
 import com.grpc.model.JobOffer;
 import com.grpc.repository.CompanyRepository;
 import com.grpc.repository.JobOfferRepository;
@@ -82,4 +83,28 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
         return retVal;
     }
 
+    @Override
+    public void getAllJobOffers(Empty input, StreamObserver<GetAllJobOffersOutput> responseObserver){
+        GetAllJobOffersOutput gajoo;
+        try{
+            List<JobOffer> offers = JobOfferRepository.getInstance().getAllJobOffers();
+            List<SearchedOffer> outputOffers = new ArrayList<>();
+            for(JobOffer o : offers){
+                SearchedOffer so = SearchedOffer.newBuilder().setJobDescription(o.getJobDescription())
+                        .setCandidateRequirements(o.getCandidateRequirements())
+                        .setDailyActivities(o.getDailyActivities())
+                        .setCompanyName(o.getCompanyName())
+                        .setId(o.getId().toString())
+                        .setPosition(o.getPosition())
+                        .build();
+                outputOffers.add(so);
+            }
+            gajoo = GetAllJobOffersOutput.newBuilder().addAllOffer(outputOffers).build();
+        }catch(Exception e){
+            e.printStackTrace();
+            gajoo = GetAllJobOffersOutput.newBuilder().build();
+        }
+        responseObserver.onNext(gajoo);
+        responseObserver.onCompleted();
+    }
 }
