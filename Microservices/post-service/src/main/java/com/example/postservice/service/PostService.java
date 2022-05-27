@@ -11,6 +11,7 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import proto.follow.FollowServiceGrpc;
 import proto.follow.Followers;
@@ -34,8 +35,19 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId= blockingStub.findUserIdByEmail(input).getUsersId();
+        String image= "";
+
         if(usersId != null){
-            PostRepository.getInstance().insert(new Post(usersId,request.getText(),"request.getPathToImage()",request.getLink(),new ArrayList<>(),new ArrayList<>(),new Date()));
+            try {
+           System.out.println("SLIKA SA FRONTA"+request.getPathToImage());
+            image=ImageService.getInstance().saveImage(request.getPathToImage(),UUID.randomUUID().toString());
+            System.out.println("NAKON NATINOG SERVERA"+image);
+
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+            }
+            PostRepository.getInstance().insert(new Post(usersId,request.getText(),image,request.getLink(),new ArrayList<>(),new ArrayList<>(),new Date()));
             output = OutputAddPost.newBuilder().setResult("success").build();
         }else {
             output = OutputAddPost.newBuilder().setResult("Bad request").build();
