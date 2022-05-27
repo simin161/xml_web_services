@@ -5,10 +5,12 @@ public class FollowDto {
     private String personEmail;
     private String followerEmail;
 
+
     public FollowDto(String personEmail, String followerEmail) {
         this.personEmail = personEmail;
         this.followerEmail = followerEmail;
     }
+
 
     public FollowDto() {
     }

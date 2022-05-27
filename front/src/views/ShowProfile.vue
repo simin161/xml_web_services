@@ -13,7 +13,7 @@
                 </svg>
           </a>
           <ul class="dropdown-menu" >
-            <li><a  class="dropdown-item" href="#">My profile</a></li>
+            <li><a  class="dropdown-item" @click="redirectMyProfile" href="#">My profile</a></li>
             <hr>
             <li><a @click="signOut" class="dropdown-item" href="#">Log out</a></li>
           </ul>
@@ -59,7 +59,7 @@
                     </div>
                     <br>
     <br>
-                    <div v-if="user.privateProfile==false" class="personal-info" style="text-align: left;">
+                    <div v-if="user.privateProfile==false  || userIsFollowingThisProfile==true" class="personal-info" style="text-align: left;">
                         <h5 style="text-align: left">Personal Information</h5>
                            <hr>
                             <div class="row">
@@ -101,7 +101,7 @@
                   
                     </div>
                    <br>
-                    <div class="skill" v-if="user.privateProfile==false">
+                    <div class="skill" v-if="user.privateProfile==false || userIsFollowingThisProfile==true">
                         <h5 style="text-align: left">Biography</h5>
                         <hr>
                         <p><b>{{user.biography}}</b></p>
@@ -122,7 +122,7 @@
             </div>
             <br>
 
-            <div class="card left-profile-card" v-if="user.privateProfile==false">
+            <div class="card left-profile-card" v-if="user.privateProfile==false  || userIsFollowingThisProfile==true ">
                 <div class="card-body">
                     
                     <div class="personal-info">
@@ -152,7 +152,7 @@
                 </div>
             </div>
             <br>
-            <div class="card left-profile-card" v-if="user.privateProfile==false">
+            <div class="card left-profile-card" v-if="user.privateProfile==false  || userIsFollowingThisProfile==true">
                 <div class="card-body">
                     
                     <div class="personal-info">
@@ -184,8 +184,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
-            <div v-for="post in posts" v-bind:key="post.idPost" class="card">
+        <div  class="col-lg-8">
+            <div  v-for="post in posts" v-bind:key="post.idPost" class="card">
                 <div class="card-body" style="text-align: left;">
                     <h5 style="text-align: left"><b>{{user.firstName}} {{user.lastName}}</b></h5>
            <p style="color: gray; font-size: 13px">{{post.date}}</p>
@@ -215,7 +215,7 @@
                  </svg> Dislike</button>
 
 
-                <button style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-dots-fill" viewBox="0 0 16 16">
+                <button @click="idPost=post.idPost" data-bs-toggle="modal" data-bs-target="#addComment" style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-dots-fill" viewBox="0 0 16 16">
                 <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                 </svg> Comment</button>
                 
@@ -279,6 +279,29 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="addComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Add comment</h3>
+        <hr>
+         <textarea  style="height: 250px" class="form-control" id="skills" v-model="comment"  ></textarea>
+         
+
+      </div>
+      <div class="modal-footer">
+        <button @click="addComment" type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Add comment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
 <div class="modal fade" id="staticBackdropFollowing" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -339,7 +362,11 @@
         followersNum: 0,
         followingsNum: 0,
         followButton: 'Follow',
-        followButtonTemp: 'Follow'
+        followButtonTemp: 'Follow',
+        commment: '',
+        idPost: '',
+        num: false,
+        
         
 
     };
@@ -376,8 +403,30 @@
 
                                              this.followButton="Following"
                                              this.followButtonTemp="Following"
+                                             
                                 }
                                  
+                          if(this.userIsFollowingThisProfile==true || this.user.privateProfile==false){
+                              console.log(response.data);
+
+                              
+                                  axios.get(process.env.VUE_APP_BACK + 'educations/'+this.user.email+"/")
+                                      .then((response) => {
+                                          this.educations = response.data;
+                                      })
+
+                                  axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.user.email+"/")
+                                      .then((response) => {
+                                          this.workExperiences = response.data;
+                                      })
+
+                                  axios.get(process.env.VUE_APP_BACK + 'getAllUserPosts/'+this.user.email+"/")
+                                      .then((response) => {
+                                        console.log("SIZEEEE"+response.data.length)
+                                          this.posts = response.data;
+                                          this.num = true
+                                      })
+                    }
 
                     })
 
@@ -391,27 +440,9 @@
                                 this.followings = response.data;
                                 this.followingsNum = response.data.length
                     })
-
+                      console.log("AAAAA"+this.userIsFollowingThisProfile)
                     /*** ako ta osoba ima javan profil ili je pratim onda mogu da gledam njene postove,edukacije itd*/
-                    if(this.userIsFollowingThisProfile==true || this.user.privateProfile==false){
-                    console.log(response.data);
-
-                    
-                        axios.get(process.env.VUE_APP_BACK + 'educations/'+this.user.email+"/")
-                            .then((response) => {
-                                this.educations = response.data;
-                            })
-
-                        axios.get(process.env.VUE_APP_BACK + 'experiences/'+this.user.email+"/")
-                            .then((response) => {
-                                this.workExperiences = response.data;
-                            })
-
-                        axios.get(process.env.VUE_APP_BACK + 'getAllUserPosts/'+this.user.email+"/")
-                            .then((response) => {
-                                this.posts = response.data;
-                            })
-                    }
+                   
 
 
                 })
@@ -424,6 +455,9 @@
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
     },
+     redirectMyProfile: function(){
+        this.$router.push("/profilePage")
+    },
     findNumOfReactions: function(id){
         var numOfReactions=0;
         console.log("Id od posta  "+id)
@@ -434,16 +468,19 @@
                             )
                             .then((response) => {
                                      console.log("broj rekacijaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "+response.data);
-                                numOfReactions= response.data;
+                              numOfReactions= response.data;
+                                 
                             
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-                        return numOfReactions;
+                       return numOfReactions
     },
      findNumOfComments: function(id){
-         var numOfComments=0
+       console.log(id)
+      if(this.num==true){
+    var numOfComments
         console.log("Id od posta  "+id)
                             axios.post(process.env.VUE_APP_BACK + 'numOfCommentsByPostId',
                             {
@@ -451,16 +488,35 @@
                             }
                             )
                             .then((response) => {
-                                numOfComments= response.data;
+                              console.log("nummmm"+response.data)
+                               numOfComments= response.data;
+                              
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-                            return numOfComments;
+                               console.log("nummmm posle thena"+this.num)
+                              
+                           
+                           console.log("AAAA"+numOfComments)
+                            return numOfComments
+      }
                         
     },
     loadReactions: function(){
 
+    },
+    
+    addComment: function(){
+         axios.post(process.env.VUE_APP_BACK + 'comment',{
+           postId: this.idPost,
+           text: this.comment,
+           commentatorsEmail: this.user.email
+         })
+                            .then((response) => {
+                                this.findNumOfComments(this.idPost)
+                                return response;
+                            })
     },
     loadComments: function(){
 
@@ -479,9 +535,15 @@
                                         personEmail: this.user.email
                                     })
                                     .then((response) => {
-                                        this.userIsFollowingThisProfile = true;
+                                      if(this.user.privateProfile == false){
+                                       this.userIsFollowingThisProfile = true;
                                         this.followButton = "Following"
                                         this.followButtonTemp = "Following"
+                                      }else if(this.user.privateProfile == true) {
+                                        this.userIsFollowingThisProfile = false;
+                                        this.followButton = "Requested"
+                                        this.followButtonTemp = "Requested"
+                                      }
                                         axios.get(process.env.VUE_APP_BACK + 'followers/'+this.user.email+"/")
                                         .then((response) => {
                                             this.followers = response.data;
@@ -510,6 +572,8 @@
     },
     setButtonMouseEnter: function(){
              if(this.followButton=="Following")
+                 this.followButton="Unfollow"
+             else if(this.followButton=="Requested")
                  this.followButton="Unfollow"
              
     },

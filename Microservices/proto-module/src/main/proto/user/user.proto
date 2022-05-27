@@ -113,6 +113,11 @@ message InputSearch{
     string param = 1;
 
 }
+
+message InputUsername{
+  string username = 1;
+}
+
 message InputDeleting{
 
   string email = 1;
@@ -120,9 +125,7 @@ message InputDeleting{
 
 }
 message OutputId {
-
  string  usersId = 1;
-
 }
 
 message OutputBool {
@@ -215,6 +218,8 @@ service UserService {
   rpc getUserByEmail(InputForGetUserByEmail) returns (Output){};
 
   rpc getUserById(InputID) returns (Output){};
+
+  rpc getUsersIdByUsername(InputUsername) returns (OutputId){};
 
   rpc updateEducation(InputUpdateEducation) returns (OutputMessage) {};
 

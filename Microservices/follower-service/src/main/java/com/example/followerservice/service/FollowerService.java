@@ -33,9 +33,10 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
         if(personalId != null && followersId != null ){
             if(!blockingStub.checkIfAccountIsPrivate(input).getPrivate()) {
 
-                FollowerRepository.getInstance().insert(new Follow(null, personalId, followersId));
+                FollowerRepository.getInstance().insert(new Follow(null, personalId, followersId,true));
                 output = OutputAddFollow.newBuilder().setResult("success").build();
             }else {
+                FollowerRepository.getInstance().insert(new Follow(null, personalId, followersId,false));
                 output = OutputAddFollow.newBuilder().setResult("private profile").build();
             }
         }else {
@@ -133,6 +134,46 @@ public class FollowerService extends FollowServiceGrpc.FollowServiceImplBase {
                 output = OutputBoolean.newBuilder().setPersonIsFollowing(true).build();
         }
         output = OutputBoolean.newBuilder().setPersonIsFollowing(false).build();
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void findRequests(InputEmail request, StreamObserver<OutputFollowers> responseObserver) {
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = MicroserviceConnection.openChannelToUserService();
+
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
+        String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
+
+        List<Follow> requests = FollowerRepository.getInstance().findRequests(personalId);
+
+
+        List<Followers> inputs = new ArrayList<>();
+        for(Follow u : requests){
+            InputID inputid = InputID.newBuilder().setId(u.getFollowerId()).build();
+            String username= blockingStub.getUserById(inputid).getUsername();
+            Followers follows = Followers.newBuilder().setFollowerEmail(username).setPersonEmail(request.getEmail()).build();
+            inputs.add(follows);
+        }
+        OutputFollowers output2;
+        output2 = OutputFollowers.newBuilder().addAllFollowers(inputs).build();
+        responseObserver.onNext(output2);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void answerFollowRequest(InputAnswer request, StreamObserver<OutputBoolean> responseObserver) {
+        OutputBoolean output;
+        UserServiceGrpc.UserServiceBlockingStub blockingStub = MicroserviceConnection.openChannelToUserService();
+        InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getPersonEmail()).build();
+        String personalId= blockingStub.findUserIdByEmail(input).getUsersId();
+
+        InputUsername input1 =InputUsername.newBuilder().setUsername(request.getFollowerEmail()).build();
+        String followersId =  blockingStub.getUsersIdByUsername(input1).getUsersId();
+        System.out.println("followerId "+followersId);
+
+        boolean ret = FollowerRepository.getInstance().answerFollowRequest(request.getApproved(),followersId,personalId);
+        output = OutputBoolean.newBuilder().setPersonIsFollowing(ret).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }

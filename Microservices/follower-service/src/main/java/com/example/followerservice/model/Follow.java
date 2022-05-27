@@ -7,14 +7,31 @@ public class Follow {
     private ObjectId id;
     private String  personId;
     private String  followerId;
+    private boolean approved;
 
     public Follow(ObjectId id, String personId, String followerId) {
         this.id = id;
         this.personId = personId;
         this.followerId = followerId;
+
+    }
+
+    public Follow(ObjectId id, String personId, String followerId, boolean approved) {
+        this.id = id;
+        this.personId = personId;
+        this.followerId = followerId;
+        this.approved = approved;
     }
 
     public Follow() {
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     public ObjectId getId() {

@@ -84,7 +84,6 @@ public class UserRepository {
             retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
                     foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
-
             retVal.setActivated(foundUser.getBoolean("isActivated"));
         }
         return retVal;
@@ -344,6 +343,15 @@ public class UserRepository {
         return true;
     }
 
+
+    public String findUserIdByUsername(String username) {
+        Document foundUser = usersCollection.find(Filters.eq("username", username)).first();
+
+        if(foundUser != null){
+            return foundUser.getObjectId("_id").toString();
+        }
+        return "";
+
     public User findUserByAPItoken(String userAPItoken) {
         for(User u : getAllUsers()){
             if(u.getUserAPItoken().equals(userAPItoken))
@@ -359,5 +367,6 @@ public class UserRepository {
         );
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);
+
     }
 }
