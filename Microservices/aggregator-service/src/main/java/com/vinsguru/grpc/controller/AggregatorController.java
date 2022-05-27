@@ -478,4 +478,9 @@ public class AggregatorController {
         }
         return false;
     }
+
+    @GetMapping("/getAllJobOffers")
+    public List<JobOfferDto> getAllJobOffers(){
+        return jobOfferService.getAllJobOffers();
+    }
 }

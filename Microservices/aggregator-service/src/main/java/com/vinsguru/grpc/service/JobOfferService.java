@@ -1,5 +1,6 @@
 package com.vinsguru.grpc.service;
 
+import com.google.protobuf.Empty;
 import com.vinsguru.grpc.dto.JobOfferDto;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,26 @@ public class JobOfferService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<JobOfferDto> getAllJobOffers(){
+        List<JobOfferDto> jobOfferDtos = new ArrayList<>();
+        try{
+            blockingStub = openChannelToJobOfferService();
+            List<SearchedOffer> offersOutput = blockingStub.getAllJobOffers(Empty.newBuilder().build()).getOfferList();
+            for(SearchedOffer so : offersOutput){
+                JobOfferDto jod = new JobOfferDto();
+                jod.setCandidateRequirements(so.getCandidateRequirements());
+                jod.setCompanyName(so.getCompanyName());
+                jod.setJobDescription(so.getJobDescription());
+                jod.setPosition(so.getPosition());
+                jod.setUserAPItoken("");
+                jod.setDailyActivities(so.getDailyActivities());
+                jobOfferDtos.add(jod);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return jobOfferDtos;
     }
 }
