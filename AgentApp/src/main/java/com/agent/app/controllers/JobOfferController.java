@@ -58,7 +58,7 @@ public class JobOfferController {
         }
         try{
             HttpEntity<Map<String, Object>> entity= new HttpEntity<Map<String, Object>>(jobOffer, headers);
-            JobOffer response = restTemplate.postForObject(uri, entity, JobOffer.class);
+            boolean response = Boolean.TRUE.equals(restTemplate.postForObject(uri, entity, boolean.class));
         }catch(Exception e){
             retVal = false;
             e.printStackTrace();

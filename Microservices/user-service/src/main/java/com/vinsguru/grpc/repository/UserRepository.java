@@ -151,7 +151,13 @@ public class UserRepository {
         FindIterable<Document> iterable = usersCollection.find();
         List<User> retVal = new ArrayList<User>();
         for(Document d : iterable){
-            User u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPItoken"));
+            User u;
+            if(!d.getString("userAPItoken").equals(""))
+                u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPItoken"));
+            else if(!d.getString("userAPIToken").equals(""))
+                u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPIToken"));
+            else
+                u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"));
             retVal.add(u);
         }
         return retVal;
