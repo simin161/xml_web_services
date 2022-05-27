@@ -386,8 +386,7 @@
                             .catch(function (error) {
                                 console.log(error);
                             });  
-
-
+},
     generateAPIToken : function(){
         axios.defaults.headers.common["Authorization"] = localStorage.getItem("loggedUser");
         axios.post(process.env.VUE_APP_BACK + 'generateUserAPIToken')

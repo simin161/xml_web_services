@@ -347,11 +347,11 @@ public class UserRepository {
     public String findUserIdByUsername(String username) {
         Document foundUser = usersCollection.find(Filters.eq("username", username)).first();
 
-        if(foundUser != null){
+        if (foundUser != null) {
             return foundUser.getObjectId("_id").toString();
         }
         return "";
-
+    }
     public User findUserByAPItoken(String userAPItoken) {
         for(User u : getAllUsers()){
             if(u.getUserAPItoken().equals(userAPItoken))
