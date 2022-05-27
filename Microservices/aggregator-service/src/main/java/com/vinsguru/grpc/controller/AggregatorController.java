@@ -62,12 +62,15 @@ public class AggregatorController {
                                                                     HttpServletResponse response) {
 
         System.out.println(cred);
+        System.out.println("MAAAIL"+cred.getEmail());
         if(Validation.validateEmail(cred.getEmail())){
+            System.out.println("USAOOOOOOOOOOOO");
             try{
+                System.out.println("USAOOOOOOOOOOOO try" +  cred.getPassword());
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
                                 cred.getPassword()));
-
+                System.out.println("USAOOOOOOOOOOOO");
                 // Ubaci korisnika u trenutni security kontekst
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -75,6 +78,8 @@ public class AggregatorController {
                 User user = (User) authentication.getPrincipal();
                 String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
                 int expiresIn = tokenUtils.getExpiredIn();
+
+                System.out.println("USAOOOOOOOOOOOO userr" + user.getEmail());
 
                 // Vrati token kao odgovor na uspesnu autentifikaciju
                 return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
@@ -254,6 +259,18 @@ public class AggregatorController {
         }
         return "";
     }
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @GetMapping("/requests")
+    public List<FollowDto> requests(@RequestHeader("Authentication") HttpHeaders header){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            String email = tokenUtils.getUsernameFromToken(value);
+            return followerService.findRequests(email);  //note: na frontu skloniti mejl da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @GetMapping("/getAllPosts")
     public List<PostDto> getAllPosts(){
@@ -280,6 +297,23 @@ public class AggregatorController {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @PostMapping("/answerFollowRequest")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public void answerFollowRequest(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        boolean approved=true;
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                if(message.get("approved").equals("false"))
+                    approved= false;
+                followerService.answerFollowRequest(approved,email,message.get("followerEmail"));}  //note: na frontu skloniti mejl da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @GetMapping("/postsForHomePage")

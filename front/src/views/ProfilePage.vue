@@ -13,7 +13,7 @@
                 </svg>
           </a>
           <ul class="dropdown-menu" >
-            <li><a  class="dropdown-item" href="#">My profile</a></li>
+            <li><a  class="dropdown-item"  @click= "redirectMyProfile" href="#">My profile</a></li>
             <hr>
             <li><a @click="signOut" class="dropdown-item" href="#">Log out</a></li>
           </ul>
@@ -199,6 +199,17 @@
                                 </button>
                              
                                 </div>
+
+                                 <div  v-if="loggedUser.privateProfile == true" class='col'>
+
+                                <button @click="loadRequests" data-bs-toggle="modal" data-bs-target="#followRequests" id="buttonProfile">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                </svg>Follow requests
+                                </button>
+                             
+                                </div>
         </div>
                 </div>
                
@@ -238,6 +249,42 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="followRequests" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h3>{{loggedUser.username}}'s follow requests</h3>
+        <hr>
+        <ul class="list-group">
+            <li  v-for="request in requests" v-bind:key="request.followerEmail" class="list-group-item">
+            <div class="row">
+              <div class="col-lg-6">{{request.followerEmail}}</div>
+              <div class="col-lg-3">
+                   <button type="button" @click="answer(true,request.followerEmail)" class="btn btn-outline-success" data-bs-dismiss="modal">APPROVE</button>
+
+              </div>
+              <div class="col-lg-3">
+             <button type="button"  @click="answer(false,request.followerEmail)" class="btn btn-outline-danger" data-bs-dismiss="modal">DENY</button>
+              </div>
+            </div>
+            
+            </li>
+        </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -267,6 +314,8 @@
         workExperiences: {},
         educationToDelete: null,
         workExpToDelete: null,
+        requests: [],
+        approved: true
     };
   },
   mounted() {
@@ -319,6 +368,24 @@
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
     },
+     redirectMyProfile: function(){
+        this.$router.push("/profilePage")
+    },
+    answer:function(approved,follower){
+        axios.post(process.env.VUE_APP_BACK + 'answerFollowRequest',{
+          approved: approved,
+          followerEmail:  follower
+
+        })
+                            .then((response) => {
+                                console.log(response)
+                                this.loadRequests()
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });  
+
+    },
     deleteEducation: function(){
     console.log("MENE BRISES" +this.educationToDelete.school)
                  axios.post(process.env.VUE_APP_BACK + 'deleteEducation',
@@ -345,6 +412,15 @@
                  .catch(function (error) {
                     console.log(error);
                  });
+    },
+    loadRequests: function(){
+          axios.get(process.env.VUE_APP_BACK + 'requests')
+                            .then((response) => {
+                                this.requests = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });  
     },
     deleteWorkExp: function(){
     console.log("MENE BRISES" +this.workExpToDelete.workTitle)

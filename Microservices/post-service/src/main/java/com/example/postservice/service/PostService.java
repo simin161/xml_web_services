@@ -92,12 +92,13 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     public void getAllUserPosts(UserEmail request, StreamObserver<AllPosts> responseObserver){
         List<Post> documentedPosts = PostRepository.getInstance().getAllPosts();
         List<PostToShow> iaps = new ArrayList<>();
-
+        System.out.println("USER EMAIL"+request.getEmail());
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         try {
             for (Post p : documentedPosts) {
                 OutputId userId = OutputId.newBuilder().setUsersId(p.getUsersId()).build();
                 String email = blockingStub.findUserEmailById(userId).getEmail();
+                System.out.println("USER EMAIL"+email);
                 if (request.getEmail().equals(email)) {
                     PostToShow iap = PostToShow.newBuilder().setPathToImage(p.getPathToImage()).setText(p.getText())
                             .setLink(p.getLink()).setEmail(email).setPostId(p.getId().toString()).setDate(p.getDate().toString()).build();

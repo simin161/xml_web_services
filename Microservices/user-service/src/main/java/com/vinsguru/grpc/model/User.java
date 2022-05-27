@@ -57,6 +57,7 @@ public class User {
         this.experinces=new ArrayList<>();
     }
 
+
     public boolean isActivated() {
         return isActivated;
     }

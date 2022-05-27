@@ -12,16 +12,11 @@
 
           <div class="signup" style="height: 110%">
               <label htmlFor="chk" aria-hidden="true">Sign up</label>
-              <table style="margin-left: 69px; margin-top: -70px">
-                <tr>
-                  <td>
-                    <input style="width: 105px"  type="text" v-model="dtoReg.firstName" id="firstName" name="txt" placeholder="First name" required/>
-                  </td>
-                  <td>
-                    <input style="width: 105px" type="text" v-model="dtoReg.lastName" id="lastName" name="txt" placeholder="Last name" required/>
-                  </td>
-                </tr>
-              </table>
+             
+
+               <input style="margin-top: 10px; margin-left: 70px"  type="text" v-model="dtoReg.firstName" id="firstName" name="txt" placeholder="First name" required/>
+               <input style="margin-top: 10px; margin-left: 70px" type="text" v-model="dtoReg.lastName" id="lastName" name="txt" placeholder="Last name" required/>
+
               <input style="margin-top: 10px; margin-left: 70px" id="email" v-model="dtoReg.email" type="email" name="email" placeholder="Email" required/>
               <input style="margin-top: 10px; margin-left: 70px" id="username" v-model="dtoReg.username" type="text" name="txt" placeholder="Username" required/>
               <select id="gender" v-model="dtoReg.gender" style=" margin-top : 10px; margin-left: 70px; height: 30px">
@@ -79,7 +74,7 @@
       
           axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password})
           .then((response) => {
-              console.log(response);
+              console.log("ssssss"+response.data);
               if(!response.data ){
                   this.$swal.fire({  
                           title: " Invalid credentials!",  
@@ -219,7 +214,7 @@ label{
 	font-size: 2.3em;
 	justify-content: center;
 	display: flex;
-	margin: 60px;
+	margin: 1px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
@@ -230,7 +225,7 @@ input, select{
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
-	margin: 20px auto;
+	margin: 10px auto;
 	padding: 10px;
 	border: none;
 	outline: none;
@@ -257,10 +252,10 @@ input, select{
 	background: #3f2b63;
 }
 .login{
-	height: 460px;
+	height: 560px;
 	background: #eee;
 	border-radius: 60% / 30%;
-	transform: translateY(-155px);
+	transform: translateY(-140px);
 	transition: .8s ease-in-out;
 }
 .login label{
