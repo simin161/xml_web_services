@@ -32,7 +32,6 @@ public class ImageService {
         byte[] imageBytes = Base64.decode(base64Image);
 
         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-       System.out.println("Sta je ovo***"+System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\")));
         File file = new File(System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\"))+"/front/src/assets/" + imageName);
        ImageIO.write(img, ext, file);
         imagePath  +=  file.getName();

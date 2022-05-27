@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/followers/{email:.+}/").permitAll()
                 .antMatchers("/api/followings/{email:.+}/").permitAll()
                 .antMatchers("/api/getAllPosts").permitAll()
+                .antMatchers("/api/findReactionsByPostId").permitAll()
                 .antMatchers("/api/getAllUserPosts/user:{email}").permitAll()
                 .antMatchers("/api/numOfCommentsByPostId").permitAll()
                 .antMatchers("/api/numOfReactionsByPostId").permitAll()

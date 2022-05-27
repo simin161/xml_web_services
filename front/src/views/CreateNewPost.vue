@@ -114,7 +114,17 @@
 			}
 		},
    createNewPost: function(){
-       if(this.postDto.text =="" || this.postDto.link=="") return
+       if(this.postDto.text =="" && this.postDto.link=="" && this.postDto.pathToImage == "") {
+            this.$swal.fire({
+                 position: 'top-end',
+                  icon: 'error',
+                 title: 'Post can not be empty!',
+               showConfirmButton: false,
+               timer: 1500
+    })
+        return;
+       
+       }
         axios.post(process.env.VUE_APP_BACK + 'newPost',
         {
             text: this.postDto.text,

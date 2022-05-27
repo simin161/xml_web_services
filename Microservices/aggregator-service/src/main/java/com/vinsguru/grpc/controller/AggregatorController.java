@@ -196,9 +196,8 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
                 String email = tokenUtils.getUsernameFromToken(value);
                 post.setEmail(email);
-                System.out.println("DOBIOOOOOO"+post.getPathToImage());
-               // System.out.println("Sta je ovo***"+System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("/")));
-
+                if(post.getText()== null) post.setText("");
+                if(post.getLink()== null) post.setLink("");
                 return postService.addPost(post);
             }  //note: na frontu skloniti mejl iz post da se prosledjuje
         }catch(Exception e){
@@ -288,14 +287,35 @@ public class AggregatorController {
     }
     @PostMapping("/reaction")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
-    @PostAuthorize("hasPermission(returnObject, 'READ')")
+
     public String addNewReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        System.out.println("AAAAA"+reaction.getReactionType());
+        System.out.println("AAAAA"+reaction.getEmail());
+        System.out.println("AAAAA"+reaction.getPostId());
         try{
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             reaction.setEmail(email);
             return postService.addReaction(reaction);}  //note: na frontu skloniti mejl da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @PostMapping("/deleteReaction")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public String deleteReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        System.out.println("AAAAA"+reaction.getReactionType());
+        System.out.println("AAAAA"+reaction.getEmail());
+        System.out.println("AAAAA"+reaction.getPostId());
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                reaction.setEmail(email);
+                return postService.deleteReaction(reaction);}  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -318,7 +338,19 @@ public class AggregatorController {
         }
 
     }
-
+    @PostMapping("/checkReaction")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public String checkReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+               return postService.checkReaction(message.get("postId"),email);}  //note: na frontu skloniti mejl da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
     @GetMapping("/postsForHomePage")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
     @PostAuthorize("hasPermission(returnObject, 'READ')")
@@ -352,6 +384,16 @@ public class AggregatorController {
             return aggregatorService.deleteExperience(email,workExperienceDto.getId());
         }
         return false;
+    }
+
+    @PostMapping("/findReactionsByPostId")
+    public List<ReactionDto> findReactionsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getReactionsByPostId(postId.get("id"));
+    }
+
+    @PostMapping("/findCommentsByPostId")
+    public List<CommentDto> findCommentsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getCommentsByPostId(postId.get("id"));
     }
 
     @PostMapping("/numOfCommentsByPostId")
