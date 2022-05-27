@@ -1,5 +1,7 @@
 package com.vinsguru.grpc.utility;
 
+import com.vinsguru.grpc.dto.JobOfferDto;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,5 +41,14 @@ public class Validation {
         Pattern pattern = Pattern.compile("[()\\[\\]{}<>]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         return matcher.find();
+    }
+
+    public static boolean checkIfEmptyJobOffer(JobOfferDto jobOfferDto){
+        return jobOfferDto.getJobDescription().equals("")
+                || jobOfferDto.getUserAPItoken().equals("")
+                || jobOfferDto.getCandidateRequirements().equals("")
+                || jobOfferDto.getCompanyName().equals("")
+                || jobOfferDto.getDailyActivities().equals("")
+                || jobOfferDto.getPosition().equals("");
     }
 }
