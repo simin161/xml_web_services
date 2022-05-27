@@ -21,8 +21,7 @@ public class PostService {
 
     public String addPost(PostDto post) {
         blockingStub = openChannelToPostService();
-        System.out.println("EMAIL U POSTU JEEEE "+post.getEmail());
-        InputAddPost input = InputAddPost.newBuilder().setEmail(post.getEmail()).setText(post.getText()).setLink(post.getLink()).setPathToImage("post.getPathToImage()").build();
+        InputAddPost input = InputAddPost.newBuilder().setEmail(post.getEmail()).setText(post.getText()).setLink(post.getLink()).setPathToImage(post.getPathToImage()).build();
         return this.blockingStub.addPost(input).getResult();
     }
 

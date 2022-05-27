@@ -67,15 +67,11 @@ public class AggregatorController {
                                                                     HttpServletResponse response) {
 
         System.out.println(cred);
-        System.out.println("MAAAIL"+cred.getEmail());
         if(Validation.validateEmail(cred.getEmail())){
-            System.out.println("USAOOOOOOOOOOOO");
             try{
-                System.out.println("USAOOOOOOOOOOOO try" +  cred.getPassword());
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
                                 cred.getPassword()));
-                System.out.println("USAOOOOOOOOOOOO");
                 // Ubaci korisnika u trenutni security kontekst
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -84,7 +80,6 @@ public class AggregatorController {
                 String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
                 int expiresIn = tokenUtils.getExpiredIn();
 
-                System.out.println("USAOOOOOOOOOOOO userr" + user.getEmail());
 
                 // Vrati token kao odgovor na uspesnu autentifikaciju
                 return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
@@ -201,6 +196,9 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
                 String email = tokenUtils.getUsernameFromToken(value);
                 post.setEmail(email);
+                System.out.println("DOBIOOOOOO"+post.getPathToImage());
+               // System.out.println("Sta je ovo***"+System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("/")));
+
                 return postService.addPost(post);
             }  //note: na frontu skloniti mejl iz post da se prosledjuje
         }catch(Exception e){
