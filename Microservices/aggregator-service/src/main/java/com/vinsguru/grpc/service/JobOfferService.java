@@ -2,6 +2,7 @@ package com.vinsguru.grpc.service;
 
 import com.google.protobuf.Empty;
 import com.vinsguru.grpc.dto.JobOfferDto;
+import com.vinsguru.grpc.utility.Validation;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,16 +29,21 @@ public class JobOfferService {
         //TODO: dodati validacije na kreiranje ponude
         boolean retVal= false;
         try {
-                if(findUserByAPItoken(jobOfferDto.getUserAPItoken())){
-                    blockingStub = openChannelToJobOfferService();
-                    JobOfferCreationParams jocp = JobOfferCreationParams.newBuilder().setJobDescription(jobOfferDto.getJobDescription())
+            if(Validation.checkIfEmptyJobOffer(jobOfferDto))
+                return false;
+           /* if(Validation.validateNonBrackets(jobOfferDto.getUserAPItoken()) || Validation.validateNonBrackets(jobOfferDto.getJobDescription())
+            || Validation.validateNonBrackets(jobOfferDto.getPosition()) || Validation.validateNonBrackets(jobOfferDto.getCompanyName())
+            || Validation.validateNonBrackets(jobOfferDto.getDailyActivities()) || Validation.validateNonBrackets(jobOfferDto.getCandidateRequirements()))*/
+            if(findUserByAPItoken(jobOfferDto.getUserAPItoken())){
+                blockingStub = openChannelToJobOfferService();
+                JobOfferCreationParams jocp = JobOfferCreationParams.newBuilder().setJobDescription(jobOfferDto.getJobDescription())
                             .setCandidateRequirements(jobOfferDto.getCandidateRequirements()).setCompanyName(jobOfferDto.getCompanyName())
                             .setDailyActivities(jobOfferDto.getDailyActivities()).setPosition(jobOfferDto.getPosition())
                             .setUserApiToken(jobOfferDto.getUserAPItoken()).build();
-                    String ret = blockingStub.createJobOffer(jocp).getRetVal();
-                    if (ret.equals("true"))
-                        retVal = true;
-                }
+                String ret = blockingStub.createJobOffer(jocp).getRetVal();
+                if (ret.equals("true"))
+                    retVal = true;
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
