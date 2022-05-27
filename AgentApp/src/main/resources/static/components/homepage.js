@@ -5,7 +5,12 @@ Vue.component('homepage', {
 			    email: '',
 			    password: ''
 			},
-            registerUser: null,
+            registerUser: {
+                firstName : "",
+                lastName : "",
+                password: "",
+                email: ""
+            },
             showPage: 0
 		}
 	},
@@ -23,36 +28,22 @@ template: `
              <div style="margin-left: auto; margin-right:auto; width:30%;" v-if="showPage === 1">
 		           <table>
 		                <tr>
-		                    <td><input type="text" placeholder="First Name"/></td>
+		                    <td><input type="text" placeholder="First Name" v-model="registerUser.firstName"/></td>
 		                </tr>
 		                <tr>
-		                    <td><input type="text" placeholder="Last Name"/></td>
+		                    <td><input type="text" placeholder="Last Name" v-model="registerUser.lastName"/></td>
                         </tr>
                         <tr>
-		                    <td><input type="text" placeholder="Username"/></td>
+                            <td><input type="text" placeholder="Email" v-model="registerUser.email"/></td>
                         </tr>
                         <tr>
-                            <td><input type="text" placeholder="Email"/></td>
-                        </tr>
-                        <tr>
-                            <td><input type="date" placeholder="Birthday"/></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select>
-                                    <option value="FEMALE">FEMALE</option>
-                                    <option value="MALE">MALE</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="password" placeholder="Password"/></td>
+                            <td><input type="password" placeholder="Password" v-model="registerUser.password"/></td>
                         </tr>
                         <tr>
                             <td><input type="password" placeholder="Confirm password"/></td>
                         </tr>
                         <tr>
-                            <td><input type="button" value="Register"/></td>
+                            <td><input type="button" value="Register" @click="register"/></td>
                         </tr>
 		           </table>
 		    </div>
@@ -73,24 +64,26 @@ changeForm : function(){
                 }
             },
             signIn : function(){
-               /* axios.post("/signIn", this.logUser)
+              axios.post("/api/logIn", this.logUser)
                      .then(response => {
-                        if(response.data == true){
+                        if(response.data !== ""){
                             router.push('/firstPage')
+                            console.log("Da")
                         }else{
                             console.log("Ne")
                         }
-                     })*/
+              })
             },
             register : function(){
-                /*axios.post("/register", this.user)
+                axios.post("/api/register", this.registerUser)
                      .then(response => {
-                        if(response.data == true){
+                        if(response.data !== ""){
                             router.push('/firstPage')
+                            console.log("Da")
                         }else{
                             console.log("Ne")
                         }
-                     })*/
+                     })
             }
 
     },

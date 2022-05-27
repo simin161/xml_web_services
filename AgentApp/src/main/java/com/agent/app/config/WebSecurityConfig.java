@@ -1,10 +1,9 @@
-package com.vinsguru.grpc.config;
+package com.agent.app.config;
 
-
-import com.vinsguru.grpc.security.TokenUtils;
-import com.vinsguru.grpc.security.auth.RestAuthenticationEntryPoint;
-import com.vinsguru.grpc.security.auth.TokenAuthenticationFilter;
-import com.vinsguru.grpc.service.CustomUserDetailsService;
+import com.agent.app.security.TokenUtils;
+import com.agent.app.security.auth.RestAuthenticationEntryPoint;
+import com.agent.app.security.auth.TokenAuthenticationFilter;
+import com.agent.app.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +21,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
@@ -59,8 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Injektujemo implementaciju iz TokenUtils klase kako bismo mogli da koristimo njene metode za rad sa JWT u TokenAuthenticationFilteru
     @Autowired
     private TokenUtils tokenUtils;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+
     // Definisemo prava pristupa odredjenim URL-ovima
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -72,30 +68,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
-                .authorizeRequests().antMatchers("/api/logInUser").permitAll().antMatchers("/api/register").permitAll()
-                .antMatchers("/api/getAllUsers").permitAll().antMatchers("/api/searchUsers/{param}").permitAll()
-                .antMatchers("/api/user/{email:.+}/").permitAll()
-                .antMatchers("/api/educations/{email:.+}/").permitAll()
-                .antMatchers("/api/experiences/{email:.+}/").permitAll()
-                .antMatchers("/api/followers/{email:.+}/").permitAll()
-                .antMatchers("/api/followings/{email:.+}/").permitAll()
-                .antMatchers("/api/getAllPosts").permitAll()
-                .antMatchers("/api/findReactionsByPostId").permitAll()
-                .antMatchers("/api/getAllUserPosts/user:{email}").permitAll()
-                .antMatchers("/api/numOfCommentsByPostId").permitAll()
-                .antMatchers("/api/numOfReactionsByPostId").permitAll()
-                .antMatchers("/api/verifyAccount").permitAll()
-                .antMatchers("/api/passwordlessLogin").permitAll()
-                .antMatchers("/api/forgottenPassword").permitAll()
+                .authorizeRequests().antMatchers("api/logIn").permitAll().antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/createJobOffer").permitAll()
-                .antMatchers("/api/searchJobOffers/{param}").permitAll()
+                .antMatchers("/api/sendJobOfferRequest").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
-                .anyRequest().authenticated().and()
+                .anyRequest().permitAll().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
                 .cors().and()
 
                 // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
-                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService), BasicAuthenticationFilter.class);
+                //        BasicAuthenticationFilter.class);
         // zbog jednostavnosti primera
         http.csrf().disable();
     }
@@ -104,21 +88,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/logInUser");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/logIn");
         web.ignoring().antMatchers(HttpMethod.POST, "/api/register");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/getAllUsers");
-        web.ignoring().antMatchers(HttpMethod.GET, "/api/searchUsers/{param}");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/user/{email:.+}/");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/educations/{email:.+}/");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/experiences/{email:.+}/");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/followers/{email:.+}/");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/followings/{email:.+}/");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/getAllPosts");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/getAllUserPosts/user:{email}");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/numOfCommentsByPostId");
-        web.ignoring().antMatchers(HttpMethod.POST,"/api/numOfReactionsByPostId");
-
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/sendJobOfferRequest");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
-                "/**/*.css", "/**/*.js");
+                "/**/*.css", "/**/*.js", "/images/**", "/**/*.ttf", "/*.css");
     }
 }

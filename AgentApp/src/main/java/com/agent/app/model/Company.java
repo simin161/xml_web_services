@@ -1,15 +1,24 @@
 package com.agent.app.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Document
+@Entity
+@Getter
+@Setter
+@Table(name="company")
 public class Company {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+    @Column(name="name")
     private String name;
+    @ManyToOne
+    @JoinColumn(name="owner", referencedColumnName = "id")
     private User owner;
 
 }

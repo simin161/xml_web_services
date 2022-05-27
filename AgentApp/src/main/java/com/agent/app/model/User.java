@@ -1,31 +1,66 @@
 package com.agent.app.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-@Document
-public class User {
-    @Id
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String email;
-    private String password;
-    private boolean privateProfile;
-    private Date birthday;
-    private String gender;
-    private String phone;
-    private String biography;
-    private String interests;
-    private String skills;
-    private List<Education> educations;
-    public List<WorkExperience> experinces;
-    private String verificationCode;
-    private boolean isActivated;
 
+@Entity
+@Getter
+@Setter
+@Table(name="users")
+public class User implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+    @Column(name="firstName")
+    private String firstName;
+    @Column(name="lastName")
+    private String lastName;
+    @Column(name="email")
+    private String email;
+    @Column(name="password")
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -41,6 +41,9 @@ public class UsersService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JobOfferService jobOfferService;
+
     public String addUser(Map<String,String> message, String siteURL) {
         try {
             if (Validation.validatePassword(message.get("password")) && Validation.validateEmail(message.get("email")) &&
@@ -288,13 +291,14 @@ public class UsersService {
     }
 
     public boolean saveGeneratedToken(String email, String token) {
-        boolean retVal = false;
+        boolean retVal;
         blockingStub = openChannelToUserService();
+        GetOldAPITokenInput getOldAPITokenInput = GetOldAPITokenInput.newBuilder().setEmail(email).build();
+        String oldToken = blockingStub.getOldAPIToken(getOldAPITokenInput).getOldToken();
+        retVal = jobOfferService.updateJobOffers(token, oldToken);
         SaveUserAPITokenInput input = SaveUserAPITokenInput.newBuilder().setEmail(email).setTokenValue(token).build();
         String ret = blockingStub.saveUserAPIToken(input).getValue();
-        if(ret.equals("true"))
-            retVal = true;
-        return retVal;
+        return ret.equals("true") && retVal;
     }
 
     public boolean deleteEducation(String email, String id) {

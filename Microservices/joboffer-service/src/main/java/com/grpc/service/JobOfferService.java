@@ -49,4 +49,37 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void updateJobOfferAPIToken(ChangeAPITokenInput input, StreamObserver<ChangeAPITokenOutput> responseObserver){
+        ChangeAPITokenOutput cato;
+        try{
+            boolean ret = updateAPIToken(input.getUpdatedAPIToken(), input.getOldAPIToken());
+            if(ret)
+                cato = ChangeAPITokenOutput.newBuilder().setValue("true").build();
+            else
+                cato = ChangeAPITokenOutput.newBuilder().setValue("false").build();
+        }catch(Exception e){
+            cato = ChangeAPITokenOutput.newBuilder().setValue("false").build();
+            e.printStackTrace();
+        }
+        responseObserver.onNext(cato);
+        responseObserver.onCompleted();
+    }
+
+    private boolean updateAPIToken(String userAPIToken, String oldAPIToken){
+        boolean retVal = false;
+        try{
+            for(JobOffer jobOffer : JobOfferRepository.getInstance().getAllJobOffers()){
+                    if(jobOffer.getUserAPItoken().equals(oldAPIToken)){
+                    jobOffer.setUserAPItoken(userAPIToken);
+                    JobOfferRepository.getInstance().updateJobOfferAPIToken(jobOffer);
+                }
+            }
+            retVal = true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return retVal;
+    }
+
 }

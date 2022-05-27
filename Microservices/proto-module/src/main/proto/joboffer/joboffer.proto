@@ -50,9 +50,19 @@ message SearchedOffer{
   string userApiToken = 7;
 }
 
+message ChangeAPITokenInput{
+  string updatedAPIToken = 1;
+  string oldAPIToken = 2;
+}
+
+message ChangeAPITokenOutput{
+  string value = 1;
+}
+
 service JobOfferService {
 
     rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
     rpc searchJobOffers(SearchParam) returns (SearchReturnValue) {};
+    rpc updateJobOfferAPIToken(ChangeAPITokenInput) returns (ChangeAPITokenOutput) {};
 
 }
