@@ -200,6 +200,14 @@ message SaveUserAPITokenOutput{
   string value = 1;
 }
 
+message GetOldAPITokenInput{
+  string email = 1;
+}
+
+message GetOldAPITokenOutput{
+  string oldToken = 1;
+}
+
 service UserService {
 
   rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
@@ -247,5 +255,7 @@ service UserService {
   rpc deleteEducation(InputDeleting) returns (OutputBool) {};
 
   rpc deleteExperience(InputDeleting) returns (OutputBool) {};
+
+  rpc getOldAPIToken(GetOldAPITokenInput) returns (GetOldAPITokenOutput) {};
 
 }

@@ -484,4 +484,17 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void getOldAPIToken(GetOldAPITokenInput input, StreamObserver<GetOldAPITokenOutput> responseObserver){
+        GetOldAPITokenOutput goato;
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user==null){
+            goato = GetOldAPITokenOutput.newBuilder().setOldToken("").build();
+        }else{
+            goato = GetOldAPITokenOutput.newBuilder().setOldToken(user.getUserAPItoken()).build();
+        }
+        responseObserver.onNext(goato);
+        responseObserver.onCompleted();
+    }
 }

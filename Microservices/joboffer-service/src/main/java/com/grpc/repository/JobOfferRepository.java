@@ -4,6 +4,8 @@ import com.grpc.model.JobOffer;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -92,6 +94,15 @@ public class JobOfferRepository {
             }
         }
         return new JobOffer();
+    }
+
+    public void updateJobOfferAPIToken(JobOffer jobOffer){
+        Document query = new Document().append("_id", jobOffer.getId());
+        Bson updates = Updates.combine(
+                Updates.set("userAPItoken", jobOffer.getUserAPItoken())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        jobOfferCollection.updateOne(query, updates, options);
     }
 
 }

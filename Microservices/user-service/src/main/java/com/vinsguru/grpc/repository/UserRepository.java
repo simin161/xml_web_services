@@ -86,6 +86,7 @@ public class UserRepository {
                     foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
 
             retVal.setActivated(foundUser.getBoolean("isActivated"));
+            retVal.setUserAPItoken(foundUser.getString("userAPItoken"));
         }
         return retVal;
     }

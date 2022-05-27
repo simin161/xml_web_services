@@ -63,4 +63,15 @@ public class JobOfferService {
         return userService.findUserByAPItoken(userAPItoken);
     }
 
+    public boolean updateJobOffers(String token, String oldToken) {
+        try{
+            blockingStub = openChannelToJobOfferService();
+            ChangeAPITokenInput input = ChangeAPITokenInput.newBuilder().setUpdatedAPIToken(token).setOldAPIToken(oldToken).build();
+            String ret = blockingStub.updateJobOfferAPIToken(input).getValue();
+            return ret.equals("true");
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
