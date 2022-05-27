@@ -5,6 +5,7 @@ import com.agent.app.repository.JobOfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -62,5 +63,9 @@ public class JobOfferService {
 
     public JobOffer findOfferById(String id) {
         return jobOfferRepository.findById(Long.valueOf(id)).orElse(null);
+    }
+
+    public List<JobOffer> getAllJobOffers() {
+        return jobOfferRepository.findAll();
     }
 }
