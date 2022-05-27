@@ -24,6 +24,7 @@ public class CompanyService {
         company.setField(message.get("field"));
         company.setDescription(message.get("description"));
         company.setStatus(Status.PENDING);
+        company.setContactInfo(message.get("contactInfo"));
         companyRepository.save(company);
         return true;
     }

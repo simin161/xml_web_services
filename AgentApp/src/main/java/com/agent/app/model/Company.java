@@ -23,6 +23,8 @@ public class Company {
     private String description;
     @Column(name="status")
     private Status status;
+    @Column(name="contactInfo")
+    private String contactInfo;
     @ManyToOne
     @JoinColumn(name="owner", referencedColumnName = "id")
     private User owner;

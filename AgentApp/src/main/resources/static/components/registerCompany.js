@@ -4,7 +4,8 @@ Vue.component('registerCompany', {
             company : {
                 name : "",
                 field: "",
-                description: ""
+                description: "",
+                contactInfo: ""
             }
 		}
 	},
@@ -12,6 +13,7 @@ template: `
 		<div>
             <input type="text" v-model="company.name" placeholder="Company name"/>
             <input type="text" v-model="company.field" placeholder="Field"/>
+            <textarea v-model="company.contactInfo" placeholder="Contact information"/>
             <textarea v-model="company.description" placeholder="Description"/>
             <input type="button" value="Register company" @click="registerCompany"/>
 		</div>

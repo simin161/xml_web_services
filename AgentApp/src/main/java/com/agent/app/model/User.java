@@ -25,8 +25,6 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name="email")
     private String email;
-    @Column(name="isCompanyOwner")
-    private boolean isCompanyOwner;
     @Column(name="password")
     private String password;
 
