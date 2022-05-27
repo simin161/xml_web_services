@@ -17,6 +17,12 @@ public class Company {
     private Long id;
     @Column(name="name")
     private String name;
+    @Column(name="field")
+    private String field;
+    @Column(name="description")
+    private String description;
+    @Column(name="status")
+    private Status status;
     @ManyToOne
     @JoinColumn(name="owner", referencedColumnName = "id")
     private User owner;

@@ -8,16 +8,14 @@ import com.agent.app.service.CompanyService;
 import com.agent.app.service.CustomUserDetailsService;
 import com.agent.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -41,7 +39,9 @@ public class RegistrationController {
     private CompanyService companyService;
 
     @PostMapping("/registerCompany")
-    public boolean registerCompany(@RequestBody Map<String, String> message){
+    public boolean registerCompany(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        message.put("email",tokenUtils.getUsernameFromToken(value));
         return companyService.registerCompany(message);
     }
 

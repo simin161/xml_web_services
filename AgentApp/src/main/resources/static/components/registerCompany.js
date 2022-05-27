@@ -2,13 +2,17 @@ Vue.component('registerCompany', {
 	data: function(){
 		return{
             company : {
-                name : ""
+                name : "",
+                field: "",
+                description: ""
             }
 		}
 	},
 template: `
 		<div>
             <input type="text" v-model="company.name" placeholder="Company name"/>
+            <input type="text" v-model="company.field" placeholder="Field"/>
+            <textarea v-model="company.description" placeholder="Description"/>
             <input type="button" value="Register company" @click="registerCompany"/>
 		</div>
 		`
@@ -18,10 +22,9 @@ template: `
 
     },
     methods : {
-        navigateToRC : function(){
-            this.router.push("/registerCompany")
-        },
         registerCompany : function(){
+             axios.defaults.headers.common["Authorization"] =
+                                       localStorage.getItem("agentUser");
             axios.post("/api/registerCompany", this.company)
                  .then((response) => {console.log(response.data)});
         }

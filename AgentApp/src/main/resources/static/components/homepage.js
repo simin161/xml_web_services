@@ -67,6 +67,7 @@ changeForm : function(){
               axios.post("/api/logIn", this.logUser)
                      .then(response => {
                         if(response.data !== ""){
+                            localStorage.setItem("agentUser", response.data.accessToken);
                             router.push('/firstPage')
                             console.log("Da")
                         }else{
@@ -78,6 +79,7 @@ changeForm : function(){
                 axios.post("/api/register", this.registerUser)
                      .then(response => {
                         if(response.data !== ""){
+                            localStorage.setItem("agentUser", response.data.accessToken);
                             router.push('/firstPage')
                             console.log("Da")
                         }else{
