@@ -72,7 +72,8 @@ public class UserRepository {
                 .append("educations",user.getEducations())
                 .append("experiences",user.getExperinces())
                 .append("isActivated", user.isActivated())
-                .append("verificationCode", user.getVerificationCode());
+                .append("verificationCode", user.getVerificationCode())
+                .append("userAPItoken",user.getUserAPItoken());
         usersCollection.insertOne(userToSave);
     }
 

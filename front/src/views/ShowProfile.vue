@@ -198,7 +198,7 @@
             <hr>
                  <div >
                    <a @click="loadReactions(post.idPost)" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="color: gray; text-decoration: none" target="_blank"  ><b>{{post.numOfReactions}} reactions </b></a> ,
-                   <a @click="loadComments(post.idPost)" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"   style="color: gray; text-decoration: none" target="_blank"  ><b>{{post.numOfComments}} comments </b></a> 
+                   <a @click="loadComments(post.idPost)" data-bs-toggle="modal" data-bs-target="#loadCommentsModal"   style="color: gray; text-decoration: none" target="_blank"  ><b>{{post.numOfComments}} comments </b></a> 
                  
                     
               
@@ -209,12 +209,12 @@
                
                   <button  @click="addLike(post.idPost,index)" style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
                  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                 </svg>LIKE</button>
+                 </svg>Like</button>
 
 
                 <button  @click="addDislike(post.idPost,index)" style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down-fill" viewBox="0 0 16 16">
                  <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.378 1.378 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51.136.02.285.037.443.051.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.896 1.896 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2.094 2.094 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.162 3.162 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.823 4.823 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591z"/>
-                 </svg>{{dislikeButton}}</button>
+                 </svg>Dislike</button>
 
 
                 <button @click="addCom(post.idPost,index)" data-bs-toggle="modal" data-bs-target="#addComment" style="width: 20%;" type="button" class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-dots-fill" viewBox="0 0 16 16">
@@ -277,7 +277,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade bd-example-modal-xl" id="staticBackdrop1"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"  aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="loadCommentsModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"  aria-hidden="true">
   <div  class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -400,10 +400,6 @@
         num: false,
         comments: [],
         reactions: [],
-        likeButton: "Like",
-        dislikeButton: "Dislike",
-        likeButtonTemp: "Like",
-        dislikeButtonTemp: "Dislike"
         
         
 
@@ -613,45 +609,29 @@
     },
     addLike: function(postId,index){
         
-           axios.post(process.env.VUE_APP_BACK + 'checkReaction',{postId: postId})
-                            .then((response) => {
-                              console.log("Respooonse"+response.data)
+     axios.post(process.env.VUE_APP_BACK + 'checkReaction',{postId: postId})
+      .then((response) => {
+        console.log("Respooonse"+response.data)
 
-                              if(response.data == "LIKE")
-                              {
-                                axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{
-                              postId: postId,
-                              reactionType: "LIKE"
-                              }).then((response)=>{
-                                  console.log(response.data);
-                                  this.$swal.fire({
-                                  position: 'top-end',
-                                  icon: 'success',
-                                  title: 'Reaction removed',
-                                  showConfirmButton: false,
-                                  timer: 1500
-                        })
-                                axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId', {id: postId})
-                                 .then((response) => {
-                                    this.posts[index].numOfReactions= response.data;
-                                  })
+            if(  response.data == "LIKE"){
+                axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{postId: postId,reactionType: "LIKE"})
+                .then((response)=>{
+                     console.log(response.data);
+                     this.$swal.fire({
+                     position: 'top-end',
+                     icon: 'success',
+                     title: 'Reaction removed',
+                     showConfirmButton: false,
+                     timer: 1500})
+
+                   axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId', {id: postId})
+                   .then((response) => {
+                    this.posts[index].numOfReactions= response.data;
+                     })
                                
-                              })
-                              }
-                             
-                                 
-                            
-                            })
-                          
-      
-    
-      axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{
-          postId: postId,
-          reactionType: "LIKE"
-           })
-              .then((response) => {
-                             console.log(response)
-                             axios.post(process.env.VUE_APP_BACK + 'reaction',{
+                })
+              }else if (response.data == "NONE"){
+                   axios.post(process.env.VUE_APP_BACK + 'reaction',{
                               postId: postId,
                               reactionType: "LIKE"
                              })
@@ -668,39 +648,21 @@
                                  
                             
                             })
-                          
-                               })
-                     
-                           })
-                   
-  
-  
+                          })
 
-    },
-     addDislike: function(postId,index){
-     axios.post(process.env.VUE_APP_BACK + 'checkReaction',
+              }else if (response.data == "DISLIKE"){
+
+                  axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{postId: postId,reactionType: "DISLIKE"})
+                .then(()=>{  
+                    axios.post(process.env.VUE_APP_BACK + 'reaction',{
+                              postId: postId,
+                              reactionType: "LIKE"
+                             })
+                              .then((response) => {
+                           console.log(response)
+                             axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
                             {
                                 id: postId
-                            }
-                            )
-                            .then((response) => {
-                              if(response.data == "DISLIKE")
-                              {
-                                axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{
-                              postId: postId,
-                              reactionType: "DISLIKE"
-                              }).then((response)=>{
-                                  console.log(response.data);
-                                  this.$swal.fire({
-                                  position: 'top-end',
-                                  icon: 'success',
-                                  title: 'Reaction removed',
-                                  showConfirmButton: false,
-                                  timer: 1500
-                        })
-                              axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
-                            {
-                                postId: postId
                             }
                             )
                             .then((response) => {
@@ -709,44 +671,92 @@
                                  
                             
                             })
-                              })
-                              }
+                          })
+                        
+                          })
+              }
                              
                                  
                             
-                            })
-          axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{
-          postId: postId,
-          reactionType: "DISLIKE"
-             })
-            .then((response) => {
-                             console.log("AAAAA"+response)
-                              axios.post(process.env.VUE_APP_BACK + 'reaction',{
-                            postId: postId,
-                            reactionType: "DISLIKE"
-                        })
-                                .then((response) => {
-                             console.log("AAAAA"+response)
-                                   axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
+           })
+                          
+      
+   
+  
+  
+
+    },
+     addDislike: function(postId,index){
+     axios.post(process.env.VUE_APP_BACK + 'checkReaction',{postId: postId})
+      .then((response) => {
+        console.log("Respooonse"+response.data)
+
+            if(response.data == "DISLIKE" ){
+                axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{postId: postId,reactionType: "DISLIKE"})
+                .then((response)=>{
+                     console.log(response.data);
+                     this.$swal.fire({
+                     position: 'top-end',
+                     icon: 'success',
+                     title: 'Reaction removed',
+                     showConfirmButton: false,
+                     timer: 1500})
+
+                   axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId', {id: postId})
+                   .then((response) => {
+                    this.posts[index].numOfReactions= response.data;
+                     })
+                               
+                })
+              }else if (response.data == "NONE"){
+                   axios.post(process.env.VUE_APP_BACK + 'reaction',{
+                              postId: postId,
+                              reactionType: "DISLIKE"
+                             })
+                              .then((response) => {
+                           console.log(response)
+                             axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
                             {
                                 id: postId
                             }
                             )
                             .then((response) => {
-                                     console.log("broj rekacijaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "+response.data);
+                                     console.log(response.data);
                                this.posts[index].numOfReactions= response.data;
                                  
                             
                             })
-                          
+                          })
+
+              }else if (response.data == "LIKE"){
+                   axios.post(process.env.VUE_APP_BACK + 'deleteReaction',{postId: postId,reactionType: "LIKE"})
+                .then(()=>{  
+                    axios.post(process.env.VUE_APP_BACK + 'reaction',{
+                              postId: postId,
+                              reactionType: "DISLIKE"
+                             })
+                              .then((response) => {
+                           console.log(response)
+                             axios.post(process.env.VUE_APP_BACK + 'numOfReactionsByPostId',
+                            {
+                                id: postId
+                            }
+                            )
+                            .then((response) => {
+                                     console.log(response.data);
+                               this.posts[index].numOfReactions= response.data;
+                                 
                             
                             })
- 
-                            })
-              
-          
-        
-  
+                          })
+                        
+                          })
+
+              }
+                             
+                                 
+                            
+           })
   
 
     }
