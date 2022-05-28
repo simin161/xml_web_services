@@ -35,4 +35,15 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
+
+    public boolean checkIfAdmin(String email) {
+        User user = userRepository.findByEmail(email);
+        List<Authority> a = (List<Authority>) user.getAuthorities();
+        for( Authority aa : a){
+            if(aa.getName().equals("ROLE_ADMIN")){
+                return true;
+            }
+        }
+        return false;
+    }
 }
