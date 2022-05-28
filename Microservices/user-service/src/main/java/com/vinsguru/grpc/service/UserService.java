@@ -250,27 +250,22 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         List<User> searchedByFirstName = UserRepository.getInstance().findUserByParam("firstName", request.getParam());
         List<User> searchedByLastName = UserRepository.getInstance().findUserByParam("lastName", request.getParam());
         List<User> searchedByUsername = UserRepository.getInstance().findUserByParam("username", request.getParam());
-
         List<User> searchedUsers = new ArrayList<User>();
-
         for(User u : searchedByFirstName){
             if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
                 searchedUsers.add(u);
             }
         }
-
         for(User u : searchedByLastName){
             if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
                 searchedUsers.add(u);
             }
         }
-
         for(User u : searchedByUsername){
             if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
                 searchedUsers.add(u);
             }
         }
-
         List<Input> inputs = new ArrayList<Input>();
         for(User u : searchedUsers){
             Input i = Input.newBuilder().setUsername(u.getUsername()).setLastName(u.getLastName()).setPassword(u.getPassword()).setEmail(u.getEmail()).setFirstName(u.getFirstName()).build();
@@ -280,8 +275,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         output2 = Output2.newBuilder().addAllUser(inputs).build();
         responseObserver.onNext(output2);
         responseObserver.onCompleted();
-
-
     }
 
     @Override
@@ -305,18 +298,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void checkIfAccountIsPrivate(InputForGetUserByEmail request, StreamObserver<OutputBool> responseObserver) {
         User user = UserRepository.getInstance().findUserByEmail(request.getEmail());
-
         proto.user.OutputBool output;
-
-            if(user.isPrivateProfile())
-                output = OutputBool.newBuilder().setPrivate(true).build();
-            else
-                output = OutputBool.newBuilder().setPrivate(false).build();
-
+        if(user.isPrivateProfile())
+            output = OutputBool.newBuilder().setPrivate(true).build();
+        else
+            output = OutputBool.newBuilder().setPrivate(false).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
-
-
     }
 
     @Override
