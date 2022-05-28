@@ -5,6 +5,7 @@ import com.agent.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,8 +15,15 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TokenUtils tokenUtils;
+
     @GetMapping("/checkIfAdmin")
     public boolean checkIfAdmin(@RequestHeader("Authorization") HttpHeaders header){
         return userService.checkIfAdmin(tokenUtils.getUsernameFromToken(header.getFirst(HttpHeaders.AUTHORIZATION)));
+    }
+
+    @PostMapping("/updateApiToken")
+    @PreAuthorize("hasRole('ROLE_COMPANY_OWNER')")
+    public boolean updateApiToken(@RequestHeader("Authorization") HttpHeaders header, @RequestBody String apiToken){
+        return userService.updateApiToken(tokenUtils.getUsernameFromToken(header.getFirst(HttpHeaders.AUTHORIZATION)), apiToken);
     }
 }

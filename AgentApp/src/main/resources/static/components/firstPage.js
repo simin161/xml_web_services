@@ -5,7 +5,16 @@ Vue.component('firstPage', {
             showRequests: 0,
             showPage: 0,
             allReq : {},
-            allCompanies : {}
+            allCompanies : {},
+            chosenCompany : null,
+            jobOffer: {
+                position : '',
+                companyName : '',
+                jobDescription : '',
+                dailyActivities : '',
+                candidateRequirements: ''
+            },
+            apiToken : ''
 		}
 	},
 template: `
@@ -13,7 +22,8 @@ template: `
 		    <input v-show="!isAdmin" type="button" value="Register company" @click="navigateToRC"/>
 		    <input v-show="!isAdmin" type="button" value="My companies" @click="showMyCompanies"/>
 		    <input v-show="isAdmin" type="button" value="See all company reg requests" @click="showComReq"/>
-
+            <input v-show="!isAdmin" type="button" value="Add API token" @click="showAddAPIToken"/>
+            <input v-show="!isAdmin" type="button" value="My job offers" @click="navigateToJO"/>
 		    <div v-show="showRequests == 1">
 		        <div style="1px solid black" v-for="req in allReq">
 		            <p>{{req.name}}</p>
@@ -32,7 +42,20 @@ template: `
 		            <input type="text" v-model="c.field"/>
 		            <input type="text" v-model="c.description"/>
 		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Save changes" @click="save(c)"/>
+		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Create job offer" @click="showCreate(c)"/>
 		        </div>
+		    </div>
+		    <div v-show="showPage == 2">
+		        <input type="text" v-model="jobOffer.position"/>
+		        <input type="text" v-model="jobOffer.companyName"/>
+		        <input type="text" v-model="jobOffer.jobDescription"/>
+		        <input type="text" v-model="jobOffer.dailyActivities"/>
+		        <input type="text" v-model="jobOffer.candidateRequirements"/>
+		        <input type="button" value="Create job offer" @click="createJobOffer"/>
+		    </div>
+		    <div v-show="showPage == 3">
+		        <input type="text" v-model="apiToken"/>
+		        <input type="button" value="Save" @click="saveApiToken"/>
 		    </div>
 		</div>
 		`
@@ -42,6 +65,29 @@ template: `
 
     },
     methods : {
+        navigateToJO : function(){
+            router.push("/myJobOffers");
+        },
+        saveApiToken : function(){
+            axios.defaults.headers.common["Authorization"] =
+                                  localStorage.getItem("agentUser");
+            axios.post("/api/updateApiToken", this.apiToken)
+                 .then((response) => console.log(response.data))
+        },
+        showAddAPIToken : function(){
+            this.showPage = 3;
+        },
+        showCreate : function(c){
+            this.chosenCompany = c;
+            this.showPage = 2;
+        },
+        createJobOffer : function(){
+        this.jobOffer.companyName = this.chosenCompany.name;
+         axios.defaults.headers.common["Authorization"] =
+                                           localStorage.getItem("agentUser");
+            axios.post("/api/createJobOffer", this.jobOffer)
+                            .then((response) => console.log(response.data))
+        },
         save : function(c){
            axios.defaults.headers.common["Authorization"] =
                                    localStorage.getItem("agentUser");

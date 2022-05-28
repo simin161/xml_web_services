@@ -20,6 +20,15 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    public String getUserApiToken(String email){
+        User user = userRepository.findByEmail(email);
+        String retVal = "";
+        if(user != null)
+            retVal = user.getApiToken();
+        return retVal;
+    }
+
     public boolean addUser(Map<String, String> message) {
         if(userRepository.findByEmail(message.get("email")) != null)
             return false;
@@ -45,5 +54,16 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public boolean updateApiToken(String email, String apiToken) {
+        boolean retVal = false;
+        User user = userRepository.findByEmail(email);
+        if(user != null) {
+            user.setApiToken(apiToken);
+            userRepository.save(user);
+            retVal = true;
+        }
+        return retVal;
     }
 }
