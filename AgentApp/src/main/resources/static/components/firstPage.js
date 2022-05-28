@@ -5,7 +5,15 @@ Vue.component('firstPage', {
             showRequests: 0,
             showPage: 0,
             allReq : {},
-            allCompanies : {}
+            allCompanies : {},
+            chosenCompany : null,
+            jobOffer: {
+                position : '',
+                companyName : '',
+                jobDescription : '',
+                dailyActivities : '',
+                candidateRequirements: ''
+            }
 		}
 	},
 template: `
@@ -32,7 +40,16 @@ template: `
 		            <input type="text" v-model="c.field"/>
 		            <input type="text" v-model="c.description"/>
 		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Save changes" @click="save(c)"/>
+		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Create job offer" @click="showCreate(c)"/>
 		        </div>
+		    </div>
+		    <div v-show="showPage == 2">
+		        <input type="text" v-model="jobOffer.position"/>
+		        <input type="text" v-model="jobOffer.companyName"/>
+		        <input type="text" v-model="jobOffer.jobDescription"/>
+		        <input type="text" v-model="jobOffer.dailyActivities"/>
+		        <input type="text" v-model="jobOffer.candidateRequirements"/>
+		        <input type="button" value="Create job offer" @click="createJobOffer"/>
 		    </div>
 		</div>
 		`
@@ -42,6 +59,15 @@ template: `
 
     },
     methods : {
+        showCreate : function(c){
+            this.chosenCompany = c;
+            this.showPage = 2;
+        },
+        createJobOffer : function(){
+        this.jobOffer.companyName = this.chosenCompany.name;
+            axios.post("/api/createJobOffer", this.jobOffer)
+                            .then((response) => console.log(response.data))
+        },
         save : function(c){
            axios.defaults.headers.common["Authorization"] =
                                    localStorage.getItem("agentUser");

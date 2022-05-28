@@ -36,16 +36,9 @@ public class JobOfferController {
         boolean retVal = jobOfferService.setUserAPIToken(message);
         final RestTemplate restTemplate = new RestTemplate();
         final String uri = "http://localhost:8080/api/createJobOffer";
-       // final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-       // String email = tokenUtils.getUsernameFromToken(value);
-      //  String plainCreds = email+":"+"Dajjedangriz*7";
-      //  byte[] plainCredsBytes = plainCreds.getBytes();
-      //  byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-      //  String base64Creds = new String(base64CredsBytes);
-        HttpHeaders headers = new HttpHeaders();
+         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-       // headers.add("Authorization", "Basic" + base64Creds);
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
         if(offer==null){
