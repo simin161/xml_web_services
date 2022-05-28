@@ -23,12 +23,12 @@
     </nav><br><br> 
                                 
 <div class="row">
-    <div class="col-lg-2" >
+    <div class="col-lg-3" >
         <button @click="homepage()" id="buttonProfile">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-video2" viewBox="0 0 16 16">
                                         <path d="M10 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
                                         <path d="M2 1a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2ZM1 3a1 1 0 0 1 1-1h2v2H1V3Zm4 10V2h9a1 1 0 0 1 1 1v9c0 .285-.12.543-.31.725C14.15 11.494 12.822 10 10 10c-3.037 0-4.345 1.73-4.798 3H5Zm-4-2h3v2H2a1 1 0 0 1-1-1v-1Zm3-1H1V8h3v2Zm0-3H1V5h3v2Z"/>
-                                        </svg> POSTS
+                                        </svg> USER POSTS
         </button>
 
         <button @click="searchUsers()" id="buttonProfile">
@@ -49,15 +49,49 @@
         </button>
 
     </div>
-    <div class="col-lg-10">
-        
+    <div class="col-lg-9" style="padding-right: 5%;">
+          <h1 style="text-align: left;" >Users</h1>
+        <br>
+        <form @submit="searchUsersFunc" method="post" class="d-flex">
+        <input v-model="searchParam" class="form-control me-2" type="search" placeholder="Search users by first name, last name, username or email" aria-label="Search">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+        <br><br>
+        <div v-if="foundUsers.length>0">
+        <h6 style="text-align: left;">Found users</h6>
+        <hr>
+              <li  v-for="user in foundUsers" v-bind:key="user.username" class="list-group-item">
+                  <div class="row">
+                       <div class="col-lg-3">
+                                                  <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="50" height="50"><title>Lucy Stone</title><mask id="mask__beam" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#mask__beam)"><rect width="36" height="36" fill="#a65bb7"></rect><rect x="0" y="0" width="36" height="36" transform="translate(4 4) rotate(340 18 18) scale(1.1)" fill="#240c39" rx="36"></rect><g transform="translate(-4 -3) rotate(0 18 18)"><path d="M15 20c2 1 4 1 6 0" stroke="#FFFFFF" fill="none" stroke-linecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#FFFFFF"></rect></g></g></svg>
 
+       
+                       </div>
+                       <div class="col-lg-6" style="text-align: left">
+                            <h5><b>{{user.firstName}} {{user.lastName}}</b></h5>
+                            <p>{{user.username}} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+  <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+</svg> {{user.email}}</p>
+                        </div>
+                         <div class="col-lg-3" style="text-align: left">
+                            <button @click="visitProfile(user.email)"  id="visitProf">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-left" viewBox="0 0 16 16">
+                                         <path fill-rule="evenodd" d="M2 13.5a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1H3.707L13.854 2.854a.5.5 0 0 0-.708-.708L3 12.293V7.5a.5.5 0 0 0-1 0v6z"/>
+                                        </svg> VISIT PROFILE
+                            </button>
+                        </div>
+
+                  </div>
+   
+
+              </li>
+        </div>
     </div>
 
  </div>
 
 
-<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div style="background-color: #e6e5e3;" class="footer" >
    <br><br>
     XWS project.
@@ -71,7 +105,10 @@
   data() {
     return {
         loggedUser : {},
-        posts: []
+        posts: [],
+        searchParam: '',
+        foundUsers: []
+
     };
   },
   mounted() {
@@ -88,13 +125,6 @@
        .then((response) => {
            this.loggedUser = response.data;
            console.log(response.data);
-            axios.get(process.env.VUE_APP_BACK + 'postsForHomePage')
-                 .then((response) => {
-                    this.posts = response.data;
-                 })
-                 .catch(function (error) {
-                    console.log(error);
-                 });
             
        })
        .catch(function (error) {
@@ -121,6 +151,21 @@
     createPost: function(){
         this.$router.push("/createNewPost");
     },
+    visitProfile: function(email){
+        this.$router.push("/showProfile/"+email);
+    },
+    searchUsersFunc: function(event){
+              event.preventDefault()
+              if(this.searchParam=="") return
+              axios.get(process.env.VUE_APP_BACK + 'searchUsers/'+this.searchParam)
+                  .then((response) => {
+                      this.foundUsers = response.data;
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  });
+            
+    }
   }
 };
 </script>
@@ -149,26 +194,40 @@
     border: 1px solid #69558d;
 
 }
-#smaillbuttonProfile{
-	width: 30%;
-	height: 30px;
+#visitProf{
+	width: 60%;
+	height: 40px;
 	margin: 10px auto;
-	justify-content: right;
+	justify-content: center;
 	display: block;
-	color: #fff;
-	background: #69558d;
+	color: #342438;
+	background: white;
+  border: 1px #342438 solid;
 	font-size: 1em;
 	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+#visitProf:hover{
+	
+  width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #342438;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
 	outline: none;
 	border: none;
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
-}
-#smaillbuttonProfile:hover{
-	background-color: white;
-    color: #69558d;
-    border: 1px solid #69558d;
 
 }
 </style>
