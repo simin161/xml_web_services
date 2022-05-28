@@ -10,6 +10,7 @@ public class PostDto {
     private String date;
     private int numOfReactions;
     private int numOfComments;
+    private String fullName;
 
     public PostDto(String idPost, String email, String text, String pathToImage, String link, String date) {
         this.idPost = idPost;
@@ -31,7 +32,27 @@ public class PostDto {
         this.numOfComments = numOfComments;
     }
 
+    public PostDto(String idPost, String email, String text, String pathToImage, String link, String date, int numOfReactions, int numOfComments,String fullName) {
+        this.idPost = idPost;
+        this.email = email;
+        this.text = text;
+        this.pathToImage = pathToImage;
+        this.link = link;
+        this.date = date;
+        this.numOfReactions = numOfReactions;
+        this.numOfComments = numOfComments;
+        this.fullName=fullName;
+    }
+
     public PostDto() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getNumOfReactions() {

@@ -53,8 +53,7 @@ service FollowService {
   rpc findPersonsFollowings(InputEmail) returns (OutputFollowers) {};
   rpc checkIfUserIsFollowingOtherUser(Followers) returns (OutputBoolean) {};
   rpc answerFollowRequest(InputAnswer) returns (OutputBoolean) {};
-
-
+  rpc findPersonsFollowingsIds(InputEmail) returns (OutputFollowers) {};
 
 
 }

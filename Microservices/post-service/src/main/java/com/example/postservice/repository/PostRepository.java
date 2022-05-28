@@ -79,44 +79,30 @@ public class PostRepository {
 
     public void addComment(String postId, Comment comment){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
-
         Document newComment = new Document("_idComment", new ObjectId());
         newComment.append("text",comment.getText()).append("commentatorsId",comment.getCommentatorsId());
-
         Bson updates = Updates.combine(
                 Updates.addToSet("comments",newComment)
         );
-
         UpdateOptions options = new UpdateOptions().upsert(true);
         postsCollection.updateOne(foundPost, updates, options);
     }
 
     public void addReaction(String postId, Reaction reaction){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
-           Document react = new Document("_idReaction", new ObjectId());
+        Document react = new Document("_idReaction", new ObjectId());
         react.append("usersId", reaction.getUsersId()).append("reactionType", reaction.getReaction());
-
-            Bson updates = Updates.combine(
-                    Updates.addToSet("reactions", react)
-            );
-
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            postsCollection.updateOne(foundPost, updates, options);
-
-
+        Bson updates = Updates.combine(  Updates.addToSet("reactions", react));
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        postsCollection.updateOne(foundPost, updates, options);
     }
-
 
     public List<Post> findPostsByUserId(String userId) {
         FindIterable<Document> foundPosts = postsCollection.find(Filters.eq("usersId", userId));
-
-
         List<Post> posts = new ArrayList<>();
-
-        for(Document doc: foundPosts){
-            posts.add(new Post(doc.getObjectId("_id"),doc.getString("usersId"),doc.getString("text"),doc.getString("pathToImage"),doc.getString("link"),doc.getDate("date")));
-
-        }
+        for(Document doc: foundPosts)
+            posts.add(new Post(doc.getObjectId("_id"),doc.getString("usersId"),doc.getString("text"),
+                    doc.getString("pathToImage"),doc.getString("link"),doc.getDate("date")));
         return posts;
     }
 
@@ -125,18 +111,13 @@ public class PostRepository {
         List<Document> reactionsDocuments =foundPost.get("reactions",docClazz);
         Document newReaction= null;
         for(Document doc: reactionsDocuments){
-            System.out.println("USERR bek"+doc.getString("usersId"));
-            System.out.println("USERR front"+reaction.getUsersId());
             if(doc.getString("usersId").equals(reaction.getUsersId())){
                 newReaction = doc;
                 break;
             }
         }
-        Bson updates = Updates.combine(
-                Updates.pull("reactions",newReaction)
-        );
+        Bson updates = Updates.combine( Updates.pull("reactions",newReaction));
         postsCollection.updateOne(foundPost, updates);
-
     }
     public int getNumOfCommentsByPostId(String postId){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
@@ -166,16 +147,12 @@ public class PostRepository {
     public String checkReaction(String postId,String userId){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
         List<Document> reactionsDocuments =foundPost.get("reactions",docClazz);
-
         for(Document doc: reactionsDocuments){
-            System.out.println("lll"+doc.getString("usersId"));
-            System.out.println("lll"+userId);
             if(doc.getString("usersId").equals(userId)){
                 if(doc.getString("reactionType").equals("DISLIKE"))
                     return ReactionType.DISLIKE.toString();
                 else if(doc.getString("reactionType").equals("LIKE"))
                     return ReactionType.LIKE.toString();
-
             }
         }
         return  "NONE";
@@ -187,7 +164,6 @@ public class PostRepository {
         List<Comment> comments = new ArrayList<>();
         for(Document doc: commentsDocuments)
             comments.add(new Comment(doc.getObjectId("_idComment"),doc.getString("text"),doc.getString("commentatorsId")));
-
         return comments;
     }
 }

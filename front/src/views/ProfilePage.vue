@@ -566,20 +566,23 @@
                                           this.posts = response.data;
                                           this.num = true
                                       })
-                   axios.get(process.env.VUE_APP_BACK + 'followers/'+this.user.email+"/")
+
+            axios.get(process.env.VUE_APP_BACK + 'followers/'+this.loggedUser.email+"/")
                     .then((response) => {
                                 this.followers = response.data;
                                 this.followersNum = response.data.length
                     })
-                    axios.get(process.env.VUE_APP_BACK + 'followings/'+this.user.email+"/")
+                    axios.get(process.env.VUE_APP_BACK + 'followings/'+this.loggedUser.email+"/")
                     .then((response) => {
                                 this.followings = response.data;
                                 this.followingsNum = response.data.length
                     })
+                   
        })
        .catch(function (error) {
        console.log(error);
        });
+       
 
   },
   methods: {   
