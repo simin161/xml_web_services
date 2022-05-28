@@ -50,6 +50,7 @@
 
     </div>
     <div class="col-lg-9" style="padding-right: 5%;">
+          <h1 style="text-align: left;" >User posts</h1>
         <div   v-for="(post,index) in posts" :key="index" class="card" >
                 <div class="card-body" style="text-align: left;">
                     <h5 style="text-align: left"><b>{{post.fullName}}</b></h5>
