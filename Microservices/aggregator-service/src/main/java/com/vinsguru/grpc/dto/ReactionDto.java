@@ -6,6 +6,7 @@ public class ReactionDto {
    private String reactionType;
    private String email;
 
+
     public ReactionDto(String postId, String reactionType, String email) {
         this.postId = postId;
         this.reactionType = reactionType;

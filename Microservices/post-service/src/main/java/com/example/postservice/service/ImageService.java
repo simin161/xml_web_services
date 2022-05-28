@@ -21,7 +21,7 @@ public class ImageService {
     }
 
     public String saveImage(String data, String imageName) throws IOException {
-        String imagePath = ".." + File.separator + "upload";
+        String imagePath =  "";
 
         String base64Image = data.split(",")[1];
         String ext = data.split(",")[0].split("/")[1].split(";")[0];
@@ -32,9 +32,9 @@ public class ImageService {
         byte[] imageBytes = Base64.decode(base64Image);
 
         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        File file = new File("static/upload/" + imageName);
-        ImageIO.write(img, ext, file);
-        imagePath  += File.separator +  file.getName();
+        File file = new File(System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\"))+"/front/src/assets/" + imageName);
+       ImageIO.write(img, ext, file);
+        imagePath  +=  file.getName();
         return imagePath;
     }
 }

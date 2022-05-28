@@ -59,10 +59,15 @@ message ChangeAPITokenOutput{
   string value = 1;
 }
 
+message GetAllJobOffersOutput{
+  repeated SearchedOffer offer = 1;
+}
+
 service JobOfferService {
 
     rpc createJobOffer(JobOfferCreationParams) returns (JobOfferCreationReturnValue) {};
     rpc searchJobOffers(SearchParam) returns (SearchReturnValue) {};
     rpc updateJobOfferAPIToken(ChangeAPITokenInput) returns (ChangeAPITokenOutput) {};
+    rpc getAllJobOffers(google.protobuf.Empty) returns (GetAllJobOffersOutput) {};
 
 }

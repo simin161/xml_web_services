@@ -193,7 +193,7 @@ public class UsersService {
             InputSearch is = InputSearch.newBuilder().setParam(param).build();
 
             for (Input i : this.blockingStub.searchUsers(is).getUserList()) {
-                DisplayUserDto userDTO = new DisplayUserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getEmail());
+                DisplayUserDto userDTO = new DisplayUserDto( i.getFirstName(), i.getLastName(),i.getUsername(), i.getEmail());
                 retVal.add(userDTO);
             }
 

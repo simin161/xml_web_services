@@ -117,17 +117,26 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void getUserById(InputID request, StreamObserver<Output> responseObserver) {
         User user = UserRepository.getInstance().findUserByUsersId(request.getId());
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         proto.user.Output output;
         if(user == null){
             output = Output.newBuilder().build();
         }else {
-            String s = formatter.format(user.getBirthday());
             output = Output.newBuilder()
                     .setEmail(user.getEmail())
                     .setUsername(user.getUsername())
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
                     .build();
         }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUsersIdByUsername(InputUsername request, StreamObserver<OutputId> responseObserver) {
+        String userId = UserRepository.getInstance().findUserIdByUsername(request.getUsername());
+        proto.user.OutputId output;
+        output = OutputId.newBuilder().setUsersId(userId).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
@@ -287,15 +296,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void findUserEmailById(OutputId request, StreamObserver<InputForGetUserByEmail> responseObserver){
         User user = UserRepository.getInstance().findUserByUsersId(request.getUsersId());
-        if(!user.isPrivateProfile()){
             proto.user.InputForGetUserByEmail ifgube;
             ifgube = InputForGetUserByEmail.newBuilder().setEmail(user.getEmail()).build();
             responseObserver.onNext(ifgube);
             responseObserver.onCompleted();
-        } else{
-            responseObserver.onNext(null);
-            responseObserver.onCompleted();
-        }
     }
 
     @Override

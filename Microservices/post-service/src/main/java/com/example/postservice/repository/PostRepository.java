@@ -3,6 +3,7 @@ package com.example.postservice.repository;
 import com.example.postservice.model.Comment;
 import com.example.postservice.model.Post;
 import com.example.postservice.model.Reaction;
+import com.example.postservice.model.ReactionType;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -14,8 +15,9 @@ import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.sql.Ref;
+import java.util.*;
 
 public class PostRepository {
     final static Class<? extends List> docClazz = new ArrayList<Document>().getClass();
@@ -77,46 +79,46 @@ public class PostRepository {
 
     public void addComment(String postId, Comment comment){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
-       
         Document newComment = new Document("_idComment", new ObjectId());
         newComment.append("text",comment.getText()).append("commentatorsId",comment.getCommentatorsId());
-
         Bson updates = Updates.combine(
                 Updates.addToSet("comments",newComment)
         );
-
         UpdateOptions options = new UpdateOptions().upsert(true);
         postsCollection.updateOne(foundPost, updates, options);
     }
 
     public void addReaction(String postId, Reaction reaction){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
-
-        Document newReaction = new Document("_idReaction", new ObjectId());
-        newReaction.append("usersId",reaction.getUsersId()).append("reactionType",reaction.getReaction());
-
-        Bson updates = Updates.combine(
-                Updates.addToSet("reactions",newReaction)
-        );
-
+        Document react = new Document("_idReaction", new ObjectId());
+        react.append("usersId", reaction.getUsersId()).append("reactionType", reaction.getReaction());
+        Bson updates = Updates.combine(  Updates.addToSet("reactions", react));
         UpdateOptions options = new UpdateOptions().upsert(true);
         postsCollection.updateOne(foundPost, updates, options);
     }
 
-
     public List<Post> findPostsByUserId(String userId) {
         FindIterable<Document> foundPosts = postsCollection.find(Filters.eq("usersId", userId));
-        System.out.println("USAOOOOO U METODUUUUUU" +userId);
-
         List<Post> posts = new ArrayList<>();
-
-        for(Document doc: foundPosts){
-            posts.add(new Post(doc.getObjectId("_id"),doc.getString("usersId"),doc.getString("text"),doc.getString("pathToImage"),doc.getString("link"),doc.getDate("date")));
-            System.out.println("POSTTTTTT"+doc.getString("text"));
-        }
+        for(Document doc: foundPosts)
+            posts.add(new Post(doc.getObjectId("_id"),doc.getString("usersId"),doc.getString("text"),
+                    doc.getString("pathToImage"),doc.getString("link"),doc.getDate("date")));
         return posts;
     }
 
+    public void deleteReaction(String postId,Reaction reaction){
+        Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
+        List<Document> reactionsDocuments =foundPost.get("reactions",docClazz);
+        Document newReaction= null;
+        for(Document doc: reactionsDocuments){
+            if(doc.getString("usersId").equals(reaction.getUsersId())){
+                newReaction = doc;
+                break;
+            }
+        }
+        Bson updates = Updates.combine( Updates.pull("reactions",newReaction));
+        postsCollection.updateOne(foundPost, updates);
+    }
     public int getNumOfCommentsByPostId(String postId){
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
         List<Document> educationsDocuments =foundPost.get("comments",docClazz);
@@ -127,5 +129,41 @@ public class PostRepository {
         Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
         List<Document> educationsDocuments =foundPost.get("reactions",docClazz);
         return educationsDocuments.size();
+    }
+
+    public List<Reaction> getAllReactionByPostId(String postId){
+        Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
+        List<Document> reactionsDocuments =foundPost.get("reactions",docClazz);
+        ReactionType reaction = ReactionType.LIKE;
+        List<Reaction> likes = new ArrayList<>();
+        for(Document doc: reactionsDocuments){
+            if(doc.getString("reactionType").equals("DISLIKE"))
+                     reaction = ReactionType.DISLIKE;
+                likes.add(new Reaction(doc.getObjectId("_idReaction"),doc.getString("usersId"),reaction));
+        }
+        return likes;
+    }
+
+    public String checkReaction(String postId,String userId){
+        Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
+        List<Document> reactionsDocuments =foundPost.get("reactions",docClazz);
+        for(Document doc: reactionsDocuments){
+            if(doc.getString("usersId").equals(userId)){
+                if(doc.getString("reactionType").equals("DISLIKE"))
+                    return ReactionType.DISLIKE.toString();
+                else if(doc.getString("reactionType").equals("LIKE"))
+                    return ReactionType.LIKE.toString();
+            }
+        }
+        return  "NONE";
+    }
+
+    public List<Comment> getAllCommentsByPostId(String postId){
+        Document foundPost = postsCollection.find(Filters.eq("_id", new ObjectId(postId))).first();
+        List<Document> commentsDocuments =foundPost.get("comments",docClazz);
+        List<Comment> comments = new ArrayList<>();
+        for(Document doc: commentsDocuments)
+            comments.add(new Comment(doc.getObjectId("_idComment"),doc.getString("text"),doc.getString("commentatorsId")));
+        return comments;
     }
 }

@@ -73,6 +73,7 @@ public class User {
         this.userAPItoken=userAPItoken;
     }
 
+
     public boolean isActivated() {
         return isActivated;
     }

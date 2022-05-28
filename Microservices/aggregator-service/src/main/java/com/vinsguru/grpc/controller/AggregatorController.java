@@ -72,7 +72,6 @@ public class AggregatorController {
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
                                 cred.getPassword()));
-
                 // Ubaci korisnika u trenutni security kontekst
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -80,6 +79,7 @@ public class AggregatorController {
                 User user = (User) authentication.getPrincipal();
                 String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
                 int expiresIn = tokenUtils.getExpiredIn();
+
 
                 // Vrati token kao odgovor na uspesnu autentifikaciju
                 return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
@@ -101,7 +101,7 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             userDto.put("email",email);
-            return aggregatorService.updateUser(userDto);}   //note: na frontu skloniti mejl iz userdto da se prosledjuje
+            return aggregatorService.updateUser(userDto);}
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             educationDto.setEmail(email);
-            return aggregatorService.updateEducation(educationDto);  } //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            return aggregatorService.updateEducation(educationDto);  }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -138,7 +138,7 @@ public class AggregatorController {
         try{
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
-            return aggregatorService.getUserByEmail(email); }  //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            return aggregatorService.getUserByEmail(email); }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -161,7 +161,7 @@ public class AggregatorController {
                 String email = tokenUtils.getUsernameFromToken(value);
                 workExperienceDto.setEmail(email);
                 return aggregatorService.updateWorkExperiences(workExperienceDto);
-            }   //note: na frontu skloniti mejl iz educationdto da se prosledjuje
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -196,8 +196,10 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
                 String email = tokenUtils.getUsernameFromToken(value);
                 post.setEmail(email);
+                if(post.getText()== null) post.setText("");
+                if(post.getLink()== null) post.setLink("");
                 return postService.addPost(post);
-            }  //note: na frontu skloniti mejl iz post da se prosledjuje
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -212,7 +214,7 @@ public class AggregatorController {
         try{
             String email = tokenUtils.getUsernameFromToken(value);
             follow.setFollowerEmail(email);
-            return followerService.addFollower(follow);  //note: na frontu skloniti mejl da se prosledjuje
+            return followerService.addFollower(follow);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -253,11 +255,23 @@ public class AggregatorController {
         try{
             String email = tokenUtils.getUsernameFromToken(value);
             comment.setCommentatorsEmail(email);
-            return postService.addComment(comment);  //note: na frontu skloniti mejl da se prosledjuje
+            return postService.addComment(comment);
         }catch(Exception e){
             e.printStackTrace();
         }
         return "";
+    }
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    @GetMapping("/requests")
+    public List<FollowDto> requests(@RequestHeader("Authentication") HttpHeaders header){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            String email = tokenUtils.getUsernameFromToken(value);
+            return followerService.findRequests(email);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/getAllPosts")
@@ -273,29 +287,77 @@ public class AggregatorController {
     }
     @PostMapping("/reaction")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
-    @PostAuthorize("hasPermission(returnObject, 'READ')")
+
     public String addNewReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             reaction.setEmail(email);
-            return postService.addReaction(reaction);}  //note: na frontu skloniti mejl da se prosledjuje
+            return postService.addReaction(reaction);}
         }catch(Exception e){
             e.printStackTrace();
         }
         return "";
     }
 
+    @PostMapping("/deleteReaction")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public String deleteReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody ReactionDto reaction){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                System.out.println("Usao u if kontroler");
+                String email = tokenUtils.getUsernameFromToken(value);
+                reaction.setEmail(email);
+                return postService.deleteReaction(reaction);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @PostMapping("/answerFollowRequest")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public void answerFollowRequest(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        boolean approved=true;
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                if(message.get("approved").equals("false"))
+                    approved= false;
+                followerService.answerFollowRequest(approved,email,message.get("followerEmail"));}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    @PostMapping("/checkReaction")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public String checkReaction(@RequestHeader("Authentication") HttpHeaders header, @RequestBody Map<String, String> message){
+        final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+               return postService.checkReaction(message.get("postId"),email);}  //note: na frontu skloniti mejl da se prosledjuje
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
     @GetMapping("/postsForHomePage")
     @PreAuthorize("hasRole('ROLE_REG_USER')")
-    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public List<PostDto> getPosts(@RequestHeader("Authentication") HttpHeaders header){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-
-        if(!Validation.validateNonBrackets(value)){
-        String email = tokenUtils.getUsernameFromToken(value);
-        return postService.findAllPostsOfFollowingsByUserEmail(email);}
+        try{
+            if(!Validation.validateNonBrackets(value)){
+                String email = tokenUtils.getUsernameFromToken(value);
+                return postService.findAllPostsOfFollowingsByUserEmail(email);}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -320,6 +382,16 @@ public class AggregatorController {
             return aggregatorService.deleteExperience(email,workExperienceDto.getId());
         }
         return false;
+    }
+
+    @PostMapping("/findReactionsByPostId")
+    public List<ReactionDto> findReactionsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getReactionsByPostId(postId.get("id"));
+    }
+
+    @PostMapping("/findCommentsByPostId")
+    public List<CommentDto> findCommentsByPostId(@RequestBody Map<String, String> postId){
+        return postService.getCommentsByPostId(postId.get("id"));
     }
 
     @PostMapping("/numOfCommentsByPostId")
@@ -403,5 +475,10 @@ public class AggregatorController {
 
         }
         return false;
+    }
+
+    @GetMapping("/getAllJobOffers")
+    public List<JobOfferDto> getAllJobOffers(){
+        return jobOfferService.getAllJobOffers();
     }
 }

@@ -11,6 +11,8 @@ import PasswordChange from '../views/PasswordChange.vue'
 import Homepage from '../views/Homepage.vue'
 import CreateNewPost from  '../views/CreateNewPost.vue'
 import ShowProfile from '../views/ShowProfile.vue'
+import SearchUsers from '../views/SearchUsers.vue'
+import JobOffers from '../views/JobOffers.vue'
 const routes = [
   
   {
@@ -104,6 +106,32 @@ const routes = [
       {
         path: '/forgottenPassword',
         component: ProfilePage
+      }
+
+    ]
+  },
+  {
+    path: '/searchUsers',
+    name: 'SearchUsers',
+    component: SearchUsers,
+    children: [
+
+      {
+        path: '/searchUsers',
+        component: SearchUsers
+      }
+
+    ]
+  },
+  {
+    path: '/jobOffers',
+    name: 'JobOffers',
+    component: JobOffers,
+    children: [
+
+      {
+        path: '/jobOffers',
+        component: JobOffers
       }
 
     ]

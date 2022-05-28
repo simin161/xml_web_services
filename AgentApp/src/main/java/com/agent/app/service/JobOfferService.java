@@ -2,9 +2,11 @@ package com.agent.app.service;
 
 import com.agent.app.model.JobOffer;
 import com.agent.app.repository.JobOfferRepository;
+import com.agent.app.utility.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,6 +23,8 @@ public class JobOfferService {
             jobOffer.setCandidateRequirements(message.get("candidateRequirements"));
             jobOffer.setDailyActivities(message.get("dailyActivities"));
             jobOffer.setUserAPIToken("");
+            if(Validation.checkIfEmptyJobOffer(jobOffer))
+                return false;
             jobOfferRepository.save(jobOffer);
             return true;
         }catch(Exception e){
@@ -44,23 +48,11 @@ public class JobOfferService {
         }
     }
 
-    public Map<String, String> fillMap(Map<String, String> jobOffer, String id) {
-        JobOffer offer = jobOfferRepository.findById(Long.valueOf(id)).orElse(null);
-        if(offer==null){
-            return jobOffer;
-        }else{
-            jobOffer.put("id", offer.getId().toString());
-            jobOffer.put("position", offer.getPosition());
-            jobOffer.put("companyName", offer.getCompanyName());
-            jobOffer.put("jobDescription", offer.getJobDescription());
-            jobOffer.put("dailyActivities", offer.getDailyActivities());
-            jobOffer.put("candidateRequirements", offer.getCandidateRequirements());
-            jobOffer.put("userAPIToken", offer.getUserAPIToken());
-            return jobOffer;
-        }
-    }
-
     public JobOffer findOfferById(String id) {
         return jobOfferRepository.findById(Long.valueOf(id)).orElse(null);
+    }
+
+    public List<JobOffer> getAllJobOffers() {
+        return jobOfferRepository.findAll();
     }
 }

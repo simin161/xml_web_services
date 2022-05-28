@@ -1,6 +1,6 @@
-package com.vinsguru.grpc.utility;
+package com.agent.app.utility;
 
-import com.vinsguru.grpc.dto.JobOfferDto;
+import com.agent.app.model.JobOffer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,12 +43,12 @@ public class Validation {
         return matcher.find();
     }
 
-    public static boolean checkIfEmptyJobOffer(JobOfferDto jobOfferDto){
+    public static boolean checkIfEmptyJobOffer(JobOffer jobOfferDto){
         return jobOfferDto.getJobDescription().equals("")
-                || jobOfferDto.getUserAPItoken().equals("")
                 || jobOfferDto.getCandidateRequirements().equals("")
                 || jobOfferDto.getCompanyName().equals("")
                 || jobOfferDto.getDailyActivities().equals("")
                 || jobOfferDto.getPosition().equals("");
     }
+
 }

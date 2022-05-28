@@ -54,11 +54,28 @@ public class FollowerService {
 
     public void removeFollower(FollowDto follow) {
         blockingStub = openChannelToFollowService();
-        System.out.println("FOLOV PERSON " +follow.getPersonEmail());
-        System.out.println("FOLOVer " +follow.getFollowerEmail());
         InputRemoveFollow input = InputRemoveFollow.newBuilder().setPersonEmail(follow.getPersonEmail())
                 .setFollowerEmail(follow.getFollowerEmail())
                 .build();
         this.blockingStub.removeFollow(input);
     }
+
+    public List<FollowDto> findRequests(String email) {
+        blockingStub = openChannelToFollowService();
+        InputEmail input = InputEmail.newBuilder().setEmail(email)
+                .build();
+        List<FollowDto> followers = new ArrayList<>();
+        for(Followers follower: this.blockingStub.findRequests(input).getFollowersList()){
+            followers.add(new FollowDto(follower.getPersonEmail(),follower.getFollowerEmail()));
+        }
+        return  followers;
+    }
+
+    public void answerFollowRequest(boolean approved,String personEmail,String followerEmail){
+        blockingStub = openChannelToFollowService();
+        InputAnswer input = InputAnswer.newBuilder().setApproved(approved).setFollowerEmail(followerEmail).setPersonEmail(personEmail)
+                .build();
+        this.blockingStub.answerFollowRequest(input);
+    }
+
 }

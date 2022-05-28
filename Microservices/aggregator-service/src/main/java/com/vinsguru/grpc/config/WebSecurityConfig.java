@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/followers/{email:.+}/").permitAll()
                 .antMatchers("/api/followings/{email:.+}/").permitAll()
                 .antMatchers("/api/getAllPosts").permitAll()
+                .antMatchers("/api/findReactionsByPostId").permitAll()
                 .antMatchers("/api/getAllUserPosts/user:{email}").permitAll()
                 .antMatchers("/api/numOfCommentsByPostId").permitAll()
                 .antMatchers("/api/numOfReactionsByPostId").permitAll()
@@ -88,6 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/forgottenPassword").permitAll()
                 .antMatchers("/api/createJobOffer").permitAll()
                 .antMatchers("/api/searchJobOffers/{param}").permitAll()
+                .antMatchers("/api/getAllJobOffers").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase

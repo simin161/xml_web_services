@@ -39,7 +39,7 @@
         <br>
          
         <h6 style="text-align: left;">Share image</h6>
-        <input class="form-control" id="username"  type="file" />
+        <input  @change="imageSelected" class="form-control" id="username"  type="file" />
         <br>
         <div style="text-align: right">
         <button @click="createNewPost()" type="button" class="btn btn-outline-secondary">Submit post</button>
@@ -66,7 +66,8 @@
       postDto: {
           text: '',
           pathToImage: '',
-          link: ''
+          link: '',
+          articleImage: ''
       }
     };
   },
@@ -96,12 +97,39 @@
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
    },
+   imageSelected: function(event){
+     console.log(event)
+			const file = document.querySelector('input[type=file]').files[0]
+			const reader = new FileReader()
+			if(file != null){
+				this.imagePath = true;
+        reader.onloadend = () => {
+				this.postDto.pathToImage = reader.result
+        console.log("AAAAAA"+ this.postDto.pathToImage)
+				}
+				reader.readAsDataURL(file);
+			}
+			else{
+				this.imagePath = false
+			}
+		},
    createNewPost: function(){
-       if(this.postDto.text =="" || this.postDto.link=="") return
+       if(this.postDto.text =="" && this.postDto.link=="" && this.postDto.pathToImage == "") {
+            this.$swal.fire({
+                 position: 'top-end',
+                  icon: 'error',
+                 title: 'Post can not be empty!',
+               showConfirmButton: false,
+               timer: 1500
+    })
+        return;
+       
+       }
         axios.post(process.env.VUE_APP_BACK + 'newPost',
         {
             text: this.postDto.text,
-            link: this.postDto.link
+            link: this.postDto.link,
+            pathToImage: this.postDto.pathToImage
         })
        .then((response) => {
             this.$router.push("/homepage")

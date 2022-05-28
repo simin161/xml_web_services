@@ -10,10 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping(value="/api", produces= MediaType.APPLICATION_JSON_VALUE)
@@ -41,8 +38,9 @@ public class JobOfferController {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
-        if(offer==null){
+        if(offer==null || message.get("userAPIToken")==null){
             jobOffer.put("neam samana", "e jebiga");
+            return false;
         }else{
             jobOffer.put("id", offer.getId().toString());
             jobOffer.put("position", offer.getPosition());
@@ -60,5 +58,10 @@ public class JobOfferController {
             e.printStackTrace();
         }
         return retVal;
+    }
+
+    @GetMapping("/getAllJobOffers")
+    public List<JobOffer> getAllJobOffers(){
+        return jobOfferService.getAllJobOffers();
     }
 }

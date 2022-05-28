@@ -16,6 +16,12 @@ public class Comment {
         this.commentatorsId = commentatorsId;
     }
 
+    public Comment(ObjectId idComment, String text, String commentatorsId) {
+        this.idComment = idComment;
+        this.text = text;
+        this.commentatorsId = commentatorsId;
+    }
+
     public Comment() {
     }
 
