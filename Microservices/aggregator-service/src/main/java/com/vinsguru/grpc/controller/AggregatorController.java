@@ -312,10 +312,13 @@ public class AggregatorController {
         System.out.println("AAAAA"+reaction.getEmail());
         System.out.println("AAAAA"+reaction.getPostId());
         try{
+
             if(!Validation.validateNonBrackets(value)){
+                System.out.println("Usao u if kontroler");
                 String email = tokenUtils.getUsernameFromToken(value);
                 reaction.setEmail(email);
-                return postService.deleteReaction(reaction);}  //note: na frontu skloniti mejl da se prosledjuje
+                return postService.deleteReaction(reaction);
+            }  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
         }

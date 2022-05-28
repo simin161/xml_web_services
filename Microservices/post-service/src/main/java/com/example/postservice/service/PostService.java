@@ -238,6 +238,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     }
     @Override
     public void deleteReaction(InputAddReaction request, StreamObserver<Output> responseObserver) {
+        System.out.println("Usao u service delete");
         ReactionType reactionType;
         Output output;
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();

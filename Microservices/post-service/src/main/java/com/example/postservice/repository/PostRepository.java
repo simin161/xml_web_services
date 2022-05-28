@@ -126,7 +126,7 @@ public class PostRepository {
         Document newReaction= null;
         for(Document doc: reactionsDocuments){
             System.out.println("USERR bek"+doc.getString("usersId"));
-            System.out.println("USERR front"+doc.getString("usersId"));
+            System.out.println("USERR front"+reaction.getUsersId());
             if(doc.getString("usersId").equals(reaction.getUsersId())){
                 newReaction = doc;
                 break;
