@@ -23,6 +23,7 @@ template: `
 		    <input v-show="!isAdmin" type="button" value="My companies" @click="showMyCompanies"/>
 		    <input v-show="isAdmin" type="button" value="See all company reg requests" @click="showComReq"/>
             <input v-show="!isAdmin" type="button" value="Add API token" @click="showAddAPIToken"/>
+            <input v-show="!isAdmin" type="button" value="My job offers" @click="navigateToJO"/>
 		    <div v-show="showRequests == 1">
 		        <div style="1px solid black" v-for="req in allReq">
 		            <p>{{req.name}}</p>
@@ -64,6 +65,9 @@ template: `
 
     },
     methods : {
+        navigateToJO : function(){
+            router.push("/myJobOffers");
+        },
         saveApiToken : function(){
             axios.defaults.headers.common["Authorization"] =
                                   localStorage.getItem("agentUser");
@@ -79,6 +83,8 @@ template: `
         },
         createJobOffer : function(){
         this.jobOffer.companyName = this.chosenCompany.name;
+         axios.defaults.headers.common["Authorization"] =
+                                           localStorage.getItem("agentUser");
             axios.post("/api/createJobOffer", this.jobOffer)
                             .then((response) => console.log(response.data))
         },
