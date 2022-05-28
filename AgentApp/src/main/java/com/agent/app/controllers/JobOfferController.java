@@ -6,6 +6,7 @@ import com.agent.app.service.JobOfferService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,11 +25,13 @@ public class JobOfferController {
     TokenUtils tokenUtils;
 
     @PostMapping("/createJobOffer")
+    @PreAuthorize("hasRole('ROLE_COMPANY_OWNER')")
     public boolean createJobOffer(@RequestBody Map<String, String> message){
         return jobOfferService.createJobOffer(message);
     }
 
     @PostMapping("/sendJobOfferRequest")
+    @PreAuthorize("hasRole('ROLE_COMPANY_OWNER')")
     public boolean sendJobOfferRequest(@RequestHeader("Authentication")HttpHeaders header, @RequestBody Map<String, String> message){
         boolean retVal = jobOfferService.setUserAPIToken(message);
         final RestTemplate restTemplate = new RestTemplate();

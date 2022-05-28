@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,6 +40,7 @@ public class RegistrationController {
     private CompanyService companyService;
 
     @PostMapping("/registerCompany")
+    @PreAuthorize("hasRole('ROLE_REG_CUSTOMER')")
     public boolean registerCompany(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> message){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         message.put("email",tokenUtils.getUsernameFromToken(value));
