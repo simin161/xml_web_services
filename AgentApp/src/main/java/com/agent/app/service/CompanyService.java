@@ -57,4 +57,18 @@ public class CompanyService {
 
         return true;
     }
+
+    public List<Company> getCompaniesForUser(String email) {
+        return companyRepository.findAllByOwner(userRepository.findByEmail(email));
+    }
+
+    public boolean editCompany(Map<String, String> message) {
+        Company company = companyRepository.findById(Long.valueOf(message.get("id"))).orElse(null);
+        company.setDescription(message.get("description"));
+        company.setField(message.get("field"));
+        company.setName(message.get("name"));
+        company.setContactInfo(message.get("contactInfo"));
+        companyRepository.save(company);
+        return true;
+    }
 }

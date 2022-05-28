@@ -1,9 +1,11 @@
 package com.agent.app.controllers;
 
 import com.agent.app.model.Company;
+import com.agent.app.security.TokenUtils;
 import com.agent.app.service.CompanyService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,8 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @GetMapping("/getAllCompanyRequests")
     public List<Company> getAllCompanyRequests(){
@@ -25,5 +29,15 @@ public class CompanyController {
     @PostMapping("/changeCompanyStatus")
     public boolean changeCompanyStatus(@RequestBody Map<String, String> message){
         return companyService.changeCompanyStatus(message);
+    }
+
+    @GetMapping("/getCompaniesForUser")
+    public List<Company> getCompaniesForUser(@RequestHeader HttpHeaders header){
+        return companyService.getCompaniesForUser(tokenUtils.getUsernameFromToken(header.getFirst(HttpHeaders.AUTHORIZATION)));
+    }
+
+    @PostMapping("/editCompany")
+    public boolean editCompany(@RequestHeader HttpHeaders header, @RequestBody Map<String, String> message){
+        return companyService.editCompany(message);
     }
 }
