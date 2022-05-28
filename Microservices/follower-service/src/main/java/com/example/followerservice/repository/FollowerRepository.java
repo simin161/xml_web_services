@@ -111,7 +111,6 @@ public class FollowerRepository {
     }
 
     public boolean answerFollowRequest(boolean approved, String followerEmail, String personEmail) {
-
         if(approved){
 
             Document requestToApprove=new Document();

@@ -129,14 +129,10 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
         String usersId = blockingStub.findUserIdByEmail(input).getUsersId();
-        if (request.getReactionType().equals("LIKE")) {
-            reactionType = ReactionType.LIKE;
-        } else {
-            reactionType = ReactionType.DISLIKE;
-        }
+        if (request.getReactionType().equals("LIKE")) reactionType = ReactionType.LIKE;
+        else  reactionType = ReactionType.DISLIKE;
 
         if (usersId != null) {
-
             PostRepository.getInstance().addReaction(request.getPostId(), new Reaction(usersId, reactionType));
             output = Output.newBuilder().setResult("success").build();
         } else {
@@ -150,10 +146,10 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     @Override
     public void findAllPostsOfFollowingsByUserEmail(Input request, StreamObserver<OutputPosts> responseObserver) {
         OutputPosts output;
-
         FollowServiceGrpc.FollowServiceBlockingStub blockingFollowStub = msConnection.setUpCommunicationPostFollower();
         InputEmail input = InputEmail.newBuilder().setEmail(request.getEmail()).build();
-        List<Followers> followings = blockingFollowStub.findPersonsFollowings(input).getFollowersList();
+        List<Followers> followings = blockingFollowStub.findPersonsFollowingsIds(input).getFollowersList();
+
         List<OutputPost> posts = new ArrayList<>();
         for (Followers follower : followings) {
             for (Post post : PostRepository.getInstance().findPostsByUserId(follower.getPersonEmail())) {
@@ -171,11 +167,9 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     public void getNumOfCommentsByPostId(InputPostId request, StreamObserver<OutputNumber> responseObserver) {
         OutputNumber output;
         int num = PostRepository.getInstance().getNumOfCommentsByPostId(request.getPostId());
-
         output = OutputNumber.newBuilder().setNum(num).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
-
     }
 
     @Override
@@ -199,7 +193,6 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
             OutputComment outputComment = OutputComment.newBuilder().setIdComment(comment.getIdComment().toString()).setText(comment.getText()).setCommentatorsId(username).build();
             retComments.add(outputComment);
         }
-
         output =OutputComments.newBuilder().addAllComments(retComments).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
@@ -218,7 +211,6 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
             OutputReaction outputReaction = OutputReaction.newBuilder().setIdReaction(reaction.getIdReaction().toString()).setReaction(reaction.getReaction().toString()).setUsersId(username).build();
             retReactions.add(outputReaction);
         }
-
         output =OutputReactions.newBuilder().addAllReactions(retReactions).build();
         responseObserver.onNext(output);
         responseObserver.onCompleted();
@@ -226,7 +218,6 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
 
     @Override
     public void checkReaction(InputCheck request, StreamObserver<OutputCheck> responseObserver) {
-        System.out.println("USAOOO");
         OutputCheck output;
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(request.getEmail()).build();
@@ -238,7 +229,6 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
     }
     @Override
     public void deleteReaction(InputAddReaction request, StreamObserver<Output> responseObserver) {
-        System.out.println("Usao u service delete");
         ReactionType reactionType;
         Output output;
         UserServiceGrpc.UserServiceBlockingStub blockingStub = msConnection.setUpCommunicationPostUser();
@@ -246,17 +236,11 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         String usersId = blockingStub.findUserIdByEmail(input).getUsersId();
         if (request.getReactionType().equals("LIKE")) {
             reactionType = ReactionType.LIKE;
-        } else {
-            reactionType = ReactionType.DISLIKE;
-        }
-
+        } else { reactionType = ReactionType.DISLIKE;}
         if (usersId != null) {
-
             PostRepository.getInstance().deleteReaction(request.getPostId(), new Reaction(usersId, reactionType));
             output = Output.newBuilder().setResult("success").build();
-        } else {
-            output = Output.newBuilder().setResult("Bad request").build();
-        }
+        } else {output = Output.newBuilder().setResult("Bad request").build();}
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }

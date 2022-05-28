@@ -8,17 +8,21 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import proto.post.*;
 import proto.user.InputForGetUserByEmail;
+import proto.user.InputID;
+import proto.user.UserServiceGrpc;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToPostService;
+import static com.vinsguru.grpc.utility.MicroserviceConnection.openChannelToUserService;
 
 @Service
 public class PostService {
 
     @GrpcClient("post-service")
     private PostServiceGrpc.PostServiceBlockingStub blockingStub;
+    private UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub;
 
     public String addPost(PostDto post) {
         blockingStub = openChannelToPostService();
@@ -87,10 +91,16 @@ public class PostService {
 
     public List<PostDto> findAllPostsOfFollowingsByUserEmail(String email){
         blockingStub = openChannelToPostService();
+        userServiceBlockingStub=openChannelToUserService();
         Input input = Input.newBuilder().setEmail(email).build();
         List<PostDto> posts = new ArrayList<>();
        for(OutputPost post: blockingStub.findAllPostsOfFollowingsByUserEmail(input).getPostsList()){
-            posts.add(new PostDto(post.getPostId(),post.getUsersId(),post.getText(),post.getPathToImage(),post.getLink(),post.getDate()));
+           int numOfReactions = this.blockingStub.getNumOfReactionsByPostId(InputPostId.newBuilder().setPostId(post.getPostId()).build()).getNum();
+           int numOfComments = this.blockingStub.getNumOfCommentsByPostId(InputPostId.newBuilder().setPostId(post.getPostId()).build()).getNum();
+           InputID inputID= InputID.newBuilder().setId(post.getUsersId()).build();
+           String fullName=userServiceBlockingStub.getUserById(inputID).getFirstName();
+           fullName+=" "+userServiceBlockingStub.getUserById(inputID).getLastName();
+           posts.add(new PostDto(post.getPostId(),post.getUsersId(),post.getText(),post.getPathToImage(),post.getLink(),post.getDate(),numOfReactions,numOfComments,fullName));
        }
        return  posts;
     }
