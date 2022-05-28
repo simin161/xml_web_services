@@ -31,9 +31,9 @@ public class JobOfferService {
         try {
             if(Validation.checkIfEmptyJobOffer(jobOfferDto))
                 return false;
-           /* if(Validation.validateNonBrackets(jobOfferDto.getUserAPItoken()) || Validation.validateNonBrackets(jobOfferDto.getJobDescription())
-            || Validation.validateNonBrackets(jobOfferDto.getPosition()) || Validation.validateNonBrackets(jobOfferDto.getCompanyName())
-            || Validation.validateNonBrackets(jobOfferDto.getDailyActivities()) || Validation.validateNonBrackets(jobOfferDto.getCandidateRequirements()))*/
+            if(!Validation.validateNonBrackets(jobOfferDto.getUserAPItoken()) || !Validation.validateNonBrackets(jobOfferDto.getJobDescription())
+            || !Validation.validateNonBrackets(jobOfferDto.getPosition()) || !Validation.validateNonBrackets(jobOfferDto.getCompanyName())
+            || !Validation.validateNonBrackets(jobOfferDto.getDailyActivities()) || !Validation.validateNonBrackets(jobOfferDto.getCandidateRequirements()))
             if(findUserByAPItoken(jobOfferDto.getUserAPItoken())){
                 blockingStub = openChannelToJobOfferService();
                 JobOfferCreationParams jocp = JobOfferCreationParams.newBuilder().setJobDescription(jobOfferDto.getJobDescription())

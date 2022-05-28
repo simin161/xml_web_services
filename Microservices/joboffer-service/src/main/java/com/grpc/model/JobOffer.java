@@ -41,18 +41,6 @@ public class JobOffer {
         this.companyName="";
         this.userAPItoken = "";
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JobOffer jobOffer = (JobOffer) o;
-        return Objects.equals(getId(), jobOffer.getId()) && Objects.equals(getPosition(), jobOffer.getPosition()) && Objects.equals(getJobDescription(), jobOffer.getJobDescription()) && Objects.equals(getDailyActivities(), jobOffer.getDailyActivities()) && Objects.equals(getCandidateRequirements(), jobOffer.getCandidateRequirements());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getPosition(), getJobDescription(), getDailyActivities(), getCandidateRequirements());
-    }
 
     public ObjectId getId() {
         return id;
@@ -108,5 +96,18 @@ public class JobOffer {
 
     public void setUserAPItoken(String userAPItoken) {
         this.userAPItoken = userAPItoken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JobOffer jobOffer = (JobOffer) o;
+        return Objects.equals(getPosition(), jobOffer.getPosition()) && Objects.equals(getCompanyName(), jobOffer.getCompanyName()) && Objects.equals(getJobDescription(), jobOffer.getJobDescription()) && Objects.equals(getDailyActivities(), jobOffer.getDailyActivities()) && Objects.equals(getCandidateRequirements(), jobOffer.getCandidateRequirements()) && Objects.equals(getUserAPItoken(), jobOffer.getUserAPItoken());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPosition(), getCompanyName(), getJobDescription(), getDailyActivities(), getCandidateRequirements(), getUserAPItoken());
     }
 }

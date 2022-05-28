@@ -18,12 +18,15 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
     @Override
     public void createJobOffer(proto.joboffer.JobOfferCreationParams createParams, StreamObserver<JobOfferCreationReturnValue> responseObserver){
         JobOfferCreationReturnValue jocrv;
-        //pretpostavka: job offer cak i kada je isti moguce je da su u pitanju dva razlicita job offera?
         try{
             JobOffer jobOffer = new JobOffer(createParams.getPosition(), createParams.getJobDescription(), createParams.getDailyActivities(), createParams.getCandidateRequirements(), createParams.getCompanyName(), createParams.getUserApiToken());
-            JobOfferRepository.getInstance().createJobOffer(jobOffer);
-            jocrv = JobOfferCreationReturnValue.newBuilder().setRetVal("true").build();
-        }catch(Exception e){
+            if(checkIfSameOfferExists(jobOffer))
+                jocrv = JobOfferCreationReturnValue.newBuilder().setRetVal("false").build();
+            else {
+                JobOfferRepository.getInstance().createJobOffer(jobOffer);
+                jocrv = JobOfferCreationReturnValue.newBuilder().setRetVal("true").build();
+            }
+        } catch(Exception e){
             jocrv = JobOfferCreationReturnValue.newBuilder().setRetVal("false").build();
         }
         responseObserver.onNext(jocrv);
@@ -106,5 +109,14 @@ public class JobOfferService extends JobOfferServiceGrpc.JobOfferServiceImplBase
         }
         responseObserver.onNext(gajoo);
         responseObserver.onCompleted();
+    }
+
+    private boolean checkIfSameOfferExists(JobOffer jobOffer){
+        for(JobOffer jo : JobOfferRepository.getInstance().getAllJobOffers()){
+            if(jo.equals(jobOffer)){
+                return true;
+            }
+        }
+        return false;
     }
 }
