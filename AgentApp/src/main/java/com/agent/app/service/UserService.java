@@ -46,4 +46,15 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean updateApiToken(String email, String apiToken) {
+        boolean retVal = false;
+        User user = userRepository.findByEmail(email);
+        if(user != null) {
+            user.setApiToken(apiToken);
+            userRepository.save(user);
+            retVal = true;
+        }
+        return retVal;
+    }
 }

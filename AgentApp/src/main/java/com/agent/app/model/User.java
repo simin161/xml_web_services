@@ -27,6 +27,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name="password")
     private String password;
+    @Column(name="apiToken")
+    private String apiToken;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",

@@ -13,7 +13,8 @@ Vue.component('firstPage', {
                 jobDescription : '',
                 dailyActivities : '',
                 candidateRequirements: ''
-            }
+            },
+            apiToken : ''
 		}
 	},
 template: `
@@ -21,7 +22,7 @@ template: `
 		    <input v-show="!isAdmin" type="button" value="Register company" @click="navigateToRC"/>
 		    <input v-show="!isAdmin" type="button" value="My companies" @click="showMyCompanies"/>
 		    <input v-show="isAdmin" type="button" value="See all company reg requests" @click="showComReq"/>
-
+            <input v-show="!isAdmin" type="button" value="Add API token" @click="showAddAPIToken"/>
 		    <div v-show="showRequests == 1">
 		        <div style="1px solid black" v-for="req in allReq">
 		            <p>{{req.name}}</p>
@@ -51,6 +52,10 @@ template: `
 		        <input type="text" v-model="jobOffer.candidateRequirements"/>
 		        <input type="button" value="Create job offer" @click="createJobOffer"/>
 		    </div>
+		    <div v-show="showPage == 3">
+		        <input type="text" v-model="apiToken"/>
+		        <input type="button" value="Save" @click="saveApiToken"/>
+		    </div>
 		</div>
 		`
 	,
@@ -59,6 +64,15 @@ template: `
 
     },
     methods : {
+        saveApiToken : function(){
+            axios.defaults.headers.common["Authorization"] =
+                                  localStorage.getItem("agentUser");
+            axios.post("/api/updateApiToken", this.apiToken)
+                 .then((response) => console.log(response.data))
+        },
+        showAddAPIToken : function(){
+            this.showPage = 3;
+        },
         showCreate : function(c){
             this.chosenCompany = c;
             this.showPage = 2;
