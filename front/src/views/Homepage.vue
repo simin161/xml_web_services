@@ -206,6 +206,7 @@
         num: false,
         comments: [],
         reactions: [],
+        value: 0
     };
   },
   mounted() {
@@ -225,7 +226,7 @@
 
                     console.log(response.data);
 
-                          axios.get(process.env.VUE_APP_BACK + 'postsForHomePage')
+                          axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/'+this.value)
                           .then((response) => {
                               this.posts = response.data;
                               console.log("HOMEPAGEEEEE  "+response.data.length)
@@ -245,6 +246,9 @@
     signOut : function(){
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
+    },
+    loadPosts : function(){
+
     },
     homepage : function(){
         this.$router.push("/homepage");

@@ -244,6 +244,4 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
-
-
 }

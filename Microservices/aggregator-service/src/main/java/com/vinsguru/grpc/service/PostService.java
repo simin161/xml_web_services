@@ -146,4 +146,28 @@ public class PostService {
         return this.blockingStub.checkReaction(input).getCheck();
     }
 
+    public List<PostDto> getAllFeedPosts(String email, int value) {
+        Input input = Input.newBuilder().setEmail(email).build();
+        blockingStub = openChannelToPostService();
+        List<OutputPost> outputPosts = blockingStub.findAllPostsOfFollowingsByUserEmail(input).getPostsList();
+        List<PostDto> posts = new ArrayList<>();
+        List<PostDto> postsToShow = new ArrayList<>();
+        for(OutputPost op : outputPosts){
+            userServiceBlockingStub = openChannelToUserService();
+            PostDto postDto = new PostDto();
+            postDto.setIdPost(op.getPostId());
+            postDto.setText(op.getText());
+            postDto.setLink(op.getLink());
+            postDto.setEmail(userServiceBlockingStub.getUserById(InputID.newBuilder().setId(op.getUsersId().toString()).build()).getEmail());
+            postDto.setFullName(userServiceBlockingStub.getUserById(InputID.newBuilder().setId(op.getUsersId().toString()).build()).getFirstName() + " "
+                    + userServiceBlockingStub.getUserById(InputID.newBuilder().setId(op.getUsersId().toString()).build()).getLastName());
+            postDto.setDate(op.getDate());
+            postDto.setPathToImage(op.getPathToImage());
+            posts.add(postDto);
+        }
+        for(int i = posts.size() - 1 - value * 5 ; i >= posts.size() - (1 + value) * 5 ; i--){
+            postsToShow.add(posts.get(i));
+        }
+        return postsToShow;
+    }
 }
