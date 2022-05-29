@@ -28,5 +28,4 @@ public class Company {
     @ManyToOne
     @JoinColumn(name="owner", referencedColumnName = "id")
     private User owner;
-
 }

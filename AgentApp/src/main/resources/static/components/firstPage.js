@@ -19,31 +19,79 @@ Vue.component('firstPage', {
 	},
 template: `
 		<div>
-		    <input v-show="!isAdmin" type="button" value="Register company" @click="navigateToRC"/>
-		    <input v-show="!isAdmin" type="button" value="My companies" @click="showMyCompanies"/>
-		    <input v-show="isAdmin" type="button" value="See all company reg requests" @click="showComReq"/>
-            <input v-show="!isAdmin" type="button" value="Add API token" @click="showAddAPIToken"/>
-            <input v-show="!isAdmin" type="button" value="My job offers" @click="navigateToJO"/>
+		    <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="navigateToRC">Register company</button>
+		    <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showMyCompanies">My companies</button>
+		    <button   class="btn" id="buttonPurple" v-show="isAdmin"   @click="showComReq">See all company reg requests</button>
+            <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showAddAPIToken">Add API token</button>
+            <button   class="btn"  id="buttonPurple" v-show="!isAdmin"  @click="navigateToJO">My job offers</button>
+            <button  class="btn "  id="buttonPurple" v-show="!isAdmin"  @click="navigateAllOffers">All offers</button>
 		    <div v-show="showRequests == 1">
-		        <div style="1px solid black" v-for="req in allReq">
-		            <p>{{req.name}}</p>
-		            <p>{{req.contactInfo}}</p>
-		            <p>{{req.owner.firstName}} {{req.owner.lastName}}</p>
-		            <p>{{req.field}}</p>
-		            <p>{{req.description}}</p>
-		            <input type="button" value="Accept" @click="accept(req)"/>
-		            <input type="button" value="Decline" @click="decline(req)"/>
-		        </div>
+                <div clas="col" style="padding:2%">
+                <br>
+                <h1>All company reg requests</h1>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th><span>Name</span></th>
+                        <th><span>Contact info</span></th>
+                        <th><span>Owner first name</span></th>
+                        <th><span>Owner last name</span></th>
+                        <th><span>Field</span></th>
+                        <th><span>Description</span></th>
+                        <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="req in allReq"">
+                           
+                            <td>{{req.name}}</td>
+                            <td>{{req.contactInfo}}</td>
+                            <td>{{req.owner.firstName}}</td>
+                            <td>{{req.owner.lastName}}</td>
+                            <td>{{req.field}}</td>
+                            <td>{{req.description}}</td>
+                            <td>
+                              <button class="btn" id="buttonPurple" @click="accept(req)" >Accept</button>
+                              <button class="btn" id="buttonPurple" @click="decline(req)">Decline</button>
+                              </td>
+                        </tr>
+                        
+                    </tbody>
+                 </table>
+                 </div>
 		    </div>
 		    <div v-show="showPage == 1">
-		        <div v-for="c in allCompanies">
-		            <input type="text" v-model="c.name"/>
-		            <input type="text" v-model="c.contactInfo"/>
-		            <input type="text" v-model="c.field"/>
-		            <input type="text" v-model="c.description"/>
-		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Save changes" @click="save(c)"/>
-		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Create job offer" @click="showCreate(c)"/>
-		        </div>
+                <div clas="col" style="padding:2%">
+                <br>
+                <h1>All company reg requests</h1>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th><span>Name</span></th>
+                        <th><span>Contact info</span></th>
+                        <th><span>Field</span></th>
+                        <th><span>Description</span></th>
+                        <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="c in allCompanies"">
+                           
+                            <td> <input class="form-control" type="text" v-model="c.name"/></td>
+                            <td>  <input class="form-control" type="text" v-model="c.contactInfo"/></td>
+                            <td>  <input class="form-control" type="text" v-model="c.field"/></td>
+                            <td> <input class="form-control" type="text" v-model="c.description"/></td>
+                            <td>
+                              <button class="btn" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
+                              <button  class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
+                              </td>
+                        </tr>
+                        
+                    </tbody>
+                 </table>
+                 </div>
 		    </div>
 		    <div v-show="showPage == 2">
 		        <input type="text" v-model="jobOffer.position"/>
@@ -51,11 +99,11 @@ template: `
 		        <input type="text" v-model="jobOffer.jobDescription"/>
 		        <input type="text" v-model="jobOffer.dailyActivities"/>
 		        <input type="text" v-model="jobOffer.candidateRequirements"/>
-		        <input type="button" value="Create job offer" @click="createJobOffer"/>
+		        <button class="btn" id="buttonPurple"   @click="createJobOffer">Create job offer</button>
 		    </div>
 		    <div v-show="showPage == 3">
 		        <input type="text" v-model="apiToken"/>
-		        <input type="button" value="Save" @click="saveApiToken"/>
+		        <button class="btn" id="buttonPurple" @click="saveApiToken">Save</button>
 		    </div>
 		</div>
 		`
@@ -109,6 +157,9 @@ template: `
                      axios.get("/api/getAllCompanyRequests")
                            .then((response) => this.allReq = response.data);
                  })
+        },
+        navigateAllOffers: function(){
+            router.push("/allOffers")
         },
         decline : function(req){
            axios.post("/api/changeCompanyStatus", {id: req.id, status : "DECLINED"})
