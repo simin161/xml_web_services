@@ -18,6 +18,10 @@ template: `
       <a class="navbar-brand"   >
       <img src="../images/cover.png" alt="" width="200" height="80" >
       </a>
+      <button class="btn" id="buttonPurple"  @click="logOut">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+</svg> Log out</button>
       </div>
     </nav>
 
@@ -65,14 +69,14 @@ template: `
         <label><b>Salary</b></label>
         <input v-model="salary" class="form-control"></input>
         <br>
-        <button id="buttonPurple" @click="addComment"  type="button">Save</button>
+        <button class="btn" id="buttonPurple" @click="addComment"  type="button">Save</button>
          </div>
          </div>
 
          
     <div v-if="showAllComments == true" class="col">
     <div style="padding:2%">
-            <h6 style="text-align: left;">Comments</h6>
+            <h1 style="text-align: left;">Comments</h1>
             <button id="buttonPurple" @click="closeComment"  class="btn btn-outline-success"  type="button" >Close</button>
             <hr>
                 <li  v-for="comment in comments"  class="list-group-item">
@@ -149,6 +153,10 @@ template: `
         },
         closeComment : function(){
             this.showAllComments = false
+        },
+        logOut : function(){
+            //TO DO
+           console.log("DODATI LOG OUT!")
         }
     },
     mounted(){

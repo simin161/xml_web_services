@@ -19,6 +19,19 @@ Vue.component('firstPage', {
 	},
 template: `
 		<div>
+        <nav  class="navbar navbar-fixed-top navbar-expand"  style="background-color: #3e214f; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
+        <div class="container-fluid" style="background-color: #3e214f; text-align: right">
+        <a class="navbar-brand"   >
+        <img src="../images/cover.png" alt="" width="200" height="80" >
+        </a>
+        <button class="btn" id="buttonPurple"  @click="logOut">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+</svg> Log out</button>
+        </div>
+      </nav>
+      <br>
+      <br>
 		    <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="navigateToRC">Register company</button>
 		    <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showMyCompanies">My companies</button>
 		    <button   class="btn" id="buttonPurple" v-show="isAdmin"   @click="showComReq">See all company reg requests</button>
@@ -64,7 +77,7 @@ template: `
 		    <div v-show="showPage == 1">
                 <div clas="col" style="padding:2%">
                 <br>
-                <h1>All company reg requests</h1>
+                <h1>My companies</h1>
                 <br>
                 <table class="table">
                     <thead>
@@ -94,14 +107,27 @@ template: `
                  </div>
 		    </div>
 		    <div v-show="showPage == 2">
-		        <input type="text" v-model="jobOffer.position"/>
-		        <input type="text" v-model="jobOffer.companyName"/>
-		        <input type="text" v-model="jobOffer.jobDescription"/>
-		        <input type="text" v-model="jobOffer.dailyActivities"/>
-		        <input type="text" v-model="jobOffer.candidateRequirements"/>
+                <div style="padding:2%">
+                <br>
+                <h1>Create job offer</h1>
+                <br>
+                <label><b>Position</b></label>
+                <input class="form-control" type="text" v-model="jobOffer.position"/>
+                <label><b>Company names</b></label>
+		        <input  class="form-control" type="text" v-model="jobOffer.companyName"/>
+                <label><b>Job description</b></label>
+		        <input class="form-control" type="text" v-model="jobOffer.jobDescription"/>
+                <label><b>Daily activities</b></label>
+		        <input  class="form-control" type="text" v-model="jobOffer.dailyActivities"/>
+                <label><b>Candidate requirements</b></label>
+		        <input  class="form-control"type="text" v-model="jobOffer.candidateRequirements"/>
+                <br>
 		        <button class="btn" id="buttonPurple"   @click="createJobOffer">Create job offer</button>
+                 </div>
 		    </div>
-		    <div v-show="showPage == 3">
+		    <div style="padding: 2%" v-show="showPage == 3">
+                <h1>Create API token</h1>
+                 <br>
 		        <input type="text" v-model="apiToken"/>
 		        <button class="btn" id="buttonPurple" @click="saveApiToken">Save</button>
 		    </div>
@@ -134,7 +160,10 @@ template: `
          axios.defaults.headers.common["Authorization"] =
                                            localStorage.getItem("agentUser");
             axios.post("/api/createJobOffer", this.jobOffer)
-                            .then((response) => console.log(response.data))
+                            .then((response) => {
+                                
+                             router.push("/myJobOffers")
+                            console.log(response.data)})
         },
         save : function(c){
            axios.defaults.headers.common["Authorization"] =
@@ -175,6 +204,10 @@ template: `
             this.showRequests = 1;
             axios.get("/api/getAllCompanyRequests")
                  .then((response) => this.allReq = response.data);
+        },
+        logOut : function(){
+            //TO DO
+           console.log("DODATI LOG OUT!")
         }
     },
     mounted(){
