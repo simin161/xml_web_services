@@ -245,24 +245,22 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void searchUsers(InputSearch request, StreamObserver<Output2> responseObserver) {
-
-        List<User> searchedByProfileStatus = UserRepository.getInstance().findUserByParam("privateProfile", "false");
         List<User> searchedByFirstName = UserRepository.getInstance().findUserByParam("firstName", request.getParam());
         List<User> searchedByLastName = UserRepository.getInstance().findUserByParam("lastName", request.getParam());
         List<User> searchedByUsername = UserRepository.getInstance().findUserByParam("username", request.getParam());
         List<User> searchedUsers = new ArrayList<User>();
         for(User u : searchedByFirstName){
-            if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
+            if(!searchedUsers.contains(u)){
                 searchedUsers.add(u);
             }
         }
         for(User u : searchedByLastName){
-            if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
+            if(!searchedUsers.contains(u)){
                 searchedUsers.add(u);
             }
         }
         for(User u : searchedByUsername){
-            if(!searchedUsers.contains(u) && !u.isPrivateProfile()){
+            if(!searchedUsers.contains(u)){
                 searchedUsers.add(u);
             }
         }

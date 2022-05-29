@@ -72,8 +72,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
-                .authorizeRequests().antMatchers("/api/logInUser").permitAll().antMatchers("/api/register").permitAll()
-                .antMatchers("/api/getAllUsers").permitAll().antMatchers("/api/searchUsers/{param}").permitAll()
+                .authorizeRequests().antMatchers("/api/logInUser")
+                .permitAll().antMatchers("/api/register").permitAll()
+                .antMatchers("/api/getAllUsers").permitAll()
+                .antMatchers("/api/searchUsers/{param}").permitAll()
                 .antMatchers("/api/user/{email:.+}/").permitAll()
                 .antMatchers("/api/educations/{email:.+}/").permitAll()
                 .antMatchers("/api/experiences/{email:.+}/").permitAll()
@@ -81,7 +83,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/followings/{email:.+}/").permitAll()
                 .antMatchers("/api/getAllPosts").permitAll()
                 .antMatchers("/api/findReactionsByPostId").permitAll()
-                .antMatchers("/api/getAllUserPosts/user:{email}").permitAll()
+                .antMatchers("/api/findCommentsByPostId").permitAll()
+                .antMatchers("/api/getAllUserPosts/{email:.+}/").permitAll()
                 .antMatchers("/api/numOfCommentsByPostId").permitAll()
                 .antMatchers("/api/numOfReactionsByPostId").permitAll()
                 .antMatchers("/api/verifyAccount").permitAll()
