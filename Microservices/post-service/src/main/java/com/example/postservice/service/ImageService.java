@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.example.postservice.dto.ImageDto;
+import com.example.postservice.repository.ImageRepository;
 import javaxt.utils.Base64;
 
 public class ImageService {
@@ -32,9 +34,12 @@ public class ImageService {
         byte[] imageBytes = Base64.decode(base64Image);
 
         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        File file = new File(System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\"))+"/front/src/assets/" + imageName);
-       ImageIO.write(img, ext, file);
-        imagePath  +=  file.getName();
-        return imagePath;
+        File file = new File("Microservices/post-service/src/main/resources/static/" + imageName).getAbsoluteFile();
+        ImageIO.write(img, ext, file);
+
+        ImageDto imageDto = new ImageDto(file.getAbsolutePath(), imageName);
+        ImageRepository.getInstance().insert(imageDto);
+
+        return imageName;
     }
 }
