@@ -8,6 +8,19 @@ Vue.component('jobOffersForUser', {
 	},
 template: `
 		<div>
+        <nav  class="navbar navbar-fixed-top navbar-expand"  style="background-color: #3e214f; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
+        <div class="container-fluid" style="background-color: #3e214f; text-align: right">
+        <a class="navbar-brand"   >
+        <img src="../images/cover.png" alt="" width="200" height="80" >
+        </a>
+        <button class="btn" id="buttonPurple"  @click="logOut">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+</svg> Log out</button>
+        </div>
+      </nav>
+      <br>
+      <br>
             <div clas="col" style="padding:2%">
             <br>
             <h1>My job offers</h1>
@@ -43,7 +56,7 @@ template: `
             <div v-if="showAllComments == true" class="col">
             <div style="padding: 2%">
                     <h6 style="text-align: left;">Comments</h6>
-                    <button  id="buttonPurple" @click="closeComment"  type="button" >Close</button>
+                    <button class="btn" id="buttonPurple" @click="closeComment"  type="button" >Close</button>
                     <hr>
                         <li  v-for="comment in comments"  class="list-group-item">
                             <div class="row">
@@ -100,6 +113,10 @@ template: `
         },
         closeComment : function(){
             this.showAllComments = false
+        },
+        logOut : function(){
+            //TO DO
+           console.log("DODATI LOG OUT!")
         }
     },
     mounted(){
