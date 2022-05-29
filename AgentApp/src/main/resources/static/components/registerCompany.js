@@ -15,7 +15,7 @@ template: `
             <input type="text" v-model="company.field" placeholder="Field"/>
             <textarea v-model="company.contactInfo" placeholder="Contact information"/>
             <textarea v-model="company.description" placeholder="Description"/>
-            <input type="button" value="Register company" @click="registerCompany"/>
+            <button class="btn" id="buttonPurple"  @click="registerCompany">Register company</button>
 		</div>
 		`
 	,

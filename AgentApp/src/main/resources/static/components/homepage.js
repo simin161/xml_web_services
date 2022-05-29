@@ -23,7 +23,7 @@ template: `
                  <div style="margin-left: auto; margin-right:auto; width:30%;" v-if="showPage === 0">
                      <input type="text" placeholder="E-mail" v-model="logUser.email"/>
                      <input type="password" placeholder="Password" v-model="logUser.password"/>
-                     <input type="button" value="Sign in" @click="signIn"/>
+                     <input  type="button" value="Sign in" @click="signIn"/>
                  </div>
              <div style="margin-left: auto; margin-right:auto; width:30%;" v-if="showPage === 1">
 		           <table>

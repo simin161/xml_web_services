@@ -72,7 +72,6 @@ public class JobOfferController {
     }
 
     @GetMapping("/getAllJobOffers")
-    public List<JobOffer> getAllJobOffers(){
-        return jobOfferService.getAllJobOffers();
-    }
+    @PreAuthorize("hasRole('ROLE_REG_CUSTOMER')")
+    public List<JobOffer> getAllJobOffers(){ return jobOfferService.getAllJobOffers();}
 }
