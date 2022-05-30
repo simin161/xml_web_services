@@ -262,6 +262,7 @@
         this.$router.push("/signIn");
     },
     refreshPage : function(){
+        this.value = 0;
         axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/0')
                           .then((response) => {
                               this.posts = response.data;
@@ -270,6 +271,9 @@
                           .catch(function (error) {
                               console.log(error);
                           });     
+    },
+    scrollToTop : function() {
+      window.scrollTo(0,0);
     },
     loadOlder : function(){
       this.value = this.value+1;
@@ -280,7 +284,8 @@
                           })
                           .catch(function (error) {
                               console.log(error);
-                          });     
+                          });  
+      window.scrollTo(0,0);
     },
     loadNewer : function(){
       this.value = this.value-1;
@@ -291,7 +296,8 @@
                           })
                           .catch(function (error) {
                               console.log(error);
-                          });     
+                          });    
+      window.scrollTo(0,0); 
     },
     homepage : function(){
         this.$router.push("/homepage");

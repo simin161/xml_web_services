@@ -72,6 +72,7 @@ public class PostService {
         UserEmail ue = UserEmail.newBuilder().setEmail(email).build();
         blockingStub = openChannelToPostService();
         List<PostDto> retVal = new ArrayList<PostDto>();
+        List<PostDto> invertedRetVal = new ArrayList<PostDto>();
         for(PostToShow iap : this.blockingStub.getAllUserPosts(ue).getAllPostsList()){
             PostDto postDTO = new PostDto();
             postDTO.setEmail(iap.getEmail());
@@ -86,7 +87,10 @@ public class PostService {
             postDTO.setNumOfComments(numOfComments);
             retVal.add(postDTO);
         }
-        return retVal;
+        for(int i = retVal.size()-1; i>=0; i--){
+            invertedRetVal.add(retVal.get(i));
+        }
+        return invertedRetVal;
     }
 
     public List<PostDto> findAllPostsOfFollowingsByUserEmail(String email){
@@ -165,14 +169,27 @@ public class PostService {
             postDto.setPathToImage(op.getPathToImage());
             posts.add(postDto);
         }
-        if(posts.size()>5) {
+        if(posts.size()>5 && posts.size()%5==0) {
             for (int i = posts.size() - 1 - value * 5; i >= posts.size() - (1 + value) * 5; i--) {
                 postsToShow.add(posts.get(i));
+            }
+        }else if(posts.size()>5){
+            if(posts.size()-(1+value)*5<0){
+                for(int i = posts.size()-1 - value*5; i >=0; i--){
+                    postsToShow.add(posts.get(i));
+                }
+            }else {
+                for (int i = posts.size() - 1 - value * 5; i >= posts.size() - (1 + value) * 5; i--) {
+                    postsToShow.add(posts.get(i));
+                }
             }
         }
         else{
             //obrnuti redosled
-            return posts;
+            for(int i = posts.size()-1; i >= 0; i--){
+                postsToShow.add(posts.get(i));
+            }
+            return postsToShow;
         }
         return postsToShow;
     }
