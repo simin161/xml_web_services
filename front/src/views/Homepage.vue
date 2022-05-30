@@ -1,7 +1,7 @@
 <template>
 <nav  class="navbar navbar-fixed-top navbar-expand" style="background-color: white; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
       <div class="container-fluid" style="background-color: white; text-align: right">
-      <a class="navbar-brand"   >
+      <a class="navbar-brand" href="/homepage"  >
       <img src="../assets/dislinktLogo.jpg" alt="" width="200" height="80" >
       </a>
      
@@ -51,6 +51,11 @@
     </div>
     <div class="col-lg-9" style="padding-right: 5%;">
           <h1 style="text-align: left;" >User posts</h1>
+          <button @click="refreshPage()" id="smaillbuttonProfile">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"/>
+                                        </svg> REFRESH
+        </button>
         <div   v-for="(post,index) in posts" :key="index" class="card" >
                 <div class="card-body" style="text-align: left;">
                     <h5 style="text-align: left"><b>{{post.fullName}}</b></h5>
@@ -69,7 +74,7 @@
                     
               
                  </div>
-      <br>
+        <br>
             <div >
 
                
@@ -91,10 +96,19 @@
                 
             </div>
                 </div>
-              
-            </div>
-             
-             
+
+      </div>
+             <button @click="loadNewer()" id="smaillbuttonProfile">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" />
+                                        </svg> BACK
+        </button>
+
+             <button @click="loadOlder()" id="smaillbuttonProfile">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" />
+                                        </svg> LOAD OLDER
+        </button>
     </div>
 
  </div>
@@ -206,6 +220,7 @@
         num: false,
         comments: [],
         reactions: [],
+        value: 0
     };
   },
   mounted() {
@@ -225,7 +240,7 @@
 
                     console.log(response.data);
 
-                          axios.get(process.env.VUE_APP_BACK + 'postsForHomePage')
+                          axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/'+this.value)
                           .then((response) => {
                               this.posts = response.data;
                               console.log("HOMEPAGEEEEE  "+response.data.length)
@@ -245,6 +260,44 @@
     signOut : function(){
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
+    },
+    refreshPage : function(){
+        this.value = 0;
+        axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/0')
+                          .then((response) => {
+                              this.posts = response.data;
+                              console.log("HOMEPAGEEEEE  "+response.data.length)
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                          });     
+    },
+    scrollToTop : function() {
+      window.scrollTo(0,0);
+    },
+    loadOlder : function(){
+      this.value = this.value+1;
+      axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/'+this.value)
+                          .then((response) => {
+                              this.posts = response.data;
+                              console.log("HOMEPAGEEEEE  "+response.data.length)
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                          });  
+      window.scrollTo(0,0);
+    },
+    loadNewer : function(){
+      this.value = this.value-1;
+      axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/'+this.value)
+                          .then((response) => {
+                              this.posts = response.data;
+                              console.log("HOMEPAGEEEEE  "+response.data.length)
+                          })
+                          .catch(function (error) {
+                              console.log(error);
+                          });    
+      window.scrollTo(0,0); 
     },
     homepage : function(){
         this.$router.push("/homepage");
