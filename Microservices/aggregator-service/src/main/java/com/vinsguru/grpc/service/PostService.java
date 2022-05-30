@@ -165,8 +165,14 @@ public class PostService {
             postDto.setPathToImage(op.getPathToImage());
             posts.add(postDto);
         }
-        for(int i = posts.size() - 1 - value * 5 ; i >= posts.size() - (1 + value) * 5 ; i--){
-            postsToShow.add(posts.get(i));
+        if(posts.size()>5) {
+            for (int i = posts.size() - 1 - value * 5; i >= posts.size() - (1 + value) * 5; i--) {
+                postsToShow.add(posts.get(i));
+            }
+        }
+        else{
+            //obrnuti redosled
+            return posts;
         }
         return postsToShow;
     }
