@@ -206,8 +206,8 @@ template: `
                  .then((response) => this.allReq = response.data);
         },
         logOut : function(){
-            //TO DO
-           console.log("DODATI LOG OUT!")
+            localStorage.setItem("agentUser", "");
+            router.push("/");
         }
     },
     mounted(){
