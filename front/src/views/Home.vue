@@ -8,14 +8,14 @@
       <img src="../assets/dislinktLogo.jpg" alt="" width="200" height="80" >
       </a>
    
-     
+          <button id="buttonhomepage" class="btn" @click="sign()" style="font-size: 150%;">Sign in</button>
       </div>
     </nav>
     <div class="container">
     
       <div class="row">
         <div class="col-sm-6">
-
+        
         
       </div>
       <div class="col-sm-6" style="margin-top: 11%; padding-left: 5%; padding-right: 5%">
@@ -24,7 +24,7 @@
          <p class="sp" >Get serious.</p>
          <p class="sp" >Try disLinkt.</p>
             <hr>
-        <button id="buttonhomepage" class="btn" @click="sign()" style="font-size: 150%; width: 70%;">Start now</button>
+        <button id="buttonhomepage" class="btn" @click="searchProfiles()" style="font-size: 150%; width: 70%;">Start now</button>
       </div>
 
       </div>
@@ -48,6 +48,9 @@ export default {
   methods: {
        sign: function(){
          this.$router.push("/signIn")
+       },
+       searchProfiles: function(){
+         this.$router.push("/searchPublicProfiles")
        }
     }
 };

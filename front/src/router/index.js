@@ -13,6 +13,8 @@ import CreateNewPost from  '../views/CreateNewPost.vue'
 import ShowProfile from '../views/ShowProfile.vue'
 import SearchUsers from '../views/SearchUsers.vue'
 import JobOffers from '../views/JobOffers.vue'
+import PublicSearch from '../views/PublicSearch.vue'
+import ShowProfilePublic from '../views/ShowProfilePublic.vue'
 const routes = [
   
   {
@@ -24,6 +26,16 @@ const routes = [
     path: '/signIn',
     name: 'SignIn',
     component: SignIn
+  },
+  {
+    path: '/searchPublicProfiles',
+    name: 'PublicSearch',
+    component: PublicSearch
+  },
+  {
+    path: '/showProfilePublic/:username',
+    name: 'ShowProfilePublic',
+    component: ShowProfilePublic
   },
   {
     path: '/editProfile',

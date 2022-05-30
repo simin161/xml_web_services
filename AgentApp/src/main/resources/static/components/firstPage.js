@@ -5,34 +5,131 @@ Vue.component('firstPage', {
             showRequests: 0,
             showPage: 0,
             allReq : {},
-            allCompanies : {}
+            allCompanies : {},
+            chosenCompany : null,
+            jobOffer: {
+                position : '',
+                companyName : '',
+                jobDescription : '',
+                dailyActivities : '',
+                candidateRequirements: ''
+            },
+            apiToken : ''
 		}
 	},
 template: `
 		<div>
-		    <input v-show="!isAdmin" type="button" value="Register company" @click="navigateToRC"/>
-		    <input v-show="!isAdmin" type="button" value="My companies" @click="showMyCompanies"/>
-		    <input v-show="isAdmin" type="button" value="See all company reg requests" @click="showComReq"/>
-
+        <nav  class="navbar navbar-fixed-top navbar-expand"  style="background-color: #3e214f; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
+        <div class="container-fluid" style="background-color: #3e214f; text-align: right">
+        <a class="navbar-brand"   >
+        <img src="../images/cover.png" alt="" width="200" height="80" >
+        </a>
+        <button class="btn" id="buttonPurple"  @click="logOut">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+</svg> Log out</button>
+        </div>
+      </nav>
+      <br>
+      <br>
+		    <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="navigateToRC">Register company</button>
+		    <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showMyCompanies">My companies</button>
+		    <button   class="btn" id="buttonPurple" v-show="isAdmin"   @click="showComReq">See all company reg requests</button>
+            <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showAddAPIToken">Add API token</button>
+            <button   class="btn"  id="buttonPurple" v-show="!isAdmin"  @click="navigateToJO">My job offers</button>
+            <button  class="btn "  id="buttonPurple" v-show="!isAdmin"  @click="navigateAllOffers">All offers</button>
 		    <div v-show="showRequests == 1">
-		        <div style="1px solid black" v-for="req in allReq">
-		            <p>{{req.name}}</p>
-		            <p>{{req.contactInfo}}</p>
-		            <p>{{req.owner.firstName}} {{req.owner.lastName}}</p>
-		            <p>{{req.field}}</p>
-		            <p>{{req.description}}</p>
-		            <input type="button" value="Accept" @click="accept(req)"/>
-		            <input type="button" value="Decline" @click="decline(req)"/>
-		        </div>
+                <div clas="col" style="padding:2%">
+                <br>
+                <h1>All company reg requests</h1>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th><span>Name</span></th>
+                        <th><span>Contact info</span></th>
+                        <th><span>Owner first name</span></th>
+                        <th><span>Owner last name</span></th>
+                        <th><span>Field</span></th>
+                        <th><span>Description</span></th>
+                        <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="req in allReq"">
+                           
+                            <td>{{req.name}}</td>
+                            <td>{{req.contactInfo}}</td>
+                            <td>{{req.owner.firstName}}</td>
+                            <td>{{req.owner.lastName}}</td>
+                            <td>{{req.field}}</td>
+                            <td>{{req.description}}</td>
+                            <td>
+                              <button class="btn" id="buttonPurple" @click="accept(req)" >Accept</button>
+                              <button class="btn" id="buttonPurple" @click="decline(req)">Decline</button>
+                              </td>
+                        </tr>
+                        
+                    </tbody>
+                 </table>
+                 </div>
 		    </div>
 		    <div v-show="showPage == 1">
-		        <div v-for="c in allCompanies">
-		            <input type="text" v-model="c.name"/>
-		            <input type="text" v-model="c.contactInfo"/>
-		            <input type="text" v-model="c.field"/>
-		            <input type="text" v-model="c.description"/>
-		            <input type="button" v-show="c.status == 'ACCEPTED'" value="Save changes" @click="save(c)"/>
-		        </div>
+                <div clas="col" style="padding:2%">
+                <br>
+                <h1>My companies</h1>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th><span>Name</span></th>
+                        <th><span>Contact info</span></th>
+                        <th><span>Field</span></th>
+                        <th><span>Description</span></th>
+                        <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="c in allCompanies"">
+                           
+                            <td> <input class="form-control" type="text" v-model="c.name"/></td>
+                            <td>  <input class="form-control" type="text" v-model="c.contactInfo"/></td>
+                            <td>  <input class="form-control" type="text" v-model="c.field"/></td>
+                            <td> <input class="form-control" type="text" v-model="c.description"/></td>
+                            <td>
+                              <button class="btn" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
+                              <button  class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
+                              </td>
+                        </tr>
+                        
+                    </tbody>
+                 </table>
+                 </div>
+		    </div>
+		    <div v-show="showPage == 2">
+                <div style="padding:2%">
+                <br>
+                <h1>Create job offer</h1>
+                <br>
+                <label><b>Position</b></label>
+                <input class="form-control" type="text" v-model="jobOffer.position"/>
+                <label><b>Company names</b></label>
+		        <input  class="form-control" type="text" v-model="jobOffer.companyName"/>
+                <label><b>Job description</b></label>
+		        <input class="form-control" type="text" v-model="jobOffer.jobDescription"/>
+                <label><b>Daily activities</b></label>
+		        <input  class="form-control" type="text" v-model="jobOffer.dailyActivities"/>
+                <label><b>Candidate requirements</b></label>
+		        <input  class="form-control"type="text" v-model="jobOffer.candidateRequirements"/>
+                <br>
+		        <button class="btn" id="buttonPurple"   @click="createJobOffer">Create job offer</button>
+                 </div>
+		    </div>
+		    <div style="padding: 2%" v-show="showPage == 3">
+                <h1>Create API token</h1>
+                 <br>
+		        <input type="text" v-model="apiToken"/>
+		        <button class="btn" id="buttonPurple" @click="saveApiToken">Save</button>
 		    </div>
 		</div>
 		`
@@ -42,6 +139,32 @@ template: `
 
     },
     methods : {
+        navigateToJO : function(){
+            router.push("/myJobOffers");
+        },
+        saveApiToken : function(){
+            axios.defaults.headers.common["Authorization"] =
+                                  localStorage.getItem("agentUser");
+            axios.post("/api/updateApiToken", this.apiToken)
+                 .then((response) => console.log(response.data))
+        },
+        showAddAPIToken : function(){
+            this.showPage = 3;
+        },
+        showCreate : function(c){
+            this.chosenCompany = c;
+            this.showPage = 2;
+        },
+        createJobOffer : function(){
+        this.jobOffer.companyName = this.chosenCompany.name;
+         axios.defaults.headers.common["Authorization"] =
+                                           localStorage.getItem("agentUser");
+            axios.post("/api/createJobOffer", this.jobOffer)
+                            .then((response) => {
+                                
+                             router.push("/myJobOffers")
+                            console.log(response.data)})
+        },
         save : function(c){
            axios.defaults.headers.common["Authorization"] =
                                    localStorage.getItem("agentUser");
@@ -64,6 +187,9 @@ template: `
                            .then((response) => this.allReq = response.data);
                  })
         },
+        navigateAllOffers: function(){
+            router.push("/allOffers")
+        },
         decline : function(req){
            axios.post("/api/changeCompanyStatus", {id: req.id, status : "DECLINED"})
            .then((response) => {
@@ -78,6 +204,10 @@ template: `
             this.showRequests = 1;
             axios.get("/api/getAllCompanyRequests")
                  .then((response) => this.allReq = response.data);
+        },
+        logOut : function(){
+            localStorage.setItem("agentUser", "");
+            router.push("/");
         }
     },
     mounted(){

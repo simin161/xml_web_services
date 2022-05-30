@@ -26,4 +26,6 @@ public class JobOffer {
     private String candidateRequirements;
     @Column(name="userAPIToken")
     private String userAPIToken;
+    @Column(name="userEmail")
+    private String userEmail;
 }

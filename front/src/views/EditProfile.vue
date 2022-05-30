@@ -1,7 +1,7 @@
 <template>
 <nav  class="navbar navbar-fixed-top navbar-expand" style="background-color: white; list-style: none; box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; ">
       <div class="container-fluid" style="background-color: white; text-align: right">
-      <a class="navbar-brand"  href="/homepage" >
+      <a class="navbar-brand"  @click="homepage()" >
       <img src="../assets/dislinktLogo.jpg" alt="" width="200" height="80" >
       </a>
      
@@ -167,13 +167,17 @@
     axios.get(process.env.VUE_APP_BACK + 'user')
             .then((response) => {
                 this.user = response.data;
+                this.selected=this.user.privateProfile
             })
             .catch(function (error) {
             console.log(error);
             });
   },
   methods: {  
-       redirectMyProfile: function(){
+    homepage: function(){
+       this.$router.push("/homepage")
+    },
+    redirectMyProfile: function(){
         this.$router.push("/profilePage")
     },
     signOut : function(){
