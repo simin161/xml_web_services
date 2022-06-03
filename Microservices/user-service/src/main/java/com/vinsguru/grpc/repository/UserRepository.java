@@ -113,9 +113,12 @@ public class UserRepository {
             usersCollection.dropIndexes();
             usersCollection.createIndex(Indexes.text(paramName));
             Bson filter;
-            if(paramValue.split(" ").length == 1){
+            if(paramValue.split(" ").length == 1 && !paramName.equals("email")){
                 filter = Filters.text(paramValue);
-            }else{
+            }else if(paramValue.split(" ").length == 1){
+                filter = Filters.text("\"" + paramValue + "\"");
+            }
+            else{
                 filter = Filters.text("\"" + paramValue + "\"");
             }
             foundUsers = usersCollection.find(filter);
@@ -139,8 +142,8 @@ public class UserRepository {
             User u;
             if(!d.getString("userAPItoken").equals(""))
                 u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPItoken"));
-            else if(!d.getString("userAPIToken").equals(""))
-                u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPIToken"));
+            //else if(!d.getString("userAPIToken").equals(""))
+            //    u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"), d.getString("userAPIToken"));
             else
                 u = new User(d.getString("firstName"),d.getString("lastName"),d.getString("username"),d.getString("email"),d.getString("password"), d.getString("verificationCode"), d.getBoolean("isActivated"));
             retVal.add(u);
