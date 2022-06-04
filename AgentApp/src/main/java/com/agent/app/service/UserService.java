@@ -40,6 +40,7 @@ public class UserService {
         user.setLastName(message.get("lastName"));
         List<Authority> authorityList = new ArrayList<>();
         authorityList.add(authorityRepository.findById(1L).orElse(null));
+        authorityList.add(authorityRepository.findById(4L).orElse(null));
         user.setAuthorities(authorityList);
         userRepository.save(user);
         return true;

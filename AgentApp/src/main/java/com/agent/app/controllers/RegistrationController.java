@@ -40,7 +40,7 @@ public class RegistrationController {
     private CompanyService companyService;
 
     @PostMapping("/registerCompany")
-    @PreAuthorize("hasRole('ROLE_REG_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_COMPANY')")
     public boolean registerCompany(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> message){
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         message.put("email",tokenUtils.getUsernameFromToken(value));

@@ -46,6 +46,7 @@ public class CompanyService {
             User user = company.getOwner();
             List<Authority> authorityList = new ArrayList<>();
             authorityList.add(authorityRepository.findById(2L).orElse(null));
+            authorityList.add(authorityRepository.findById(4L).orElse(null));
             user.setAuthorities(authorityList);
             userRepository.save(user);
         }
