@@ -105,6 +105,26 @@ message OutputCheck {
   string check =1;
 }
 
+message GetLatest5Input{
+  string email = 1;
+  string value = 2;
+}
+
+message GetLatest5Output{
+  repeated PostForFeed post = 1;
+}
+
+message PostForFeed{
+  string id = 1;
+  string text = 2;
+  string usersId =3;
+  string pathToImage =4;
+  string link = 5;
+  string date = 6;
+  string numOfReactions = 7;
+  string numOfComments = 8;
+
+}
 
 service PostService {
 
@@ -120,6 +140,6 @@ service PostService {
   rpc getCommentsByPostId(InputPostId) returns (OutputComments) {};
   rpc checkReaction(InputCheck) returns (OutputCheck) {};
   rpc deleteReaction(InputAddReaction) returns (Output) {};
-
+  rpc getLatest5Posts(GetLatest5Input) returns (GetLatest5Output) {};
 
 }

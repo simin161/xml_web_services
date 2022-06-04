@@ -481,4 +481,12 @@ public class AggregatorController {
     public List<JobOfferDto> getAllJobOffers(){
         return jobOfferService.getAllJobOffers();
     }
+
+    @GetMapping("/getAllFeedPosts/{value}")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public List<PostDto> getAllFeedPosts(@RequestHeader("Authentication")HttpHeaders header, @PathVariable("value") String param){
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        return postService.getAllFeedPosts(email, Integer.parseInt(param));
+    }
 }

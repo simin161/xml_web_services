@@ -49,7 +49,8 @@ public class JobOfferRepository {
                 .append("jobDescription", jobOffer.getJobDescription())
                 .append("dailyActivities", jobOffer.getDailyActivities())
                 .append("candidateRequirements", jobOffer.getCandidateRequirements())
-                .append("userAPItoken", jobOffer.getUserAPItoken());
+                .append("userAPItoken", jobOffer.getUserAPItoken())
+                .append("companyName", jobOffer.getCompanyName());
         jobOfferCollection.insertOne(jobOfferToSave);
     }
 

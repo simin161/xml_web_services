@@ -43,6 +43,7 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
                 image=ImageService.getInstance().saveImage(request.getPathToImage(),UUID.randomUUID().toString());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
+                e.printStackTrace();
             }
             PostRepository.getInstance().insert(new Post(usersId,request.getText(),image,request.getLink(),new ArrayList<>(),new ArrayList<>(),new Date()));
             output = OutputAddPost.newBuilder().setResult("success").build();
@@ -244,6 +245,4 @@ public class PostService extends PostServiceGrpc.PostServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
-
-
 }
