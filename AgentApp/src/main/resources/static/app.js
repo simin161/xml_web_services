@@ -4,6 +4,7 @@ const registerCompany = { template: '<registerCompany></registerCompany>'}
 const jobOffersForUser = {template: '<jobOffersForUser></jobOffersForUser>'}
 const allOffers = {template: '<allOffers></allOffers>'}
 const comments = {template: '<comments></comments>'}
+const emailForm = {template: '<emailForm></emailForm>'}
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -12,6 +13,13 @@ const router = new VueRouter({
 	    { path: '/registerCompany', component: registerCompany},
 	    { path: '/myJobOffers', component: jobOffersForUser},
 		{ path: '/allOffers', component: allOffers},
+		{ path: '/passwordless', component: emailForm,
+		    children: [
+                 {
+                     path: '/forgottenPassword',
+                     component: emailForm
+                 }
+            ]}
 	  ]
 });
 

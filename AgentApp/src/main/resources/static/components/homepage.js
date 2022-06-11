@@ -36,6 +36,8 @@ template: `
                      <input class="form-control" type="text" placeholder="E-mail" v-model="logUser.email"/>
                      <input class="form-control" type="password" placeholder="Password" v-model="logUser.password"/>
                      <button :disabled="isLogComplete" class="btn" id="buttonPurple"  @click="signIn">Sign in</button>
+                     <a href="#/passwordless">Passwordless</a>
+                     <a href="#/forgottenPassword">Forgotten password?</a>
                  </div>
              <div style="margin-left: 10%;  width:30%;" v-if="showPage === 1">
              <h1 style="text-align: left; color: #3e214f">Sign up</h1>
