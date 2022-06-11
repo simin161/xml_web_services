@@ -4,13 +4,22 @@ import com.agent.app.model.Authority;
 import com.agent.app.model.User;
 import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
+import com.agent.app.security.TokenUtils;
+import com.agent.app.utility.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 @Service
 public class UserService {
@@ -20,6 +29,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
+    @Autowired
+    private JavaMailSender mailSender;
+    @Autowired
+    private TokenUtils tokenUtils;
 
     public String getUserApiToken(String email){
         User user = userRepository.findByEmail(email);
@@ -66,5 +79,46 @@ public class UserService {
             retVal = true;
         }
         return retVal;
+    }
+
+    public boolean passwordlessLogin(String email) {
+        try {
+           // if (Validation.validateEmail(email)) {
+
+                User u = userRepository.findByEmail(email);
+                if (u != null) {
+                    String jwt = tokenUtils.generateToken(u.getEmail());
+                    int expiresIn = tokenUtils.getExpiredIn();
+                    String fromAddress = "dislinkt_team_23@yahoo.com";
+                    String toAddress = u.getEmail();
+                    String senderName = "Dislinkt";
+                    String subject = "Your passwordless login is ready";
+                    String content = "Dear user,<br>"
+                            + "Please click the link below to login into your account:<br>"
+                            + "<h3><a href=\"[[URL]]\" target=\"_self\">LOGIN</a></h3>"
+                            + "Thank you,<br>"
+                            + "Dislinkt Team.";
+
+                    content = content.replace("[[URL]]", "http://localhost:8082/homepage/" + jwt);
+                    MimeMessage message = mailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message);
+
+                    helper.setFrom(fromAddress, senderName);
+                    helper.setTo(toAddress);
+                    helper.setSubject(subject);
+                    helper.setText(content, true);
+                    mailSender.send(message);
+                    return true;
+                } else {
+                    return false;
+                }
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean forgottenPassword(String email) {
+        return false;
     }
 }

@@ -71,6 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("api/logIn").permitAll().antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/checkIfAdmin").permitAll()
+                .antMatchers("/api/passwordless").permitAll()
+                .antMatchers("/api/forgottenPassword").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
