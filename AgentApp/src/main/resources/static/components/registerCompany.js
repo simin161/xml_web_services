@@ -38,14 +38,22 @@ template: `
             <label><b>Description</b></label>
             <textarea  class="form-control" v-model="company.description" placeholder="Description"/>
             <br>
-            <button class="btn" id="buttonPurple"  @click="registerCompany">Register company</button>
+            <button :disabled="isEditComplete" class="btn" id="buttonPurple"  @click="registerCompany">Register company</button>
              </div>
 		</div>
 		`
 	,
 
 	computed : {
-
+        isEditComplete(){
+           let validCName = /^[ a-zA-Z0-9]+$/.test(this.company.name);
+           let validContactInfo = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.company.contactInfo) || /^[0-9{8}]+$/.test(this.company.contactInfo);
+           let validField = /^[a-zA-Z]+$/.test(this.company.field);
+           let validDesc = /^[ a-zA-Z.,]+$/.test(this.company.description);
+           if(validCName && validContactInfo && validField && validDesc)
+               return false
+           return true;
+        }
     },
     methods : {
         registerCompany : function(){

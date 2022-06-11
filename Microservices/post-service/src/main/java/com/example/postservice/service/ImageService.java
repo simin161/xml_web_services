@@ -33,7 +33,7 @@ public class ImageService {
 
         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
         //NAPOMENA ZA NATYYY: Ako ne radi slika probaj obrisati xml_web_services
-        File file = new File(System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\"))+"/xml_web_services/front/src/assets/" + imageName);
+        File file = new File(System.getProperty("user.dir").substring(0,System.getProperty("user.dir").lastIndexOf("\\"))+"/front/src/assets/" + imageName);
        ImageIO.write(img, ext, file);
         imagePath  +=  file.getName();
         return imagePath;

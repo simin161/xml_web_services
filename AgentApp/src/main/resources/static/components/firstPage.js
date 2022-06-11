@@ -93,15 +93,14 @@ template: `
                         <tr  v-for="c in allCompanies"">
                            
                             <td> <input class="form-control" type="text" v-model="c.name"/></td>
-                            <td>  <input class="form-control" type="text" v-model="c.contactInfo"/></td>
-                            <td>  <input class="form-control" type="text" v-model="c.field"/></td>
+                            <td> <input class="form-control" type="text" v-model="c.contactInfo"/></td>
+                            <td> <input class="form-control" type="text" v-model="c.field"/></td>
                             <td> <input class="form-control" type="text" v-model="c.description"/></td>
                             <td>
-                              <button class="btn" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
-                              <button  class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
+                              <button class="btn" :disabled="isEditComplete" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
+                              <button class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
                               </td>
                         </tr>
-                        
                     </tbody>
                  </table>
                  </div>
@@ -114,7 +113,7 @@ template: `
                 <label><b>Position</b></label>
                 <input class="form-control" type="text" v-model="jobOffer.position"/>
                 <label><b>Company names</b></label>
-		        <input  class="form-control" type="text" v-model="jobOffer.companyName"/>
+		        <input disabled class="form-control" type="text" v-model="chosenCompany.name"/>
                 <label><b>Job description</b></label>
 		        <input class="form-control" type="text" v-model="jobOffer.jobDescription"/>
                 <label><b>Daily activities</b></label>
@@ -122,21 +121,41 @@ template: `
                 <label><b>Candidate requirements</b></label>
 		        <input  class="form-control"type="text" v-model="jobOffer.candidateRequirements"/>
                 <br>
-		        <button class="btn" id="buttonPurple"   @click="createJobOffer">Create job offer</button>
+		        <button :disabled="isJobOfferComplete" class="btn" id="buttonPurple"  @click="createJobOffer">Create job offer</button>
                  </div>
 		    </div>
 		    <div style="padding: 2%" v-show="showPage == 3">
                 <h1>Create API token</h1>
                  <br>
 		        <input type="text" v-model="apiToken"/>
-		        <button class="btn" id="buttonPurple" @click="saveApiToken">Save</button>
+		        <button :disabled="isApiTokenComplete" class="btn" id="buttonPurple" @click="saveApiToken">Save</button>
 		    </div>
 		</div>
 		`
 	,
 
 	computed : {
-
+        isEditComplete(){
+            let validCName = /^[ a-zA-Z0-9]+$/.test(this.c.name);
+            let validContactInfo = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.c.contactInfo) || /^[0-9{8}]+$/.test(this.c.contactInfo);
+            let validField = /^[a-zA-Z]+$/.test(this.c.field);
+            let validDesc = /^[ a-zA-Z.,]+$/.test(this.c.description);
+            if(validCName && validContactInfo && validField && validDesc)
+                return false
+            return true;
+        },
+        isApiTokenComplete(){
+            return !/\S/.test(this.apiToken);
+        },
+        isJobOfferComplete(){
+            let validPosition =  /^[ a-zA-Z.,]+$/.test(this.jobOffer.position);
+            let validDescription = /^[ a-zA-Z.,]+$/.test(this.jobOffer.jobDescription);
+            let validDActivities = /^[ a-zA-Z0-9.,]+$/.test(this.jobOffer.dailyActivities);
+            let validCReq = /^[ a-zA-Z0-9.,]+$/.test(this.jobOffer.candidateRequirements);
+            if(validPosition && validDescription && validDActivities && validCReq)
+                return false;
+            return true;
+        }
     },
     methods : {
         navigateToJO : function(){

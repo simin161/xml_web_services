@@ -11,6 +11,7 @@ Vue.component('homepage', {
                 password: "",
                 email: ""
             },
+            confirmPassword : "",
             showPage: 0,
             buttonText : "Sign up"
 		}
@@ -34,7 +35,7 @@ template: `
                     <h1 style="text-align: left; color: #3e214f">Log in</h1>
                      <input class="form-control" type="text" placeholder="E-mail" v-model="logUser.email"/>
                      <input class="form-control" type="password" placeholder="Password" v-model="logUser.password"/>
-                     <button class="btn" id="buttonPurple"  @click="signIn">Sign in</button>
+                     <button :disabled="isLogComplete" class="btn" id="buttonPurple"  @click="signIn">Sign in</button>
                  </div>
              <div style="margin-left: 10%;  width:30%;" v-if="showPage === 1">
              <h1 style="text-align: left; color: #3e214f">Sign up</h1>
@@ -52,10 +53,10 @@ template: `
                             <td><input  class="form-control" type="password" placeholder="Password" v-model="registerUser.password"/></td>
                         </tr>
                         <tr>
-                            <td><input  class="form-control" type="password" placeholder="Confirm password"/></td>
+                            <td><input  class="form-control" type="password" placeholder="Confirm password" v-model="confirmPassword"/></td>
                         </tr>
                         <tr>
-                            <td><button class="btn" id="buttonPurple"  @click="register">Register</button></td>
+                            <td><button :disabled="isRegComplete" class="btn" id="buttonPurple"  @click="register">Register</button></td>
                         </tr>
 		           </table>
 		    </div>
@@ -64,7 +65,22 @@ template: `
 	,
 
 	computed : {
-
+        isRegComplete(){
+            let validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.registerUser.email);
+            let validNames = /^[ a-zA-Z\-’]+$/.test(this.registerUser.firstName) && /^[ a-zA-Z\-’]+$/.test(this.registerUser.lastName);
+            let validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.registerUser.password)
+                        && /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.confirmPassword);
+            if(validEmail && validNames && validPassword && this.registerUser.password === this.confirmPassword)
+                return false;
+            return true;
+        },
+        isLogComplete(){
+            let validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logUser.email);
+            let isPasswordNonEmpty = /\S/.test(this.logUser.password);
+            if(validEmail && isPasswordNonEmpty)
+                return false;
+            return true;
+        }
     },
     methods : {
 changeForm : function(){
