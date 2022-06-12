@@ -29,6 +29,10 @@ public class User implements UserDetails {
     private String password;
     @Column(name="apiToken")
     private String apiToken;
+    @Column(name="verificationCode")
+    private String verificationCode;
+    @Column(name="isActivated")
+    private boolean isActivated;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -63,6 +67,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActivated;
     }
 }

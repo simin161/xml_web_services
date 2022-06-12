@@ -6,6 +6,7 @@ import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.Validation;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -46,7 +47,7 @@ public class UserService {
     public boolean addUser(Map<String, String> message) {
         if(userRepository.findByEmail(message.get("email")) != null)
             return false;
-
+    try {
         User user = new User();
         user.setPassword(passwordEncoder.encode(message.get("password")));
         user.setEmail(message.get("email"));
@@ -56,7 +57,12 @@ public class UserService {
         authorityList.add(authorityRepository.findById(1L).orElse(null));
         authorityList.add(authorityRepository.findById(4L).orElse(null));
         user.setAuthorities(authorityList);
+        user.setVerificationCode(RandomString.make(64));
         userRepository.save(user);
+        sendVerificationEmail(user);
+    }catch(Exception e){
+        return false;
+    }
         return true;
     }
 
@@ -159,5 +165,46 @@ public class UserService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void sendVerificationEmail(User user)
+            throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = "dislinkt_team_23@yahoo.com";
+        String senderName = "Dislinkt";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "Fishy Finds.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getFirstName());
+        String verifyURL = "http://localhost:8082/api/verify?code=" + user.getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+
+    }
+
+    public boolean verify(String code) {
+        User user = userRepository.findByVerificationCode(code);
+        return user == null || user.isActivated() ? false : activateAccount(user);
+    }
+
+    private boolean activateAccount(User user){
+        user.setActivated(true);
+        userRepository.save(user);
+        return true;
     }
 }

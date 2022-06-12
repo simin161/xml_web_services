@@ -3,6 +3,7 @@ package com.agent.app.controllers;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +33,11 @@ public class UserController {
     @PostMapping("/passwordless")
     public boolean passwordlessLogin(@RequestBody Map<String, String> email){
         return userService.passwordlessLogin(email.get("email"));
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@Param("code") String code) {
+        return userService.verify(code) ? "verify_success" : "verify_fail";
     }
 
     @PostMapping("/forgottenPassword")
