@@ -16,6 +16,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,44 @@ public class UserService {
         return false;
     }
     public boolean forgottenPassword(String email) {
+        try {
+            // if (Validation.validateEmail(email)) {
+
+            User u = userRepository.findByEmail(email);
+            if (u != null) {
+                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                newPassword = newPassword.replace('-', '0');
+                newPassword = newPassword.substring(0, 6);
+                String newPasswordForEmail = new String(newPassword);
+                newPassword = passwordEncoder.encode(newPassword);
+                String fromAddress = "dislinkt_team_23@yahoo.com";
+                String toAddress = u.getEmail();
+                String senderName = "Dislinkt";
+                String subject = "Your passwordless login is ready";
+                String content = "Dear user,<br>"
+                        + "Your password:<br>"
+                        + "<p>" + newPasswordForEmail + "</p>"
+                        + "Thank you,<br>"
+                        + "Dislinkt Team.";
+
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message);
+
+                helper.setFrom(fromAddress, senderName);
+                helper.setTo(toAddress);
+                helper.setSubject(subject);
+                helper.setText(content, true);
+                mailSender.send(message);
+                u.setPassword(newPassword);
+                userRepository.save(u);
+                return true;
+            } else {
+                return false;
+            }
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

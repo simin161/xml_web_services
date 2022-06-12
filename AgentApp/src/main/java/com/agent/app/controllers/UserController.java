@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/forgottenPassword")
-    public boolean forgottenPassword(@RequestBody String email){
-        return userService.forgottenPassword(email);
+    public boolean forgottenPassword(@RequestBody Map<String, String> email){
+        return userService.forgottenPassword(email.get("email"));
     }
 }
