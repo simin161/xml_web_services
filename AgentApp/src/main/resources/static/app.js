@@ -9,7 +9,14 @@ const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: homePage},
-	    { path: '/firstPage', component: firstPage},
+	    { path: '/firstPage/:id', component: firstPage,
+	        children: [
+                {
+                    path: '/firstPage',
+                    component: firstPage
+                }
+	        ]
+	    },
 	    { path: '/registerCompany', component: registerCompany},
 	    { path: '/myJobOffers', component: jobOffersForUser},
 		{ path: '/allOffers', component: allOffers},

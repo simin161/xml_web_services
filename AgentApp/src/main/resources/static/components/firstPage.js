@@ -6,7 +6,12 @@ Vue.component('firstPage', {
             showPage: 0,
             allReq : {},
             allCompanies : {},
-            chosenCompany : null,
+            chosenCompany : {
+                name: "",
+                contactInfo: "",
+                field: "",
+                description: ""
+            },
             jobOffer: {
                 position : '',
                 companyName : '',
@@ -97,7 +102,7 @@ template: `
                             <td> <input class="form-control" type="text" v-model="c.field"/></td>
                             <td> <input class="form-control" type="text" v-model="c.description"/></td>
                             <td>
-                              <button class="btn" :disabled="isEditComplete" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
+                              <button class="btn" :disabled="isEditComplete(c)" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
                               <button class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
                               </td>
                         </tr>
@@ -135,11 +140,11 @@ template: `
 	,
 
 	computed : {
-        isEditComplete(){
-            let validCName = /^[ a-zA-Z0-9]+$/.test(this.c.name);
-            let validContactInfo = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.c.contactInfo) || /^[0-9{8}]+$/.test(this.c.contactInfo);
-            let validField = /^[a-zA-Z]+$/.test(this.c.field);
-            let validDesc = /^[ a-zA-Z.,]+$/.test(this.c.description);
+        isEditComplete(c){
+            let validCName = /^[ a-zA-Z0-9]+$/.test(c.name);
+            let validContactInfo = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(c.contactInfo) || /^[0-9{8}]+$/.test(c.contactInfo);
+            let validField = /^[a-zA-Z]+$/.test(c.field);
+            let validDesc = /^[ a-zA-Z.,]+$/.test(c.description);
             if(validCName && validContactInfo && validField && validDesc)
                 return false
             return true;

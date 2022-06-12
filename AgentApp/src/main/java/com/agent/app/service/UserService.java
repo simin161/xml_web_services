@@ -99,7 +99,7 @@ public class UserService {
                             + "Thank you,<br>"
                             + "Dislinkt Team.";
 
-                    content = content.replace("[[URL]]", "http://localhost:8082/homepage/" + jwt);
+                    content = content.replace("[[URL]]", "http://localhost:8082/#/firstPage/" + jwt);
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = new MimeMessageHelper(message);
 
