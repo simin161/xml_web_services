@@ -35,6 +35,9 @@ public class UserService {
     private JavaMailSender mailSender;
     @Autowired
     private TokenUtils tokenUtils;
+    private String fromAddress = "dislinkt_team_23@yahoo.com";
+    private String senderName = "Dislinkt";
+    private String footer = "Thank you, <br> Dislinkt Team.";
 
     public String getUserApiToken(String email){
         User user = userRepository.findByEmail(email);
@@ -96,15 +99,12 @@ public class UserService {
                 if (u != null) {
                     String jwt = tokenUtils.generateToken(u.getEmail());
                     int expiresIn = tokenUtils.getExpiredIn();
-                    String fromAddress = "dislinkt_team_23@yahoo.com";
                     String toAddress = u.getEmail();
-                    String senderName = "Dislinkt";
                     String subject = "Your passwordless login is ready";
                     String content = "Dear user,<br>"
                             + "Please click the link below to login into your account:<br>"
                             + "<h3><a href=\"[[URL]]\" target=\"_self\">LOGIN</a></h3>"
-                            + "Thank you,<br>"
-                            + "Dislinkt Team.";
+                            + footer;
 
                     content = content.replace("[[URL]]", "http://localhost:8082/#/firstPage/" + jwt);
                     MimeMessage message = mailSender.createMimeMessage();
@@ -120,9 +120,7 @@ public class UserService {
                     return false;
                 }
             //}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         return false;
     }
     public boolean forgottenPassword(String email) {
@@ -136,15 +134,12 @@ public class UserService {
                 newPassword = newPassword.substring(0, 6);
                 String newPasswordForEmail = new String(newPassword);
                 newPassword = passwordEncoder.encode(newPassword);
-                String fromAddress = "dislinkt_team_23@yahoo.com";
                 String toAddress = u.getEmail();
-                String senderName = "Dislinkt";
-                String subject = "Your passwordless login is ready";
+                String subject = "Your new password is ready";
                 String content = "Dear user,<br>"
                         + "Your password:<br>"
                         + "<p>" + newPasswordForEmail + "</p>"
-                        + "Thank you,<br>"
-                        + "Dislinkt Team.";
+                        + footer;
 
                 MimeMessage message = mailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -161,23 +156,18 @@ public class UserService {
                 return false;
             }
             //}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         return false;
     }
 
     public void sendVerificationEmail(User user)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
-        String fromAddress = "dislinkt_team_23@yahoo.com";
-        String senderName = "Dislinkt";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
                 + "Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                + "Thank you,<br>"
-                + "Fishy Finds.";
+                + footer;
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
