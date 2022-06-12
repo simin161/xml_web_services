@@ -24,7 +24,6 @@
         <module>aggregator-service</module>
         <module>post-service</module>
         <module>joboffer-service</module>
-        <module>message-service</module>
     </modules>
 
     <dependencies>
