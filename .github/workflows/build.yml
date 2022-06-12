@@ -2,7 +2,7 @@ name: Microservices-Sonar
 on:
   push:
     branches:
-      - bsep-final
+      - bsep-finalMicro
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
