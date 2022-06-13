@@ -31,6 +31,7 @@ public class User {
     private String verificationCode;
     private boolean isActivated;
     private String userAPItoken;
+    private boolean forgottenPassword;
 
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
@@ -45,6 +46,7 @@ public class User {
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
         this.userAPItoken="";
+        this.forgottenPassword = false;
     }
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate, String verificationCode, boolean isActivated) {
@@ -59,6 +61,7 @@ public class User {
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
         this.userAPItoken="";
+        this.forgottenPassword=false;
     }
 
     public User(String firstName, String lastName, String username, String email, String password, String verificationCode, Boolean isActivated, String userAPItoken) {
@@ -71,6 +74,7 @@ public class User {
         this.educations=new ArrayList<>();
         this.experinces=new ArrayList<>();
         this.userAPItoken=userAPItoken;
+        this.forgottenPassword=false;
     }
 
 
@@ -223,6 +227,7 @@ public class User {
         this.verificationCode = verificationCode;
         this.isActivated = isActivated;
         this.userAPItoken = "";
+        this.forgottenPassword=false;
     }
 
     public User(String email, String verificationCode, boolean isActivated){
@@ -230,11 +235,12 @@ public class User {
         this.isActivated= isActivated;
         this.verificationCode=verificationCode;
         this.userAPItoken = "";
+        this.forgottenPassword=false;
     }
 
     public User(ObjectId id,String firstName, String lastName, String username, String email, String password, boolean privateProfile,
                 Date birthday, String gender, String phone, String biography, String interests, String skills,List<Education> educations,
-                List<WorkExperience> experinces) {
+                List<WorkExperience> experinces, boolean forgottenPassword) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -251,6 +257,7 @@ public class User {
         this.educations=educations;
         this.experinces=experinces;
         this.userAPItoken = "";
+        this.forgottenPassword = forgottenPassword;
     }
 
     public List<WorkExperience> getExperinces() {
@@ -280,5 +287,13 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, username, email, password);
+    }
+
+    public boolean isForgottenPassword() {
+        return forgottenPassword;
+    }
+
+    public void setForgottenPassword(boolean forgottenPassword) {
+        this.forgottenPassword = forgottenPassword;
     }
 }

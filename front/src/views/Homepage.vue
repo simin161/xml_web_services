@@ -240,6 +240,12 @@
 
                     console.log(response.data);
 
+                          axios.get(process.env.VUE_APP_BACK + 'checkIfForgottenPassword')
+                          .then((response) => {
+                            if(response.data == true)
+                              this.$router.push("/changePassword")
+                          })
+
                           axios.get(process.env.VUE_APP_BACK + 'getAllFeedPosts/'+this.value)
                           .then((response) => {
                               this.posts = response.data;
