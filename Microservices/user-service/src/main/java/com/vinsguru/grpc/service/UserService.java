@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -43,6 +44,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 u.setActivated(false);
                 u.setUserAPItoken("");
                 setVerificationCode(RandomString.make(64), u);
+                u.setVerificationTime(LocalDateTime.now().plusHours(1));
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
                 output = Output.newBuilder().setResult("true").build();
@@ -364,7 +366,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         User user = UserRepository.getInstance().findUserByVerificationCode(code.getVerificationCode());
         if(user == null || user.isActivated()){
             value = false;
-        }else{
+        }else if(user.getVerificationTime().isBefore(LocalDateTime.now())){
+            value = false;
+        }
+        else{
             value = activateAccount(user);
         }
         if(value){

@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class User {
     private boolean isActivated;
     private String userAPItoken;
     private boolean forgottenPassword;
+    private LocalDateTime verificationTime;
 
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
@@ -295,5 +297,13 @@ public class User {
 
     public void setForgottenPassword(boolean forgottenPassword) {
         this.forgottenPassword = forgottenPassword;
+    }
+
+    public LocalDateTime getVerificationTime() {
+        return verificationTime;
+    }
+
+    public void setVerificationTime(LocalDateTime verificationTime) {
+        this.verificationTime = verificationTime;
     }
 }

@@ -74,7 +74,8 @@ public class UserRepository {
                 .append("isActivated", user.isActivated())
                 .append("verificationCode", user.getVerificationCode())
                 .append("userAPItoken",user.getUserAPItoken())
-                .append("forgottenPassword", user.isForgottenPassword());
+                .append("forgottenPassword", user.isForgottenPassword())
+                .append("verificationTime", user.getVerificationTime());
         usersCollection.insertOne(userToSave);
     }
 
