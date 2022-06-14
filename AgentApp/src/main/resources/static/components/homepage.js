@@ -100,8 +100,11 @@ changeForm : function(){
                      .then(response => {
                         if(response.data !== ""){
                             localStorage.setItem("agentUser", response.data.accessToken);
-                            router.push('/firstPage')
-                            console.log("Da")
+                            if(this.logUser.password.length === 6){
+                                router.push('/changePassword');
+                            }
+                            else
+                                router.push('/firstPage');
                         }else{
                             console.log("Ne")
                         }

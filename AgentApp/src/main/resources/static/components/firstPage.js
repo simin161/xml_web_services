@@ -38,10 +38,10 @@ template: `
       <br>
       <br>
 		    <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="navigateToRC">Register company</button>
-		    <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showMyCompanies">My companies</button>
-		    <button   class="btn" id="buttonPurple" v-show="isAdmin"   @click="showComReq">See all company reg requests</button>
-            <button   class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showAddAPIToken">Add API token</button>
-            <button   class="btn"  id="buttonPurple" v-show="!isAdmin"  @click="navigateToJO">My job offers</button>
+		    <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showMyCompanies">My companies</button>
+		    <button  class="btn" id="buttonPurple" v-show="isAdmin"   @click="showComReq">See all company reg requests</button>
+            <button  class="btn" id="buttonPurple" v-show="!isAdmin"  @click="showAddAPIToken">Add API token</button>
+            <button  class="btn"  id="buttonPurple" v-show="!isAdmin"  @click="navigateToJO">My job offers</button>
             <button  class="btn "  id="buttonPurple" v-show="!isAdmin"  @click="navigateAllOffers">All offers</button>
 		    <div v-show="showRequests == 1">
                 <div clas="col" style="padding:2%">

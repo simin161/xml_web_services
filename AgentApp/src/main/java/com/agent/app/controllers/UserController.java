@@ -44,4 +44,9 @@ public class UserController {
     public boolean forgottenPassword(@RequestBody Map<String, String> email){
         return userService.forgottenPassword(email.get("email"));
     }
+
+    @PostMapping("/changePassword")
+    public boolean changePassword(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> password){
+        return userService.changePassword(tokenUtils.getUsernameFromToken(header.getFirst(HttpHeaders.AUTHORIZATION)), password.get("password"));
+    }
 }

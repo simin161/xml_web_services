@@ -5,6 +5,8 @@ const jobOffersForUser = {template: '<jobOffersForUser></jobOffersForUser>'}
 const allOffers = {template: '<allOffers></allOffers>'}
 const comments = {template: '<comments></comments>'}
 const emailForm = {template: '<emailForm></emailForm>'}
+const changePassword = {template: '<changePassword></changePassword>'}
+
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -26,7 +28,8 @@ const router = new VueRouter({
                      path: '/forgottenPassword',
                      component: emailForm
                  }
-            ]}
+            ]},
+        { path: '/changePassword', component: changePassword}
 	  ]
 });
 

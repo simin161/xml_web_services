@@ -197,4 +197,14 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
+
+    public boolean changePassword(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if(user != null && Validation.validatePassword(password)){
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 }
