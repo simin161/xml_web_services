@@ -507,4 +507,25 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void resendVerificationMail(ResendVerificationMailInput input, StreamObserver<ResendVerificationMailOutput> responseObserver){
+        ResendVerificationMailOutput output;
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user == null){
+            output = ResendVerificationMailOutput.newBuilder().setOutput("false").build();
+        }else{
+            try{
+                user.setVerificationTime(LocalDateTime.now().plusHours(1));
+                UserRepository.getInstance().resendVerificationMail(user);
+                mailService.sendVerificationEmail(user, input.getSiteURL());
+                output = ResendVerificationMailOutput.newBuilder().setOutput("true").build();
+            }catch(Exception e){
+                e.printStackTrace();
+                output = ResendVerificationMailOutput.newBuilder().setOutput("false").build();
+            }
+        }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
 }

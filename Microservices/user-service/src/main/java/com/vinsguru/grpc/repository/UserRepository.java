@@ -367,4 +367,13 @@ public class UserRepository {
         usersCollection.updateOne(query, updates, options);
 
     }
+
+    public void resendVerificationMail(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("verificationTime", user.getVerificationTime())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
 }

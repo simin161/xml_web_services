@@ -497,4 +497,9 @@ public class AggregatorController {
         String email = tokenUtils.getUsernameFromToken(value);
         return aggregatorService.checkForgottenPassword(email);
     }
+
+    @PostMapping("/resendVerificationMail")
+    public boolean resendVerificationMail(@RequestBody Map<String, String> message, HttpServletRequest request){
+        return aggregatorService.resendVerificationMail(message, getSiteURL(request));
+    }
 }

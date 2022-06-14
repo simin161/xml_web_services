@@ -118,6 +118,10 @@ const routes = [
       {
         path: '/forgottenPassword',
         component: ProfilePage
+      },
+      {
+        path: '/resendVerificationMail',
+        component: ProfilePage
       }
 
     ]

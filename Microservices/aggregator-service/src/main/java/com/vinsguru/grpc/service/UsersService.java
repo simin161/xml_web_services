@@ -320,4 +320,10 @@ public class UsersService {
         CheckForgottenPasswordInput input = CheckForgottenPasswordInput.newBuilder().setEmail(email).build();
         return blockingStub.checkForgottenPassword(input).getOutput().equals("true");
     }
+
+    public boolean resendVerificationMail(Map<String, String> message, String siteURL) {
+        blockingStub = openChannelToUserService();
+        ResendVerificationMailInput input = ResendVerificationMailInput.newBuilder().setEmail(message.get("email")).setSiteURL(siteURL).build();
+        return blockingStub.resendVerificationMail(input).getOutput().equals("true");
+    }
 }

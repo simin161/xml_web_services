@@ -36,6 +36,8 @@
               <a href="/passwordless">Passworldess</a>
               <br>
               <a href="/forgottenPassword">Forgot password?</a>
+              <br>
+              <a href="/resendVerificationMail">Resend verification mail.</a>
               <input type="button" id="buttonSignup" :disabled="isLComplete" @click="logIn" value="Sign in" />
           </div>
       </div>

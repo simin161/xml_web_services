@@ -93,6 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/createJobOffer").permitAll()
                 .antMatchers("/api/searchJobOffers/{param}").permitAll()
                 .antMatchers("/api/getAllJobOffers").permitAll()
+                .antMatchers("/api/resendVerificationMail").permitAll()
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
