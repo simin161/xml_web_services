@@ -37,8 +37,26 @@
                             button: "Confirm",  
                       });
                    });
-          }else{
+          }else if(path === 'forgottenPassword'){
               axios.post(process.env.VUE_APP_BACK + 'forgottenPassword', {"email" : this.email})
+                   .then((response) => {
+                       if(response.data === true)
+                        swal({  
+                            title: "Email sent!",  
+                            text: "Check your inbox for a new message containing your new password.",  
+                            icon: "success",  
+                            button: "Confirm",  
+                      });
+                      else
+                        swal({  
+                            title: "Invalid email!",  
+                            text: "We couldn't find an account associated with the given email. Please check your input and try again.",  
+                            icon: "error",  
+                            button: "Confirm",  
+                      });
+                   });
+          }else{
+              axios.post(process.env.VUE_APP_BACK + 'resendVerificationMail', {"email" : this.email})
                    .then((response) => {
                        if(response.data === true)
                         swal({  

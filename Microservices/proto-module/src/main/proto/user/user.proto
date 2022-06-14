@@ -219,6 +219,15 @@ message CheckForgottenPasswordOutput{
   string output = 1;
 }
 
+message ResendVerificationMailInput{
+  string email = 1;
+  string siteURL = 2;
+}
+
+message ResendVerificationMailOutput{
+  string output = 1;
+}
+
 service UserService {
 
   rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
@@ -272,5 +281,7 @@ service UserService {
   rpc getOldAPIToken(GetOldAPITokenInput) returns (GetOldAPITokenOutput) {};
 
   rpc checkForgottenPassword(CheckForgottenPasswordInput) returns (CheckForgottenPasswordOutput) {};
+
+  rpc resendVerificationMail(ResendVerificationMailInput) returns (ResendVerificationMailOutput) {};
 
 }
