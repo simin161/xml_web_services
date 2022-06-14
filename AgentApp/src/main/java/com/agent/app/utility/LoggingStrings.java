@@ -1,7 +1,5 @@
 package com.agent.app.utility;
 
-import org.apache.tomcat.jni.Local;
-
 import java.time.LocalDateTime;
 
 public class LoggingStrings {

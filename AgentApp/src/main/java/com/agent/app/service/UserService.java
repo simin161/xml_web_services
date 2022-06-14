@@ -5,8 +5,11 @@ import com.agent.app.model.User;
 import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.security.TokenUtils;
+import com.agent.app.utility.LoggingStrings;
 import com.agent.app.utility.Validation;
 import net.bytebuddy.utility.RandomString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -35,6 +38,7 @@ public class UserService {
     private JavaMailSender mailSender;
     @Autowired
     private TokenUtils tokenUtils;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
@@ -64,6 +68,7 @@ public class UserService {
         userRepository.save(user);
         sendVerificationEmail(user);
     }catch(Exception e){
+        logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.service.UserService", message.get("email")));
         return false;
     }
         return true;
@@ -93,12 +98,10 @@ public class UserService {
 
     public boolean passwordlessLogin(String email) {
         try {
-           // if (Validation.validateEmail(email)) {
-
+            if (Validation.validateEmail(email)) {
                 User u = userRepository.findByEmail(email);
                 if (u != null) {
                     String jwt = tokenUtils.generateToken(u.getEmail());
-                    int expiresIn = tokenUtils.getExpiredIn();
                     String toAddress = u.getEmail();
                     String subject = "Your passwordless login is ready";
                     String content = "Dear user,<br>"
@@ -119,44 +122,48 @@ public class UserService {
                 } else {
                     return false;
                 }
-            //}
-        } catch (Exception e) {}
+            }
+        } catch (Exception e) {
+            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.service.UserService", email));
+        }
         return false;
     }
     public boolean forgottenPassword(String email) {
         try {
-            // if (Validation.validateEmail(email)) {
+            if (Validation.validateEmail(email)) {
 
-            User u = userRepository.findByEmail(email);
-            if (u != null) {
-                String newPassword = String.valueOf(LocalDateTime.now().hashCode());
-                newPassword = newPassword.replace('-', '0');
-                newPassword = newPassword.substring(0, 6);
-                String newPasswordForEmail = new String(newPassword);
-                newPassword = passwordEncoder.encode(newPassword);
-                String toAddress = u.getEmail();
-                String subject = "Your new password is ready";
-                String content = "Dear user,<br>"
-                        + "Your password:<br>"
-                        + "<p>" + newPasswordForEmail + "</p>"
-                        + footer;
+                User u = userRepository.findByEmail(email);
+                if (u != null) {
+                    String newPassword = String.valueOf(LocalDateTime.now().hashCode());
+                    newPassword = newPassword.replace('-', '0');
+                    newPassword = newPassword.substring(0, 6);
+                    String newPasswordForEmail = new String(newPassword);
+                    newPassword = passwordEncoder.encode(newPassword);
+                    String toAddress = u.getEmail();
+                    String subject = "Your new password is ready";
+                    String content = "Dear user,<br>"
+                            + "Your password:<br>"
+                            + "<p>" + newPasswordForEmail + "</p>"
+                            + footer;
 
-                MimeMessage message = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message);
+                    MimeMessage message = mailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message);
 
-                helper.setFrom(fromAddress, senderName);
-                helper.setTo(toAddress);
-                helper.setSubject(subject);
-                helper.setText(content, true);
-                mailSender.send(message);
-                u.setPassword(newPassword);
-                userRepository.save(u);
-                return true;
-            } else {
-                return false;
+                    helper.setFrom(fromAddress, senderName);
+                    helper.setTo(toAddress);
+                    helper.setSubject(subject);
+                    helper.setText(content, true);
+                    mailSender.send(message);
+                    u.setPassword(newPassword);
+                    userRepository.save(u);
+                    return true;
+                } else {
+                    return false;
+                }
             }
-            //}
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
+        }
         return false;
     }
 
