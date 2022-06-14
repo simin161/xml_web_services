@@ -4,13 +4,17 @@ import com.agent.app.model.JobOffer;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.service.JobOfferService;
 import com.agent.app.service.UserService;
+import com.agent.app.utility.LoggingStrings;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -24,6 +28,9 @@ public class JobOfferController {
 
     @Autowired
     private TokenUtils tokenUtils;
+
+    @Autowired
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/getJobOffersForUser")
     @PreAuthorize("hasRole('ROLE_COMPANY_OWNER')")
@@ -44,13 +51,12 @@ public class JobOfferController {
         boolean retVal = jobOfferService.setUserAPIToken(message);
         final RestTemplate restTemplate = new RestTemplate();
         final String uri = "http://localhost:8080/api/createJobOffer";
-         HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         Map<String, Object> jobOffer = new HashMap<>();
         JobOffer offer = jobOfferService.findOfferById(message.get("id"));
         if(offer==null || message.get("userAPIToken")==null){
-            jobOffer.put("neam samana", "e jebiga");
             return false;
         }else{
             jobOffer.put("id", offer.getId().toString());
@@ -66,7 +72,7 @@ public class JobOfferController {
             boolean response = Boolean.TRUE.equals(restTemplate.postForObject(uri, entity, boolean.class));
         }catch(Exception e){
             retVal = false;
-            e.printStackTrace();
+            logger.error(LocalDateTime.now().toString() + "|com.agent.app.controllers.JobOfferController|" + e.toString());
         }
         return retVal;
     }

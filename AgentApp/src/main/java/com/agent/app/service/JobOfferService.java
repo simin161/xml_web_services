@@ -4,9 +4,13 @@ import com.agent.app.model.JobOffer;
 import com.agent.app.repository.JobOfferRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.utility.Validation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +18,8 @@ import java.util.Map;
 public class JobOfferService {
     @Autowired
     private JobOfferRepository jobOfferRepository;
-    @Autowired
-    private UserRepository userRepository;
+
+    protected final Log logger = LogFactory.getLog(getClass());
 
     public boolean createJobOffer(Map<String, String> message){
         try {
@@ -32,6 +36,7 @@ public class JobOfferService {
             jobOfferRepository.save(jobOffer);
             return true;
         }catch(Exception e){
+            logger.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
             return false;
         }
     }
@@ -47,7 +52,7 @@ public class JobOfferService {
                 return true;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            logger.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
             return false;
         }
     }

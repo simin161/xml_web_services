@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.agent.app.security.TokenUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +21,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private TokenUtils tokenUtils;
 
     private UserDetailsService userDetailsService;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
         this.tokenUtils = tokenHelper;
         this.userDetailsService = userDetailsService;
@@ -46,8 +48,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                }else{
+                    logger.error("ERROR- Invalid token");
                 }
             }
+            else{
+                logger.warn("WARN - No username in token");
+            }
+        }else{
+            logger.warn("WARN - No authentication token");
         }
 
         // prosledi request dalje u sledeci filter

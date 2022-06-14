@@ -36,17 +36,4 @@ public class CustomUserDetailsService implements UserDetailsService {
             return user;
         }
     }
-
-    public boolean changePassword(String username, String oldPassword, String newPassword){
-        if(oldPassword.equals(newPassword)){
-            return false;
-        }
-
-        User user = userRepository.findByEmail(username);
-        user.setPassword(passwordEncoder.encode(newPassword));
-        Date date = new Date();
-        userRepository.save(user);
-        return true;
-    }
-
 }

@@ -7,6 +7,9 @@ import com.agent.app.security.auth.JwtAuthenticationRequest;
 import com.agent.app.service.CompanyService;
 import com.agent.app.service.CustomUserDetailsService;
 import com.agent.app.service.UserService;
+import com.agent.app.utility.LoggingStrings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -39,6 +42,8 @@ public class RegistrationController {
     @Autowired
     private CompanyService companyService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @PostMapping("/registerCompany")
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     public boolean registerCompany(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> message){
@@ -50,30 +55,10 @@ public class RegistrationController {
     @PostMapping("/logIn")
     public ResponseEntity<UserTokenState> logIn(@RequestBody JwtAuthenticationRequest cred,
                                                        HttpServletResponse response) {
-        System.out.println(cred);
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
-                        cred.getPassword()));
-
-        // Ubaci korisnika u trenutni security kontekst
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Kreiraj token za tog korisnika
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail());
-        int expiresIn = tokenUtils.getExpiredIn();
-
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<UserTokenState> register(@RequestBody Map<String, String> message){
-
-        //TODO: dodati validacije
-        if(userService.addUser(message)) {
+        try{
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(message.get("email"), message.get("password")));
+                    .authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(),
+                            cred.getPassword()));
 
             // Ubaci korisnika u trenutni security kontekst
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -85,7 +70,15 @@ public class RegistrationController {
 
             // Vrati token kao odgovor na uspesnu autentifikaciju
             return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        }catch(Exception e){
+            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
         }
         return null;
+    }
+
+    @PostMapping("/register")
+    public boolean register(@RequestBody Map<String, String> message){
+        //TODO: dodati validacije
+        return userService.addUser(message);
     }
 }
