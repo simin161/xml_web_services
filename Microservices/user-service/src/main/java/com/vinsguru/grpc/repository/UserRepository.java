@@ -73,7 +73,9 @@ public class UserRepository {
                 .append("experiences",user.getExperinces())
                 .append("isActivated", user.isActivated())
                 .append("verificationCode", user.getVerificationCode())
-                .append("userAPItoken",user.getUserAPItoken());
+                .append("userAPItoken",user.getUserAPItoken())
+                .append("forgottenPassword", user.isForgottenPassword())
+                .append("verificationTime", user.getVerificationTime());
         usersCollection.insertOne(userToSave);
     }
 
@@ -84,7 +86,7 @@ public class UserRepository {
         if (foundUser != null) {
             retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
-                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null, foundUser.getBoolean("forgottenPassword"));
             retVal.setActivated(foundUser.getBoolean("isActivated"));
             retVal.setUserAPItoken(foundUser.getString("userAPItoken"));
         }
@@ -97,7 +99,7 @@ public class UserRepository {
         if(foundUser != null){
             retVal = new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
-                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null, foundUser.getBoolean("forgottenPassword"));
 
         }
         return retVal;
@@ -127,7 +129,7 @@ public class UserRepository {
         {
             User u =  new User(foundUser.getObjectId("_id"),foundUser.getString("firstName"), foundUser.getString("lastName"), foundUser.getString("username"), foundUser.getString("email"),
                     foundUser.getString("password"), foundUser.getBoolean("privateProfile"), foundUser.getDate("birthday"), foundUser.getString("gender"),
-                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null);
+                    foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null, foundUser.getBoolean("forgottenPassword"));
 
             retVal.add(u);
         }
@@ -190,7 +192,8 @@ public class UserRepository {
                 Updates.set("biography", user.getBiography()),
                 Updates.set("interests", user.getInterests()),
                 Updates.set("skills", user.getSkills()),
-                Updates.set("password", user.getPassword())
+                Updates.set("password", user.getPassword()),
+                Updates.set("forgottenPassword", user.isForgottenPassword())
         );
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);

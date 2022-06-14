@@ -5,7 +5,6 @@ import com.vinsguru.grpc.model.Education;
 import com.vinsguru.grpc.model.User;
 import com.vinsguru.grpc.model.WorkExperience;
 import com.vinsguru.grpc.repository.UserRepository;
-import com.vinsguru.grpc.utility.Tokens;
 import io.grpc.stub.StreamObserver;
 import net.bytebuddy.utility.RandomString;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -19,14 +18,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import org.bson.Document;
 
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 
 @GrpcService
@@ -48,6 +44,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 u.setActivated(false);
                 u.setUserAPItoken("");
                 setVerificationCode(RandomString.make(64), u);
+                u.setVerificationTime(LocalDateTime.now().plusHours(1));
                 UserRepository.getInstance().insert(u);
                 mailService.sendVerificationEmail(u, addUserParam.getUrl().getSiteURL());
                 output = Output.newBuilder().setResult("true").build();
@@ -152,7 +149,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             }
             proto.user.OutputMessage output;
             User userToUpdate=new User(null,request.getFirstName(),request.getLastName(),request.getUsername(),request.getEmail(),request.getPassword(),request.getPrivateProfile(),
-                    date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null);
+                    date1,request.getGender(),request.getPhone(),request.getBiography(),request.getInterests(),request.getSkills(),null,null, false);
             UserRepository.getInstance().update(userToUpdate);
             output = OutputMessage.newBuilder().setOutputMessage("success").build();
             responseObserver.onNext(output);
@@ -342,6 +339,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         for(User u : UserRepository.getInstance().getAllUsers()){
             if(u.getEmail().equals(email.getEmail())){
                 u.setPassword(email.getNewPassword());
+                u.setForgottenPassword(true);
                 UserRepository.getInstance().updatePassword(u);
                 MailService ms = new MailService();
                 try{
@@ -368,7 +366,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         User user = UserRepository.getInstance().findUserByVerificationCode(code.getVerificationCode());
         if(user == null || user.isActivated()){
             value = false;
-        }else{
+        }else if(user.getVerificationTime().isBefore(LocalDateTime.now())){
+            value = false;
+        }
+        else{
             value = activateAccount(user);
         }
         if(value){
@@ -412,6 +413,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
             if(encoder.matches(input.getOldPassword(),user.getPassword())){
                 user.setPassword(input.getNewPassword());
+                user.setForgottenPassword(false);
                 UserRepository.getInstance().updatePassword(user);
                 PasswordChangeOutput pso = PasswordChangeOutput.newBuilder().setResult("true").build();
                 responseObserver.onNext(pso);
@@ -485,6 +487,24 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             goato = GetOldAPITokenOutput.newBuilder().setOldToken(user.getUserAPItoken()).build();
         }
         responseObserver.onNext(goato);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void checkForgottenPassword(CheckForgottenPasswordInput input, StreamObserver<CheckForgottenPasswordOutput> responseObserver){
+        CheckForgottenPasswordOutput output;
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user==null){
+            output = CheckForgottenPasswordOutput.newBuilder().setOutput("false").build();
+        }else{
+            if(user.isForgottenPassword()){
+                output=CheckForgottenPasswordOutput.newBuilder().setOutput("true").build();
+            }
+            else{
+                output = CheckForgottenPasswordOutput.newBuilder().setOutput("false").build();
+            }
+        }
+        responseObserver.onNext(output);
         responseObserver.onCompleted();
     }
 }

@@ -489,4 +489,12 @@ public class AggregatorController {
         String email = tokenUtils.getUsernameFromToken(value);
         return postService.getAllFeedPosts(email, Integer.parseInt(param));
     }
+
+    @GetMapping("/checkIfForgottenPassword")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public boolean checkIfForgottenPassword(@RequestHeader("Authentication")HttpHeaders header){
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        return aggregatorService.checkForgottenPassword(email);
+    }
 }

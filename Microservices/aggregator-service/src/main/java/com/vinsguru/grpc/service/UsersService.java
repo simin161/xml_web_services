@@ -314,4 +314,10 @@ public class UsersService {
                 .setId(id).build();
         return blockingStub.deleteExperience(dI).getPrivate();
     }
+
+    public boolean checkForgottenPassword(String email) {
+        blockingStub = openChannelToUserService();
+        CheckForgottenPasswordInput input = CheckForgottenPasswordInput.newBuilder().setEmail(email).build();
+        return blockingStub.checkForgottenPassword(input).getOutput().equals("true");
+    }
 }

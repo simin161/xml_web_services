@@ -211,6 +211,14 @@ message GetOldAPITokenOutput{
   string oldToken = 1;
 }
 
+message CheckForgottenPasswordInput{
+  string email = 1;
+}
+
+message CheckForgottenPasswordOutput{
+  string output = 1;
+}
+
 service UserService {
 
   rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
@@ -262,5 +270,7 @@ service UserService {
   rpc deleteExperience(InputDeleting) returns (OutputBool) {};
 
   rpc getOldAPIToken(GetOldAPITokenInput) returns (GetOldAPITokenOutput) {};
+
+  rpc checkForgottenPassword(CheckForgottenPasswordInput) returns (CheckForgottenPasswordOutput) {};
 
 }
