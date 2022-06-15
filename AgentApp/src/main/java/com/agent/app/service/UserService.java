@@ -13,21 +13,19 @@ import net.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.saml2.Saml2RelyingPartyProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 @Service
 public class UserService {
@@ -47,6 +45,7 @@ public class UserService {
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
+    private String componentName = "|com.agent.app.service.UserService|";
 
     public String getUserApiToken(String email){
         User user = userRepository.findByEmail(email);
@@ -57,26 +56,32 @@ public class UserService {
     }
 
     public boolean addUser(Map<String, String> message) {
-        if(userRepository.findByEmail(message.get("email")) != null)
-            return false;
-    try {
-        User user = new User();
-        user.setPassword(passwordEncoder.encode(message.get("password")));
-        user.setEmail(message.get("email"));
-        user.setFirstName(message.get("firstName"));
-        user.setLastName(message.get("lastName"));
-        List<Authority> authorityList = new ArrayList<>();
-        authorityList.add(authorityRepository.findById(1L).orElse(null));
-        authorityList.add(authorityRepository.findById(4L).orElse(null));
-        user.setAuthorities(authorityList);
-        user.setVerificationCode(saveVerificationCode());
-        userRepository.save(user);
-        sendVerificationEmail(user);
-    }catch(Exception e){
-        logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.service.UserService", message.get("email")));
+        if(Validation.validateEmail(message.get("email"))){
+            if(userRepository.findByEmail(message.get("email")) != null)
+                return false;
+            try {
+                if(Validation.validatePassword(message.get("password")) && Validation.validateName(message.get("firstName"))
+                    && Validation.validateName(message.get("lastName"))) {
+                    User user = new User();
+                    user.setPassword(passwordEncoder.encode(message.get("password")));
+                    user.setEmail(message.get("email"));
+                    user.setFirstName(message.get("firstName"));
+                    user.setLastName(message.get("lastName"));
+                    List<Authority> authorityList = new ArrayList<>();
+                    authorityList.add(authorityRepository.findById(1L).orElse(null));
+                    authorityList.add(authorityRepository.findById(4L).orElse(null));
+                    user.setAuthorities(authorityList);
+                    user.setVerificationCode(saveVerificationCode());
+                    userRepository.save(user);
+                    sendVerificationEmail(user);
+                    return true;
+                }
+            }catch(Exception e){
+                logger.error(LoggingStrings.getAuthenticationFailed(componentName, message.get("email")));
+                return false;
+            }
+        }
         return false;
-    }
-        return true;
     }
 
     private VerificationCode saveVerificationCode(){
@@ -98,11 +103,13 @@ public class UserService {
 
     public boolean updateApiToken(String email, String apiToken) {
         boolean retVal = false;
-        User user = userRepository.findByEmail(email);
-        if(user != null) {
-            user.setApiToken(apiToken);
-            userRepository.save(user);
-            retVal = true;
+        if(Validation.validateNonBrackets(apiToken)) {
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                user.setApiToken(apiToken);
+                userRepository.save(user);
+                retVal = true;
+            }
         }
         return retVal;
     }
@@ -135,7 +142,7 @@ public class UserService {
                 }
             }
         } catch (Exception e) {
-            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.service.UserService", email));
+            logger.error(LoggingStrings.getAuthenticationFailed(componentName, email));
         }
         return false;
     }
@@ -173,7 +180,7 @@ public class UserService {
                 }
             }
         } catch (Exception e) {
-            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
+            logger.error(LoggingStrings.getAuthenticationFailed(componentName, e.toString()));
         }
         return false;
     }
@@ -211,7 +218,7 @@ public class UserService {
             User user = userRepository.findByVerificationCode(verificationCode);
             return user == null || user.isActivated() ? false : activateAccount(user);
         }
-        logger.warn(LocalDateTime.now().toString() + "|User with verification code " + code + " failed to verify");
+        logger.warn(LocalDateTime.now().toString() + componentName + "User with verification code " + code + " failed to verify");
         return false;
     }
 
@@ -234,13 +241,19 @@ public class UserService {
     public boolean resendVerificationCode(String email) {
         boolean retVal = false;
         try {
-            User user = userRepository.findByEmail(email);
-            if (user != null) {
-                VerificationCode code = user.getVerificationCode();
-                code.setDateOfCreation(LocalDateTime.now());
-                verificationCodeRepository.save(code);
-                sendVerificationEmail(user);
-                retVal = true;
+            if(Validation.validateEmail(email)) {
+                User user = userRepository.findByEmail(email);
+                if (user != null) {
+                    VerificationCode code = user.getVerificationCode();
+                    code.setDateOfCreation(LocalDateTime.now());
+                    verificationCodeRepository.save(code);
+                    sendVerificationEmail(user);
+                    retVal = true;
+                }else{
+                    logger.info(LocalDateTime.now().toString() + componentName + "User " + email + " not found");
+                }
+            }else{
+                logger.info(LocalDateTime.now().toString() + componentName + "User attempted to resend email with invalid input: " + email);
             }
         }catch(Exception e){
             logger.error(e.toString());
