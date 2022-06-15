@@ -114,13 +114,7 @@ changeForm : function(){
             register : function(){
                 axios.post("/api/register", this.registerUser)
                      .then(response => {
-                        if(response.data !== ""){
-                            localStorage.setItem("agentUser", response.data.accessToken);
-                            router.push('/firstPage')
-                            console.log("Da")
-                        }else{
-                            console.log("Ne")
-                        }
+                        alert(response.data);
                      })
             }
 
