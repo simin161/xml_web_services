@@ -211,6 +211,7 @@ public class UserService {
             User user = userRepository.findByVerificationCode(verificationCode);
             return user == null || user.isActivated() ? false : activateAccount(user);
         }
+        logger.warn(LocalDateTime.now().toString() + "|User with verification code " + code + " failed to verify");
         return false;
     }
 
@@ -228,5 +229,22 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public boolean resendVerificationCode(String email) {
+        boolean retVal = false;
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                VerificationCode code = user.getVerificationCode();
+                code.setDateOfCreation(LocalDateTime.now());
+                verificationCodeRepository.save(code);
+                sendVerificationEmail(user);
+                retVal = true;
+            }
+        }catch(Exception e){
+            logger.error(e.toString());
+        }
+        return retVal;
     }
 }

@@ -62,6 +62,7 @@ template: `
                         </tr>
 		           </table>
 		    </div>
+		    <a href="#/resendVerificationCode">Resend verification email</a>
 		</div>
 		`
 	,

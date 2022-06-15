@@ -27,6 +27,10 @@ const router = new VueRouter({
                  {
                      path: '/forgottenPassword',
                      component: emailForm
+                 },
+                 {
+                    path: '/resendVerificationCode',
+                    component: emailForm
                  }
             ]},
         { path: '/changePassword', component: changePassword}

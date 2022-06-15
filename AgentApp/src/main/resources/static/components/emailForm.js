@@ -30,11 +30,16 @@ template: `
                       .then((response) => {
                           alert(response.data);
                       });
-             }else{
-                 axios.post('/api/forgottenPassword', {"email" : this.email})
+             }else if(path === '#/resendVerificationCode'{
+                 axios.post('/api/resendVerificationCode', {"email" : this.email})
                        .then((response) => {
                            alert(response.data);
                  });
+             }else{
+                axios.post('/api/forgottenPassword', {"email" : this.email})
+                     .then((response) => {
+                         alert(response.data);
+                     });
              }
         }
     },
