@@ -11,9 +11,12 @@ import com.vinsguru.grpc.service.JobOfferService;
 import com.vinsguru.grpc.service.UsersService;
 import com.vinsguru.grpc.service.FollowerService;
 import com.vinsguru.grpc.service.PostService;
+import com.vinsguru.grpc.utility.LoggingStrings;
 import com.vinsguru.grpc.utility.Validation;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
@@ -56,6 +59,7 @@ public class AggregatorController {
     @Autowired
     private JobOfferService jobOfferService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping("/register")
     public String addUser(@RequestBody Map<String, String> message, HttpServletRequest request){
@@ -85,7 +89,7 @@ public class AggregatorController {
                 return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
             }
             catch(Exception e){
-                //e.printStackTrace();
+                logger.error(LoggingStrings.getAuthenticationFailed("com.vinsguru.grpc.controller.AggregatorController.logInUser", e.toString()));
                 return null;
             }
         }
@@ -103,6 +107,7 @@ public class AggregatorController {
             userDto.put("email",email);
             return aggregatorService.updateUser(userDto);}
         }catch(Exception e){
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.personalInfo", tokenUtils.getUsernameFromToken(value), e.toString()));
             e.printStackTrace();
         }
         return "";
@@ -119,6 +124,7 @@ public class AggregatorController {
             educationDto.setEmail(email);
             return aggregatorService.updateEducation(educationDto);  }
         }catch(Exception e){
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.education", tokenUtils.getUsernameFromToken(value), e.toString()));
             e.printStackTrace();
         }
         return "";
@@ -126,8 +132,12 @@ public class AggregatorController {
     }
     @GetMapping("/user/{email:.+}/")
     public UserDto getUserByEmail(@PathVariable("email")String email){
-        if(Validation.validateEmail(email))
-            return aggregatorService.getUserByEmail(email);
+        try{
+            if(Validation.validateEmail(email))
+                return aggregatorService.getUserByEmail(email);
+        }catch(Exception e){
+            logger.error(LoggingStrings.getUserWithEmailDoesntExists("com.vinsguru.grpc.controller.AggregatorController.displaySomeoneProfile", email, e.toString()));
+        }
         return null;
     }
     @GetMapping("/user")
@@ -141,6 +151,7 @@ public class AggregatorController {
             return aggregatorService.getUserByEmail(email); }
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.getUserByEmail", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return null;
     }
@@ -164,6 +175,7 @@ public class AggregatorController {
             }
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.updateWorkExperiences", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -202,6 +214,7 @@ public class AggregatorController {
             }
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewPost", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -217,6 +230,7 @@ public class AggregatorController {
             return followerService.addFollower(follow);
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewFollower", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -230,6 +244,7 @@ public class AggregatorController {
             followerService.removeFollower(follow);
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.removeFollower", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
     }
 
@@ -258,6 +273,7 @@ public class AggregatorController {
             return postService.addComment(comment);
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewComment", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -270,6 +286,7 @@ public class AggregatorController {
             return followerService.findRequests(email);
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.requests", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return null;
     }
@@ -297,6 +314,7 @@ public class AggregatorController {
             return postService.addReaction(reaction);}
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewReaction", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -314,6 +332,7 @@ public class AggregatorController {
             }
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.deleteReaction", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -331,6 +350,7 @@ public class AggregatorController {
                 followerService.answerFollowRequest(approved,email,message.get("followerEmail"));}
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.answerFollowRequest", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
 
     }
@@ -344,6 +364,7 @@ public class AggregatorController {
                return postService.checkReaction(message.get("postId"),email);}  //note: na frontu skloniti mejl da se prosledjuje
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.checkReaction", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return "";
     }
@@ -357,6 +378,7 @@ public class AggregatorController {
                 return postService.findAllPostsOfFollowingsByUserEmail(email);}
         }catch(Exception e){
             e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.getPosts", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
         return null;
     }
@@ -406,12 +428,24 @@ public class AggregatorController {
 
     @PostMapping("/forgottenPassword")
     public boolean forgottenPassword(@RequestBody Map<String, String> email){
-        return aggregatorService.forgottenPassword(email);
+        try{
+            return aggregatorService.forgottenPassword(email);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.forgottenPassword", tokenUtils.getUsernameFromToken(email.get("email")), e.toString()));
+        }
+        return false;
     }
 
     @GetMapping("/verifyAccount")
     public String verifyUser(@Param("code") String code){
-        return aggregatorService.verifyAccount(code);
+        try{
+            return aggregatorService.verifyAccount(code);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.VerifyUser("com.vinsguru.grpc.controller.AggregatorController.verifyUser", e.toString()));
+        }
+        return "false";
     }
 
     private String getSiteURL(HttpServletRequest request){
@@ -421,7 +455,13 @@ public class AggregatorController {
 
     @PostMapping("/passwordlessLogin")
     public boolean passwordlessLogin(@RequestBody Map<String, String> email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-        return aggregatorService.passwordlessLogin(email, getSiteURL(request));
+        try {
+            return aggregatorService.passwordlessLogin(email, getSiteURL(request));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.passwordlessLogin", tokenUtils.getUsernameFromToken(email.get("email")), e.toString()));
+        }
+        return false;
     }
 
     @PostMapping("/changePassword")
@@ -436,13 +476,22 @@ public class AggregatorController {
                 }
             }
 
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.changePassword", tokenUtils.getUsernameFromToken(value), e.toString()));
+        }
         return "false";
     }
 
     @PostMapping("/createJobOffer")
     public boolean createJobOffer(@RequestBody JobOfferDto jobOfferDto){
-        return jobOfferService.createJobOffer(jobOfferDto);
+        try{
+            return jobOfferService.createJobOffer(jobOfferDto);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessageAPIToken("com.vinsguru.grpc.controller.AggregatorController.createJobOffer", jobOfferDto.getUserAPItoken(), e.toString()));
+        }
+        return false;
     }
 
     @GetMapping("/searchJobOffers/{param}")
@@ -452,17 +501,23 @@ public class AggregatorController {
 
     @PostMapping("/generateUserAPIToken")
     public boolean generateUserAPIToken(@RequestHeader("Authentication")HttpHeaders header){
-        boolean retVal = false;
         String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-        String email = tokenUtils.getUsernameFromToken(value);
-        String token = tokenUtils.generateToken(email, "API");
-        token = token.substring(8, 26);
-        SecureRandom random = new SecureRandom();
-        byte []bytes = new byte[20];
-        random.nextBytes(bytes);
-        token = token.concat(Base64.getUrlEncoder().encodeToString(bytes));
-        retVal = aggregatorService.saveGeneratedToken(email, token);
-        return retVal;
+        try {
+            boolean retVal = false;
+            String email = tokenUtils.getUsernameFromToken(value);
+            String token = tokenUtils.generateToken(email, "API");
+            token = token.substring(8, 26);
+            SecureRandom random = new SecureRandom();
+            byte[] bytes = new byte[20];
+            random.nextBytes(bytes);
+            token = token.concat(Base64.getUrlEncoder().encodeToString(bytes));
+            retVal = aggregatorService.saveGeneratedToken(email, token);
+            return retVal;
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.generateUserAPIToken", tokenUtils.getUsernameFromToken(value), e.toString()));
+        }
+        return false;
     }
 
     @PostMapping("/checkIfUserIsFollowingOtherUser")
@@ -486,8 +541,14 @@ public class AggregatorController {
     @PreAuthorize("hasRole('ROLE_REG_USER')")
     public List<PostDto> getAllFeedPosts(@RequestHeader("Authentication")HttpHeaders header, @PathVariable("value") String param){
         String value = header.getFirst(HttpHeaders.AUTHORIZATION);
-        String email = tokenUtils.getUsernameFromToken(value);
-        return postService.getAllFeedPosts(email, Integer.parseInt(param));
+        try {
+            String email = tokenUtils.getUsernameFromToken(value);
+            return postService.getAllFeedPosts(email, Integer.parseInt(param));
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.getAllFeedPosts", tokenUtils.getUsernameFromToken(value), e.toString()));
+        }
+        return new ArrayList<PostDto>();
     }
 
     @GetMapping("/checkIfForgottenPassword")
@@ -500,6 +561,12 @@ public class AggregatorController {
 
     @PostMapping("/resendVerificationMail")
     public boolean resendVerificationMail(@RequestBody Map<String, String> message, HttpServletRequest request){
-        return aggregatorService.resendVerificationMail(message, getSiteURL(request));
+        try{
+            return aggregatorService.resendVerificationMail(message, getSiteURL(request));
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(LoggingStrings.getLoggedMessageResendVerificationMail("com.vinsguru.grpc.controller.AggregatorController.resendVerificationMail", tokenUtils.getUsernameFromToken(message.get("email")), e.toString()));
+        }
+        return false;
     }
 }
