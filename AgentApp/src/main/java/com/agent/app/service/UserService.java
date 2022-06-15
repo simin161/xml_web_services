@@ -2,8 +2,10 @@ package com.agent.app.service;
 
 import com.agent.app.model.Authority;
 import com.agent.app.model.User;
+import com.agent.app.model.VerificationCode;
 import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
+import com.agent.app.repository.VerificationCodeRepository;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.LoggingStrings;
 import com.agent.app.utility.Validation;
@@ -11,6 +13,7 @@ import net.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.saml2.Saml2RelyingPartyProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +39,8 @@ public class UserService {
     private AuthorityRepository authorityRepository;
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private VerificationCodeRepository verificationCodeRepository;
     @Autowired
     private TokenUtils tokenUtils;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -64,7 +69,7 @@ public class UserService {
         authorityList.add(authorityRepository.findById(1L).orElse(null));
         authorityList.add(authorityRepository.findById(4L).orElse(null));
         user.setAuthorities(authorityList);
-        user.setVerificationCode(RandomString.make(64));
+        user.setVerificationCode(saveVerificationCode());
         userRepository.save(user);
         sendVerificationEmail(user);
     }catch(Exception e){
@@ -72,6 +77,12 @@ public class UserService {
         return false;
     }
         return true;
+    }
+
+    private VerificationCode saveVerificationCode(){
+        VerificationCode code = new VerificationCode(RandomString.make(64));
+        verificationCodeRepository.save(code);
+        return code;
     }
 
     public boolean checkIfAdmin(String email) {
@@ -195,8 +206,12 @@ public class UserService {
     }
 
     public boolean verify(String code) {
-        User user = userRepository.findByVerificationCode(code);
-        return user == null || user.isActivated() ? false : activateAccount(user);
+        VerificationCode verificationCode = verificationCodeRepository.findByCode(code);
+        if(verificationCode.getDateOfCreation().isBefore(LocalDateTime.now())) {
+            User user = userRepository.findByVerificationCode(verificationCode);
+            return user == null || user.isActivated() ? false : activateAccount(user);
+        }
+        return false;
     }
 
     private boolean activateAccount(User user){
