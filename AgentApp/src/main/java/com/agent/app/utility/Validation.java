@@ -19,6 +19,18 @@ public class Validation {
         return matcher.find();
     }
 
+    public static boolean validateTextWithNumbers(String text){
+        Pattern pattern = Pattern.compile("[ a-zA-Z0-9]+$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
+    }
+
+    public static boolean validateOnlyText(String text){
+        Pattern pattern = Pattern.compile("[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
+    }
+
     public static boolean validateName(String name){
         Pattern pattern = Pattern.compile("^[a-zA-Z\\-’]+$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(name);
