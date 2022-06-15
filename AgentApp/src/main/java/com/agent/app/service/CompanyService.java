@@ -8,6 +8,7 @@ import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.CompanyRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.utility.Validation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class CompanyService {
     @Autowired
     private UserRepository userRepository;

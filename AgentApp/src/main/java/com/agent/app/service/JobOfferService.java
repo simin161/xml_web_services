@@ -4,6 +4,7 @@ import com.agent.app.model.JobOffer;
 import com.agent.app.repository.JobOfferRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.utility.Validation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tomcat.jni.Local;
@@ -16,12 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class JobOfferService {
     @Autowired
     private JobOfferRepository jobOfferRepository;
     private String componentName = "|com.agent.app.service.JobOfferService|";
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    //protected final Log logger = LogFactory.getLog(getClass());
 
     public boolean createJobOffer(Map<String, String> message){
         boolean retVal = false;
@@ -39,16 +41,16 @@ public class JobOfferService {
                 jobOffer.setUserEmail(message.get("email"));
                 jobOffer.setUserAPIToken("");
                 if (Validation.checkIfEmptyJobOffer(jobOffer)) {
-                    logger.info(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|User " + message.get("email") + " sent invalid data for job offer");
+                    log.info(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|User " + message.get("email") + " sent invalid data for job offer");
                     return false;
                 }
                 jobOfferRepository.save(jobOffer);
                 retVal = true;
             }else{
-                logger.info(LocalDateTime.now().toString() + componentName + "User " + message.get("email") + " sent invalid data for job offer");
+                log.info(LocalDateTime.now().toString() + componentName + "User " + message.get("email") + " sent invalid data for job offer");
             }
         }catch(Exception e){
-            logger.error(LocalDateTime.now().toString() + componentName + e.toString());
+            log.error(LocalDateTime.now().toString() + componentName + e.toString());
             retVal = false;
         }
         return retVal;
@@ -65,11 +67,11 @@ public class JobOfferService {
                     jobOfferRepository.save(jobOffer);
                     return true;
                 }else{
-                    logger.info(LocalDateTime.now().toString() + componentName + "Invalid API token has been received");
+                    log.info(LocalDateTime.now().toString() + componentName + "Invalid API token has been received");
                 }
             }
         }catch(Exception e){
-            logger.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
+            log.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
             return false;
         }
         return false;

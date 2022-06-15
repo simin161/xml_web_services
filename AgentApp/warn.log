@@ -1,0 +1,4 @@
+54522 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+85113 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+87066 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+87077 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 

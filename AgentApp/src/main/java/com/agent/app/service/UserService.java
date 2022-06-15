@@ -9,6 +9,7 @@ import com.agent.app.repository.VerificationCodeRepository;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.LoggingStrings;
 import com.agent.app.utility.Validation;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -41,7 +43,7 @@ public class UserService {
     private VerificationCodeRepository verificationCodeRepository;
     @Autowired
     private TokenUtils tokenUtils;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
@@ -77,7 +79,7 @@ public class UserService {
                     return true;
                 }
             }catch(Exception e){
-                logger.error(LoggingStrings.getAuthenticationFailed(componentName, message.get("email")));
+                log.error(LoggingStrings.getAuthenticationFailed(componentName, message.get("email")));
                 return false;
             }
         }
@@ -142,7 +144,7 @@ public class UserService {
                 }
             }
         } catch (Exception e) {
-            logger.error(LoggingStrings.getAuthenticationFailed(componentName, email));
+            log.error(LoggingStrings.getAuthenticationFailed(componentName, email));
         }
         return false;
     }
@@ -180,7 +182,7 @@ public class UserService {
                 }
             }
         } catch (Exception e) {
-            logger.error(LoggingStrings.getAuthenticationFailed(componentName, e.toString()));
+            log.error(LoggingStrings.getAuthenticationFailed(componentName, e.toString()));
         }
         return false;
     }
@@ -218,7 +220,7 @@ public class UserService {
             User user = userRepository.findByVerificationCode(verificationCode);
             return user == null || user.isActivated() ? false : activateAccount(user);
         }
-        logger.warn(LocalDateTime.now().toString() + componentName + "User with verification code " + code + " failed to verify");
+        log.warn(LocalDateTime.now().toString() + componentName + "User with verification code " + code + " failed to verify");
         return false;
     }
 
@@ -250,13 +252,13 @@ public class UserService {
                     sendVerificationEmail(user);
                     retVal = true;
                 }else{
-                    logger.info(LocalDateTime.now().toString() + componentName + "User " + email + " not found");
+                    log.info(LocalDateTime.now().toString() + componentName + "User " + email + " not found");
                 }
             }else{
-                logger.info(LocalDateTime.now().toString() + componentName + "User attempted to resend email with invalid input: " + email);
+                log.info(LocalDateTime.now().toString() + componentName + "User attempted to resend email with invalid input: " + email);
             }
         }catch(Exception e){
-            logger.error(e.toString());
+            log.error(e.toString());
         }
         return retVal;
     }

@@ -30,7 +30,7 @@ template: `
                       .then((response) => {
                           alert(response.data);
                       });
-             }else if(path === '#/resendVerificationCode'{
+             }if(path === '#/resendVerificationCode'){
                  axios.post('/api/resendVerificationCode', {"email" : this.email})
                        .then((response) => {
                            alert(response.data);
