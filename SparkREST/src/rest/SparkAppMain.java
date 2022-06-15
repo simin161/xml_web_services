@@ -8,11 +8,11 @@ import com.google.gson.Gson;
 import dao.CertificateStatusDAO;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.apache.pdfbox.pdmodel.PDDocument;
+/*import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;*/
 import service.CertificateService;
 import service.UserService;
 import spark.Session;
@@ -226,7 +226,7 @@ public class SparkAppMain {
 			return certificateService.checkIfUserHasCA(user.getEmail());
 		});
 
-		post("/getPdf", (req, res) ->{
+		/*post("/getPdf", (req, res) ->{
 			PDDocument pdfdoc= new PDDocument();
 			pdfdoc.addPage(new PDPage());
 			pdfdoc.addPage(new PDPage());
@@ -299,7 +299,7 @@ public class SparkAppMain {
 			pdfdoc.close();
 			return true;
 		});
-
+*/
 		post("/invalidateCertificate", (req, res)->{
 
 			res.type("application/json");

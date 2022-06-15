@@ -11,6 +11,15 @@ public class User {
     private String email;
     private UserType userType;
     private String password;
+    private VerificationCode verificationCode;
+
+    public VerificationCode getVerificationCode() {
+        return this.verificationCode;
+    }
+
+    public void setVerificationCode(VerificationCode verificationCode){
+        this.verificationCode = verificationCode;
+    }
 
     public String getEmail(){
         return this.email;
