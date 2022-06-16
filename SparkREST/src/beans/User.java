@@ -12,6 +12,15 @@ public class User {
     private UserType userType;
     private String password;
     private VerificationCode verificationCode;
+    private boolean activated;
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
     public VerificationCode getVerificationCode() {
         return this.verificationCode;
@@ -54,4 +63,8 @@ public class User {
     }
 
     public UserType getUserType(){ return this.userType;}
+
+    public void setPassword(String password){
+        this.password = password;
+    }
 }

@@ -7,7 +7,8 @@
     "countryId": "AZ",
     "email": "admin@admin.com",
     "userType": "ADMIN",
-    "password": "admin"
+    "password": "admin",
+    "activated": false
   },
   {
     "firstName": "aaa",
@@ -17,7 +18,8 @@
     "countryId": "aaaa",
     "email": "aaa@aa.com",
     "userType": "REGULAR_USER",
-    "password": "aaa"
+    "password": "aaa",
+    "activated": false
   },
   {
     "firstName": "bbb",
@@ -27,7 +29,8 @@
     "countryId": "bbb",
     "email": "bbb@bb.com",
     "userType": "REGULAR_USER",
-    "password": "bbb"
+    "password": "bbb",
+    "activated": false
   },
   {
     "firstName": "david",
@@ -37,7 +40,8 @@
     "countryId": "2",
     "email": "david.jandric@gmail.com",
     "userType": "REGULAR_USER",
-    "password": "jasmo"
+    "password": "jasmo",
+    "activated": false
   },
   {
     "firstName": "d",
@@ -47,6 +51,34 @@
     "countryId": "1",
     "email": "d@d.com",
     "userType": "ADMIN",
-    "password": "d"
+    "password": "d",
+    "activated": false
+  },
+  {
+    "firstName": "dd",
+    "lastName": "dd",
+    "organizationName": "dd",
+    "organizationUnit": "dd",
+    "countryId": "SRB",
+    "email": "david_jandric@hotmail.com",
+    "userType": "REGULAR_USER",
+    "password": "d",
+    "verificationCode": {
+      "code": "���\u0011\u0014�Ƙ5�\u0001:��Ϊ#ń�I[�@-��\u0019���\u0019\u001a�� \u0001�/p��\u0018\u000fע/��� �\u001b�z)k�\u0017s_�",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 15,
+          "minute": 38,
+          "second": 23,
+          "nano": 48000000
+        }
+      }
+    },
+    "activated": false
   }
 ]
