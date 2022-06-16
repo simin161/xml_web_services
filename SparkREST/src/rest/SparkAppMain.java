@@ -314,10 +314,13 @@ public class SparkAppMain {
 
 		});
 
-		get("/verifyAccount?code=:vcode", (req, res)->{
+		get("/verifyAccount", (req, res)->{
 
 			res.type("application/json");
-			return userService.verifyAccount(req.params(":vcode"));
+			String c = req.queryString();
+			String []cParts = c.split("=");
+			String code = cParts[1];
+			return userService.verifyAccount(code);
 
 		});
 

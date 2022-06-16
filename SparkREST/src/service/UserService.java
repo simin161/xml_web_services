@@ -4,6 +4,7 @@ import beans.User;
 import beans.VerificationCode;
 import beans.enums.UserType;
 import dao.UserDao;
+import utility.RandomString;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +23,7 @@ public class UserService {
             newUser.setActivated(false);
             VerificationCode vcode = new VerificationCode();
             vcode.setDateOfCreation(LocalDateTime.now());
-            byte[] array = new byte[64];
-            new Random().nextBytes(array);
-            vcode.setCode(new String(array, StandardCharsets.UTF_8));
+            vcode.setCode(RandomString.getAlphaNumericString(64));
             newUser.setVerificationCode(vcode);
             try{
                 UserDao.getInstance().addUser(newUser);

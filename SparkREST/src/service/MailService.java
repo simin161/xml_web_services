@@ -43,7 +43,7 @@ public class MailService {
         message.setFrom(new InternetAddress(fromAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(u.getEmail()));
         message.setSubject(subject);
-        String verifyURL = siteURL + "/#/verifyAccount?code=" + u.getVerificationCode().getCode();
+        String verifyURL = siteURL + "/verifyAccount?code=" + u.getVerificationCode().getCode();
         content = content.replace("[[URL]]", verifyURL);
         message.setContent(content, "text/html");
 
