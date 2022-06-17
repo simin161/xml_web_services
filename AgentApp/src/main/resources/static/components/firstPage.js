@@ -36,6 +36,11 @@ template: `
           <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
         </svg> Enable 2FA
         </button>
+        <button class="btn" id="button2FA" @click="disable2FA">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg> Disable 2FA
+                </button>
         <button class="btn" id="buttonPurple"  @click="logOut">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
@@ -136,9 +141,9 @@ template: `
 		        <button :disabled="isJobOfferComplete" class="btn" id="buttonPurple"  @click="createJobOffer">Create job offer</button>
                  </div>
 		    </div>
-		    <div v-show="showPage == 3">
-                <img class="col-md-12" th:src="${qrCode}" />
-                <p th:text="${qrCodeKey}"></p>
+		    <div v-show="showPage == 10">
+                <img :src="qrCode" height="500px" width="500px" />
+                <p>{{qrCodeKey}}</p>
 		    </div>
 		    <div style="padding: 2%" v-show="showPage == 3">
                 <h1>Create API token</h1>
@@ -252,9 +257,19 @@ template: `
 
                                 this.qrCode = response.data.qrCode;
                                 this.qrCodeKey = response.data.qrCodeKey;
-                                this.showPage = 3;
+                                this.showPage = 10;
 
                             })
+        },
+        disable2FA : function(){
+         axios.defaults.headers.common["Authorization"] =
+                                                           localStorage.getItem("agentUser");
+                    axios.post("/api/disable2FA")
+                                    .then((response) => {
+
+                                        console.log(response)
+
+                                    })
         }
     },
     mounted(){

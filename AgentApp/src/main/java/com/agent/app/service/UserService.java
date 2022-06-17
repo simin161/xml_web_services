@@ -229,7 +229,7 @@ public class UserService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getFirstName());
-        String verifyURL = "http://localhost:8082/api/verify?code=" + user.getVerificationCode();
+        String verifyURL = "http://localhost:8082/api/verify?code=" + user.getVerificationCode().getCode();
 
         content = content.replace("[[URL]]", verifyURL);
 
@@ -279,6 +279,9 @@ public class UserService {
                 model.setQrCode(mfaData.getQrCode());
                 model.setQrCodeKey(mfaData.getMfaCode());
                 model.setQrCodeSetup("true");
+                User u = userRepository.findByEmail(email);
+                u.setUsing2FA(true);
+                userRepository.save(u);
                 return model;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -307,5 +310,16 @@ public class UserService {
             log.error(e.toString());
         }
         return retVal;
+    }
+
+    public boolean disable2FA(String email) {
+        try {
+            User u = userRepository.findByEmail(email);
+            u.setUsing2FA(false);
+            userRepository.save(u);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
     }
 }

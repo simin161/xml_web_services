@@ -2,6 +2,7 @@ package com.agent.app.controllers;
 
 import com.agent.app.model.User;
 import com.agent.app.model.UserTokenState;
+import com.agent.app.security.DefaultMFATokenManager;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.security.auth.JwtAuthenticationRequest;
 import com.agent.app.service.CompanyService;
@@ -49,6 +50,8 @@ public class RegistrationController {
 
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private DefaultMFATokenManager mfaTokenManager;
 
     //private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -73,6 +76,17 @@ public class RegistrationController {
 
             // Kreiraj token za tog korisnika
             User user = (User) authentication.getPrincipal();
+            try{
+                if(user.isUsing2FA()){
+                    if(!mfaTokenManager.verifyTotp(cred.getCode(), user.getSecret())){
+                        throw new Exception();
+                    }
+                }
+            }catch(Exception e){
+                log.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
+                return null;
+            }
+
             String jwt = tokenUtils.generateToken(user.getEmail());
             int expiresIn = tokenUtils.getExpiredIn();
 

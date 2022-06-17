@@ -1,2 +1,11 @@
 86927 [http-nio-8082-exec-4] ERROR com.agent.app.service.UserService - 2022-06-15T22:13:15.029988300||com.agent.app.service.UserService||sdad@hsf.mn 
 88081 [http-nio-8082-exec-10] ERROR c.a.a.c.RegistrationController - 2022-06-15T22:45:59.212131800|com.agent.app.controllers.RegistrationController|org.springframework.security.authentication.BadCredentialsException: Bad credentials 
+219286 [http-nio-8082-exec-2] ERROR c.a.a.c.RegistrationController - 2022-06-17T22:40:20.404017100|com.agent.app.controllers.RegistrationController|org.springframework.security.authentication.BadCredentialsException: Bad credentials 
+186190 [http-nio-8082-exec-2] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:04:07.777935200|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+249908 [http-nio-8082-exec-6] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:05:11.494089400|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+171330 [http-nio-8082-exec-3] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:08:27.714225300|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+215233 [http-nio-8082-exec-9] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:16:20.643649|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+265333 [http-nio-8082-exec-10] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:17:10.743984100|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+304533 [http-nio-8082-exec-4] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:17:49.944397300|com.agent.app.controllers.RegistrationController|java.lang.Exception 
+382198 [http-nio-8082-exec-9] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:19:07.608027300|com.agent.app.controllers.RegistrationController|org.springframework.security.authentication.BadCredentialsException: Bad credentials 
+411065 [http-nio-8082-exec-10] ERROR c.a.a.c.RegistrationController - 2022-06-17T23:19:36.476274700|com.agent.app.controllers.RegistrationController|java.lang.Exception 

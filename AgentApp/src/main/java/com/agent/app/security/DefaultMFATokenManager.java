@@ -7,6 +7,7 @@ import dev.samstevens.totp.qr.QrData;
 import dev.samstevens.totp.qr.QrGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.util.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,13 +15,13 @@ import javax.annotation.Resource;
 @Service("mfaTokenManager")
 public class DefaultMFATokenManager implements MFATokenManager{
 
-    @Resource
+    @Autowired
     private SecretGenerator secretGenerator;
 
-    @Resource
+    @Autowired
     private QrGenerator qrGenerator;
 
-    @Resource
+    @Autowired
     private CodeVerifier codeVerifier;
 
     @Override

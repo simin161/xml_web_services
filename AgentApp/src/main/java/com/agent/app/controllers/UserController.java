@@ -53,6 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/enable2FA")
+    @PreAuthorize("hasRole('ROLE_COMPANY')")
     public QRModel enable2FA(@RequestHeader("Authorization") HttpHeaders header) {
         QRModel model = new QRModel();
         String value = header.getFirst(HttpHeaders.AUTHORIZATION);
@@ -63,5 +64,13 @@ public class UserController {
     @PostMapping("/resendVerificationCode")
     public boolean resendVerificationCode(@RequestBody Map<String, String> email){
         return userService.resendVerificationCode(email.get("email"));
+    }
+
+    @PostMapping("/disable2FA")
+    @PreAuthorize("hasRole('ROLE_COMPANY')")
+    public boolean disable2FA(@RequestHeader("Authorization") HttpHeaders header) {
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        return userService.disable2FA(email);
     }
 }

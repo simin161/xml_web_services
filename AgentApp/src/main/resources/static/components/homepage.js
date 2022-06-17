@@ -3,7 +3,8 @@ Vue.component('homepage', {
 		return{	
 			logUser: {
 			    email: '',
-			    password: ''
+			    password: '',
+			    code: ''
 			},
             registerUser: {
                 firstName : "",
