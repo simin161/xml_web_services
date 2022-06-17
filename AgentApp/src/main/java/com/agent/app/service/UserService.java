@@ -93,6 +93,8 @@ public class UserService {
                         authorityList.add(authorityRepository.findById(1L).orElse(null));
                         authorityList.add(authorityRepository.findById(4L).orElse(null));
                         user.setAuthorities(authorityList);
+                        user.setUsing2FA(false);
+                        user.setSecret(mfaTokenManager.generateSecretKey());
                         user.setVerificationCode(saveVerificationCode());
                         userRepository.save(user);
                         sendVerificationEmail(user);
@@ -305,26 +307,5 @@ public class UserService {
             log.error(e.toString());
         }
         return retVal;
-    }
-
-    public MfaTokenData mfaSetup(String email) throws Exception {
-        User user = userRepository.findByEmail(email);
-        if(user==null){
-            throw new Exception("User not found");
-        }
-        return new MfaTokenData(mfaTokenManager.getQRCode(user.getSecret()), user.getSecret());
-    }
-
-    public QRModel enable2FA(String email, QRModel model){
-        try{
-            MfaTokenData mfaData = mfaSetup(email);
-            model.setQrCode(mfaData.getQrCode());
-            model.setQrCodeKey(mfaData.getMfaCode());
-            model.setQrCodeSetup("true");
-            return model;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return model;
     }
 }
