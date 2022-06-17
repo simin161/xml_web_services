@@ -38,7 +38,7 @@ Vue.component('homepage', {
                   <input type="text" placeholder="E-mail" v-model="user.email"/>
                   <input type="password" placeholder="Password" v-model="user.password"/>
                   <input type="password" placeholder="Confirm password" v-model="confirmPassword"/>
-                  <input type="button" :disabled="isRComplete" value="Register" @click="register"/>
+                  <input type="button"  value="Register" @click="register"/>
               </div>
          </div>
 

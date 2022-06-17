@@ -59,4 +59,9 @@ public class UserController {
         String email = tokenUtils.getUsernameFromToken(value);
         return userService.enable2FA(email, model);
     }
+
+    @PostMapping("/resendVerificationCode")
+    public boolean resendVerificationCode(@RequestBody Map<String, String> email){
+        return userService.resendVerificationCode(email.get("email"));
+    }
 }

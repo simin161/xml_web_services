@@ -8,6 +8,7 @@ import com.agent.app.service.CompanyService;
 import com.agent.app.service.CustomUserDetailsService;
 import com.agent.app.service.UserService;
 import com.agent.app.utility.LoggingStrings;
+import lombok.extern.slf4j.Slf4j;
 import com.agent.app.utility.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequestMapping(value="/api", produces= MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {
     @Autowired
@@ -44,7 +46,7 @@ public class RegistrationController {
     @Autowired
     private CompanyService companyService;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping("/registerCompany")
     @PreAuthorize("hasRole('ROLE_COMPANY')")
@@ -73,7 +75,7 @@ public class RegistrationController {
             // Vrati token kao odgovor na uspesnu autentifikaciju
             return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
         }catch(Exception e){
-            logger.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
+            log.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
         }
         return null;
     }

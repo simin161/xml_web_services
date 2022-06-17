@@ -4,8 +4,10 @@ import com.agent.app.model.JobOffer;
 import com.agent.app.repository.JobOfferRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.utility.Validation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,30 +17,43 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class JobOfferService {
     @Autowired
     private JobOfferRepository jobOfferRepository;
+    private String componentName = "|com.agent.app.service.JobOfferService|";
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    //protected final Log logger = LogFactory.getLog(getClass());
 
     public boolean createJobOffer(Map<String, String> message){
+        boolean retVal = false;
         try {
-            JobOffer jobOffer = new JobOffer();
-            jobOffer.setPosition(message.get("position"));
-            jobOffer.setJobDescription(message.get("jobDescription"));
-            jobOffer.setCompanyName(message.get("companyName"));
-            jobOffer.setCandidateRequirements(message.get("candidateRequirements"));
-            jobOffer.setDailyActivities(message.get("dailyActivities"));
-            jobOffer.setUserEmail(message.get("email"));
-            jobOffer.setUserAPIToken("");
-            if(Validation.checkIfEmptyJobOffer(jobOffer))
-                return false;
-            jobOfferRepository.save(jobOffer);
-            return true;
+            if(Validation.validateOnlyText(message.get("position"))
+                && Validation.validateNonBrackets(message.get("jobDescription"))
+                && Validation.validateNonBrackets(message.get("candidateRequirements"))
+                && Validation.validateNonBrackets(message.get("dailyActivities")) && Validation.validateTextWithNumbers(message.get("companyName"))) {
+                JobOffer jobOffer = new JobOffer();
+                jobOffer.setPosition(message.get("position"));
+                jobOffer.setJobDescription(message.get("jobDescription"));
+                jobOffer.setCompanyName(message.get("companyName"));
+                jobOffer.setCandidateRequirements(message.get("candidateRequirements"));
+                jobOffer.setDailyActivities(message.get("dailyActivities"));
+                jobOffer.setUserEmail(message.get("email"));
+                jobOffer.setUserAPIToken("");
+                if (Validation.checkIfEmptyJobOffer(jobOffer)) {
+                    log.info(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|User " + message.get("email") + " sent invalid data for job offer");
+                    return false;
+                }
+                jobOfferRepository.save(jobOffer);
+                retVal = true;
+            }else{
+                log.info(LocalDateTime.now().toString() + componentName + "User " + message.get("email") + " sent invalid data for job offer");
+            }
         }catch(Exception e){
-            logger.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
-            return false;
+            log.error(LocalDateTime.now().toString() + componentName + e.toString());
+            retVal = false;
         }
+        return retVal;
     }
 
     public boolean setUserAPIToken(Map<String, String> message) {
@@ -47,14 +62,19 @@ public class JobOfferService {
             if(jobOffer == null){
                 return false;
             }else{
-                jobOffer.setUserAPIToken(message.get("userAPIToken"));
-                jobOfferRepository.save(jobOffer);
-                return true;
+                if(Validation.validateNonBrackets(message.get("userAPIToken"))) {
+                    jobOffer.setUserAPIToken(message.get("userAPIToken"));
+                    jobOfferRepository.save(jobOffer);
+                    return true;
+                }else{
+                    log.info(LocalDateTime.now().toString() + componentName + "Invalid API token has been received");
+                }
             }
         }catch(Exception e){
-            logger.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
+            log.error(LocalDateTime.now().toString() + "|com.agent.app.service.JobOfferService|" + e.toString());
             return false;
         }
+        return false;
     }
 
     public JobOffer findOfferById(String id) {

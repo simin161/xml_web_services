@@ -13,10 +13,16 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import beans.IssuerData;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+import utility.Log;
 
 public class KeyStoreReader {
 	//KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
@@ -30,9 +36,11 @@ public class KeyStoreReader {
 		try {
 			keyStore = KeyStore.getInstance("JKS", "SUN");
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		}
 	}
 	/**
@@ -58,17 +66,23 @@ public class KeyStoreReader {
 			X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
 			return new IssuerData(privKey, issuerName);
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (CertificateException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		}
 		return null;
 	}
@@ -89,17 +103,23 @@ public class KeyStoreReader {
 				return cert;
 			}
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (CertificateException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		}
 		return null;
 	}
@@ -120,19 +140,26 @@ public class KeyStoreReader {
 				return pk;
 			}
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (CertificateException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		} catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
+			Log.getMainLog().severe(e.toString());
+			Log.getErrorLog().severe(e.toString());
 		}
 		return null;
 	}

@@ -13,6 +13,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.eclipse.jetty.util.ssl.X509;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
+import utility.Log;
 
 import javax.lang.model.element.Name;
 import javax.security.auth.x500.X500Principal;
@@ -25,6 +26,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 public class CertificateService {
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").setPrettyPrinting().create();
@@ -35,12 +40,6 @@ public class CertificateService {
         boolean returnValue = false;
 
         try{
-            /*
-            * Prvo -> pronaci keyStore za ubaciti sertifikat -> izvuci pomocu ser broja (ali samo ako je root, inace jbg) --- ODRADJENO
-            * Drugo -> Kreiranje sertifikata/popunjavanje podacima (vrv manji problem) --- ODRADJENO
-            * Trece (vrv veci problem) -> Ubacivanje u chain --- ODRADJENO --- ZAPRAVO NIJE ODRADJENO< ALI NIJE NUZNO
-            * Cetvrto -> upis u keyStore --- ODRADJENO
-            */
             certificate.setRevocationStatus("OK");
             certificate.setCertificateStatus("OK");
             //CertificateDAO.getInstance().addCertificate(certificate);
@@ -124,6 +123,8 @@ public class CertificateService {
             returnValue = true;
 
         }catch(Exception e){
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
             returnValue = false;
         }
 
@@ -149,6 +150,9 @@ public class CertificateService {
     private void writeBytesToFile(String fileOutput, byte[] bytes) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(fileOutput)) {
             fos.write(bytes);
+        }catch(Exception e){
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
     }
 
@@ -169,7 +173,8 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
 
         return null;
@@ -193,7 +198,8 @@ public class CertificateService {
             name = new JcaX509CertificateHolder(cert).getSubject();
             return name;
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }
@@ -213,7 +219,8 @@ public class CertificateService {
                         }                    }
                 }
             }catch(Exception e){
-                e.printStackTrace();
+                Log.getMainLog().severe(e.toString());
+                Log.getErrorLog().severe(e.toString());
             }
 
         return null;
@@ -243,7 +250,8 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
 
         return keystores;
@@ -272,7 +280,8 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }
@@ -294,7 +303,8 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
 
         List<X509Certificate> allCertificates = new ArrayList<X509Certificate>();
@@ -306,7 +316,8 @@ public class CertificateService {
                 ++i;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
         return allCertificates;
     }
@@ -342,7 +353,8 @@ public class CertificateService {
             }
             System.out.println("-----------------------------------------------------------------------------------");
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
     }
 
@@ -403,7 +415,8 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Log.getMainLog().severe(e.toString());
+            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }
@@ -468,14 +481,7 @@ public class CertificateService {
     }
 
     public boolean invalidateCertificate(CertificateView certificateView){
-
-       // boolean retVal = CertificateStatusDAO.getInstance().invalidateCertificate(certificateView.getSerialNumber());
-       // if(retVal){
             return invalidateBelow(certificateView.getSerialNumber());
-       // }
-
-      //  return false;
-
     }
 
     private boolean invalidateBelow(String serialNumber) {
@@ -499,7 +505,6 @@ public class CertificateService {
         }
         CertificateStatusDAO.getInstance().invalidateCertificate(serialNumber); //to invalidate the passed one
         return true;
-
     }
 
 

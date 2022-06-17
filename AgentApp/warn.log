@@ -1,0 +1,354 @@
+54522 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+85113 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+87066 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+87077 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+62995 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+63144 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+63565 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+63587 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+65420 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+65730 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+65732 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+66500 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+66863 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+66867 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+67454 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+67798 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+67800 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+68214 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+68531 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+68532 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+68786 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+69145 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69146 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69319 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+69648 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69649 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69963 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+70253 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70255 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70445 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+70749 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70749 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+71033 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+71356 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+71360 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+71576 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+71960 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+71962 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+72187 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+72547 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+72549 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+72722 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+73080 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+73080 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+73325 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+73681 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+73683 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+91207 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+91592 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+91595 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+91733 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+92114 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+92116 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+92257 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+92628 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+92630 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+92806 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+93163 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+93165 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+93216 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+93781 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+93783 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+93932 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+94233 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+94234 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+94311 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+94655 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+94657 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+94845 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+95151 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+95152 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+95201 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+95700 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+95701 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+95888 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+96201 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+96204 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+96250 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+96652 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+96654 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+96764 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+97190 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+97192 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+97299 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+97702 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+97704 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+97890 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+98218 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+98219 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+98269 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+98615 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+98616 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+98688 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+99152 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+99153 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+99264 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+99692 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+99693 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+99848 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+100282 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+100283 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+100378 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+100690 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+100691 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+138572 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+138847 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+138849 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+138924 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+139309 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+139311 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+139522 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+139889 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+139890 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+140103 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+140443 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+140445 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+140545 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+140932 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+140933 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+141181 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+141466 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+141467 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+141583 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+141925 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+141927 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+141978 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+142278 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+142281 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+142456 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+142795 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+142799 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+142901 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+143209 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+143210 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+143317 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+143680 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+143682 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+143777 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+144139 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+144141 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+144209 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+144487 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+144488 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+144655 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+144919 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+144920 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+145074 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+145357 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+145359 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+145455 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+145837 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+145839 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+146002 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+146258 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+146259 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+146404 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+146707 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+146708 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+146872 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+147157 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+147158 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+147304 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+147629 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+147632 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+147689 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+148007 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+148008 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+148086 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+148411 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+148413 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+204689 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+204970 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+204973 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+206416 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+206677 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+206679 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+206777 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+207033 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+207034 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+207170 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+207477 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+207481 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+207686 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+207934 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+207937 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+208085 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+208357 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+208358 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+208433 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+208735 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+208737 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+208825 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+209099 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+209101 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+209228 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+209597 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+209599 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+209649 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+209996 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+209997 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+210038 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+210417 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+210419 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+210556 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+210990 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+210992 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+229991 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+230363 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+230364 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+230547 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+230857 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+230858 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+230936 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+231249 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+231250 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+231324 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+231647 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+231648 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+231742 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+232036 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232039 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232113 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+232406 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232408 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232557 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+232872 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232874 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+232943 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+233221 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+233222 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+233323 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+233570 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+233571 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+233771 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+234086 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234087 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234177 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+234430 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234432 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234575 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+234886 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234887 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+234978 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+235286 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+235287 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+235349 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+235801 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+235803 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+235979 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+236259 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+236260 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+236431 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+236685 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+236686 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+236926 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+237188 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+237189 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+237385 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+237658 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+237659 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+237811 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+238096 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238099 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238209 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+238520 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238521 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238585 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+238890 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238891 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+238942 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+239277 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+239280 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+239497 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+239792 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+239795 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+33466 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+34122 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+34154 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+34357 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+34990 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+34992 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+35182 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+35774 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+35777 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+36003 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+36342 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+36344 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+36870 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+37391 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+37403 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+54966 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+57311 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+63502 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+63503 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+64421 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+67256 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+68533 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70552 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70555 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+72041 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+76242 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+87771 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+37104 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+39353 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+61884 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+65742 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+65958 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+65974 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+68552 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+68993 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69004 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69574 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+69866 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69870 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+69985 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+70335 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70337 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70561 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+70833 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+70836 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+82861 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+82901 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+83127 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+83128 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+83342 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+83614 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+83617 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+83771 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+84025 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+84026 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+84209 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+84499 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+84503 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+84707 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+84992 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+84994 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+85169 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+85555 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+85556 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+85678 [http-nio-8082-exec-7] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+85972 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+85974 [http-nio-8082-exec-8] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+86006 [http-nio-8082-exec-9] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+86403 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+86404 [http-nio-8082-exec-10] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+87972 [http-nio-8082-exec-1] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+88207 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+88208 [http-nio-8082-exec-2] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+88662 [http-nio-8082-exec-4] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+88910 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+88912 [http-nio-8082-exec-5] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+89345 [http-nio-8082-exec-3] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No authentication token 
+89564 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 
+89566 [http-nio-8082-exec-6] WARN  c.a.a.s.a.TokenAuthenticationFilter - WARN - No username in token 

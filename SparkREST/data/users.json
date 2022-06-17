@@ -7,7 +7,24 @@
     "countryId": "AZ",
     "email": "admin@admin.com",
     "userType": "ADMIN",
-    "password": "admin"
+    "password": "admin",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "aaa",
@@ -17,7 +34,24 @@
     "countryId": "aaaa",
     "email": "aaa@aa.com",
     "userType": "REGULAR_USER",
-    "password": "aaa"
+    "password": "aaa",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "bbb",
@@ -27,7 +61,24 @@
     "countryId": "bbb",
     "email": "bbb@bb.com",
     "userType": "REGULAR_USER",
-    "password": "bbb"
+    "password": "bbb",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "david",
@@ -37,7 +88,24 @@
     "countryId": "2",
     "email": "david.jandric@gmail.com",
     "userType": "REGULAR_USER",
-    "password": "jasmo"
+    "password": "jasmo",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "d",
@@ -47,6 +115,170 @@
     "countryId": "1",
     "email": "d@d.com",
     "userType": "ADMIN",
-    "password": "d"
+    "password": "d",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "d",
+    "lastName": "d",
+    "organizationName": "d",
+    "organizationUnit": "d",
+    "countryId": "d",
+    "email": "david_jandric@hotmail.com",
+    "userType": "REGULAR_USER",
+    "password": "d",
+    "verificationCode": {},
+    "activated": true
+  },
+  {
+    "firstName": "sdf",
+    "lastName": "fa",
+    "organizationName": "fdas",
+    "organizationUnit": "fdas",
+    "countryId": "fas",
+    "email": "shmepard@gmail.com",
+    "userType": "REGULAR_USER",
+    "password": "a",
+    "verificationCode": {
+      "code": "CEARVDgaUxbkAx4PKPnb7FoyTufZzOkezp0h82uThOAVyVkqvgC2tR6KXpzc4Qx0",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 20,
+          "minute": 55,
+          "second": 29,
+          "nano": 31000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "sdfa",
+    "lastName": "dfasdf",
+    "organizationName": "asdfa",
+    "organizationUnit": "sdfas",
+    "countryId": "sdfasdfa",
+    "email": "s@d.om",
+    "userType": "REGULAR_USER",
+    "password": "dfasdfa",
+    "verificationCode": {
+      "code": "6NgdOE5cc7iuCp3ie3JzJnXMZf95E42teDV55pdA1vtUBVcZO4941fC9ImtXVNEX",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 21,
+          "minute": 8,
+          "second": 18,
+          "nano": 677000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "sd",
+    "lastName": "d",
+    "organizationName": "d",
+    "organizationUnit": "dd",
+    "countryId": "d",
+    "email": "d",
+    "userType": "REGULAR_USER",
+    "password": "d",
+    "verificationCode": {
+      "code": "iy5ISmNM4qpG9yPNs1xd3TPGAZfTLWdELmFdCicw0qrMKUipvw2o6fcSHQLpQfPP",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 21,
+          "minute": 10,
+          "second": 24,
+          "nano": 533000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "sdfa",
+    "lastName": "dfasd",
+    "organizationName": "fasdf",
+    "organizationUnit": "asdfas",
+    "countryId": "dfasdf",
+    "email": "asdfa",
+    "userType": "REGULAR_USER",
+    "password": "sdfasd",
+    "verificationCode": {
+      "code": "K0BsdL8ReCKrwDyyRXIZKn422qW5TOvBwOAfc8UMAhUCSvngmnhZ4b",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 21,
+          "minute": 12,
+          "second": 48,
+          "nano": 779000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "sdfa",
+    "lastName": "dfasdf",
+    "organizationName": "asdfas",
+    "organizationUnit": "dfasdfa",
+    "countryId": "dfasdf",
+    "email": "asdfasd",
+    "userType": "REGULAR_USER",
+    "password": "fasdfasd",
+    "verificationCode": {
+      "code": "9znicBuraocOh2d4tD1jFMjaeklKqOiBiUJX1PznZMhhRHiOzkO",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 21,
+          "minute": 16,
+          "second": 25,
+          "nano": 651000000
+        }
+      }
+    },
+    "activated": false
   }
 ]
