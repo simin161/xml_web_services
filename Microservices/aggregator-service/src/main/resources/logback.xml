@@ -25,7 +25,7 @@
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
-    <appender name="INFO-FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="INFO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
@@ -48,7 +48,7 @@
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
-    <appender name="WARN-FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="WARN-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
@@ -71,7 +71,7 @@
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
-    <appender name="ERROR-FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
