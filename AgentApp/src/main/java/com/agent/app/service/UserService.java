@@ -2,6 +2,7 @@ package com.agent.app.service;
 
 import com.agent.app.model.Authority;
 import com.agent.app.model.User;
+import com.agent.app.model.VerificationCode;
 import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.security.DefaultMFATokenManager;
@@ -93,26 +94,7 @@ public class UserService {
                 return false;
             }
         }
-        if (userRepository.findByEmail(message.get("email")) != null)
-            return false;
-        try {
-            User user = new User();
-            user.setPassword(passwordEncoder.encode(message.get("password")));
-            user.setEmail(message.get("email"));
-            user.setFirstName(message.get("firstName"));
-            user.setLastName(message.get("lastName"));
-            List<Authority> authorityList = new ArrayList<>();
-            authorityList.add(authorityRepository.findById(1L).orElse(null));
-            authorityList.add(authorityRepository.findById(4L).orElse(null));
-            user.setAuthorities(authorityList);
-            user.setUsing2FA(false);
-            user.setSecret(mfaTokenManager.generateSecretKey());
-            user.setVerificationCode(RandomString.make(64));
-            userRepository.save(user);
-            sendVerificationEmail(user);
-        } catch (Exception e) {
-            return false;
-        }
+        return false;
     }
     private VerificationCode saveVerificationCode(){
         VerificationCode code = new VerificationCode(RandomString.make(64));
