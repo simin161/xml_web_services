@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/enable2FA")
-    public QRModel enable2FA(@RequestHeader("Authorization") HttpHeaders header){
+    public QRModel enable2FA(@RequestHeader("Authorization") HttpHeaders header) {
         QRModel model = new QRModel();
         String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         String email = tokenUtils.getUsernameFromToken(value);

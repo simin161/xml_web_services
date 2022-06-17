@@ -7,12 +7,16 @@ import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
 import com.agent.app.security.DefaultMFATokenManager;
 import com.agent.app.security.MfaTokenData;
-import com.agent.app.repository.VerificationCodeRepository;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.QRModel;
 import com.agent.app.utility.LoggingStrings;
 import com.agent.app.utility.Validation;
 import dev.samstevens.totp.exceptions.QrGenerationException;
+import lombok.extern.slf4j.Slf4j;
+import com.agent.app.repository.VerificationCodeRepository;
+import com.agent.app.security.TokenUtils;
+import com.agent.app.utility.LoggingStrings;
+import com.agent.app.utility.Validation;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
@@ -30,6 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +45,7 @@ import java.util.Properties;
 @Service
 @Slf4j
 public class UserService {
+    private static final Object APP_NAME = "Agent App";
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -53,6 +60,7 @@ public class UserService {
     private TokenUtils tokenUtils;
     @Autowired
     private DefaultMFATokenManager mfaTokenManager;
+
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
@@ -67,35 +75,40 @@ public class UserService {
     }
 
     public boolean addUser(Map<String, String> message) {
-        if (Validation.validateEmail(message.get("email"))) {
-            if (userRepository.findByEmail(message.get("email")) != null)
-                return false;
-            try {
-                if (Validation.validatePassword(message.get("password")) && Validation.validateName(message.get("firstName"))
-                        && Validation.validateName(message.get("lastName"))) {
-                    User user = new User();
-                    user.setPassword(passwordEncoder.encode(message.get("password")));
-                    user.setEmail(message.get("email"));
-                    user.setFirstName(message.get("firstName"));
-                    user.setLastName(message.get("lastName"));
-                    List<Authority> authorityList = new ArrayList<>();
-                    authorityList.add(authorityRepository.findById(1L).orElse(null));
-                    authorityList.add(authorityRepository.findById(4L).orElse(null));
-                    user.setUsing2FA(false);
-                    user.setSecret(mfaTokenManager.generateSecretKey());
-                    user.setAuthorities(authorityList);
-                    user.setVerificationCode(saveVerificationCode());
-                    userRepository.save(user);
-                    sendVerificationEmail(user);
-                    return true;
+        if (userRepository.findByEmail(message.get("email")) != null)
+            return false;
+        try {
+            if (Validation.validateEmail(message.get("email"))) {
+                if (userRepository.findByEmail(message.get("email")) != null)
+                    return false;
+                try {
+                    if (Validation.validatePassword(message.get("password")) && Validation.validateName(message.get("firstName"))
+                            && Validation.validateName(message.get("lastName"))) {
+                        User user = new User();
+                        user.setPassword(passwordEncoder.encode(message.get("password")));
+                        user.setEmail(message.get("email"));
+                        user.setFirstName(message.get("firstName"));
+                        user.setLastName(message.get("lastName"));
+                        List<Authority> authorityList = new ArrayList<>();
+                        authorityList.add(authorityRepository.findById(1L).orElse(null));
+                        authorityList.add(authorityRepository.findById(4L).orElse(null));
+                        user.setAuthorities(authorityList);
+                        user.setVerificationCode(saveVerificationCode());
+                        userRepository.save(user);
+                        sendVerificationEmail(user);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    log.error(LoggingStrings.getAuthenticationFailed(componentName, message.get("email")));
+                    return false;
                 }
-            } catch (Exception e) {
-                log.error(LoggingStrings.getAuthenticationFailed(componentName, message.get("email")));
-                return false;
             }
+        } catch (Exception e) {
+            return false;
         }
         return false;
     }
+
     private VerificationCode saveVerificationCode(){
         VerificationCode code = new VerificationCode(RandomString.make(64));
         verificationCodeRepository.save(code);
@@ -248,6 +261,27 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public MfaTokenData mfaSetup(String email) throws Exception {
+        User user = userRepository.findByEmail(email);
+        if(user==null){
+            throw new Exception("User not found");
+        }
+        return new MfaTokenData(mfaTokenManager.getQRCode(user.getSecret()), user.getSecret());
+    }
+
+    public QRModel enable2FA(String email, QRModel model){
+            try {
+                MfaTokenData mfaData = mfaSetup(email);
+                model.setQrCode(mfaData.getQrCode());
+                model.setQrCodeKey(mfaData.getMfaCode());
+                model.setQrCodeSetup("true");
+                return model;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return model;
     }
 
     public boolean resendVerificationCode(String email) {
