@@ -8,16 +8,18 @@ import com.google.gson.Gson;
 import dao.CertificateStatusDAO;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.apache.pdfbox.pdmodel.PDDocument;
+/*import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;*/
 import service.CertificateService;
 import service.UserService;
 import spark.Session;
 import utility.Validation;
 
+import javax.security.auth.login.Configuration;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.*;
@@ -51,7 +53,7 @@ public class SparkAppMain {
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		Date today = new Date();
 		DateFormat dateFormatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-		Date date = dateFormatter .parse(today.toString());
+		//Date date = dateFormatter .parse(today.toString());
 
 		get("/checkAndInvalidate", (req, res)->{
 			res.type("application/json");
@@ -99,9 +101,13 @@ public class SparkAppMain {
 			User user =  userService
 					.findUserByEmail(((User) gson.fromJson(req.body(), User.class)).getEmail());
 			if(user != null && user.getPassword().equals(((User) gson.fromJson(req.body(), User.class)).getPassword())) {
-				Session session = req.session(true);
-				session.attribute("loggedUser",user);
-				return true;
+				if(user.isActivated()){
+					Session session = req.session(true);
+					session.attribute("loggedUser",user);
+					return true;
+				}else{
+					return false;
+				}
 			}
 			return false;
 		});
@@ -109,12 +115,11 @@ public class SparkAppMain {
 		post("/register", (req, res)->{
 			res.type("application/json");
 			boolean returnValue = false;
-			if (userService.register((User) gson.fromJson(req.body(), User.class))) {
+			String url = req.url();
+			String path = req.uri();
+			String rootUrl = url.substring(0, url.length() - path.length());
+			if (userService.register((User) gson.fromJson(req.body(), User.class),rootUrl)) {
 				returnValue = true;
-
-				Session session = req.session(true);
-				session.attribute("loggedUser", userService
-						.findUserByEmail(((User) gson.fromJson(req.body(), User.class)).getEmail()));
 			}
 			return returnValue;
 		});
@@ -226,7 +231,7 @@ public class SparkAppMain {
 			return certificateService.checkIfUserHasCA(user.getEmail());
 		});
 
-		post("/getPdf", (req, res) ->{
+		/*post("/getPdf", (req, res) ->{
 			PDDocument pdfdoc= new PDDocument();
 			pdfdoc.addPage(new PDPage());
 			pdfdoc.addPage(new PDPage());
@@ -299,7 +304,7 @@ public class SparkAppMain {
 			pdfdoc.close();
 			return true;
 		});
-
+*/
 		post("/invalidateCertificate", (req, res)->{
 
 			res.type("application/json");
@@ -308,5 +313,16 @@ public class SparkAppMain {
 			return certificateService.invalidateCertificate(cert);
 
 		});
+
+		get("/verifyAccount", (req, res)->{
+
+			res.type("application/json");
+			String c = req.queryString();
+			String []cParts = c.split("=");
+			String code = cParts[1];
+			return userService.verifyAccount(code);
+
+		});
+
 	}
 }

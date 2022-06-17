@@ -1,6 +1,7 @@
 package dao;
 
 import beans.User;
+import beans.VerificationCode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -56,5 +57,14 @@ public class UserDao {
 
     public void addUser(User newUser) {
         allUsers.add(newUser);
+    }
+
+    public void activateUser(User userToActivate){
+        for(User u : allUsers){
+            if(u.getEmail().equals(userToActivate.getEmail())){
+                u.setActivated(true);
+                u.setVerificationCode(new VerificationCode());
+            }
+        }
     }
 }

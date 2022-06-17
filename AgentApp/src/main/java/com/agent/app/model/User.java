@@ -29,8 +29,9 @@ public class User implements UserDetails {
     private String password;
     @Column(name="apiToken")
     private String apiToken;
-    @Column(name="verificationCode")
-    private String verificationCode;
+    @OneToOne
+    @JoinColumn(name="verificationCode", referencedColumnName = "id")
+    private VerificationCode verificationCode;
     @Column(name="isActivated")
     private boolean isActivated;
     @Column(name="isUsing2FA")

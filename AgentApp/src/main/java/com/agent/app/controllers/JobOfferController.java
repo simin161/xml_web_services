@@ -5,6 +5,7 @@ import com.agent.app.security.TokenUtils;
 import com.agent.app.service.JobOfferService;
 import com.agent.app.service.UserService;
 import com.agent.app.utility.LoggingStrings;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(value="/api", produces= MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class JobOfferController {
     @Autowired
     private JobOfferService jobOfferService;
@@ -29,8 +31,8 @@ public class JobOfferController {
     @Autowired
     private TokenUtils tokenUtils;
 
-    @Autowired
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    /*@Autowired
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());*/
 
     @GetMapping("/getJobOffersForUser")
     @PreAuthorize("hasRole('ROLE_COMPANY_OWNER')")
@@ -72,7 +74,7 @@ public class JobOfferController {
             boolean response = Boolean.TRUE.equals(restTemplate.postForObject(uri, entity, boolean.class));
         }catch(Exception e){
             retVal = false;
-            logger.error(LocalDateTime.now().toString() + "|com.agent.app.controllers.JobOfferController|" + e.toString());
+            log.error(LocalDateTime.now().toString() + "|com.agent.app.controllers.JobOfferController|" + e.toString());
         }
         return retVal;
     }

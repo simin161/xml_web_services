@@ -7,7 +7,24 @@
     "countryId": "AZ",
     "email": "admin@admin.com",
     "userType": "ADMIN",
-    "password": "admin"
+    "password": "admin",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "aaa",
@@ -17,7 +34,24 @@
     "countryId": "aaaa",
     "email": "aaa@aa.com",
     "userType": "REGULAR_USER",
-    "password": "aaa"
+    "password": "aaa",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "bbb",
@@ -27,7 +61,24 @@
     "countryId": "bbb",
     "email": "bbb@bb.com",
     "userType": "REGULAR_USER",
-    "password": "bbb"
+    "password": "bbb",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "david",
@@ -37,7 +88,24 @@
     "countryId": "2",
     "email": "david.jandric@gmail.com",
     "userType": "REGULAR_USER",
-    "password": "jasmo"
+    "password": "jasmo",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
   },
   {
     "firstName": "d",
@@ -47,6 +115,35 @@
     "countryId": "1",
     "email": "d@d.com",
     "userType": "ADMIN",
-    "password": "d"
+    "password": "d",
+    "verificationCode": {
+      "code": "",
+      "dateOfCreation": {
+        "date": {
+          "year": 2022,
+          "month": 6,
+          "day": 16
+        },
+        "time": {
+          "hour": 19,
+          "minute": 20,
+          "second": 22,
+          "nano": 282000000
+        }
+      }
+    },
+    "activated": false
+  },
+  {
+    "firstName": "d",
+    "lastName": "d",
+    "organizationName": "d",
+    "organizationUnit": "d",
+    "countryId": "d",
+    "email": "david_jandric@hotmail.com",
+    "userType": "REGULAR_USER",
+    "password": "d",
+    "verificationCode": {},
+    "activated": true
   }
 ]
