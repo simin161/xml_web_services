@@ -6,6 +6,7 @@ const allOffers = {template: '<allOffers></allOffers>'}
 const comments = {template: '<comments></comments>'}
 const emailForm = {template: '<emailForm></emailForm>'}
 const changePassword = {template: '<changePassword></changePassword>'}
+const qrcode = {template: '<qrcode></qrcode>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -29,7 +30,8 @@ const router = new VueRouter({
                      component: emailForm
                  }
             ]},
-        { path: '/changePassword', component: changePassword}
+        { path: '/changePassword', component: changePassword},
+        { path: '/qrcode', component: qrcode}
 	  ]
 });
 

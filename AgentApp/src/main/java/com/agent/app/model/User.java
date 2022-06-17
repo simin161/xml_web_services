@@ -33,6 +33,10 @@ public class User implements UserDetails {
     private String verificationCode;
     @Column(name="isActivated")
     private boolean isActivated;
+    @Column(name="isUsing2FA")
+    private boolean isUsing2FA;
+    @Column(name="secret")
+    private String secret;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",

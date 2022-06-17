@@ -8,6 +8,8 @@ import com.agent.app.service.CompanyService;
 import com.agent.app.service.CustomUserDetailsService;
 import com.agent.app.service.UserService;
 import com.agent.app.utility.LoggingStrings;
+import com.agent.app.utility.Validation;
+import org.jboss.aerogear.security.otp.Totp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,6 +68,12 @@ public class RegistrationController {
 
             // Kreiraj token za tog korisnika
             User user = (User) authentication.getPrincipal();
+            if(user.isUsing2FA()){
+                Totp totp = new Totp(user.getSecret());
+                if(!Validation.isValidLong(cred.getCode()) || !totp.verify(cred.getCode())){
+                    throw new BadCredentialsException("Invalid verification code");
+                }
+            }
             String jwt = tokenUtils.generateToken(user.getEmail());
             int expiresIn = tokenUtils.getExpiredIn();
 

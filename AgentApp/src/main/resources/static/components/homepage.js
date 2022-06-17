@@ -35,6 +35,7 @@ template: `
                     <h1 style="text-align: left; color: #3e214f">Log in</h1>
                      <input class="form-control" type="text" placeholder="E-mail" v-model="logUser.email"/>
                      <input class="form-control" type="password" placeholder="Password" v-model="logUser.password"/>
+                     <input class="form-control" type="text"  placeholder="Google Auth Code" v-model="logUser.code"/>
                      <button :disabled="isLogComplete" class="btn" id="buttonPurple"  @click="signIn">Sign in</button>
                      <a href="#/passwordless">Passwordless</a>
                      <a href="#/forgottenPassword">Forgotten password?</a>

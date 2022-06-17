@@ -7,6 +7,7 @@ import com.agent.app.repository.UserRepository;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.Validation;
 import net.bytebuddy.utility.RandomString;
+import org.jboss.aerogear.security.otp.api.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,6 +18,8 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.Properties;
 
 @Service
 public class UserService {
+    private static final Object APP_NAME = "Agent App";
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -38,6 +42,7 @@ public class UserService {
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
+    public static String QR_PREFIX= "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
 
     public String getUserApiToken(String email){
         User user = userRepository.findByEmail(email);
@@ -60,6 +65,8 @@ public class UserService {
         authorityList.add(authorityRepository.findById(1L).orElse(null));
         authorityList.add(authorityRepository.findById(4L).orElse(null));
         user.setAuthorities(authorityList);
+        user.setUsing2FA(false);
+        user.setSecret(Base32.random());
         user.setVerificationCode(RandomString.make(64));
         userRepository.save(user);
         sendVerificationEmail(user);
@@ -206,5 +213,11 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public String generateQRUrl(User user) throws UnsupportedEncodingException {
+        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s",
+                APP_NAME, user.getEmail(), user.getSecret(), APP_NAME),
+                StandardCharsets.UTF_8);
     }
 }

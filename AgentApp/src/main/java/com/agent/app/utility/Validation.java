@@ -2,6 +2,7 @@ package com.agent.app.utility;
 
 import com.agent.app.model.JobOffer;
 
+import java.text.NumberFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,4 +52,12 @@ public class Validation {
                 || jobOfferDto.getPosition().equals("");
     }
 
+    public static boolean isValidLong(String code){
+        try{
+            Long.parseLong(code);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
 }
