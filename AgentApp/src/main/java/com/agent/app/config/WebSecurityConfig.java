@@ -1,6 +1,5 @@
 package com.agent.app.config;
 
-import com.agent.app.security.CustomWebAuthenticationDetailsSource;
 import com.agent.app.security.TokenUtils;
 import com.agent.app.security.auth.RestAuthenticationEntryPoint;
 import com.agent.app.security.auth.TokenAuthenticationFilter;
@@ -24,9 +23,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
 
     // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
     // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
@@ -89,7 +85,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // zbog jednostavnosti primera
         http.csrf().disable();
 
-        //http.formLogin().authenticationDetailsSource(authenticationDetailsSource);
     }
 
     // Generalna bezbednost aplikacije

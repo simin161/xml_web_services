@@ -2,11 +2,13 @@ package com.agent.app.controllers;
 
 import com.agent.app.security.TokenUtils;
 import com.agent.app.service.UserService;
+import com.agent.app.utility.QRModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -48,5 +50,13 @@ public class UserController {
     @PostMapping("/changePassword")
     public boolean changePassword(@RequestHeader("Authorization") HttpHeaders header, @RequestBody Map<String, String> password){
         return userService.changePassword(tokenUtils.getUsernameFromToken(header.getFirst(HttpHeaders.AUTHORIZATION)), password.get("password"));
+    }
+
+    @PostMapping("/enable2FA")
+    public QRModel enable2FA(@RequestHeader("Authorization") HttpHeaders header){
+        QRModel model = new QRModel();
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        return userService.enable2FA(email, model);
     }
 }

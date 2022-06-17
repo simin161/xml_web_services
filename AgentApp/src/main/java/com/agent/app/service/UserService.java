@@ -4,15 +4,19 @@ import com.agent.app.model.Authority;
 import com.agent.app.model.User;
 import com.agent.app.repository.AuthorityRepository;
 import com.agent.app.repository.UserRepository;
+import com.agent.app.security.DefaultMFATokenManager;
+import com.agent.app.security.MfaTokenData;
 import com.agent.app.security.TokenUtils;
+import com.agent.app.utility.QRModel;
 import com.agent.app.utility.Validation;
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import net.bytebuddy.utility.RandomString;
-import org.jboss.aerogear.security.otp.api.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -39,10 +43,11 @@ public class UserService {
     private JavaMailSender mailSender;
     @Autowired
     private TokenUtils tokenUtils;
+    @Autowired
+    private DefaultMFATokenManager mfaTokenManager;
     private String fromAddress = "dislinkt_team_23@yahoo.com";
     private String senderName = "Dislinkt";
     private String footer = "Thank you, <br> Dislinkt Team.";
-    public static String QR_PREFIX= "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
 
     public String getUserApiToken(String email){
         User user = userRepository.findByEmail(email);
@@ -66,7 +71,7 @@ public class UserService {
         authorityList.add(authorityRepository.findById(4L).orElse(null));
         user.setAuthorities(authorityList);
         user.setUsing2FA(false);
-        user.setSecret(Base32.random());
+        user.setSecret(mfaTokenManager.generateSecretKey());
         user.setVerificationCode(RandomString.make(64));
         userRepository.save(user);
         sendVerificationEmail(user);
@@ -215,9 +220,24 @@ public class UserService {
         return false;
     }
 
-    public String generateQRUrl(User user) throws UnsupportedEncodingException {
-        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s",
-                APP_NAME, user.getEmail(), user.getSecret(), APP_NAME),
-                StandardCharsets.UTF_8);
+    public MfaTokenData mfaSetup(String email) throws Exception {
+        User user = userRepository.findByEmail(email);
+        if(user==null){
+            throw new Exception("User not found");
+        }
+        return new MfaTokenData(mfaTokenManager.getQRCode(user.getSecret()), user.getSecret());
+    }
+
+    public QRModel enable2FA(String email, QRModel model){
+        try{
+            MfaTokenData mfaData = mfaSetup(email);
+            model.setQrCode(mfaData.getQrCode());
+            model.setQrCodeKey(mfaData.getMfaCode());
+            model.setQrCodeSetup("true");
+            return model;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return model;
     }
 }
