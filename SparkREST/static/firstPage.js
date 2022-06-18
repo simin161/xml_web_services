@@ -39,7 +39,7 @@ Vue.component('firstpage', {
     	        <input type="button" value="Show all certificates" @click="showAllCertsFun"/>
     	        <input type="button" value="Check validity" @click="check"/>
     	      </div>
-              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0 && hasCA || user.userType==='ADMIN'">
+              <div style="margin-left: auto; margin-right:auto; width:30%;" v-show="showCreate != 0">
                 <p>KREIRAJ</p>
                 <table>
                 					</br>
@@ -240,14 +240,14 @@ Vue.component('firstpage', {
             this.showAllCerts = 0;
 
             axios.get("/getUsers")
-                 .then(response => {this.users = response.data})
-
-            axios.get("/getAllCertsForDropDown")
-                 .then(response=>(this.certificates = response.data))
-
-            axios.get("/checkCA")
-                 .then(response => (this.hasCA = response.data))
-
+                 .then(response => {
+                    this.users = response.data
+                    axios.get("/getAllCertsForDropDown")
+                                     .then(response=>{this.certificates = response.data
+                                      axios.get("/checkCA")
+                                                      .then(response => (this.hasCA = response.data))
+                                                      })
+                 })
         },
         fillInputFields : function(){
             this.certificate.givenName = this.certificate.receiver.firstName;

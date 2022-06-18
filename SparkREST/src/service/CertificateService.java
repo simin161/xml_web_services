@@ -10,13 +10,8 @@ import dao.KeyStoreNameDAO;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-import org.eclipse.jetty.util.ssl.X509;
 import sun.security.tools.keytool.CertAndKeyGen;
-import sun.security.x509.X500Name;
-import utility.Log;
 
-import javax.lang.model.element.Name;
-import javax.security.auth.x500.X500Principal;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
@@ -26,10 +21,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 public class CertificateService {
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").setPrettyPrinting().create();
@@ -123,8 +114,6 @@ public class CertificateService {
             returnValue = true;
 
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
             returnValue = false;
         }
 
@@ -151,8 +140,6 @@ public class CertificateService {
         try (FileOutputStream fos = new FileOutputStream(fileOutput)) {
             fos.write(bytes);
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
     }
 
@@ -173,8 +160,6 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
 
         return null;
@@ -198,8 +183,6 @@ public class CertificateService {
             name = new JcaX509CertificateHolder(cert).getSubject();
             return name;
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }
@@ -219,8 +202,6 @@ public class CertificateService {
                         }                    }
                 }
             }catch(Exception e){
-                Log.getMainLog().severe(e.toString());
-                Log.getErrorLog().severe(e.toString());
             }
 
         return null;
@@ -250,8 +231,6 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
 
         return keystores;
@@ -280,8 +259,6 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }
@@ -303,8 +280,6 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
 
         List<X509Certificate> allCertificates = new ArrayList<X509Certificate>();
@@ -316,8 +291,6 @@ public class CertificateService {
                 ++i;
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
         return allCertificates;
     }
@@ -353,8 +326,6 @@ public class CertificateService {
             }
             System.out.println("-----------------------------------------------------------------------------------");
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
     }
 
@@ -415,8 +386,6 @@ public class CertificateService {
                 }
             }
         }catch(Exception e){
-            Log.getMainLog().severe(e.toString());
-            Log.getErrorLog().severe(e.toString());
         }
         return null;
     }

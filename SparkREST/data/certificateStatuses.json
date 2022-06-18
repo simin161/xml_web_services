@@ -57,7 +57,7 @@
   },
   {
     "certificateSerialNumber": 1817971909,
-    "status": "VALID"
+    "status": "INVALID"
   },
   {
     "certificateSerialNumber": 1553791714,
@@ -65,10 +65,14 @@
   },
   {
     "certificateSerialNumber": 924482276,
-    "status": "VALID"
+    "status": "INVALID"
   },
   {
     "certificateSerialNumber": 545382145,
+    "status": "INVALID"
+  },
+  {
+    "certificateSerialNumber": 1736182777,
     "status": "VALID"
   }
 ]

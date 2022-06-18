@@ -1,7 +1,5 @@
 package service;
 
-import utility.Log;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,11 +24,7 @@ public class KeyStoreWriter {
 		try {
 			keyStore = KeyStore.getInstance("JKS", "SUN");
 		} catch (KeyStoreException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchProviderException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		}
 	}
 	
@@ -43,17 +37,9 @@ public class KeyStoreWriter {
 				keyStore.load(null, password);
 			}
 		} catch (NoSuchAlgorithmException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (CertificateException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (FileNotFoundException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (IOException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		}
 	}
 	
@@ -61,20 +47,10 @@ public class KeyStoreWriter {
 		try {
 			keyStore.store(new FileOutputStream(fileName), password);
 		} catch (KeyStoreException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (CertificateException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (FileNotFoundException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		} catch (IOException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		}
 	}
 	
@@ -82,8 +58,6 @@ public class KeyStoreWriter {
 		try {
 			keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
 		} catch (KeyStoreException e) {
-			Log.getMainLog().severe(e.toString());
-			Log.getErrorLog().severe(e.toString());
 		}
 	}
 }

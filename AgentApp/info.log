@@ -35,3 +35,6 @@
 2237 [main] INFO  com.agent.app.Application - Starting Application using Java 17.0.1 on DESKTOP-I5JMDPB with PID 10940 (D:\FTN\xml i besp\xml_web_services\AgentApp\target\classes started by ACER in D:\FTN\xml i besp\xml_web_services\AgentApp) 
 2243 [main] INFO  com.agent.app.Application - No active profile set, falling back to default profiles: default 
 25931 [main] INFO  com.agent.app.Application - Started Application in 24.906 seconds (JVM running for 26.985) 
+1665 [main] INFO  com.agent.app.Application - Starting Application using Java 17.0.2 on DESKTOP-RR5HUAB with PID 38696 (D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp\target\classes started by User in D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp) 
+1668 [main] INFO  com.agent.app.Application - No active profile set, falling back to default profiles: default 
+36970 [main] INFO  com.agent.app.Application - Started Application in 36.204 seconds (JVM running for 37.596) 
