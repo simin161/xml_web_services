@@ -107,6 +107,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     .setIsEnabled(String.valueOf(user.isActivated()))
                     .setResult(user.getId().toString())
                     .setUserAPIToken(user.getUserAPItoken())
+                    .setSecret(user.getSecret())
+                    .setIsUsing2FA(user.isUsing2FA())
                     .build();
         }
         responseObserver.onNext(output);

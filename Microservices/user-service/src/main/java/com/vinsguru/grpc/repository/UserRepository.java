@@ -95,6 +95,7 @@ public class UserRepository {
             retVal.setActivated(foundUser.getBoolean("isActivated"));
             retVal.setUserAPItoken(foundUser.getString("userAPItoken"));
             retVal.setSecret(foundUser.getString("secret"));
+            retVal.setUsing2FA(foundUser.getBoolean("using2FA"));
         }
         return retVal;
     }

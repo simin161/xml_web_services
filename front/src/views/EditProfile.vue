@@ -197,7 +197,7 @@
                              localStorage.getItem("loggedUser");
         axios.post(process.env.VUE_APP_BACK + 'enable2FA')
         .then((response)=>{
-            this.qrCodeKey = response.data.secret;
+            this.qrCodeKey = response.data;
         })
     },
       navigateToChangePassword: function(){

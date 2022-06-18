@@ -89,6 +89,18 @@ public class AggregatorController {
 
                 // Kreiraj token za tog korisnika
                 User user = (User) authentication.getPrincipal();
+
+                try{
+                    if(user.isUsing2FA()){
+                        if(!cred.getCode().equals(UsersService.getTOTPCode(user.getSecret()))){
+                            throw new Exception();
+                        }
+                    }
+                }catch(Exception e){
+                    log.error(LoggingStrings.getAuthenticationFailed("com.agent.app.controllers.RegistrationController", e.toString()));
+                    return null;
+                }
+
                 String jwt = tokenUtils.generateToken(user.getEmail(), "ROLE_REG_USER");
                 int expiresIn = tokenUtils.getExpiredIn();
 

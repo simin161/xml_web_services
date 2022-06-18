@@ -16,6 +16,16 @@ public class User implements UserDetails {
     }
     private String id;
     private List<Permission> perm;
+    private boolean isUsing2FA;
+    private String secret;
+
+    public boolean isUsing2FA() {
+        return isUsing2FA;
+    }
+
+    public void setUsing2FA(boolean using2FA) {
+        isUsing2FA = using2FA;
+    }
 
     public void setPerm(List<Permission> perm) {
         this.perm = perm;
@@ -81,4 +91,12 @@ public class User implements UserDetails {
     }
 
     public void setEnabled(boolean enabled){ this.isEnabled = enabled;}
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret){
+        this.secret= secret;
+    }
 }

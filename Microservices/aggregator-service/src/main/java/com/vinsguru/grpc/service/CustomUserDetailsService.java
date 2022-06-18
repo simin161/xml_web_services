@@ -42,6 +42,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setPassword(result.getPassword());
             user.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
             user.setId(result.getResult());
+            user.setSecret(result.getSecret());
+            user.setUsing2FA(result.getIsUsing2FA());
             List<Authority> a = new ArrayList<>();
             Authority auth = new Authority("ROLE_REG_USER");
             Permission perm = new Permission("READ");

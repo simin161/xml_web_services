@@ -16,8 +16,10 @@ import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.utility.Validation;
 
+import de.taimos.totp.TOTP;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -392,5 +394,12 @@ public class UsersService {
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    public static String getTOTPCode(String secretKey) {
+        Base32 base32 = new Base32();
+        byte[] bytes = base32.decode(secretKey);
+        String hexKey = Hex.encodeHexString(bytes);
+        return TOTP.getOTP(hexKey);
     }
 }

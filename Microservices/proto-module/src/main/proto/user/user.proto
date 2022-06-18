@@ -87,6 +87,8 @@ message Output {
   string skills = 13;
   string isEnabled = 14;
   string userAPIToken = 15;
+  string secret= 16;
+  bool isUsing2FA = 17;
 }
 message OutputMessage {
   string outputMessage = 1;

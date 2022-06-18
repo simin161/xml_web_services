@@ -33,6 +33,7 @@
               <label htmlFor="chk" aria-hidden="true">Sign In</label>
               <input  style="margin-top: 10px; margin-left: 70px" type="email" v-model="logDto.email" id="emailLog" name="email" placeholder="Email" required/>
               <input style="margin-top: 10px; margin-left: 70px"   type="password" v-model="logDto.password" id="passwordLog" name="pswd" placeholder="Password" required/>
+              <input  style="margin-top: 10px; margin-left: 70px" type="email" v-model="logDto.code" id="codeLog" name="email" placeholder="Google Auth Code" required/>
               <a href="/passwordless">Passworldess</a>
               <br>
               <a href="/forgottenPassword">Forgot password?</a>
@@ -63,7 +64,8 @@
       confirmPassword : '',
       logDto:{
         email: "",
-        password: ""
+        password: "",
+        code: ""
       }
     };
   },
@@ -74,7 +76,7 @@
   logIn : function(){
     if(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.logDto.email)){  
       
-          axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password})
+          axios.post(process.env.VUE_APP_BACK + 'logInUser', {"email" : this.logDto.email, "password" : this.logDto.password, "code": this.logDto.code})
           .then((response) => {
               console.log("ssssss"+response.data);
               if(!response.data ){

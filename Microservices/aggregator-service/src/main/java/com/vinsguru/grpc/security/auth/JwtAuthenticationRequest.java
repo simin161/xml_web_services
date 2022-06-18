@@ -3,6 +3,7 @@ package com.vinsguru.grpc.security.auth;
 public class JwtAuthenticationRequest {
     private String email;
     private String password;
+    private String code;
 
     public JwtAuthenticationRequest() {
         super();
@@ -11,6 +12,14 @@ public class JwtAuthenticationRequest {
     public JwtAuthenticationRequest(String email, String password) {
         this.setEmail(email);
         this.setPassword(password);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getEmail() {
