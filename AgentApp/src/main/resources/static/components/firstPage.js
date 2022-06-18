@@ -114,7 +114,7 @@ template: `
                             <td> <input class="form-control" type="text" v-model="c.field"/></td>
                             <td> <input class="form-control" type="text" v-model="c.description"/></td>
                             <td>
-                              <button class="btn" :disabled="isEditComplete(c)" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
+                              <button class="btn" :disabled="isEditComplete" id="buttonPurple"  @click="save(c)" v-show="c.status == 'ACCEPTED'" >Save changes</button>
                               <button class="btn" id="buttonPurple" @click="showCreate(c)" v-show="c.status == 'ACCEPTED'">Create job offer</button>
                               </td>
                         </tr>
@@ -156,14 +156,14 @@ template: `
 	,
 
 	computed : {
-        isEditComplete(c){
-            let validCName = /^[ a-zA-Z0-9]+$/.test(c.name);
+        isEditComplete(){
+            /*let validCName = /^[ a-zA-Z0-9]+$/.test(c.name);
             let validContactInfo = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(c.contactInfo) || /^[0-9{8}]+$/.test(c.contactInfo);
             let validField = /^[a-zA-Z]+$/.test(c.field);
             let validDesc = /^[ a-zA-Z.,]+$/.test(c.description);
-            if(validCName && validContactInfo && validField && validDesc)
+            if(validCName && validContactInfo && validField && validDesc)*/
                 return false
-            return true;
+           // return true;
         },
         isApiTokenComplete(){
             return !/\S/.test(this.apiToken);

@@ -38,3 +38,6 @@
 1665 [main] INFO  com.agent.app.Application - Starting Application using Java 17.0.2 on DESKTOP-RR5HUAB with PID 38696 (D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp\target\classes started by User in D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp) 
 1668 [main] INFO  com.agent.app.Application - No active profile set, falling back to default profiles: default 
 36970 [main] INFO  com.agent.app.Application - Started Application in 36.204 seconds (JVM running for 37.596) 
+1644 [main] INFO  com.agent.app.Application - Starting Application using Java 17.0.2 on DESKTOP-RR5HUAB with PID 16236 (D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp\target\classes started by User in D:\Cetvrta\Letnji semestar\XML i web servisi\Projekat\AgentApp) 
+1649 [main] INFO  com.agent.app.Application - No active profile set, falling back to default profiles: default 
+15794 [main] INFO  com.agent.app.Application - Started Application in 15.074 seconds (JVM running for 16.553) 

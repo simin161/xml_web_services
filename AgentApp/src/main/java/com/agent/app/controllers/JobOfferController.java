@@ -52,7 +52,7 @@ public class JobOfferController {
     public boolean sendJobOfferRequest(@RequestHeader("Authentication")HttpHeaders header, @RequestBody Map<String, String> message){
         boolean retVal = jobOfferService.setUserAPIToken(message);
         final RestTemplate restTemplate = new RestTemplate();
-        final String uri = "http://localhost:8080/api/createJobOffer";
+        final String uri = "https://localhost:8080/api/createJobOffer";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));

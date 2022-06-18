@@ -1,5 +1,4 @@
 package com.agent.app.service;
-
 import com.agent.app.model.Authority;
 import com.agent.app.model.User;
 import com.agent.app.model.VerificationCode;
@@ -11,36 +10,21 @@ import com.agent.app.security.TokenUtils;
 import com.agent.app.utility.QRModel;
 import com.agent.app.utility.LoggingStrings;
 import com.agent.app.utility.Validation;
-import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.extern.slf4j.Slf4j;
 import com.agent.app.repository.VerificationCodeRepository;
-import com.agent.app.security.TokenUtils;
-import com.agent.app.utility.LoggingStrings;
-import com.agent.app.utility.Validation;
-import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 @Service
 @Slf4j
@@ -154,7 +138,7 @@ public class UserService {
                             + "<h3><a href=\"[[URL]]\" target=\"_self\">LOGIN</a></h3>"
                             + footer;
 
-                    content = content.replace("[[URL]]", "http://localhost:8082/#/firstPage/" + jwt);
+                    content = content.replace("[[URL]]", "https://localhost:8082/#/firstPage/" + jwt);
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -229,7 +213,7 @@ public class UserService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getFirstName());
-        String verifyURL = "http://localhost:8082/api/verify?code=" + user.getVerificationCode().getCode();
+        String verifyURL = "https://localhost:8082/api/verify?code=" + user.getVerificationCode().getCode();
 
         content = content.replace("[[URL]]", verifyURL);
 

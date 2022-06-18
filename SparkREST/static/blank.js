@@ -75,6 +75,7 @@ Vue.component('homepage', {
                 }
             },
             signIn : function(){
+            event.preventDefault();
                 axios.post("/signIn", this.logUser)
                      .then(response => {
                         if(response.data == true){
@@ -85,6 +86,7 @@ Vue.component('homepage', {
                      })
             },
             register : function(){
+            event.preventDefault();
                 axios.post("/register", this.user)
                      .then(response => {
                         if(response.data == true){
