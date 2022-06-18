@@ -10,10 +10,8 @@ Vue.component('details-screen', {
     template: `
             <div>
                 <div>
-                    <input type="button" value="Create pdf" @click="createPdf"/>
                     <input type="button" value="Prepare for download" @click="download"/>
                     <a v-if="downloadPath !== ''" :href="downloadPath" download="certificate.cert">Download</a>
-                    <a :href="pdf">Show pdf</a>
                     <input type="button" value="See certs above" @click="getCertsAbove"/>
                 </div>
                 <br/>
