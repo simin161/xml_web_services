@@ -132,9 +132,15 @@
                             </div>
 
                             <div class="col"> 
+                                <button @click="enable2FA"  type="button" style="width: 50%" class="btn btn-outline-danger">Enable 2FA</button>
+                            </div>
+
+                            <div class="col"> 
                                <button type="button"  :disabled="isComplete" @click="update" style="width: 50%"  class="btn btn-primary">Update profile</button>
                             </div>
                         </div>
+                        <img :src="qrCode" height="500px" width="500px" />
+                        <p>{{qrCodeKey}}</p>
                   
        </div>
     </div>
@@ -155,7 +161,9 @@
     return {
         user: {},
         bio: '',
-        selected: 'true'
+        selected: 'true',
+        qrCode: '',
+        qrCodeKey: ''
     };
   },
   mounted() {
@@ -183,6 +191,14 @@
     signOut : function(){
         localStorage.setItem("loggedUser", '');
         this.$router.push("/signIn");
+    },
+    enable2FA : function(){
+        axios.defaults.headers.common["Authorization"] =
+                             localStorage.getItem("loggedUser");
+        axios.post(process.env.VUE_APP_BACK + 'enable2FA')
+        .then((response)=>{
+            this.qrCodeKey = response.data.secret;
+        })
     },
       navigateToChangePassword: function(){
               this.$router.push("/changePassword");

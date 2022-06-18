@@ -43,6 +43,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 User u = new User(request.getFirstName(), request.getLastName(), request.getUsername(), request.getEmail(), request.getPassword(), request.getGender(), date);
                 u.setActivated(false);
                 u.setUserAPItoken("");
+                u.setUsing2FA(false);
+                u.setSecret(addUserParam.getReg().getSecret());
                 setVerificationCode(RandomString.make(64), u);
                 u.setVerificationTime(LocalDateTime.now().plusHours(1));
                 UserRepository.getInstance().insert(u);
@@ -523,6 +525,25 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             }catch(Exception e){
                 e.printStackTrace();
                 output = ResendVerificationMailOutput.newBuilder().setOutput("false").build();
+            }
+        }
+        responseObserver.onNext(output);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void enable2FA(Enable2FAInput input, StreamObserver<Enable2FAOutput> responseObserver){
+        Enable2FAOutput output;
+        User user = UserRepository.getInstance().findUserByEmail(input.getEmail());
+        if(user == null){
+            output= Enable2FAOutput.newBuilder().setSecret("").build();
+        }else{
+            try{
+                user.setUsing2FA(true);
+                UserRepository.getInstance().update2FAStatus(user);
+                output = Enable2FAOutput.newBuilder().setSecret(user.getSecret()).build();
+            }catch(Exception e){
+                output= Enable2FAOutput.newBuilder().setSecret("").build();
             }
         }
         responseObserver.onNext(output);

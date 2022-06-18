@@ -34,6 +34,8 @@ public class User {
     private String userAPItoken;
     private boolean forgottenPassword;
     private LocalDateTime verificationTime;
+    private boolean isUsing2FA;
+    private String secret;
 
 
     public User(String firstName, String lastName, String username, String email, String password, String gender, Date birthDate) {
@@ -305,5 +307,21 @@ public class User {
 
     public void setVerificationTime(LocalDateTime verificationTime) {
         this.verificationTime = verificationTime;
+    }
+
+    public boolean isUsing2FA() {
+        return isUsing2FA;
+    }
+
+    public void setUsing2FA(boolean using2FA) {
+        isUsing2FA = using2FA;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

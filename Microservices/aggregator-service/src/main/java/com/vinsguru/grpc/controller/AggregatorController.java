@@ -3,6 +3,7 @@ package com.vinsguru.grpc.controller;
 import com.google.api.Http;
 import com.vinsguru.grpc.dto.*;
 
+import com.vinsguru.grpc.helperModel.QRModel;
 import com.vinsguru.grpc.helperModel.User;
 import com.vinsguru.grpc.helperModel.UserTokenState;
 import com.vinsguru.grpc.security.TokenUtils;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.*;
@@ -64,7 +66,12 @@ public class AggregatorController {
 
     @PostMapping("/register")
     public String addUser(@RequestBody Map<String, String> message, HttpServletRequest request){
-        return aggregatorService.addUser(message, getSiteURL(request));
+        try{
+            return aggregatorService.addUser(message, getSiteURL(request));
+        }catch(Exception e){
+            log.error(LoggingStrings.getAuthenticationFailed("com.vinsguru.grpc.controller.AggregatorController.register", e.toString()));
+            return "false";
+        }
     }
 
     @PostMapping("/logInUser")
@@ -93,6 +100,8 @@ public class AggregatorController {
                 log.error(LoggingStrings.getAuthenticationFailed("com.vinsguru.grpc.controller.AggregatorController.logInUser", e.toString()));
                 return null;
             }
+        }else{
+            log.warn(LoggingStrings.getInvalidCredentials("com.vinsguru.grpc.controller.AggregatorController.logInUser", cred.getEmail()));
         }
         return null;
     }
@@ -104,9 +113,12 @@ public class AggregatorController {
         final String value = header.getFirst(HttpHeaders.AUTHORIZATION);
         try{
             if(!Validation.validateNonBrackets(value)){
-            String email = tokenUtils.getUsernameFromToken(value);
-            userDto.put("email",email);
-            return aggregatorService.updateUser(userDto);}
+                String email = tokenUtils.getUsernameFromToken(value);
+                userDto.put("email",email);
+                return aggregatorService.updateUser(userDto);
+            }else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.personalInfo", tokenUtils.getUsernameFromToken(value)));
+            }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.personalInfo", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
@@ -123,6 +135,9 @@ public class AggregatorController {
             String email = tokenUtils.getUsernameFromToken(value);
             educationDto.setEmail(email);
             return aggregatorService.updateEducation(educationDto);  }
+            else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.education", tokenUtils.getUsernameFromToken(value)));
+            }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.education", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
@@ -148,6 +163,9 @@ public class AggregatorController {
             if(!Validation.validateNonBrackets(value)){
             String email = tokenUtils.getUsernameFromToken(value);
             return aggregatorService.getUserByEmail(email); }
+            else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.getUserByEmail", tokenUtils.getUsernameFromToken(value)));
+            }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.getUserByEmail", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
@@ -170,6 +188,8 @@ public class AggregatorController {
                 String email = tokenUtils.getUsernameFromToken(value);
                 workExperienceDto.setEmail(email);
                 return aggregatorService.updateWorkExperiences(workExperienceDto);
+            }else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.updateWorkExperiences", tokenUtils.getUsernameFromToken(value)));
             }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.updateWorkExperiences", tokenUtils.getUsernameFromToken(value), e.toString()));
@@ -208,6 +228,8 @@ public class AggregatorController {
                 if(post.getText()== null) post.setText("");
                 if(post.getLink()== null) post.setLink("");
                 return postService.addPost(post);
+            }else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.newPost", tokenUtils.getUsernameFromToken(value)));
             }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewPost", tokenUtils.getUsernameFromToken(value), e.toString()));
@@ -304,6 +326,9 @@ public class AggregatorController {
             String email = tokenUtils.getUsernameFromToken(value);
             reaction.setEmail(email);
             return postService.addReaction(reaction);}
+            else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.addNewReaction", tokenUtils.getUsernameFromToken(value)));
+            }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.addNewReaction", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
@@ -320,6 +345,8 @@ public class AggregatorController {
                 String email = tokenUtils.getUsernameFromToken(value);
                 reaction.setEmail(email);
                 return postService.deleteReaction(reaction);
+            }else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.deleteReaction", tokenUtils.getUsernameFromToken(value)));
             }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.deleteReaction", tokenUtils.getUsernameFromToken(value), e.toString()));
@@ -338,6 +365,9 @@ public class AggregatorController {
                 if(message.get("approved").equals("false"))
                     approved= false;
                 followerService.answerFollowRequest(approved,email,message.get("followerEmail"));}
+            else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.answerFollowRequest", tokenUtils.getUsernameFromToken(value)));
+            }
         }catch(Exception e){
             log.error(LoggingStrings.getLoggedMessage("com.vinsguru.grpc.controller.AggregatorController.answerFollowRequest", tokenUtils.getUsernameFromToken(value), e.toString()));
         }
@@ -458,6 +488,8 @@ public class AggregatorController {
                 if(Validation.validatePassword(message.get("newPassword"))){
                     return aggregatorService.changePassword(message);
                 }
+            }else{
+                log.warn(LoggingStrings.getScriptWarn("com.vinsguru.grpc.controller.AggregatorController.changePassword", tokenUtils.getUsernameFromToken(value)));
             }
 
         }catch(Exception e){
@@ -547,5 +579,14 @@ public class AggregatorController {
             log.error(LoggingStrings.getLoggedMessageResendVerificationMail("com.vinsguru.grpc.controller.AggregatorController.resendVerificationMail", tokenUtils.getUsernameFromToken(message.get("email")), e.toString()));
         }
         return false;
+    }
+
+    @PostMapping("/enable2FA")
+    @PreAuthorize("hasRole('ROLE_REG_USER')")
+    public String enable2FA(@RequestHeader("Authorization")HttpHeaders header, HttpServletResponse response) throws Exception {
+        response.setContentType("image/png");
+        String value = header.getFirst(HttpHeaders.AUTHORIZATION);
+        String email = tokenUtils.getUsernameFromToken(value);
+        return aggregatorService.enable2FA(email);
     }
 }

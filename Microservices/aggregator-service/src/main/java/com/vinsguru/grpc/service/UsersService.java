@@ -1,15 +1,23 @@
 package com.vinsguru.grpc.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.vinsguru.grpc.dto.EducationDto;
 import   com.vinsguru.grpc.dto.*;
 import com.vinsguru.grpc.dto.WorkExperienceDto;
 
 
+import com.vinsguru.grpc.helperModel.QRModel;
 import com.vinsguru.grpc.mail.MailService;
 import com.vinsguru.grpc.security.TokenUtils;
 import com.vinsguru.grpc.utility.Validation;
 
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.apache.commons.codec.binary.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +25,12 @@ import org.springframework.stereotype.Service;
 import proto.user.*;
 
 import javax.mail.MessagingException;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +57,7 @@ public class UsersService {
     @Autowired
     private JobOfferService jobOfferService;
 
-    public String addUser(Map<String,String> message, String siteURL) {
+    public String addUser(Map<String, String> message, String siteURL) {
         try {
             if (Validation.validatePassword(message.get("password")) && Validation.validateEmail(message.get("email")) &&
                     Validation.validateName(message.get("firstName")) && Validation.validateName(message.get("lastName"))
@@ -53,48 +66,57 @@ public class UsersService {
                 String password = passwordEncoder.encode(message.get("password"));
                 userReg input = userReg.newBuilder().setEmail(message.get("email")).setFirstName(message.get("firstName"))
                         .setLastName(message.get("lastName")).setPassword(password).setUsername(message.get("username")).setGender(message.get("gender"))
-                        .setBirthDate(message.get("birthDate")).build();
+                        .setBirthDate(message.get("birthDate")).setSecret(generateSecretKey()).build();
                 SiteURL url = SiteURL.newBuilder().setSiteURL(siteURL).build();
                 AddUserParam aup = AddUserParam.newBuilder().setReg(input).setUrl(url).build();
                 return this.blockingStub.addUser(aup).getResult();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
         return "false";
+    }
+
+    private static String generateSecretKey() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[20];
+        random.nextBytes(bytes);
+        Base32 base32 = new Base32();
+        return base32.encodeToString(bytes);
     }
 
     public String logInUser(Map<String, String> message) {
         try {
-            if(Validation.validateEmail(message.get("email"))) {
+            if (Validation.validateEmail(message.get("email"))) {
                 blockingStub = openChannelToUserService();
                 Input1 input = Input1.newBuilder().setEmail(message.get("email")).setPassword(message.get("password")).build();
                 return this.blockingStub.logInUser(input).getResult();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
         return "false";
     }
 
-    public UserDto getUserByEmail(String email){
+    public UserDto getUserByEmail(String email) {
         blockingStub = openChannelToUserService();
         InputForGetUserByEmail input = InputForGetUserByEmail.newBuilder().setEmail(email).build();
-        Output result=this.blockingStub.getUserByEmail(input);
+        Output result = this.blockingStub.getUserByEmail(input);
 
-        UserDto userDto =  new UserDto(result.getFirstName(),result.getLastName(),result.getUsername(),result.getEmail(),result.getPrivateProfile()
-        , result.getBirthday(),result.getGender(),result.getPhone(),result.getBiography(),result.getInterests(),result.getSkills(),result.getUserAPIToken());
+        UserDto userDto = new UserDto(result.getFirstName(), result.getLastName(), result.getUsername(), result.getEmail(), result.getPrivateProfile()
+                , result.getBirthday(), result.getGender(), result.getPhone(), result.getBiography(), result.getInterests(), result.getSkills(), result.getUserAPIToken());
         userDto.setEnabled(Boolean.parseBoolean(result.getIsEnabled()));
         return userDto;
     }
-    public UserDto getUserById(String Id){
+
+    public UserDto getUserById(String Id) {
         blockingStub = openChannelToUserService();
         InputID input = InputID.newBuilder().setId(Id).build();
-        Output result=this.blockingStub.getUserById(input);
-        UserDto userDto =  new UserDto(result.getUsername(),result.getEmail());
+        Output result = this.blockingStub.getUserById(input);
+        UserDto userDto = new UserDto(result.getUsername(), result.getEmail());
         return userDto;
     }
 
     public String updateUser(Map<String, String> user) {
-        try{
+        try {
             if (/*Validation.validatePassword(user.get("password")) && */ Validation.validateEmail(user.get("email")) &&
                     Validation.validateName(user.get("firstName")) && Validation.validateName(user.get("lastName"))
                     && Validation.validateUsername(user.get("username")) && Validation.validateName(user.get("gender"))
@@ -118,15 +140,15 @@ public class UsersService {
                         .build();
                 return this.blockingStub.updateUser(input).getOutputMessage();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return null;
     }
 
     public String updateEducation(EducationDto educationDto) {
-        if(!Validation.validateNonBrackets(educationDto.getFieldOfStudy()) && !Validation.validateNonBrackets(educationDto.getDegree())
-        && !Validation.validateNonBrackets(educationDto.getSchool()) && Validation.validateEmail(educationDto.getEmail())) {
+        if (!Validation.validateNonBrackets(educationDto.getFieldOfStudy()) && !Validation.validateNonBrackets(educationDto.getDegree())
+                && !Validation.validateNonBrackets(educationDto.getSchool()) && Validation.validateEmail(educationDto.getEmail())) {
             blockingStub = openChannelToUserService();
             InputUpdateEducation input = InputUpdateEducation.newBuilder()
                     .setEmail(educationDto.getEmail())
@@ -148,16 +170,16 @@ public class UsersService {
                 .setEmail(email)
                 .build();
 
-        for (OutputEducation outputEducation:  this.blockingStub.getEducationsUserByEmail(input).getEducationsList()){
-            educationDtos.add(new EducationDto(email,outputEducation.getSchool(),outputEducation.getDegree(),outputEducation.getFieldOfStudy(),
-                    outputEducation.getFrom(),outputEducation.getTo(),outputEducation.getId()));
+        for (OutputEducation outputEducation : this.blockingStub.getEducationsUserByEmail(input).getEducationsList()) {
+            educationDtos.add(new EducationDto(email, outputEducation.getSchool(), outputEducation.getDegree(), outputEducation.getFieldOfStudy(),
+                    outputEducation.getFrom(), outputEducation.getTo(), outputEducation.getId()));
         }
         return educationDtos;
     }
 
     public String updateWorkExperiences(WorkExperienceDto workExperienceDto) {
-        if(!Validation.validateNonBrackets(workExperienceDto.getWorkPlace()) && !Validation.validateNonBrackets(workExperienceDto.getWorkTitle())
-        && Validation.validateEmail(workExperienceDto.getEmail())) {
+        if (!Validation.validateNonBrackets(workExperienceDto.getWorkPlace()) && !Validation.validateNonBrackets(workExperienceDto.getWorkTitle())
+                && Validation.validateEmail(workExperienceDto.getEmail())) {
             blockingStub = openChannelToUserService();
             InputUpdateWorkExperience input = InputUpdateWorkExperience.newBuilder()
                     .setWorkPlace(workExperienceDto.getWorkPlace())
@@ -171,35 +193,35 @@ public class UsersService {
         return null;
     }
 
-        public List<DisplayUserDto> getUsers () {
+    public List<DisplayUserDto> getUsers() {
 
-            com.google.protobuf.Empty request = null;
-            blockingStub = openChannelToUserService();
+        com.google.protobuf.Empty request = null;
+        blockingStub = openChannelToUserService();
 
-            List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
+        List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
 
-            for (Input i : this.blockingStub.getAllUsers(request).getUserList()) {
-                DisplayUserDto userDTO = new DisplayUserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getEmail());
-                retVal.add(userDTO);
-            }
-
-            return retVal;
+        for (Input i : this.blockingStub.getAllUsers(request).getUserList()) {
+            DisplayUserDto userDTO = new DisplayUserDto(i.getUsername(), i.getFirstName(), i.getLastName(), i.getEmail());
+            retVal.add(userDTO);
         }
 
-        public List<DisplayUserDto> searchUsers (String param){
+        return retVal;
+    }
 
-            blockingStub = openChannelToUserService();
-            List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
-            InputSearch is = InputSearch.newBuilder().setParam(param).build();
+    public List<DisplayUserDto> searchUsers(String param) {
 
-            for (Input i : this.blockingStub.searchUsers(is).getUserList()) {
-                DisplayUserDto userDTO = new DisplayUserDto( i.getFirstName(), i.getLastName(),i.getUsername(), i.getEmail());
-                retVal.add(userDTO);
-            }
+        blockingStub = openChannelToUserService();
+        List<DisplayUserDto> retVal = new ArrayList<DisplayUserDto>();
+        InputSearch is = InputSearch.newBuilder().setParam(param).build();
 
-            return retVal;
-
+        for (Input i : this.blockingStub.searchUsers(is).getUserList()) {
+            DisplayUserDto userDTO = new DisplayUserDto(i.getFirstName(), i.getLastName(), i.getUsername(), i.getEmail());
+            retVal.add(userDTO);
         }
+
+        return retVal;
+
+    }
 
     public List<WorkExperienceDto> getExperiencesByEmail(String email) {
         blockingStub = openChannelToUserService();
@@ -208,8 +230,8 @@ public class UsersService {
                 .setEmail(email)
                 .build();
 
-        for (OutputExperience output:  this.blockingStub.getExperiencesByEmail(input).getExperiencesList()){
-            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(),output.getWorkTitle(),output.getFrom(),output.getTo(),output.getId()));
+        for (OutputExperience output : this.blockingStub.getExperiencesByEmail(input).getExperiencesList()) {
+            experienceDtos.add(new WorkExperienceDto(output.getWorkPlace(), output.getWorkTitle(), output.getFrom(), output.getTo(), output.getId()));
         }
         return experienceDtos;
     }
@@ -230,7 +252,8 @@ public class UsersService {
 
                 return retVal;
             }
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         return false;
     }
 
@@ -241,9 +264,9 @@ public class UsersService {
         VerificationCode vc = VerificationCode.newBuilder().setVerificationCode(code).build();
         String ret = blockingStub.verifyAccount(vc).getReturnValue();
         value = Boolean.parseBoolean(ret);
-        if(value){
+        if (value) {
             retVal = "verified";
-        }else{
+        } else {
             retVal = "error";
         }
         return retVal;
@@ -268,7 +291,8 @@ public class UsersService {
                     return false;
                 }
             }
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         return false;
     }
 
@@ -280,12 +304,12 @@ public class UsersService {
         return blockingStub.changePassword(pI).getResult();
     }
 
-    public boolean findUserByAPItoken(String userAPItoken){
+    public boolean findUserByAPItoken(String userAPItoken) {
         boolean retVal = false;
         blockingStub = openChannelToUserService();
         FindUserByAPItokenInput input = FindUserByAPItokenInput.newBuilder().setUserAPItoken(userAPItoken).build();
         String ret = blockingStub.findUserByAPItoken(input).getResult();
-        if(ret.equals("true"))
+        if (ret.equals("true"))
             retVal = true;
         return retVal;
     }
@@ -325,5 +349,48 @@ public class UsersService {
         blockingStub = openChannelToUserService();
         ResendVerificationMailInput input = ResendVerificationMailInput.newBuilder().setEmail(message.get("email")).setSiteURL(siteURL).build();
         return blockingStub.resendVerificationMail(input).getOutput().equals("true");
+    }
+
+    public String enable2FA(String email) throws Exception {
+        try{
+            blockingStub = openChannelToUserService();
+            Enable2FAInput input = Enable2FAInput.newBuilder().setEmail(email).build();
+            String secret = blockingStub.enable2FA(input).getSecret();
+            String data = getGoogleAuthenticatorBarCode(secret, email, "Dislinkt");
+            return secret;
+
+        }catch(Exception e){
+            return null;
+        }
+        //MfaTokenData mfaData = mfaSetup(secret);
+        //model.setQrCode(mfaData.getQrCode());
+        //model.setQrCodeKey(mfaData.getMfaCode());
+        //model.setQrCodeSetup("true");
+    }
+
+    public byte[] generateQRCode(String qrContent, int width, int height) {
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        } catch (WriterException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+
+    }
+
+    public static String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+        try {
+            return "otpauth://totp/"
+                    + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+                    + "?secret=" + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+                    + "&issuer=" + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

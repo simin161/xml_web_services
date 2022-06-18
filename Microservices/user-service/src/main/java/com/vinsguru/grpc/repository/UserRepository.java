@@ -1,6 +1,9 @@
 package com.vinsguru.grpc.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -75,7 +78,9 @@ public class UserRepository {
                 .append("verificationCode", user.getVerificationCode())
                 .append("userAPItoken",user.getUserAPItoken())
                 .append("forgottenPassword", user.isForgottenPassword())
-                .append("verificationTime", user.getVerificationTime());
+                .append("verificationTime", user.getVerificationTime())
+                .append("using2FA", user.isUsing2FA())
+                .append("secret", user.getSecret());
         usersCollection.insertOne(userToSave);
     }
 
@@ -89,6 +94,7 @@ public class UserRepository {
                     foundUser.getString("phone"), foundUser.getString("biography"), foundUser.getString("interests"), foundUser.getString("skills"), null, null, foundUser.getBoolean("forgottenPassword"));
             retVal.setActivated(foundUser.getBoolean("isActivated"));
             retVal.setUserAPItoken(foundUser.getString("userAPItoken"));
+            retVal.setSecret(foundUser.getString("secret"));
         }
         return retVal;
     }
@@ -159,6 +165,9 @@ public class UserRepository {
         boolean isActivated = false;
         for(Document d : iterable){
             User u = new User(d.getString("email"), d.getString("verificationCode"), false);
+            u.setVerificationTime(d.getDate("verificationTime").toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime());
             retVal.add(u);
         }
         return retVal;
@@ -372,6 +381,15 @@ public class UserRepository {
         Document query = new Document().append("email",  user.getEmail());
         Bson updates = Updates.combine(
                 Updates.set("verificationTime", user.getVerificationTime())
+        );
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        usersCollection.updateOne(query, updates, options);
+    }
+
+    public void update2FAStatus(User user) {
+        Document query = new Document().append("email",  user.getEmail());
+        Bson updates = Updates.combine(
+                Updates.set("using2FA", user.isUsing2FA())
         );
         UpdateOptions options = new UpdateOptions().upsert(true);
         usersCollection.updateOne(query, updates, options);

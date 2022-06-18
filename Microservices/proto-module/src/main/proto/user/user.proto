@@ -15,6 +15,7 @@ message userReg{
   string password = 5;
   string birthDate = 6;
   string gender = 7;
+  string secret = 8;
 }
 
 message Input {
@@ -228,6 +229,14 @@ message ResendVerificationMailOutput{
   string output = 1;
 }
 
+message Enable2FAInput{
+  string email = 1;
+}
+
+message Enable2FAOutput{
+  string secret = 1;
+}
+
 service UserService {
 
   rpc changePassword(PasswordChangeInput) returns (PasswordChangeOutput) {};
@@ -283,5 +292,7 @@ service UserService {
   rpc checkForgottenPassword(CheckForgottenPasswordInput) returns (CheckForgottenPasswordOutput) {};
 
   rpc resendVerificationMail(ResendVerificationMailInput) returns (ResendVerificationMailOutput) {};
+
+  rpc enable2FA(Enable2FAInput) returns (Enable2FAOutput) {};
 
 }
